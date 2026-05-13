@@ -22,7 +22,8 @@ start reading the visual-token-pruning literature.
 - Patched the bug; CLI now returns full multi-turn medical responses.
 - Bug write-up filed in [Bugs & Issues](../bugs.md), patch ready for
   upstream PR.
-- This documentation site set up and deployed.
+- This documentation site set up locally and deployed live to GitHub
+  Pages at <https://leokuan0208.github.io/question-aware-vtp-medvlm/>.
 
 ---
 
@@ -162,24 +163,202 @@ python -m llava.serve.cli \
 
 ## Day 3 — Tuesday, May 12, 2026
 
-Set up this documentation site with MkDocs + Material. Started a
-reading list for the visual-token-pruning literature (ToMe, FastV,
-PruMerge, SparseVLM, GAP) and dropped them into
-[Resources](../resources.md).
+Built this documentation site locally on Windows. Goal: have a
+markdown-based progress log running on `mkdocs serve` so daily edits
+auto-render in the browser.
+
+### Why MkDocs Material
+
+Picked **MkDocs** with the **Material** theme over alternatives like
+Jekyll, Hugo, or a hand-rolled React/HTML site. Reasons:
+
+- **Source files are plain Markdown.** No HTML, no build pipeline to
+  maintain over 12 weeks. The format won't fight me when I want to
+  write fast.
+- **One-time setup, then write-only.** Editing for the rest of the
+  project is just opening a `.md` file and typing.
+- **It's what most research labs and OSS projects actually use** —
+  muscle memory transfers, examples are everywhere.
+- **Excellent technical content support out of the box** — code
+  highlighting, admonitions, math, Mermaid diagrams.
+
+### Prerequisites on Windows
+
+- **Python 3.9+** — verified with `python --version`.
+- **Git** — newly installed; chose VS Code as Git's default editor,
+  set the default branch to `main`, picked "Git from the command line
+  and also from 3rd-party software" for PATH integration, kept all
+  other Git installer defaults.
+
+### Local install
+
+```powershell
+# Inside the project folder, in PowerShell:
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+**PowerShell execution-policy gotcha.** First attempt at
+`.venv\Scripts\Activate.ps1` failed with a red
+`UnauthorizedAccess` / "scripts are disabled on this system" error
+(in Traditional Chinese). Root cause: Windows' default execution
+policy blocks all local scripts.
+
+Fix (one-time):
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+After confirming with `Y`, the venv activated normally (the `(.venv)`
+prefix appeared in the prompt). Verified with `where.exe pip` that the
+first pip on PATH now pointed inside `.venv\Scripts\`.
+
+**Cleanup:** the first install attempt (before noticing the venv
+hadn't activated) had landed in system Python. Used
+`pip uninstall -y mkdocs mkdocs-material pymdown-extensions
+mkdocs-git-revision-date-localized-plugin` to remove them, then
+re-installed inside the active venv.
+
+### Verifying the local site
+
+```powershell
+mkdocs serve
+```
+
+Opened <http://127.0.0.1:8000/question-aware-vtp-medvlm/> — site
+rendered correctly. Confirmed live-reload works: edits to any `.md`
+file trigger an automatic browser refresh within ~1 second.
+
+### Iteration: colour scheme and code-block presentation
+
+Spent the afternoon refining the visual design rather than just
+accepting defaults:
+
+- **First palette** was teal + warm amber on cool slate. Felt too
+  clinical / dreary for a 12-week project I'd be staring at every
+  day.
+- **Second iteration** was warm amber on warm charcoal — better, but
+  ultimately wanted something more familiar.
+- **Final palette** is the GitHub / Facebook blue family — medium
+  blue (`#2f7fea`) for solid elements, lifted blue (`#58a6ff`) for
+  links on dark backgrounds, dark slate (`#0d1117`) canvas. Same
+  family in light mode, darkened for contrast.
+- **Code blocks** now render with a language label at the top-left
+  ("BASH", "PYTHON", "DOCKERFILE"), a copy button at the top-right,
+  syntax colouring via Pygments, and a bordered "card" container.
+  Required enabling `auto_title: true` under
+  `pymdownx.highlight` and writing a few rules in `extra.css` to
+  style the label bar.
+- **Admonition font sizes** were inconsistent — Material's default
+  admonition body (0.64rem) made plain text feel cramped while
+  inline code at a fixed `rem` size looked oversized. Fixed by
+  bumping admonition body to 0.72rem and switching inline code from
+  `rem` to `em` units so it scales with whatever container it sits
+  in.
+
+### Snippet to remember
+
+```powershell
+# Daily startup for editing the site locally:
+cd C:\Users\d3896\Downloads\question-aware-vtp-medvlm
+.venv\Scripts\Activate.ps1
+mkdocs serve
+```
 
 ## Day 4 — Wednesday, May 13, 2026 &nbsp; _(today)_
 
-- Wrote up the CLI bug formally in `bugs.md` with the full
-  troubleshooting trail per advisor-friendly bug-report conventions.
-- Populated the site with real environment details and the actual
-  commands run during setup.
-- Confirmed that the visual encoder in LLaVA-Med v1.5 (Mistral) uses
-  CLIP ViT-L/14 at 336² → 576 tokens per image, matching the
-  assumptions in the project plan.
+Two big things today: deploying the site publicly to GitHub Pages,
+and writing up the CLI bug formally.
+
+### Bug writeup
+
+- Wrote the full 10-step troubleshooting trail in
+  [Bugs & Issues](../bugs.md) — every hypothesis tried, eliminated,
+  and the path to root cause.
+- Status pill flipped to <span class="pill pill--done">Patched
+  locally</span>. Upstream PR planned but deferred until Week 2.
+
+### Confirmed baseline architecture
+
+Confirmed that the visual encoder in LLaVA-Med v1.5 (Mistral) uses
+CLIP ViT-L/14 at 336² → **576 visual tokens per image**, matching the
+assumption in the project plan. This is the number of tokens the
+pruning module will operate on.
+
+### Deploying the site to GitHub Pages
+
+The local site is great for editing, but a public URL is what the
+advisor can bookmark and what goes on a CV.
+
+**Step 1 — Created the empty GitHub repo.** On
+<https://github.com/new>, name = `question-aware-vtp-medvlm`, public,
+**all three initialise-with boxes left unchecked**. Crucial: ticking
+any of those would have created an "Initial commit" on the remote
+that conflicts with the local one, requiring
+`--allow-unrelated-histories` and a messy manual merge.
+
+**Step 2 — Pushed the local folder.** In PowerShell:
+
+```powershell
+git init
+git add .
+git commit -m "Initial commit: documentation site scaffold"
+git branch -M main
+git remote add origin https://github.com/Leokuan0208/question-aware-vtp-medvlm.git
+git push -u origin main
+```
+
+The first `git push` opened a browser window for GitHub
+authentication via the Git Credential Manager (set up during the
+Git install on Day 3). Sign-in once, credentials cached, future
+pushes don't ask.
+
+**Line-ending warning.** During `git add` Git printed 15 warnings of
+the form *"LF will be replaced by CRLF the next time Git touches
+it"*. Not an error — it's Git's `core.autocrlf=true` setting (chosen
+during install) doing its job: storing files with Unix `LF` line
+endings in the repo while checking them out with Windows `CRLF` on
+disk. Makes the repo cross-platform clean.
+
+**Step 3 — Enabled GitHub Pages.** On github.com → repo →
+**Settings → Pages** → **Source: Deploy from a branch** → branch
+`gh-pages`, folder `/ (root)` → **Save**.
+
+The `gh-pages` branch only existed because the `deploy.yml` GitHub
+Actions workflow had already run once on the initial push (~60
+seconds) and pushed the built HTML there. Without that, the branch
+dropdown wouldn't have shown `gh-pages` as an option.
+
+**Step 4 — Verified live.** Site appeared at
+<https://leokuan0208.github.io/question-aware-vtp-medvlm/> within
+about 30 seconds of saving the Pages config. Confirmed identical
+rendering to the local preview.
+
+### How the live deploy works (mental model)
+
+The repo now has two branches that serve different purposes:
+
+- **`main`** — the markdown source. This is what I edit.
+- **`gh-pages`** — the built HTML, auto-generated. **I never touch
+  this directly.** Every push to `main` triggers the GitHub Actions
+  workflow in `.github/workflows/deploy.yml`, which runs
+  `mkdocs build` inside a temporary Ubuntu container and force-pushes
+  the result to `gh-pages`. GitHub Pages serves whatever's there.
+
+So the daily loop is: edit `.md` → `git push` → wait ~60 seconds →
+live site updates. No manual build, no rsync, no FTP.
+
+### Practising the workflow
+
+Today's site update (this very entry, plus the Day 3 expansion) is
+the first real exercise of the edit-and-push loop on substantive
+content rather than scaffolding. Worth getting the rhythm right
+before Week 2's more research-heavy entries.
 
 ### Plan for the rest of the week (May 14 – May 16)
 
-- [ ] File the CLI fix upstream on `microsoft/LLaVA-Med` (issue + PR).
 - [ ] Read ToMe end-to-end; take structured notes in `resources.md`.
 - [ ] Skim FastV (closest prior art) to understand their pruning
       insertion point inside the LM.
@@ -190,6 +369,8 @@ PruMerge, SparseVLM, GAP) and dropped them into
 - [ ] Sketch the Week 2 plan: profile the baseline (latency, VRAM,
       token-count breakdown), locate the visual-token pipeline in the
       LLaVA-Med code, identify candidate pruning insertion points.
+- [ ] File the CLI fix upstream on `microsoft/LLaVA-Med` (deferred
+      from earlier in the week; not blocking).
 
 ---
 

@@ -45,7 +45,7 @@ and 12-week plan.
 - [x] First successful inference via `llava.serve.cli`
 - [x] Found, root-caused, and patched a CLI bug in `llava/serve/cli.py`
       → see [Bugs & Issues](bugs.md)
-- [x] Set up this documentation site
+- [x] Set up this documentation site (local + deployed to GitHub Pages)
 - [ ] Finish reading visual-token-pruning literature (ToMe, FastV, PruMerge)
 - [ ] Draft Week 2 plan: profile baseline, locate visual-token pipeline
       in the codebase
