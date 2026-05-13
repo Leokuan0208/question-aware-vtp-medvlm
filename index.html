@@ -784,7 +784,7 @@ each page.</p>
 </tr>
 <tr>
 <td><strong>Start date</strong></td>
-<td>May 10, 2026 (Sunday)</td>
+<td>May 11, 2026</td>
 </tr>
 <tr>
 <td><strong>Baseline</strong></td>
@@ -824,11 +824,25 @@ and 12-week plan.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Downloaded <code>llava-med-v1.5-mistral-7b</code> weights (~15 GB)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> First successful inference via <code>llava.serve.cli</code></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Found, root-caused, and patched a CLI bug in <code>llava/serve/cli.py</code>
-      → see <a href="bugs/">Bugs &amp; Issues</a></li>
+      → see <a href="bugs/#1-llavaservecli-stops-generation-immediately-for-the-mistral-variant">Bugs &amp; Issues #1</a></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Set up this documentation site (local + deployed to GitHub Pages)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Finish reading visual-token-pruning literature (ToMe, FastV, PruMerge)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Draft Week 2 plan: profile baseline, locate visual-token pipeline
-      in the codebase</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> First read-pass of <code>prepare_inputs_labels_for_multimodal</code> —
+      visual-token splicing logic mapped, position-ID handling noted
+      → <a href="weekly/week-01/#architecture-deep-dive-partial-paused-for-later">Week 1, Day 4</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Strategic decision: implement pruning directly on v1.5
+      (inference-only method, no v1.0 reproduction needed)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Scaffolded evaluation harness <code>~/llava-med-pruning/</code> —
+      4 of 11 files implemented, 7 documented stubs awaiting fill-in</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Downloaded benchmark datasets: VQA-RAD, SLAKE, PathVQA
+      (~990 MB total, all verified against authoritative sources)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Recovered from a <code>pip --force-reinstall</code> regression that broke
+      the container → see <a href="bugs/#2-pip-install-force-reinstall-cascaded-and-clobbered-the-ngc-pinned-stack">Bugs &amp; Issues #2</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Finish reading visual-token-pruning literature (ToMe, FastV,
+      SparseVLM, GAP)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement the remaining 7 harness stubs</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run <strong>E00</strong> baseline evaluation on VQA-RAD test set
+      (first row of metrics)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Draft Week 2 plan</li>
 </ul>
 <p>See the <a href="weekly/week-01/">Week 1 log</a> for daily notes.</p>
 <h2 id="how-this-site-is-organised">How this site is organised<a class="headerlink" href="#how-this-site-is-organised" title="Permanent link">&para;</a></h2>

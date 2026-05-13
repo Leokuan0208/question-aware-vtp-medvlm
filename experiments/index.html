@@ -498,6 +498,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#evaluation-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation harness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#summary-table" class="md-nav__link">
     <span class="md-ellipsis">
       Summary table
@@ -697,6 +706,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#evaluation-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation harness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#summary-table" class="md-nav__link">
     <span class="md-ellipsis">
       Summary table
@@ -765,6 +783,24 @@ compare.</p>
 failed runs. Especially failed runs. The first ablation you'll wish
 you'd documented is the one you didn't.</p>
 </div>
+<h2 id="evaluation-harness">Evaluation harness<a class="headerlink" href="#evaluation-harness" title="Permanent link">&para;</a></h2>
+<p>All experiments are run through a shared harness at
+<code>~/llava-med-pruning/</code> (separate repo from LLaVA-Med itself, to keep
+the pruning work cleanly isolated). Design decisions:</p>
+<ul>
+<li><strong>CLI</strong> — <code>argparse</code> (over Hydra). Hydra is more powerful but adds a
+  config-system learning curve I don't need for a 12-week project.</li>
+<li><strong>Output format</strong> — JSON for the summary metrics of each run, plus
+  JSONL with one line per sample (for error analysis and re-aggregation
+  later).</li>
+<li><strong>Pruning interface</strong> — <code>PruningMethod</code> with <code>attach(model)</code> and
+  <code>detach(model)</code> lifecycle hooks, so a single evaluation run can swap
+  pruning strategies without reloading the 15 GB model.</li>
+<li><strong>Datasets handled</strong> — VQA-RAD, SLAKE (English-only), PathVQA.</li>
+</ul>
+<p>Status (May 13, 2026): <strong>4 of 11 planned files implemented</strong> (CLI
+entry point, dataclasses for samples and loaded model, NoOp baseline
+pruning method). 7 documented stubs await fill-in.</p>
 <h2 id="summary-table">Summary table<a class="headerlink" href="#summary-table" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -782,13 +818,13 @@ you'd documented is the one you didn't.</p>
 <tbody>
 <tr>
 <td>E00</td>
-<td><em>TBD</em></td>
+<td><em>pending</em></td>
 <td>None (baseline)</td>
 <td>0%</td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
+<td><em>pending</em></td>
+<td><em>pending</em></td>
 <td>—</td>
-<td>Reference run</td>
+<td>Reference run; harness in progress</td>
 </tr>
 <tr>
 <td>E01</td>
@@ -827,22 +863,33 @@ baseline and the random-pruning sanity floor) are the two reference
 points every later experiment should beat.</p>
 <hr />
 <h2 id="e00-baseline-no-pruning">E00 — Baseline (no pruning)<a class="headerlink" href="#e00-baseline-no-pruning" title="Permanent link">&para;</a></h2>
-<p><span class="pill pill--planned">Planned</span></p>
+<p><span class="pill pill--wip">Harness in progress</span></p>
 <p><strong>Goal</strong> — establish the reference accuracy and latency numbers we'll
 compare every pruning experiment against. No model changes.</p>
 <p><strong>Setup</strong>
-- Model: LLaVA-Med, off-the-shelf weights, frozen
-- Datasets: VQA-RAD test split, SLAKE test split
-- Hardware: see <a href="../setup/#hardware">Baseline (LLaVA-Med)</a></p>
+- Model: LLaVA-Med v1.5 (Mistral-7B), off-the-shelf weights, frozen
+- Datasets: VQA-RAD test split (451 samples), SLAKE English test split
+  (1,061 samples), PathVQA test split (6,719 samples)
+- Hardware: see <a href="../setup/#hardware">Baseline (LLaVA-Med)</a>
+- Pruning method: <code>NoOp</code> (implemented — does nothing, just lets the
+  model run unmodified)</p>
+<p><strong>Status</strong>
+- Datasets downloaded and verified (May 13, 2026)
+- Harness scaffolded with NoOp method implemented (May 13, 2026)
+- Dataset loaders, metrics module, and runner still stubs — to be
+  completed before this experiment can run</p>
 <p><strong>Results</strong>
-- VQA-RAD closed-form accuracy: <em>TBD</em>
-- VQA-RAD open-form accuracy: <em>TBD</em>
-- SLAKE closed-form accuracy: <em>TBD</em>
-- SLAKE open-form accuracy: <em>TBD</em>
-- Mean inference latency: <em>TBD</em> ms / query
-- Peak VRAM: <em>TBD</em> GB</p>
+- VQA-RAD closed-form accuracy: <em>pending</em>
+- VQA-RAD open-form accuracy: <em>pending</em>
+- SLAKE closed-form accuracy: <em>pending</em>
+- SLAKE open-form accuracy: <em>pending</em>
+- PathVQA closed-form accuracy: <em>pending</em>
+- PathVQA open-form accuracy: <em>pending</em>
+- Mean inference latency: <em>pending</em> ms / query
+- Peak VRAM: <em>pending</em> GB</p>
 <p><strong>Notes</strong></p>
-<p><em>Anything surprising, anomalous, or worth flagging.</em></p>
+<p><em>Anything surprising, anomalous, or worth flagging — fill in after the
+first run.</em></p>
 <hr />
 <h2 id="e01-random-pruning-sanity-floor">E01 — Random pruning (sanity floor)<a class="headerlink" href="#e01-random-pruning-sanity-floor" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--planned">Planned</span></p>
@@ -860,6 +907,7 @@ haven't actually learned anything.</p>
 <th>K</th>
 <th>VQA-RAD</th>
 <th>SLAKE</th>
+<th>PathVQA</th>
 <th>Latency</th>
 </tr>
 </thead>
@@ -869,9 +917,11 @@ haven't actually learned anything.</p>
 <td><em>TBD</em></td>
 <td><em>TBD</em></td>
 <td><em>TBD</em></td>
+<td><em>TBD</em></td>
 </tr>
 <tr>
 <td>25%</td>
+<td><em>TBD</em></td>
 <td><em>TBD</em></td>
 <td><em>TBD</em></td>
 <td><em>TBD</em></td>
@@ -881,9 +931,11 @@ haven't actually learned anything.</p>
 <td><em>TBD</em></td>
 <td><em>TBD</em></td>
 <td><em>TBD</em></td>
+<td><em>TBD</em></td>
 </tr>
 <tr>
 <td>75%</td>
+<td><em>TBD</em></td>
 <td><em>TBD</em></td>
 <td><em>TBD</em></td>
 <td><em>TBD</em></td>
