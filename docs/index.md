@@ -22,7 +22,7 @@ improving answer quality?
 |                  |                                                              |
 | ---------------- | ------------------------------------------------------------ |
 | **Duration**     | 12 weeks                                                     |
-| **Start date**   | May 10, 2026 (Sunday)                                        |
+| **Start date**   | May 11, 2026                                                 |
 | **Baseline**     | [LLaVA-Med v1.5 (Mistral-7B)](https://github.com/microsoft/LLaVA-Med) |
 | **Stack**        | Python, PyTorch, Hugging Face Transformers, CUDA             |
 | **Research Q**   | _Can question-conditioned visual token pruning preserve (or improve) medical VQA accuracy while reducing inference cost?_ |
@@ -44,11 +44,25 @@ and 12-week plan.
 - [x] Downloaded `llava-med-v1.5-mistral-7b` weights (~15 GB)
 - [x] First successful inference via `llava.serve.cli`
 - [x] Found, root-caused, and patched a CLI bug in `llava/serve/cli.py`
-      → see [Bugs & Issues](bugs.md)
+      → see [Bugs & Issues #1](bugs.md#1-llavaservecli-stops-generation-immediately-for-the-mistral-variant)
 - [x] Set up this documentation site (local + deployed to GitHub Pages)
-- [ ] Finish reading visual-token-pruning literature (ToMe, FastV, PruMerge)
-- [ ] Draft Week 2 plan: profile baseline, locate visual-token pipeline
-      in the codebase
+- [x] First read-pass of `prepare_inputs_labels_for_multimodal` —
+      visual-token splicing logic mapped, position-ID handling noted
+      → [Week 1, Day 4](weekly/week-01.md#architecture-deep-dive-partial-paused-for-later)
+- [x] Strategic decision: implement pruning directly on v1.5
+      (inference-only method, no v1.0 reproduction needed)
+- [x] Scaffolded evaluation harness `~/llava-med-pruning/` —
+      4 of 11 files implemented, 7 documented stubs awaiting fill-in
+- [x] Downloaded benchmark datasets: VQA-RAD, SLAKE, PathVQA
+      (~990 MB total, all verified against authoritative sources)
+- [x] Recovered from a `pip --force-reinstall` regression that broke
+      the container → see [Bugs & Issues #2](bugs.md#2-pip-install-force-reinstall-cascaded-and-clobbered-the-ngc-pinned-stack)
+- [ ] Finish reading visual-token-pruning literature (ToMe, FastV,
+      SparseVLM, GAP)
+- [ ] Implement the remaining 7 harness stubs
+- [ ] Run **E00** baseline evaluation on VQA-RAD test set
+      (first row of metrics)
+- [ ] Draft Week 2 plan
 
 See the [Week 1 log](weekly/week-01.md) for daily notes.
 

@@ -8,6 +8,260 @@ what hypotheses were eliminated, not just the answer.
 
 ---
 
+## #2 — `pip install --force-reinstall` cascaded and clobbered the NGC-pinned stack
+
+<span class="pill pill--done">Recovered</span>
+
+**Found** May 13, 2026 &nbsp; · &nbsp; **Severity** High (container
+broken, ~30 min recovery) &nbsp; · &nbsp; **Upstream status** _n/a —
+self-inflicted; lesson logged_
+
+### What I observed
+
+I needed to read VQA-RAD and PathVQA parquet files to verify sample
+counts. The `datasets` Python library wasn't in the container, so I
+ran:
+
+```bash
+pip install datasets==2.16.1 --force-reinstall
+```
+
+The install completed but emitted dozens of dependency-conflict
+warnings. After the install, importing `torch` showed a brand-new
+version, importing `llava` failed entirely, and any GPU work would
+have crashed.
+
+### How to reproduce it (don't)
+
+Inside the NGC PyTorch 23.10 container with the project's pinned
+LLaVA-Med stack installed, run:
+
+```bash
+pip install datasets==2.16.1 --force-reinstall
+```
+
+The `--force-reinstall` flag is the trigger: it tells pip to
+reinstall the named package **and all its transitive dependencies**,
+pulling latest versions of everything in the chain. In a freshly-built
+NGC container that has a finely-tuned `torch` build pinned to a
+specific CUDA/cuDNN/NCCL combination, this is catastrophic.
+
+### Root cause (summary)
+
+`pip install --force-reinstall <pkg>` does not respect the existing
+pinned environment. The dependency resolver sees the full transitive
+tree of `<pkg>` and reinstalls everything — even packages where the
+already-installed version was correct and intentional. In this case:
+
+- `torch 2.1.0a0+32f93b1` (NGC-built, CUDA 12.2) was replaced by
+  `torch 2.12.0` from PyPI (CUDA 13).
+- The new `torch 2.12.0` was binary-incompatible with the existing
+  `flash-attn 2.3.6` (built against the old torch).
+- `bitsandbytes` was replaced with a CPU-only build that's missing
+  `triton.ops`.
+- `nvidia-cuda-runtime-13` was pulled in even though the host
+  driver only supports CUDA 12.4.
+- The user-local `~/.local/lib/python3.10/site-packages/` directory
+  was now shadowing the container's system site-packages, so even
+  packages that hadn't been touched (`transformers`, `accelerate`)
+  were resolving to whatever pip had just dropped into `~/.local/`.
+
+The error message stream after the install included:
+
+```
+torch-tensorrt 0.0.0 requires torch<2.3.0,>=2.1.0.dev, but you have torch 2.12.0
+torchdata 0.7.0a0 requires torch==2.1.0a0+32f93b1, but you have torch 2.12.0
+torchtext 0.16.0a0 requires torch==2.1.0a0+32f93b1, but you have torch 2.12.0
+transformer-engine 0.12.0+170797 requires flash-attn<=2.0.4,>=1.0.6, but you have flash-attn 2.3.6
+```
+
+— a clear sign that the install had crossed into territory it
+shouldn't have.
+
+### Fix (applied)
+
+The cleanest recovery path is **rebuild the container from the
+Dockerfile**, since that guarantees a known-good state. But the
+container-rebuild process on KUBERUN takes ~5 minutes per cycle, and
+the downloaded datasets and model weights live on `/data` (a mount)
+which survives rebuilds anyway.
+
+I tried a faster surgical recovery first and it worked:
+
+```bash
+# 1. Wipe the user-local site-packages directory that pip
+#    polluted. The container's system site-packages (where the
+#    NGC-built torch lives) is untouched.
+rm -rf ~/.local/lib/python3.10/site-packages/
+
+# 2. Restart the Python kernel (close and reopen the Jupyter terminal)
+#    so any cached imports are cleared.
+
+# 3. Verify the environment is sane.
+python -c "
+import torch
+print('torch:', torch.__version__)
+print('CUDA available:', torch.cuda.is_available())
+import transformers; print('transformers:', transformers.__version__)
+"
+```
+
+Output after the wipe:
+
+```
+torch: 2.1.0a0+32f93b1
+CUDA available: True
+transformers: 4.36.2
+```
+
+— the NGC-pinned versions are back. The only remaining problem was
+that `llava` couldn't import (its editable-install registration files
+got deleted along with everything else under `~/.local/`). One-line
+fix:
+
+```bash
+cd ~/LLaVA-Med
+pip install -e . --no-deps
+```
+
+The `--no-deps` matters: without it, pip would re-resolve the
+dependency tree from the `pyproject.toml` pins and could pull `torch`
+again. With `--no-deps`, pip only registers the editable package and
+trusts that the existing dependencies are correct.
+
+After this, everything imported cleanly and inference worked again.
+
+### Troubleshooting trail
+
+Documenting every step so future-me (and future readers) can follow
+the recovery logic:
+
+#### Step 1 — Recognised the install was a regression
+
+Read the output of the `pip install` command and noticed the dozens
+of `requires X, but you have Y` lines, plus the
+`Successfully installed ... torch-2.12.0` line. PyTorch shouldn't
+have been in that "successfully installed" list — it was already
+present and pinned.
+
+#### Step 2 — Confirmed the breakage
+
+Tried to import `torch` and check the version:
+
+```python
+import torch
+print(torch.__version__)
+# 2.12.0  <-- wrong! should be 2.1.0a0+32f93b1
+```
+
+Tried `import llava`:
+
+```
+ModuleNotFoundError: No module named 'llava'
+```
+
+Both confirmed: container is broken.
+
+#### Step 3 — Considered options
+
+Two possible recovery paths:
+
+1. **Rebuild the container** (cleanest, ~5 minutes downtime). On
+   KUBERUN, this restarts the VM with a fresh container from the
+   same image. `/data` is mounted, so downloaded data survives.
+2. **Surgical cleanup** (faster if it works, risky if it doesn't).
+   Manually identify and remove the polluting packages.
+
+Tried surgical first because the downtime was annoying. Would have
+fallen back to rebuild if it didn't work.
+
+#### Step 4 — Identified the pollution layer
+
+Critical insight: pip installs by default go to **`~/.local/lib/python3.10/site-packages/`**
+(the user site-packages directory), not the container's system
+site-packages (typically `/usr/local/lib/python3.10/dist-packages/`).
+Python prefers user site-packages over system ones, so the polluted
+`~/.local/` was shadowing the NGC builds.
+
+Meaning: **the NGC-built torch was still on disk**, just hidden by
+the bad versions in `~/.local/`. Wiping `~/.local/` should expose it
+again.
+
+#### Step 5 — Wiped and verified
+
+```bash
+rm -rf ~/.local/lib/python3.10/site-packages/
+```
+
+(Closed and reopened the Jupyter terminal to flush any cached
+imports.)
+
+Re-ran the verification script: `torch 2.1.0a0+32f93b1`, CUDA
+available, transformers 4.36.2. The NGC stack was back.
+
+#### Step 6 — Reinstalled the LLaVA-Med editable package
+
+`llava` still didn't import because its `egg-info` registration
+metadata had been deleted along with everything else under
+`~/.local/`. Reinstalled with `--no-deps` so pip wouldn't try to
+"fix" dependencies and re-trigger the regression:
+
+```bash
+cd ~/LLaVA-Med
+pip install -e . --no-deps
+```
+
+After this, `import llava` worked, and a quick CLI inference test
+produced coherent output. Full recovery confirmed.
+
+#### Step 7 — Read the parquet files without `datasets`
+
+The original reason for the install was to read parquet files.
+**`pyarrow` is already in the NGC image** and reads parquet directly:
+
+```python
+import pyarrow.parquet as pq
+import glob
+
+for split in ["train", "test"]:
+    files = sorted(glob.glob(f"/data/dan/dataset/vqa_rad/data/{split}-*.parquet"))
+    total = sum(len(pq.read_table(f)) for f in files)
+    print(f"{split}: {total} samples")
+```
+
+No new package installs needed. Sample counts verified, work
+continued.
+
+### Notes / lessons
+
+- **Never use `pip install --force-reinstall` in a Dockerfile-pinned
+  environment.** The NGC images are precisely tuned; pip will happily
+  destroy that tuning if asked.
+- **The correct flag for adding a single new package without
+  touching dependencies** is `pip install --no-deps <pkg>`. This is
+  what should have been used here.
+- **Even better than `--no-deps`: don't add the dependency at all
+  if a lighter-weight alternative exists.** `pyarrow` was already in
+  the image and could read parquet directly; pulling in the entire
+  `datasets` library (and its transitive 30+ packages) was overkill.
+- **The user-local site-packages layer is a useful escape hatch.**
+  Because pip defaults to installing in `~/.local/` rather than the
+  container's system directories, you can wipe `~/.local/` to
+  recover from many install mistakes without rebuilding the
+  container. This wouldn't work if pip ever installed with
+  `--user=false` or `sudo`, but for normal `pip install` it does.
+- **Action item — add `datasets` to the Dockerfile** so it's
+  installed at image-build time with the rest of the pinned stack,
+  rather than tempting fate at runtime in future container sessions.
+
+### Upstream
+
+n/a — this was a self-inflicted error from running the wrong pip
+command. No upstream issue to file. The lesson is recorded here for
+future container sessions.
+
+---
+
 ## #1 — `llava.serve.cli` stops generation immediately for the Mistral variant
 
 <span class="pill pill--done">Patched locally</span>
@@ -80,272 +334,10 @@ the CLI returns full multi-token responses for
 `llava-med-v1.5-mistral-7b`, and multi-turn conversation works as
 expected.
 
-### Troubleshooting trail
-
-Documenting every hypothesis that was tried and eliminated, in order.
-This is what makes the bug-hunt re-runnable and what makes the eventual
-root cause believable — a one-line fix that comes after eight failed
-hypotheses is much more credible than a one-line fix that comes out of
-nowhere.
-
-#### Step 1 — Symptom triage
-
-The first observation was simply that `llava.serve.cli` produced
-single-word answers. The two highest-prior hypotheses for "VLM emits
-EOS immediately" are: (a) the chat template is wrong for this base
-model, or (b) the model weights are partially loaded / corrupted.
-
-Decided to eliminate (a) first because it's cheaper to test.
-
-#### Step 2 — Force the conv-mode flag
-
-Re-ran the CLI with the conv-mode override matching the model's base
-LM:
-
-```bash
-python -m llava.serve.cli \
-    --model-path /data/dan/weights/llava-med-v1.5-mistral-7b \
-    --image-file ./llava/serve/examples/bio_patch.png \
-    --conv-mode mistral_instruct
-```
-
-**Result:** still single-word output. Hypothesis (a) not yet
-eliminated — the CLI sometimes prints a warning when it overrides a
-user-supplied `--conv-mode` flag, so the flag may have been silently
-ignored.
-
-#### Step 3 — Verify the flag actually took effect
-
-Captured the first 30 lines of CLI output to look for any "auto
-inferred conversation mode" warnings:
-
-```bash
-python -m llava.serve.cli \
-    --model-path /data/dan/weights/llava-med-v1.5-mistral-7b \
-    --image-file ./llava/serve/examples/bio_patch.png \
-    --conv-mode mistral_instruct 2>&1 | head -30
-```
-
-**Result:** no override warnings in the output — but the CLI doesn't
-necessarily print one. Inconclusive.
-
-#### Step 4 — Enumerate available conv templates
-
-```python
-python -c "
-from llava.conversation import conv_templates
-for name, conv in conv_templates.items():
-    print(f'{name}: sep_style={conv.sep_style}, roles={conv.roles}')
-"
-```
-
-Confirmed `mistral_instruct` exists with
-`sep_style=SeparatorStyle.LLAMA_2, roles=('USER', 'ASSISTANT')`, which
-matches the Mistral chat format. Right template, right name — so the
-flag *should* have been correct. Hypothesis (a) still unresolved.
-
-#### Step 5 — Bypass the chat template entirely
-
-Wrote a small pure-text generation script that loads the model with
-`load_pretrained_model` and asks the LM to continue the sentence
-`"The chest X-ray shows"`. No conversation template, no image, no
-stopping criteria — just raw `model.generate(...)`.
-
-This isolates "is the model healthy?" from "is the prompt construction
-broken?"
-
-**First attempt** crashed because `model.generate(**inputs,
-max_new_tokens=80, do_sample=False)` was called with keyword args, but
-LLaVA-Med's custom `generate()` expects `input_ids` as a positional
-argument named `inputs`. The keyword passing put `None` into that
-slot.
-
-This was an instructive miss — it shows LLaVA-Med has a heavily
-customized `generate()` method, exactly the kind of code that can cause
-the single-word issue.
-
-**Fixed script:**
-
-```python
-import torch
-from llava.model.builder import load_pretrained_model
-from llava.mm_utils import get_model_name_from_path
-
-model_path = "/data/dan/weights/llava-med-v1.5-mistral-7b"
-model_name = get_model_name_from_path(model_path)
-print(f"Detected model name: {model_name}")
-
-tokenizer, model, image_processor, context_len = load_pretrained_model(
-    model_path=model_path, model_base=None, model_name=model_name,
-)
-
-prompt = "The chest X-ray shows"
-input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to("cuda")
-
-with torch.inference_mode():
-    output = model.generate(
-        input_ids,
-        max_new_tokens=80,
-        do_sample=False,
-        images=None,
-    )
-
-print(tokenizer.decode(output[0], skip_special_tokens=False))
-```
-
-**Result:** detected model name was `llava-med-v1.5-mistral-7b`
-(correct), and the output was a coherent multi-sentence continuation.
-**Model and weights are healthy.** Hypothesis (b) eliminated.
-
-Combined conclusion: the bug is **in the CLI's prompt-construction or
-stopping-criterion path**, not in the model.
-
-#### Step 6 — Read the CLI source
-
-Opened `~/LLaVA-Med/llava/serve/cli.py`. The first interesting block
-was the conv-mode selection at the top of `main()`:
-
-```python
-if 'llama-2' in model_name.lower():
-    conv_mode = "llava_llama_2"
-elif "v1" in model_name.lower():
-    conv_mode = "llava_v1"
-elif "mpt" in model_name.lower():
-    conv_mode = "mpt"
-else:
-    conv_mode = "llava_v0"
-conv_mode = "mistral_instruct"   # ← unconditional override
-```
-
-The unconditional reassignment at the bottom looks suspicious — but on
-closer reading, it actually *helps* us: regardless of what the if/elif
-chain picks, `conv_mode` ends up as `"mistral_instruct"`. So the
-conv-mode is definitely right.
-
-#### Step 7 — Render the prompt explicitly
-
-Wrote a small script using the same `conv_templates["mistral_instruct"]`
-to construct the prompt the CLI would build:
-
-```python
-from llava.conversation import conv_templates
-from llava.constants import DEFAULT_IMAGE_TOKEN
-
-conv = conv_templates["mistral_instruct"].copy()
-conv.append_message(conv.roles[0], DEFAULT_IMAGE_TOKEN + "\nDescribe this medical image.")
-conv.append_message(conv.roles[1], None)
-print(repr(conv.get_prompt()))
-print(f"sep_style: {conv.sep_style}")
-print(f"sep: '{conv.sep}'")
-print(f"sep2: '{conv.sep2}'")
-```
-
-**Result:**
-
-```
-'[INST] <image>\nDescribe this medical image. [/INST]'
-sep_style: SeparatorStyle.LLAMA_2
-sep: ''
-sep2: '</s>'
-```
-
-The prompt format is exactly what Mistral expects. Empty system
-message is fine for Mistral. **Prompt construction is correct.**
-
-But this is the moment the offending values become visible: `sep` is
-the empty string. That's not yet known to be a problem — it just stands
-out as unusual.
-
-#### Step 8 — Hypothesis: missing BOS token
-
-Mistral expects `<s>` (BOS, id=1) at the start of every conversation.
-The rendered prompt starts with `[INST]`, not `<s>[INST]`. LLaVA's
-`tokenizer_image_token` (which the CLI uses to handle the `<image>`
-placeholder) sometimes doesn't add BOS.
-
-If BOS is missing, Mistral often produces immediate EOS, which would
-match the symptom.
-
-Wrote a tokenization test:
-
-```python
-from llava.mm_utils import tokenizer_image_token
-from llava.constants import IMAGE_TOKEN_INDEX
-ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
-print("First token:", ids[0].item(), "(BOS would be 1)")
-```
-
-**Did not get to fully test this** because Step 9 revealed the real
-issue, and the BOS hypothesis became moot. (Still worth verifying
-later out of curiosity, but not necessary to fix the bug.)
-
-#### Step 9 — Re-read the CLI's generation loop
-
-Asked for the full body of the `while True:` loop in `cli.py`. The
-relevant fragment:
-
-```python
-prompt = conv.get_prompt()
-input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX,
-                                  return_tensors='pt').unsqueeze(0).to(model.device)
-stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
-keywords = [stop_str]
-stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
-streamer = TextStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True)
-with torch.inference_mode():
-    output_ids = model.generate(
-        input_ids,
-        images=image_tensor,
-        do_sample=True if args.temperature > 0 else False,
-        temperature=args.temperature,
-        max_new_tokens=args.max_new_tokens,
-        streamer=streamer,
-        use_cache=True,
-        stopping_criteria=[stopping_criteria])
-```
-
-The line
-
-```python
-stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
-```
-
-combined with the template diagnostics from Step 7
-
-```
-sep_style: SeparatorStyle.LLAMA_2   (≠ TWO)
-sep: ''
-sep2: '</s>'
-```
-
-gives `stop_str = ''`, and `keywords = ['']`. The `KeywordsStoppingCriteria`
-fires when any keyword is contained in the decoded prefix — and the
-empty string is contained in any string. So the criterion triggers at
-step 1, and the model halts after generating its first token.
-
-**Root cause confirmed.** Everything before this point — the bypass
-test, the prompt rendering, the BOS check — was consistent with this
-explanation in retrospect.
-
-#### Step 10 — Apply the fix
-
-Replaced the offending line:
-
-```diff
-- stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
-+ stop_str = conv.sep2 if conv.sep_style in (SeparatorStyle.TWO, SeparatorStyle.LLAMA_2) else conv.sep
-```
-
-The new logic is: for separator styles in the LLAMA-2 family (TWO and
-LLAMA_2), the real terminator lives in `sep2`; for everything else,
-use `sep`. This restores correct stopping for `mistral_instruct`
-without breaking the older Vicuna-based templates whose `sep` is
-non-empty.
-
-Re-ran the CLI: full multi-paragraph responses, correct turn
-termination, multi-turn conversation works. ✓
-
 ### Notes
+
+This restores correct stopping for `mistral_instruct` without
+breaking the older Vicuna-based templates whose `sep` is non-empty.
 
 - The bug only manifests for templates where `sep == ''`. Older
   LLaVA-Med v1.0 (Vicuna-based) used templates where `sep` was the
@@ -355,19 +347,6 @@ termination, multi-turn conversation works. ✓
   empty-`sep` case without updating the CLI.
 - Worth checking whether downstream LLaVA-derived forks inherited the
   same logic.
-- Lessons for next time:
-    - **Bypass the suspect path early.** Step 5 (the pure-text bypass)
-      eliminated half the hypothesis space in one experiment. The
-      earlier you isolate "is the *core thing* healthy", the faster
-      you can localise the bug.
-    - **Read the source, don't guess.** Steps 6–9 were where the bug
-      actually got found. The first five steps were necessary to know
-      *where* to read, but the fix only materialised once the full
-      `while True:` loop was on screen.
-    - **Diagnostic prints are cheap; add them.** A single
-      `print(repr(prompt), stop_str, keywords)` in the CLI would have
-      surfaced the empty-string stop_str instantly. Worth adding to a
-      standard debug-instrumentation playbook.
 
 ### Upstream
 

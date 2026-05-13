@@ -5,142 +5,30 @@
 **Phase 1 of 7** (Baseline & Literature) · **Week 1 of 2 in this phase**
 
 **Goal of the week** — get the LLaVA-Med baseline running end-to-end,
-document the environment reproducibly, find and fix any blockers, and
-start reading the visual-token-pruning literature.
-
-## Summary so far
-
-- Dockerfile authored and image built on HONGHU KUBERUN (NGC PyTorch
-  23.10 base, all LLaVA-Med pinned deps, flash-attn 2.3.6 from source).
-- Stack sanity-check passes: PyTorch 2.1, CUDA 12.2, A100 80GB PCIe
-  visible, transformers / accelerate / peft / bitsandbytes / flash-attn
-  all importable.
-- LLaVA-Med cloned, editable-installed, model weights downloaded
-  (~15 GB) to `/data/dan/weights/llava-med-v1.5-mistral-7b/`.
-- Discovered a moderate bug in `llava/serve/cli.py`: stop-criterion
-  selection truncates Mistral-template generation to a single token.
-- Patched the bug; CLI now returns full multi-turn medical responses.
-- Bug write-up filed in [Bugs & Issues](../bugs.md), patch ready for
-  upstream PR.
-- This documentation site set up locally and deployed live to GitHub
-  Pages at <https://leokuan0208.github.io/question-aware-vtp-medvlm/>.
+confirm we can do inference, document the setup reproducibly, and start
+reading the visual-token-pruning literature.
 
 ---
 
 ## Day 1 — Sunday, May 10, 2026
 
-Environment setup day. Goal: have a working container with the right
-PyTorch/CUDA/flash-attn versions, with GPU and `/data` both visible.
-
-### Container build
-
-Drafted a Dockerfile targeting `nvcr.io/nvidia/pytorch:23.10-py3` and
-adding:
-
-- Ubuntu packages: `git`, `git-lfs`, `python3-pip`.
-- JupyterLab (required by the KUBERUN VM launch interface).
-- LLaVA-Med's pinned Python dependencies in one `pip install` layer.
-- `flash-attn==2.3.6 --no-build-isolation` (compiled from source —
-  the slow step, roughly 15 minutes).
-
-Full Dockerfile is in [Baseline (LLaVA-Med)](../setup.md#the-dockerfile).
-
-### `/data` mount not visible in JupyterLab — fix
-
-After the first build, `/data` was reachable by `cd /data` but didn't
-appear in the JupyterLab file browser sidebar. Root cause: Jupyter only
-shows files underneath its starting directory, and the KUBERUN
-container starts inside `/root` while `/data` is at the filesystem
-root.
-
-Fix: added `RUN ln -s /data /root/data` to the Dockerfile and rebuilt.
-The flash-attn layer cached, so the rebuild finished in under a minute.
-`~/data` then showed up in the sidebar as expected.
-
-### Stack sanity check
-
-Ran a Python one-liner that imports torch, transformers, accelerate,
-peft, bitsandbytes, flash-attn, and confirms the `flash_attn_varlen`
-API. Full script and expected output are in
-[Baseline (LLaVA-Med)](../setup.md#2-sanity-check-the-stack).
-
-**First gotcha — `AttributeError: module 'bitsandbytes' has no
-attribute '__version__'`.** bitsandbytes 0.41.0 doesn't expose
-`__version__` as a module attribute. Switched to
-`importlib.metadata.version('bitsandbytes')`, which reads pip metadata
-directly. Lesson: `__version__` is a convention, not a guarantee — for
-robust version checks across packages, use `importlib.metadata`.
-
-Confirmed GPU is **NVIDIA A100 80GB PCIe** (PCIe variant, not SXM4 — the
-form factor matters for inter-GPU bandwidth but is irrelevant on a
-single card).
+Project kick-off. Read the LLaVA-Med paper, drafted the project plan,
+checked out the codebase. No commands run yet — pure orientation.
 
 ## Day 2 — Monday, May 11, 2026
 
-The "actually run the model" day. Cloned the repo, downloaded weights,
-got inference going, found and fixed the CLI bug.
+Hardware online. Wrote the Dockerfile (based on
+`nvcr.io/nvidia/pytorch:23.10-py3`), built the image via the HONGHU
+KUBERUN interface, brought up the A100 80GB PCIe VM with JupyterLab.
+Cloned LLaVA-Med v1.5, ran `pip install -e . --no-deps`, downloaded
+the `llava-med-v1.5-mistral-7b` weights to `/data/dan/weights/`.
 
-### Code install
-
-```bash
-cd ~
-git clone https://github.com/microsoft/LLaVA-Med.git
-cd LLaVA-Med
-pip install -e . --no-deps
-```
-
-`pip show llava_med` confirmed `Version: 1.5.0` and editable install
-pointing at `/root/LLaVA-Med/llava/`.
-
-### Model weight download
-
-`/data` is shared, so created `/data/dan/` as a personal namespace
-with `weights/` and `dataset/` subfolders. Verified writability with
-`touch /data/dan/weights/.write_test && rm` — passed.
-
-```bash
-cd /data/dan/weights
-git lfs install
-git clone https://huggingface.co/microsoft/llava-med-v1.5-mistral-7b
-```
-
-End state: 3 safetensors shards (~5 GB each, total 15 GB), index file,
-tokenizer files. Confirmed with `du -sh` and `ls -lh`.
-
-### First inference attempt
-
-Originally tried the upstream LLaVA entry point:
-
-```bash
-python -m llava.eval.run_llava \
-    --model-path /data/dan/weights/llava-med-v1.5-mistral-7b \
-    --image-file ./images/xray.jpg \
-    --query "Describe this medical image."
-```
-
-Got `No module named llava.eval.run_llava` — LLaVA-Med doesn't ship
-that module (it's upstream-only). Switched to `llava.serve.cli` (the
-interactive equivalent).
-
-Also discovered that the `./images/` directory only contains paper
-branding assets (logos, pipeline diagrams). The actual sample
-biomedical images live in `./llava/serve/examples/`. Used
-`bio_patch.png` from there.
-
-### The CLI bug
-
-CLI loaded the model cleanly but produced **single-word responses** to
-every question. Full diagnostic trail is in
-[Bugs & Issues #1](../bugs.md#1-llavaservecli-stops-generation-immediately-for-the-mistral-variant).
-
-In one paragraph: the stopping-criteria construction in `cli.py` does
-
-```python
-stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
-```
-
-For the `mistral_instruct` template, `sep_style` is `LLAMA_2` and `sep`
-is the empty string, so `stop_str = ''`. The
+First CLI inference attempt produced **single-word responses** instead
+of paragraphs. After a long troubleshooting trail (every hypothesis is
+documented in [Bugs & Issues #1](../bugs.md#1-llavaservecli-stops-generation-immediately-for-the-mistral-variant)),
+root-caused to a stop-string selection bug in `llava/serve/cli.py`
+that fails to handle `SeparatorStyle.LLAMA_2` (used by
+`mistral_instruct`). Patched locally. The
 `KeywordsStoppingCriteria` halts on the first generated token because
 the empty string is trivially present in any output. Patched with:
 
@@ -163,120 +51,27 @@ python -m llava.serve.cli \
 
 ## Day 3 — Tuesday, May 12, 2026
 
-Built this documentation site locally on Windows. Goal: have a
-markdown-based progress log running on `mkdocs serve` so daily edits
-auto-render in the browser.
+Set up this documentation site locally with MkDocs + Material. Picked
+the colour palette, decided on the page structure (home, project
+overview, baseline, experiments, weekly log, bugs, resources), and got
+`mkdocs serve` running on `http://127.0.0.1:8000`. Started a reading
+list for the visual-token-pruning literature (ToMe, FastV, PruMerge,
+SparseVLM, GAP) and dropped them into [Resources](../resources.md).
 
-### Why MkDocs Material
-
-Picked **MkDocs** with the **Material** theme over alternatives like
-Jekyll, Hugo, or a hand-rolled React/HTML site. Reasons:
-
-- **Source files are plain Markdown.** No HTML, no build pipeline to
-  maintain over 12 weeks. The format won't fight me when I want to
-  write fast.
-- **One-time setup, then write-only.** Editing for the rest of the
-  project is just opening a `.md` file and typing.
-- **It's what most research labs and OSS projects actually use** —
-  muscle memory transfers, examples are everywhere.
-- **Excellent technical content support out of the box** — code
-  highlighting, admonitions, math, Mermaid diagrams.
-
-### Prerequisites on Windows
-
-- **Python 3.9+** — verified with `python --version`.
-- **Git** — newly installed; chose VS Code as Git's default editor,
-  set the default branch to `main`, picked "Git from the command line
-  and also from 3rd-party software" for PATH integration, kept all
-  other Git installer defaults.
-
-### Local install
-
-```powershell
-# Inside the project folder, in PowerShell:
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
-
-**PowerShell execution-policy gotcha.** First attempt at
-`.venv\Scripts\Activate.ps1` failed with a red
-`UnauthorizedAccess` / "scripts are disabled on this system" error
-(in Traditional Chinese). Root cause: Windows' default execution
-policy blocks all local scripts.
-
-Fix (one-time):
-
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-After confirming with `Y`, the venv activated normally (the `(.venv)`
-prefix appeared in the prompt). Verified with `where.exe pip` that the
-first pip on PATH now pointed inside `.venv\Scripts\`.
-
-**Cleanup:** the first install attempt (before noticing the venv
-hadn't activated) had landed in system Python. Used
-`pip uninstall -y mkdocs mkdocs-material pymdown-extensions
-mkdocs-git-revision-date-localized-plugin` to remove them, then
-re-installed inside the active venv.
-
-### Verifying the local site
-
-```powershell
-mkdocs serve
-```
-
-Opened <http://127.0.0.1:8000/question-aware-vtp-medvlm/> — site
-rendered correctly. Confirmed live-reload works: edits to any `.md`
-file trigger an automatic browser refresh within ~1 second.
-
-### Iteration: colour scheme and code-block presentation
-
-Spent the afternoon refining the visual design rather than just
-accepting defaults:
-
-- **First palette** was teal + warm amber on cool slate. Felt too
-  clinical / dreary for a 12-week project I'd be staring at every
-  day.
-- **Second iteration** was warm amber on warm charcoal — better, but
-  ultimately wanted something more familiar.
-- **Final palette** is the GitHub / Facebook blue family — medium
-  blue (`#2f7fea`) for solid elements, lifted blue (`#58a6ff`) for
-  links on dark backgrounds, dark slate (`#0d1117`) canvas. Same
-  family in light mode, darkened for contrast.
-- **Code blocks** now render with a language label at the top-left
-  ("BASH", "PYTHON", "DOCKERFILE"), a copy button at the top-right,
-  syntax colouring via Pygments, and a bordered "card" container.
-  Required enabling `auto_title: true` under
-  `pymdownx.highlight` and writing a few rules in `extra.css` to
-  style the label bar.
-- **Admonition font sizes** were inconsistent — Material's default
-  admonition body (0.64rem) made plain text feel cramped while
-  inline code at a fixed `rem` size looked oversized. Fixed by
-  bumping admonition body to 0.72rem and switching inline code from
-  `rem` to `em` units so it scales with whatever container it sits
-  in.
-
-### Snippet to remember
-
-```powershell
-# Daily startup for editing the site locally:
-cd C:\Users\d3896\Downloads\question-aware-vtp-medvlm
-.venv\Scripts\Activate.ps1
-mkdocs serve
-```
+The PowerShell execution-policy gotcha bit me — `.venv\Scripts\Activate.ps1`
+silently failed at first, and `pip install -r requirements.txt`
+went to the system Python instead of the venv. Fixed by running
+`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+in PowerShell and re-activating.
 
 ## Day 4 — Wednesday, May 13, 2026 &nbsp; _(today)_
 
-Two big things today: deploying the site publicly to GitHub Pages,
-and writing up the CLI bug formally.
+### CLI bug writeup
 
-### Bug writeup
+Wrote up the CLI bug formally in `bugs.md` with the full troubleshooting
+trail — every hypothesis tried and eliminated, in order — per
+advisor-friendly bug-report conventions.
 
-- Wrote the full 10-step troubleshooting trail in
-  [Bugs & Issues](../bugs.md) — every hypothesis tried, eliminated,
-  and the path to root cause.
 - Status pill flipped to <span class="pill pill--done">Patched
   locally</span>. Upstream PR planned but deferred until Week 2.
 
@@ -350,12 +145,194 @@ The repo now has two branches that serve different purposes:
 So the daily loop is: edit `.md` → `git push` → wait ~60 seconds →
 live site updates. No manual build, no rsync, no FTP.
 
-### Practising the workflow
+### Architecture deep-dive _(partial — paused for later)_
 
-Today's site update (this very entry, plus the Day 3 expansion) is
-the first real exercise of the edit-and-push loop on substantive
-content rather than scaffolding. Worth getting the rhythm right
-before Week 2's more research-heavy entries.
+Opened `llava/model/llava_arch.py` and read the
+`prepare_inputs_labels_for_multimodal` method, which is the
+conceptual core of every LLaVA-family model. Identified the **five
+logical phases** of the multimodal splicing logic:
+
+1. Take the original `input_ids` and find the position of the
+   `<image>` placeholder token (one position per image).
+2. Run the image through the vision tower (CLIP ViT-L/14) → 576
+   visual feature vectors at 1024 dims.
+3. Project those through the multimodal projector (an MLP) →
+   576 vectors at 4096 dims (Mistral's hidden size).
+4. Splice: replace the single `<image>` token's embedding with the
+   576 projected visual-token embeddings.
+5. Assign sequential position IDs across the whole resulting
+   sequence (text → visual tokens → more text → ...).
+
+Key takeaways for the pruning module:
+
+- **Visual tokens after splicing live at contiguous positions**
+  `[image_token_pos, image_token_pos + 576)` in the embedding
+  sequence, where `image_token_pos` is the original index of the
+  `<image>` placeholder in `input_ids`.
+- **Position IDs are sequential post-splice**, with no positional
+  gap reserved for visual tokens. This means naive pruning
+  (dropping visual tokens before they hit the LM) will misalign all
+  post-image text token positions. The GAP paper's position-ID
+  correction will be required when implementing pruning.
+- **Three candidate pruning hook locations**: (a) inside
+  `encode_images` after CLIP, (b) right after `encode_images`
+  returns but before splicing, (c) inside the LLM forward pass
+  after some early layer K. Option (c) is what FastV does and what
+  the project plan targets.
+
+Got through the first read pass but decided to pause the second pass
+(the print-statement instrumentation exercise) for a calmer day.
+The notes above are sufficient for now; we'll come back to it before
+writing the actual pruning hook.
+
+### Strategic decision: skip full v1.0 reproduction
+
+Originally the plan was "reproduce LLaVA-Med faithfully, then start
+modifying it." Today, after some back-and-forth, decided to **scope
+that down significantly**:
+
+- Cloned the v1.0 codebase to `~/LLaVA-Med-v1.0` at git tag
+  `v1.0.0` as a reference point (in case a future ablation needs
+  paper-faithful baselines).
+- **Skipped** running the v1.0 reproduction end-to-end.
+- Will implement the pruning method **directly on v1.5**, which is
+  already running and verified.
+
+**Rationale:** the pruning method is inference-only — no retraining
+is required to apply it — and architecture-agnostic. A v1.5-only
+result is publishable on its own merit, and a v1.0 comparison can be
+added later as an ablation if there's time. Doing the full v1.0
+reproduction first would have eaten 1–2 weeks for marginal
+publication-value gain.
+
+Also expanded the evaluation plan to include a **third benchmark**:
+PathVQA (pathology images), alongside the originally-planned VQA-RAD
+(radiology) and SLAKE (general medical). Three benchmarks make the
+results more robust and let us check whether the method generalises
+across medical-imaging domains.
+
+### Evaluation harness scaffolding
+
+Per the research-plan principle — _"get the measurement
+infrastructure working before you write any pruning code"_ — started
+building the harness. New project repo: `~/llava-med-pruning/`,
+intentionally separate from the LLaVA-Med codebase so the pruning
+work is cleanly isolated.
+
+**Module structure (11 files planned, 4 implemented today):**
+
+```
+~/llava-med-pruning/
+├── datasets/       # VQA-RAD, SLAKE, PathVQA loaders (stubs)
+├── methods/        # pruning methods, with NoOp baseline implemented
+├── metrics/        # accuracy + latency + FLOPs (stubs)
+├── model.py        # LoadedModel bundle (stub)
+├── runner.py       # main evaluation loop (stub)
+└── run_eval.py     # argparse CLI entry point (implemented)
+```
+
+**Interface contracts defined:**
+
+- `MedVQADataset` — abstract base class with `__iter__` yielding
+  `VQASample(image, question, answer, answer_type)` dataclasses.
+- `PruningMethod` — has `attach(model)` and `detach(model)` lifecycle
+  hooks, so a single evaluation run can swap pruning strategies
+  without reloading the 15 GB model.
+- `LoadedModel` — a small bundle holding `(model, tokenizer,
+  image_processor, conv_template)` so the runner doesn't need to
+  know the LLaVA-Med-specific loading details.
+
+**Design decisions made:**
+
+- **argparse over Hydra** for the CLI. Hydra is more powerful but
+  adds a config-system learning curve I don't need for a 12-week
+  project. argparse is in the stdlib and good enough.
+- **JSON + JSONL outputs.** One JSON file per run with the summary
+  metrics, plus a JSONL file with one line per sample (for error
+  analysis and re-aggregation later).
+- **NoOp pruning method** as the first implementation — it does
+  nothing, just lets the model run unmodified. This is what the
+  E00 baseline experiment will use.
+
+7 files are documented stubs awaiting fill-in; the docstrings spell
+out what each needs to do, so future-me can pick up where I left off
+without re-deriving the architecture.
+
+### Benchmark dataset downloads
+
+Downloaded all three benchmark datasets via HuggingFace mirrors:
+
+```bash
+python << 'EOF'
+from huggingface_hub import snapshot_download
+
+datasets = [
+    ("flaviagiammarino/vqa-rad",   "/data/dan/dataset/vqa_rad"),
+    ("BoKelvin/SLAKE",             "/data/dan/dataset/slake"),
+    ("flaviagiammarino/path-vqa",  "/data/dan/dataset/path_vqa"),
+]
+
+for repo_id, local_dir in datasets:
+    snapshot_download(
+        repo_id=repo_id, repo_type="dataset",
+        local_dir=local_dir, local_dir_use_symlinks=False,
+    )
+EOF
+```
+
+**On-disk sizes** (under `/data/dan/dataset/`):
+
+- `vqa_rad/` — 33 MB
+- `slake/` — 207 MB
+- `path_vqa/` — 750 MB
+- **Total: ~990 MB**
+
+**Format observations:** VQA-RAD and PathVQA arrived in HuggingFace
+`datasets` Parquet format (images embedded as bytes inside the
+parquet files). SLAKE arrived in its **original raw distribution
+format**: separate JSON files for splits plus a single `imgs.zip`
+that has to be extracted later. The schema is different from what
+the loaders will need to normalise.
+
+**Sample counts verified against authoritative sources** (HuggingFace
+dataset cards + a peer-reviewed paper citing SLAKE):
+
+| Dataset | Train | Val | Test | Total | Source verified |
+|---|---|---|---|---|---|
+| VQA-RAD | 1,793 | — | 451 | 2,244 | HF card (matches deduplicated ~2,248) |
+| SLAKE (English-only) | 4,919 | 1,053 | 1,061 | 7,033 | Peer-reviewed paper (exact match) |
+| PathVQA | 19,654 | 6,259 | 6,719 | 32,632 | HF card (exact match) |
+
+All three downloads verified complete. SLAKE's bilingual total is
+~14K QA pairs, of which 7,033 are English (filtered by the `q_lang`
+field).
+
+#### Near-disaster: the `pip install --force-reinstall` regression
+
+While verifying VQA-RAD and PathVQA counts, I needed to read parquet
+files and didn't have the `datasets` library. The install command
+I ran (`pip install datasets==2.16.1 --force-reinstall`) cascaded
+through the dependency tree and **clobbered most of the NGC-pinned
+stack** — including PyTorch itself. The container was broken for
+~30 minutes before I recovered it.
+
+Full writeup in
+[Bugs & Issues #2](../bugs.md#2-pip-install-force-reinstall-cascaded-and-clobbered-the-ngc-pinned-stack)
+— this is exactly the kind of multi-step troubleshooting trail
+worth documenting, because the recovery path is non-obvious and the
+underlying lesson (never `--force-reinstall` in a Dockerfile-pinned
+environment) applies to every future container session.
+
+Resolution: deleted `~/.local/lib/python3.10/site-packages/` to
+purge the user-local package overrides, then reinstalled the LLaVA-Med
+editable package (`cd ~/LLaVA-Med && pip install -e . --no-deps`).
+The NGC-built `torch 2.1.0a0+32f93b1`, `transformers 4.36.2`, and
+`flash-attn 2.3.6` were preserved because they live in the
+container's system site-packages, not in `~/.local/`. Switched the
+parquet inspection to use `pyarrow` (already in the NGC image),
+which sidestepped needing `datasets` at all.
+
+---
 
 ### Plan for the rest of the week (May 14 – May 16)
 
@@ -366,9 +343,14 @@ before Week 2's more research-heavy entries.
       project).
 - [ ] Skim GAP (position-ID correction after token drop — important
       for RoPE-based Mistral).
-- [ ] Sketch the Week 2 plan: profile the baseline (latency, VRAM,
-      token-count breakdown), locate the visual-token pipeline in the
-      LLaVA-Med code, identify candidate pruning insertion points.
+- [ ] Implement the remaining 7 stub files in `~/llava-med-pruning/`
+      (dataset loaders, metrics, model loader, runner).
+- [ ] Run **E00** — the unmodified-baseline evaluation on VQA-RAD
+      test. This produces our first row of metrics.
+- [ ] Resume the architecture deep-dive: do the print-statement
+      instrumentation exercise on `prepare_inputs_labels_for_multimodal`
+      to verify the 576-visual-tokens-at-contiguous-positions
+      assumption with our own eyes.
 - [ ] File the CLI fix upstream on `microsoft/LLaVA-Med` (deferred
       from earlier in the week; not blocking).
 
