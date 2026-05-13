@@ -1,0 +1,49 @@
+# =============================================================================
+# GitHub Actions workflow that automatically builds the MkDocs site and
+# deploys it to GitHub Pages every time you push to the main branch.
+#
+# You don't need to touch this file unless you want to change how the site
+# is built or deployed.
+# =============================================================================
+name: Deploy MkDocs site
+
+on:
+  # Trigger 1: every push to the `main` branch.
+  push:
+    branches: [main]
+  # Trigger 2: a manual "Run workflow" button in the Actions tab.
+  workflow_dispatch:
+
+# The permissions block lets the action write to the `gh-pages` branch.
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Check out the repository so the workflow can see your files.
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          # We need the full git history so the "last updated" plugin can
+          # read each file's commit date.
+          fetch-depth: 0
+
+      # 2. Set up Python — same version as the requirements expect.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 3. Install MkDocs and the theme. The hash key means dependencies
+      #    get cached between runs, making subsequent builds fast.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Build the static site and push it to the `gh-pages` branch.
+      #    `mkdocs gh-deploy` is a one-liner that handles all of it.
+      - name: Build and deploy
+        run: mkdocs gh-deploy --force --clean

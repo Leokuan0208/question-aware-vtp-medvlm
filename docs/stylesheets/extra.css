@@ -1,0 +1,272 @@
+/* ============================================================================
+   Custom styles for the Question-Aware Visual Token Pruning research log.
+
+   Color direction: medium blue (GitHub / Facebook style) on dark slate
+   in dark mode; same blue family — darkened for contrast — on clean
+   off-white in light mode. The blue is the only theme accent.
+
+   You don't need to edit this file to add content — only touch it if
+   you want to change the visual style.
+   ============================================================================ */
+
+/* ---- Font loading ------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ---- Light mode palette ------------------------------------------------- */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:        #0d1117;
+  --md-primary-fg-color--light: #21262d;
+  --md-primary-fg-color--dark:  #010409;
+  --md-primary-bg-color:        #ffffff;
+  --md-primary-bg-color--light: #ffffffcc;
+
+  --md-accent-fg-color:         #0969da;
+  --md-accent-fg-color--transparent: #0969da14;
+
+  --md-default-bg-color:        #f6f8fa;
+  --md-default-fg-color:        #1f2328;
+  --md-default-fg-color--light: #57606a;
+  --md-default-fg-color--lighter: #6e7781;
+  --md-typeset-a-color:         #0969da;
+
+  --md-code-bg-color:           #eaeef2;
+  --md-code-fg-color:           #1f2328;
+}
+
+/* ---- Dark mode palette -------------------------------------------------- */
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color:          #0d1117;
+  --md-default-bg-color--light:   #161b22;
+  --md-default-bg-color--lighter: #21262d;
+  --md-default-bg-color--lightest: #30363d;
+
+  --md-default-fg-color:          #c9d1d9;
+  --md-default-fg-color--light:   #8b949e;
+  --md-default-fg-color--lighter: #6e7681;
+  --md-default-fg-color--lightest: #484f58;
+
+  --md-primary-fg-color:        #010409;
+  --md-primary-fg-color--light: #161b22;
+  --md-primary-fg-color--dark:  #000000;
+  --md-primary-bg-color:        #c9d1d9;
+
+  --md-accent-fg-color:         #58a6ff;
+  --md-accent-fg-color--transparent: #58a6ff22;
+  --md-typeset-a-color:         #58a6ff;
+
+  --md-code-bg-color:           #161b22;
+  --md-code-fg-color:           #c9d1d9;
+}
+
+/* ---- Typography --------------------------------------------------------- */
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4 {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-feature-settings: 'ss01' on, 'ss02' on;
+  letter-spacing: -0.015em;
+}
+
+.md-typeset h1 {
+  font-weight: 600;
+  font-variation-settings: 'opsz' 100;
+  font-size: 2.4rem;
+  margin-top: 0;
+  margin-bottom: 0.6em;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  padding-bottom: 0.3em;
+}
+
+.md-typeset h2 {
+  font-weight: 600;
+  font-variation-settings: 'opsz' 48;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+}
+
+.md-typeset h3 {
+  font-weight: 600;
+  font-variation-settings: 'opsz' 24;
+  font-style: italic;
+}
+
+body,
+.md-typeset {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+
+/* ---- Code BLOCKS (<pre>): fixed rem-based size for cross-page consistency */
+
+.md-typeset pre,
+.md-typeset pre code,
+.md-typeset pre span,
+.md-typeset kbd {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Menlo, monospace !important;
+  font-size: 0.78rem !important;
+  font-style: normal !important;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+/* ---- INLINE code: relative (em) sizing ---------------------------------- */
+/* `em` is critical here — it scales with the parent container's font size.
+   So inside body text it's body-sized, inside an admonition it shrinks
+   with the admonition body, inside a heading it grows with the heading.
+   Without this, inline code looks oversized in admonitions (which use a
+   smaller body font) and undersized in headings.                          */
+
+.md-typeset code {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Menlo, monospace !important;
+  font-size: 0.88em !important;
+  font-style: normal !important;
+  font-weight: 500;
+  background-color: var(--md-accent-fg-color--transparent);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+/* Heading-family styling MUST NOT leak inside code blocks. */
+.md-typeset pre h1,
+.md-typeset pre h2,
+.md-typeset pre h3,
+.md-typeset pre h4 {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  font-style: normal !important;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* ---- Admonitions: notes, tips, warnings -------------------------------- */
+/* Material's default admonition body is 0.64rem — small enough that
+   inline code at any fixed size looks oversized next to it. Bumping the
+   body to 0.72rem (closer to the page body's 0.78rem) plus em-scaled
+   inline code restores balance: the note still reads as "smaller / set
+   apart" but plain text and code feel proportional.                      */
+
+.md-typeset .admonition,
+.md-typeset details {
+  font-size: 0.72rem;
+  line-height: 1.65;
+  border-radius: 4px;
+  border-width: 0 0 0 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* ---- Refinements -------------------------------------------------------- */
+
+.md-header {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ---- Code blocks: boxed with language label + copy button --------------- */
+
+.md-typeset .highlight {
+  margin: 1.2em 0;
+  border-radius: 6px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.md-typeset .highlight > .filename,
+.md-typeset .highlighttable .filename {
+  background-color: var(--md-default-bg-color--lighter);
+  color: var(--md-default-fg-color--light);
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.7rem !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.45em 0.9em;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  margin: 0;
+  display: block;
+}
+
+.md-typeset .highlight > pre,
+.md-typeset .highlight > pre > code,
+.md-typeset .highlighttable .highlight > pre {
+  background-color: var(--md-code-bg-color);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0.9em 1em;
+}
+
+/* Pygments comment classes — keep them visibly different from real code
+   but never let them inherit body font / size / italic from elsewhere. */
+.md-typeset .highlight .c,
+.md-typeset .highlight .c1,
+.md-typeset .highlight .cm,
+.md-typeset .highlight .cp,
+.md-typeset .highlight .cs {
+  color: var(--md-default-fg-color--light) !important;
+  font-style: italic;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: inherit !important;
+}
+
+.md-typeset .highlight .md-clipboard {
+  top: 0.35em;
+  color: var(--md-default-fg-color--lighter);
+}
+.md-typeset .highlight .md-clipboard:hover {
+  color: var(--md-accent-fg-color);
+}
+
+/* Quote blocks. */
+.md-typeset blockquote {
+  border-left: 3px solid var(--md-accent-fg-color);
+  color: var(--md-default-fg-color--light);
+  font-style: italic;
+}
+
+/* Tables. */
+.md-typeset table:not([class]) {
+  font-size: 0.74rem;
+  border: none;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  font-weight: 600;
+}
+
+.md-source-date {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* ---- Status pills ------------------------------------------------------- */
+.pill {
+  display: inline-block;
+  padding: 0.1em 0.6em;
+  border-radius: 10px;
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.pill--done    { background: #2f7fea; color: #ffffff; }
+.pill--wip     { background: #db6d28; color: #ffffff; }
+.pill--blocked { background: #cf222e; color: #ffffff; }
+.pill--planned { background: transparent;
+                 color: var(--md-default-fg-color--light);
+                 border: 1px solid var(--md-default-fg-color--lightest); }

@@ -1,0 +1,16 @@
+# Built site output — MkDocs generates this into ./site/ when you run a
+# build. We don't want it in the repo; GitHub Actions builds it fresh.
+site/
+
+# Python / virtualenv artefacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Editor / OS detritus
+.vscode/
+.idea/
+.DS_Store
+*.swp
