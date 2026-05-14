@@ -48,7 +48,7 @@ and 12-week plan.
 - [x] Set up this documentation site (local + deployed to GitHub Pages)
 - [x] First read-pass of `prepare_inputs_labels_for_multimodal` —
       visual-token splicing logic mapped, position-ID handling noted
-      → [Week 1, Day 4](weekly/week-01.md#architecture-deep-dive-partial-paused-for-later)
+      → [Week 1, Day 4](weekly/week-01/day-04.md#architecture-deep-dive-partial-paused-for-later)
 - [x] Strategic decision: implement pruning directly on v1.5
       (inference-only method, no v1.0 reproduction needed)
 - [x] Scaffolded evaluation harness `~/llava-med-pruning/` —
@@ -57,14 +57,26 @@ and 12-week plan.
       (~990 MB total, all verified against authoritative sources)
 - [x] Recovered from a `pip --force-reinstall` regression that broke
       the container → see [Bugs & Issues #2](bugs.md#2-pip-install-force-reinstall-cascaded-and-clobbered-the-ngc-pinned-stack)
+- [x] Implemented the harness end-to-end for the VQA-RAD path —
+      `metrics.py`, `model_loader.py`, `runner.py`, `run_eval.py`, and
+      the VQA-RAD loader (SLAKE + PathVQA loaders still stubbed)
+- [x] Investigated a ~29-point baseline-vs-literature gap; verified
+      via the reference `model_vqa.py` that the harness is correct —
+      the gap is evaluation methodology, not a code bug
+- [x] Found and fixed an `answer_type` mislabeling bug in the VQA-RAD
+      loader → see [Bugs & Issues #3](bugs.md#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions)
+- [x] Ran **E00** baseline on VQA-RAD test — closed 0.537, open recall
+      0.340 → [Experiments](experiments.md#e00-baseline-no-pruning)
+- [x] Put `~/llava-med-pruning/` under git version control
+- [ ] **Batch 3** — implement the SLAKE and PathVQA dataset loaders,
+      then run E00 on all three benchmarks
+- [ ] Fix the `closed_ended_accuracy` scoring leniency (whole-word
+      match is too lenient toward verbose answers)
 - [ ] Finish reading visual-token-pruning literature (ToMe, FastV,
       SparseVLM, GAP)
-- [ ] Implement the remaining 7 harness stubs
-- [ ] Run **E00** baseline evaluation on VQA-RAD test set
-      (first row of metrics)
 - [ ] Draft Week 2 plan
 
-See the [Week 1 log](weekly/week-01.md) for daily notes.
+See the [Week 1 log](weekly/week-01/index.md) for daily notes.
 
 ## How this site is organised
 

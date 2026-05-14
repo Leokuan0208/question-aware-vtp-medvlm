@@ -33,9 +33,16 @@ Updated as I go.
 - **VQA-RAD** — Lau et al., 2018. Radiology question-answering dataset.
 - **SLAKE** — Liu et al., 2021. Bilingual medical VQA with semantic
   labels.
+- **PathVQA** — He et al., 2020. Pathology visual question answering;
+  adds a third imaging domain alongside radiology (VQA-RAD) and
+  general medical (SLAKE).
 
 ## Code
 
+- [Leokuan0208/llava-med-pruning](https://github.com/Leokuan0208/llava-med-pruning)
+  — **this project's evaluation harness and pruning code.** Separate
+  repo from the documentation site; the daily push of this repo is
+  linked from each [weekly log](weekly/index.md) day page.
 - [microsoft/LLaVA-Med](https://github.com/microsoft/LLaVA-Med) — the
   baseline.
 - [haotian-liu/LLaVA](https://github.com/haotian-liu/LLaVA) — upstream
@@ -51,7 +58,7 @@ Updated as I go.
 | ------- | ------------- | ------------------------------ |
 | VQA-RAD | Radiology Q&A | Primary evaluation benchmark   |
 | SLAKE   | Medical VQA   | Secondary evaluation benchmark |
-| _e.g. PathVQA_ | _Pathology_ | _Optional, stretch goal_  |
+| PathVQA | Pathology Q&A | Third evaluation benchmark — tests cross-domain generalisation |
 
 ## Tools
 

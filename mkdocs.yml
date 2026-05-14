@@ -19,8 +19,14 @@ nav:
   - Baseline (LLaVA-Med): setup.md
   - Experiments: experiments.md
   - Weekly Log:
-      - Overview: weekly/index.md
-      - "Week 1": weekly/week-01.md
+      - weekly/index.md
+      - Week 1:
+          - weekly/week-01/index.md
+          - weekly/week-01/day-01.md
+          - weekly/week-01/day-02.md
+          - weekly/week-01/day-03.md
+          - weekly/week-01/day-04.md
+          - weekly/week-01/day-05.md
   - Bugs & Issues: bugs.md
   - Resources: resources.md
 
@@ -52,7 +58,7 @@ theme:
     - navigation.instant
     - navigation.tracking
     - navigation.tabs
-    - navigation.sections
+    - navigation.indexes        # section headers (e.g. "Week 1") are clickable pages
     - navigation.top
     - navigation.footer
     - search.highlight
@@ -113,7 +119,7 @@ extra_javascript:
   - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-
+  
 extra:
   social:
     - icon: fontawesome/brands/github

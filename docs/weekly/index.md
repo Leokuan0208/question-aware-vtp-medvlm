@@ -8,7 +8,7 @@ page. Weeks run Sunday → Saturday.
 
 | Week | Dates | Phase | Focus | Status |
 | :--: | ----- | ----- | ----- | ------ |
-| 1  | May 10 – May 16, 2026 | 1 — Baseline & lit | LLaVA-Med setup, first inference, CLI bug fix | <span class="pill pill--wip">In progress</span> |
+| [1](week-01/index.md)  | May 10 – May 16, 2026 | 1 — Baseline & lit | LLaVA-Med setup, harness build, E00 baseline | <span class="pill pill--wip">In progress</span> |
 | 2  | May 17 – May 23, 2026 | 1 | Baseline profiling, literature notes | <span class="pill pill--planned">Planned</span> |
 | 3  | May 24 – May 30, 2026 | 2 — Codebase deep-dive | Trace LLaVA-Med forward pass | <span class="pill pill--planned">Planned</span> |
 | 4  | May 31 – Jun 6, 2026  | 2 | Identify pruning insertion points | <span class="pill pill--planned">Planned</span> |
@@ -21,11 +21,32 @@ page. Weeks run Sunday → Saturday.
 | 11 | Jul 19 – Jul 25, 2026 | 6 — Write-up | Draft report, figures | <span class="pill pill--planned">Planned</span> |
 | 12 | Jul 26 – Aug 1, 2026  | 7 — Final | Polished report, code release, demo | <span class="pill pill--planned">Planned</span> |
 
+## How the weekly log is structured
+
+Each week has an **overview page** (a short summary of every day, with
+the day titles linking through) plus one **detail page per day** under
+a `week-NN/` folder. Click a week in the sidebar to open its overview;
+use the expand arrow next to it to reveal the individual day pages.
+
 ## Adding a new week
 
 When a new week starts:
 
-1. Copy `docs/weekly/week-01.md` and rename it (e.g. `week-02.md`).
-2. Add it to the navigation in `mkdocs.yml` under the `Weekly Log:`
-   section.
-3. Update the row for that week in the table above.
+1. Create the week's overview page (e.g. `docs/weekly/week-02/index.md`) and a
+   folder for its day pages (`docs/weekly/week-02/`), then add a day
+   page per day (`day-01.md`, `day-02.md`, …) inside that folder. The
+   easiest path is to copy the Week 1 files and edit.
+2. In `mkdocs.yml`, under the `Weekly Log:` section, add the new week
+   as a nested block — the week's overview file goes **first** in the
+   list (that makes it the clickable section index), followed by the
+   day pages:
+
+   ```yaml
+       - Week 2:
+           - weekly/week-02/index.md
+           - weekly/week-02/day-01.md
+           - weekly/week-02/day-02.md
+   ```
+
+3. Update the row for that week in the table above (link the week
+   number to its overview page, as Week 1 is).

@@ -4,8 +4,10 @@ LLaVA-Med is the **baseline** we're modifying. This page documents the
 exact environment used to reproduce the baseline so anyone — including
 future-me — can rebuild it identically.
 
-The pruning module will live in a separate project repo (link
-forthcoming); this page is only about getting the upstream baseline
+The pruning module and evaluation harness live in a separate project
+repo —
+[Leokuan0208/llava-med-pruning](https://github.com/Leokuan0208/llava-med-pruning);
+this page is only about getting the upstream baseline
 running.
 
 ## Hardware

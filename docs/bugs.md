@@ -8,6 +8,136 @@ what hypotheses were eliminated, not just the answer.
 
 ---
 
+## #3 — VQA-RAD HuggingFace mirror dropped the `answer_type` field; loader heuristic mislabels closed questions
+
+<span class="pill pill--done">Fixed & verified</span>
+
+**Found** May 14, 2026 &nbsp; · &nbsp; **Severity** Moderate (silently
+wrong evaluation labels) &nbsp; · &nbsp; **Upstream status** _n/a — a
+data-mirror limitation, worked around locally_
+
+### What I observed
+
+While investigating why the E00 baseline closed-ended accuracy looked
+low, noticed the closed/open split of the VQA-RAD test set didn't match
+the original paper — the harness reported 251 closed / 200 open, but
+the original VQA-RAD test set is closer to 272 closed / 179 open. The
+~21-question discrepancy was concentrated in "which side?",
+"left or right?", "what modality?"-type questions: genuinely
+closed-ended questions that were being scored as open.
+
+### Root cause (summary)
+
+The harness loads VQA-RAD from the HuggingFace Parquet mirror
+(`flaviagiammarino/vqa-rad`). That mirror's schema is only
+`image` / `question` / `answer` — **the original dataset's
+`answer_type` field was dropped in the mirroring**.
+
+To compensate, the loader had an `_infer_answer_type` heuristic:
+answer is "yes"/"no" → closed, otherwise → open. But VQA-RAD's real
+`answer_type` is assigned by **question intent, not answer format**. A
+"what modality is this?" question with the answer "CT" is labeled
+`CLOSED` in the original dataset, but the yes/no heuristic tags it
+`open`. The labels are simply not derivable from the answer string —
+so the heuristic was structurally guaranteed to mislabel a chunk of
+the test set, which then got scored with the wrong metric
+(open-ended recall instead of closed-ended accuracy).
+
+### Fix (applied & verified)
+
+A two-part fix:
+
+1. **Build a real-label lookup.** A one-time script reads the original
+   VQA-RAD distribution (`VQA_RAD Dataset Public.json`, 2,248 records)
+   and builds a `(question, answer)` → `answer_type` lookup, saved as
+   `answer_type_lookup.json` beside the dataset.
+2. **Rewrite the loader to use it.** `_infer_answer_type` is demoted to
+   a fallback-only path; the loader now assigns real labels by joining
+   on a normalised `(question, answer)` key, and *loudly reports* how
+   many questions missed the lookup (a clean join → no warning; a high
+   fallback count → the labels can't be trusted).
+
+The join matched **450 of 451** test samples (99.8%); the 1 unmatched
+pair fell back to the heuristic, which happened to label it correctly.
+The closed/open split corrected from 251/200 to the real **272/179**.
+
+### Troubleshooting trail
+
+#### Step 1 — Confirmed the field was genuinely absent
+
+Inspected the Parquet schema directly — only `image`, `question`,
+`answer`. No `answer_type` column hiding under a different name. The
+mirror really did strip it.
+
+#### Step 2 — Confirmed the heuristic was unfixable in principle
+
+Considered just improving the heuristic (add "left/right", numeric
+answers, etc. as closed patterns). Rejected it: that's hand-tuning a
+heuristic to match a count, which is circular, and the real labels
+depend on question intent that the answer string doesn't carry. Decided
+to get ground-truth labels from the original distribution instead.
+
+#### Step 3 — Built the lookup, hit a collision problem
+
+First attempt keyed the lookup on **question text alone**. That
+produced **6 collisions** — the same question string mapped to two
+different `answer_type` labels. Root cause: VQA-RAD asks the same
+question about *different images* (2,248 questions over only ~315
+images), and `answer_type` was annotated per (question, image) pair.
+
+#### Step 4 — Switched to a `(question, answer)` key
+
+Re-keyed the lookup on `(question, answer)` together. Rationale: for a
+given question, different images yield different answers, so the answer
+acts as a proxy for the image — and since `answer_type` is itself
+determined by the answer, keying on the answer keys on exactly the
+determinant of the value being retrieved. Result: 2,248 records →
+2,086 unique keys, **0 collisions**. Also handled 5 numeric answers
+via `str()` coercion.
+
+#### Step 5 — `NameError: name 'json' is not defined`
+
+First run of the patched loader crashed: the new
+`_load_answer_type_lookup` function calls `json.load`, but the
+original `vqa_rad.py` only ever used `pyarrow` and had no
+`import json`. One-line fix — added the import. Logged here because
+"new helper function introduced a new import" is an easy omission to
+repeat.
+
+#### Step 6 — Verified the join in isolation
+
+Ran the loader's isolation test (the same `len()` + sample-fields +
+closed/open-count check used when the loader was first written).
+Result: 450/451 join, the loud fallback counter correctly flagged the
+1 miss, and the closed/open split shifted to 272/179 — matching the
+independently-observed ~21-question discrepancy. Only then was E00
+re-run.
+
+### Notes / lessons
+
+- **Dataset mirrors are not the dataset.** A HuggingFace mirror can
+  silently drop fields the original has. When a derived label looks
+  wrong, check the original distribution's schema before trusting any
+  reconstruction heuristic.
+- **A heuristic tuned to match a target number is circular.** If a
+  real ground-truth source exists, the extra hour to join against it
+  buys a label you can actually trust.
+- **Pick the join key that matches the determinant of what you're
+  looking up.** Question-text alone was too coarse; `(question,
+  answer)` collapsed the collisions to zero because the answer is what
+  actually determines `answer_type`.
+- **Make the join fail loud.** The loader counts and prints every
+  lookup miss — a quietly-wrong label set is worse than a crash,
+  because it produces a plausible-looking but invalid baseline.
+
+### Upstream
+
+n/a — this is a limitation of a third-party data mirror, not a bug in
+LLaVA-Med or any project dependency. Worked around locally by sourcing
+real labels from the original VQA-RAD distribution.
+
+---
+
 ## #2 — `pip install --force-reinstall` cascaded and clobbered the NGC-pinned stack
 
 <span class="pill pill--done">Recovered</span>

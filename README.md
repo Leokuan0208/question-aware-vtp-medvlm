@@ -33,7 +33,11 @@ question-aware-vtp-medvlm/
     ├── resources.md              #   papers, code, datasets
     ├── weekly/
     │   ├── index.md              #     12-week timeline overview
-    │   └── week-01.md            #     week 1 entries
+    │   └── week-01/              #     everything for week 1
+    │       ├── index.md          #       week 1 overview (summary per day)
+    │       ├── day-01.md         #       one detail page per working day
+    │       ├── day-02.md
+    │       └── ...
     ├── stylesheets/extra.css     # custom colours/fonts (rarely touched)
     └── javascripts/mathjax.js    # math rendering (rarely touched)
 ```
@@ -124,15 +128,28 @@ directly on github.com (pencil icon on any file) — useful from a phone.
 
 ## Adding a new weekly log
 
-1. Copy `docs/weekly/week-01.md` to `docs/weekly/week-02.md`.
-2. In `mkdocs.yml`, find the `Weekly Log:` section and add a line
-   (6-space indent):
+Each week is a folder `week-NN/` containing an **overview page**
+(`index.md`, a short summary of every day) plus one **detail page per
+working day** (`day-01.md`, `day-02.md`, …).
+
+1. Create the folder `docs/weekly/week-02/` with an `index.md` (the
+   overview) and a `day-0X.md` page per working day. The quickest path
+   is to copy the `week-01/` folder and edit.
+2. In `mkdocs.yml`, find the `Weekly Log:` section and add the week as
+   a nested block — the `index.md` overview goes **first** so it
+   becomes the clickable section index (this is why the week label in
+   the sidebar is clickable):
 
    ```yaml
        - Weekly Log:
-           - Overview: weekly/index.md
-           - "Week 1": weekly/week-01.md
-           - "Week 2": weekly/week-02.md   # <-- new line
+           - weekly/index.md
+           - Week 1:
+               - weekly/week-01/index.md
+               - weekly/week-01/day-01.md
+               # ...
+           - Week 2:                          # <-- new block
+               - weekly/week-02/index.md
+               - weekly/week-02/day-01.md
    ```
 
 3. Update the row for that week in `docs/weekly/index.md`.

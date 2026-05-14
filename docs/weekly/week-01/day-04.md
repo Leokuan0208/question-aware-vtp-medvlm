@@ -1,88 +1,34 @@
-# Week 1 — Baseline setup & first contact
+# Day 4 — Wednesday, May 13, 2026
 
-<span class="pill pill--wip">In progress</span>
+[← Back to Week 1 overview](index.md)
 
-**Phase 1 of 7** (Baseline & Literature) · **Week 1 of 2 in this phase**
-
-**Goal of the week** — get the LLaVA-Med baseline running end-to-end,
-confirm we can do inference, document the setup reproducibly, and start
-reading the visual-token-pruning literature.
+**Phase 1 of 7** (Baseline & Literature) · Week 1, Day 4
 
 ---
 
-## Day 1 — Sunday, May 10, 2026
+A long day, in chronological order: writing up the CLI bug, deploying
+this site to GitHub Pages, a first read-through of the LLaVA-Med
+architecture, the strategic call to skip the v1.0 reproduction,
+scaffolding the evaluation harness, and downloading the three
+benchmark datasets.
 
-Project kick-off. Read the LLaVA-Med paper, drafted the project plan,
-checked out the codebase. No commands run yet — pure orientation.
+## CLI bug writeup
 
-## Day 2 — Monday, May 11, 2026
-
-Hardware online. Wrote the Dockerfile (based on
-`nvcr.io/nvidia/pytorch:23.10-py3`), built the image via the HONGHU
-KUBERUN interface, brought up the A100 80GB PCIe VM with JupyterLab.
-Cloned LLaVA-Med v1.5, ran `pip install -e . --no-deps`, downloaded
-the `llava-med-v1.5-mistral-7b` weights to `/data/dan/weights/`.
-
-First CLI inference attempt produced **single-word responses** instead
-of paragraphs. After a long troubleshooting trail (every hypothesis is
-documented in [Bugs & Issues #1](../bugs.md#1-llavaservecli-stops-generation-immediately-for-the-mistral-variant)),
-root-caused to a stop-string selection bug in `llava/serve/cli.py`
-that fails to handle `SeparatorStyle.LLAMA_2` (used by
-`mistral_instruct`). Patched locally. The
-`KeywordsStoppingCriteria` halts on the first generated token because
-the empty string is trivially present in any output. Patched with:
-
-```python
-stop_str = conv.sep2 if conv.sep_style in (SeparatorStyle.TWO, SeparatorStyle.LLAMA_2) else conv.sep
-```
-
-After the patch, the CLI returns full multi-turn medical responses.
-
-### Snippet to remember
-
-```bash
-# The minimum-viable end-to-end inference command, post-patch:
-cd ~/LLaVA-Med
-python -m llava.serve.cli \
-    --model-path /data/dan/weights/llava-med-v1.5-mistral-7b \
-    --image-file ./llava/serve/examples/bio_patch.png \
-    --conv-mode mistral_instruct
-```
-
-## Day 3 — Tuesday, May 12, 2026
-
-Set up this documentation site locally with MkDocs + Material. Picked
-the colour palette, decided on the page structure (home, project
-overview, baseline, experiments, weekly log, bugs, resources), and got
-`mkdocs serve` running on `http://127.0.0.1:8000`. Started a reading
-list for the visual-token-pruning literature (ToMe, FastV, PruMerge,
-SparseVLM, GAP) and dropped them into [Resources](../resources.md).
-
-The PowerShell execution-policy gotcha bit me — `.venv\Scripts\Activate.ps1`
-silently failed at first, and `pip install -r requirements.txt`
-went to the system Python instead of the venv. Fixed by running
-`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
-in PowerShell and re-activating.
-
-## Day 4 — Wednesday, May 13, 2026 &nbsp; _(today)_
-
-### CLI bug writeup
-
-Wrote up the CLI bug formally in `bugs.md` with the full troubleshooting
-trail — every hypothesis tried and eliminated, in order — per
-advisor-friendly bug-report conventions.
+Wrote up the CLI bug formally in `bugs.md` with the full
+troubleshooting trail — every hypothesis tried and eliminated, in
+order — per advisor-friendly bug-report conventions.
 
 - Status pill flipped to <span class="pill pill--done">Patched
   locally</span>. Upstream PR planned but deferred until Week 2.
 
-### Confirmed baseline architecture
+## Confirmed baseline architecture
 
 Confirmed that the visual encoder in LLaVA-Med v1.5 (Mistral) uses
 CLIP ViT-L/14 at 336² → **576 visual tokens per image**, matching the
 assumption in the project plan. This is the number of tokens the
 pruning module will operate on.
 
-### Deploying the site to GitHub Pages
+## Deploying the site to GitHub Pages
 
 The local site is great for editing, but a public URL is what the
 advisor can bookmark and what goes on a CV.
@@ -131,7 +77,7 @@ dropdown wouldn't have shown `gh-pages` as an option.
 about 30 seconds of saving the Pages config. Confirmed identical
 rendering to the local preview.
 
-### How the live deploy works (mental model)
+## How the live deploy works (mental model)
 
 The repo now has two branches that serve different purposes:
 
@@ -145,7 +91,7 @@ The repo now has two branches that serve different purposes:
 So the daily loop is: edit `.md` → `git push` → wait ~60 seconds →
 live site updates. No manual build, no rsync, no FTP.
 
-### Architecture deep-dive _(partial — paused for later)_
+## Architecture deep-dive _(partial — paused for later)_
 
 Opened `llava/model/llava_arch.py` and read the
 `prepare_inputs_labels_for_multimodal` method, which is the
@@ -185,7 +131,7 @@ Got through the first read pass but decided to pause the second pass
 The notes above are sufficient for now; we'll come back to it before
 writing the actual pruning hook.
 
-### Strategic decision: skip full v1.0 reproduction
+## Strategic decision: skip full v1.0 reproduction
 
 Originally the plan was "reproduce LLaVA-Med faithfully, then start
 modifying it." Today, after some back-and-forth, decided to **scope
@@ -211,7 +157,7 @@ PathVQA (pathology images), alongside the originally-planned VQA-RAD
 results more robust and let us check whether the method generalises
 across medical-imaging domains.
 
-### Evaluation harness scaffolding
+## Evaluation harness scaffolding
 
 Per the research-plan principle — _"get the measurement
 infrastructure working before you write any pruning code"_ — started
@@ -242,6 +188,10 @@ work is cleanly isolated.
   image_processor, conv_template)` so the runner doesn't need to
   know the LLaVA-Med-specific loading details.
 
+The full interface-contract code is in the
+[Day 5 page](day-05.md#batch-1-metricspy-model_loaderpy-complete-verified),
+where the stubs got filled in.
+
 **Design decisions made:**
 
 - **argparse over Hydra** for the CLI. Hydra is more powerful but
@@ -258,7 +208,7 @@ work is cleanly isolated.
 out what each needs to do, so future-me can pick up where I left off
 without re-deriving the architecture.
 
-### Benchmark dataset downloads
+## Benchmark dataset downloads
 
 Downloaded all three benchmark datasets via HuggingFace mirrors:
 
@@ -307,7 +257,7 @@ All three downloads verified complete. SLAKE's bilingual total is
 ~14K QA pairs, of which 7,033 are English (filtered by the `q_lang`
 field).
 
-#### Near-disaster: the `pip install --force-reinstall` regression
+### Near-disaster: the `pip install --force-reinstall` regression
 
 While verifying VQA-RAD and PathVQA counts, I needed to read parquet
 files and didn't have the `datasets` library. The install command
@@ -317,7 +267,7 @@ stack** — including PyTorch itself. The container was broken for
 ~30 minutes before I recovered it.
 
 Full writeup in
-[Bugs & Issues #2](../bugs.md#2-pip-install-force-reinstall-cascaded-and-clobbered-the-ngc-pinned-stack)
+[Bugs & Issues #2](../../bugs.md#2-pip-install-force-reinstall-cascaded-and-clobbered-the-ngc-pinned-stack)
 — this is exactly the kind of multi-step troubleshooting trail
 worth documenting, because the recovery path is non-obvious and the
 underlying lesson (never `--force-reinstall` in a Dockerfile-pinned
@@ -331,33 +281,3 @@ The NGC-built `torch 2.1.0a0+32f93b1`, `transformers 4.36.2`, and
 container's system site-packages, not in `~/.local/`. Switched the
 parquet inspection to use `pyarrow` (already in the NGC image),
 which sidestepped needing `datasets` at all.
-
----
-
-### Plan for the rest of the week (May 14 – May 16)
-
-- [ ] Read ToMe end-to-end; take structured notes in `resources.md`.
-- [ ] Skim FastV (closest prior art) to understand their pruning
-      insertion point inside the LM.
-- [ ] Skim SparseVLM (text-aware pruning, closest in *spirit* to this
-      project).
-- [ ] Skim GAP (position-ID correction after token drop — important
-      for RoPE-based Mistral).
-- [ ] Implement the remaining 7 stub files in `~/llava-med-pruning/`
-      (dataset loaders, metrics, model loader, runner).
-- [ ] Run **E00** — the unmodified-baseline evaluation on VQA-RAD
-      test. This produces our first row of metrics.
-- [ ] Resume the architecture deep-dive: do the print-statement
-      instrumentation exercise on `prepare_inputs_labels_for_multimodal`
-      to verify the 576-visual-tokens-at-contiguous-positions
-      assumption with our own eyes.
-- [ ] File the CLI fix upstream on `microsoft/LLaVA-Med` (deferred
-      from earlier in the week; not blocking).
-
----
-
-## Reflections (end-of-week)
-
-_Write this at the end of the week. A few sentences on what went well,
-what was harder than expected, what to do differently next week. The
-cumulative habit is the highest-value thing in a research log._

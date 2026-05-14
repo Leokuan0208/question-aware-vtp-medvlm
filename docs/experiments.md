@@ -13,7 +13,9 @@ compare.
 
 All experiments are run through a shared harness at
 `~/llava-med-pruning/` (separate repo from LLaVA-Med itself, to keep
-the pruning work cleanly isolated). Design decisions:
+the pruning work cleanly isolated). The code is on GitHub at
+[Leokuan0208/llava-med-pruning](https://github.com/Leokuan0208/llava-med-pruning).
+Design decisions:
 
 - **CLI** — `argparse` (over Hydra). Hydra is more powerful but adds a
   config-system learning curve I don't need for a 12-week project.
@@ -25,15 +27,18 @@ the pruning work cleanly isolated). Design decisions:
   pruning strategies without reloading the 15 GB model.
 - **Datasets handled** — VQA-RAD, SLAKE (English-only), PathVQA.
 
-Status (May 13, 2026): **4 of 11 planned files implemented** (CLI
-entry point, dataclasses for samples and loaded model, NoOp baseline
-pruning method). 7 documented stubs await fill-in.
+Status (May 14, 2026): **VQA-RAD path complete end-to-end** — all 11
+files implemented except the SLAKE and PathVQA dataset loaders, which
+remain stubs (Batch 3). The harness is under git version control. Its
+inference path is verified correct: running the reference
+`llava/eval/model_vqa.py` on VQA-RAD test questions produces
+word-for-word identical predictions.
 
 ## Summary table
 
 | ID  | Date | Pruning strategy | K (drop %) | VQA-RAD acc | SLAKE acc | Latency Δ | Notes |
 | --- | ---- | ---------------- | ---------- | ----------- | --------- | --------- | ----- |
-| E00 | _pending_ | None (baseline) | 0%      | _pending_   | _pending_ | —         | Reference run; harness in progress |
+| E00 | May 14 | None (baseline) | 0%      | 0.537 closed / 0.340 open | _pending_ | — (843 ms/sample) | Reference run; VQA-RAD done, SLAKE/PathVQA pending |
 | E01 | _TBD_ | _e.g. random_    | _25%_      | _TBD_       | _TBD_     | _TBD_     | Sanity floor |
 | E02 | _TBD_ | _e.g. attention-based_ | _25%_ | _TBD_     | _TBD_     | _TBD_     | Question-agnostic baseline |
 | E03 | _TBD_ | _Question-conditioned MLP v1_ | _25%_ | _TBD_ | _TBD_ | _TBD_ | First real attempt |
@@ -46,39 +51,52 @@ points every later experiment should beat.
 
 ## E00 — Baseline (no pruning)
 
-<span class="pill pill--wip">Harness in progress</span>
+<span class="pill pill--wip">VQA-RAD done · SLAKE & PathVQA pending</span>
 
 **Goal** — establish the reference accuracy and latency numbers we'll
 compare every pruning experiment against. No model changes.
 
 **Setup**
 - Model: LLaVA-Med v1.5 (Mistral-7B), off-the-shelf weights, frozen
-- Datasets: VQA-RAD test split (451 samples), SLAKE English test split
-  (1,061 samples), PathVQA test split (6,719 samples)
+- Datasets: VQA-RAD test split (451 samples) — **done**; SLAKE English
+  test split (1,061 samples) and PathVQA test split (6,719 samples)
+  pending the Batch 3 dataset loaders
 - Hardware: see [Baseline (LLaVA-Med)](setup.md#hardware)
-- Pruning method: `NoOp` (implemented — does nothing, just lets the
-  model run unmodified)
+- Pruning method: `BaselineMethod` (no-op — runs the model unmodified)
+- Decoding: single-turn, greedy (`temperature = 0.0`)
 
-**Status**
-- Datasets downloaded and verified (May 13, 2026)
-- Harness scaffolded with NoOp method implemented (May 13, 2026)
-- Dataset loaders, metrics module, and runner still stubs — to be
-  completed before this experiment can run
+**Results — VQA-RAD test (451 samples: 272 closed, 179 open)**
 
-**Results**
-- VQA-RAD closed-form accuracy: _pending_
-- VQA-RAD open-form accuracy: _pending_
-- SLAKE closed-form accuracy: _pending_
-- SLAKE open-form accuracy: _pending_
-- PathVQA closed-form accuracy: _pending_
-- PathVQA open-form accuracy: _pending_
-- Mean inference latency: _pending_ ms / query
-- Peak VRAM: _pending_ GB
+| Metric | Value |
+| --- | --- |
+| Closed-ended accuracy | 0.537 |
+| Open-ended recall | 0.340 |
+| Overall accuracy | 0.459 |
+| Mean latency | 842.5 ms / sample |
+| Peak GPU memory | 14.86 GiB |
+
+SLAKE and PathVQA numbers pending — those loaders are the Batch 3 work.
 
 **Notes**
 
-_Anything surprising, anomalous, or worth flagging — fill in after the
-first run._
+- **On the literature gap.** Published figures put LLaVA-Med on
+  VQA-RAD around ~0.84 closed-ended. The ~29-point gap was investigated
+  at length (see [Week 1, Day 5](weekly/week-01/day-05.md#the-baseline-underperformance-investigation)).
+  Conclusion: the harness inference path is verified correct against
+  the reference `model_vqa.py`, and the gap is **evaluation
+  methodology**, not a code bug — the official v1.5 eval scores via
+  GPT-4-as-judge on a 50-question chat benchmark, not closed/open
+  exact-match on the full test set. The ~0.84 is a "neighbourhood"
+  target, not an exact figure to reproduce.
+- **On the closed-ended number specifically.** It is computed over
+  the corrected 272 closed questions (after [Bug #3](bugs.md#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions)
+  fixed the `answer_type` labels). An earlier pre-fix run reported
+  0.546, but that was over a mislabeled set and is **not comparable** —
+  0.537 is the honest, valid reference.
+- **Known open issue.** `closed_ended_accuracy` uses lenient
+  whole-word matching, which may over- or under-credit verbose
+  answers. Tightening this is a tracked next-step; it could shift the
+  closed-ended number again, but in a *known and documented* way.
 
 ---
 
