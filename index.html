@@ -296,6 +296,8 @@
         <a href="weekly/" class="md-tabs__link">
           
   
+    
+  
   Weekly Log
 
         </a>
@@ -547,10 +549,16 @@
   
     
     
-    
-      
       
         
+          
+        
+      
+        
+      
+    
+    
+      
       
     
     
@@ -561,16 +569,24 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="weekly/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Weekly Log
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
@@ -580,17 +596,83 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="weekly/week-01/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Week 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="weekly/" class="md-nav__link">
+      <a href="weekly/week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Overview
+    Day 1 — Sunday, May 10, 2026
   </span>
   
 
@@ -607,15 +689,86 @@
   
   
     <li class="md-nav__item">
-      <a href="weekly/week-01/" class="md-nav__link">
+      <a href="weekly/week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Week 1
+    Day 2 — Monday, May 11, 2026
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-01/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 12, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-01/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 13, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-01/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 14, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -828,7 +981,7 @@ and 12-week plan.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Set up this documentation site (local + deployed to GitHub Pages)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> First read-pass of <code>prepare_inputs_labels_for_multimodal</code> —
       visual-token splicing logic mapped, position-ID handling noted
-      → <a href="weekly/week-01/#architecture-deep-dive-partial-paused-for-later">Week 1, Day 4</a></li>
+      → <a href="weekly/week-01/day-04/#architecture-deep-dive-partial-paused-for-later">Week 1, Day 4</a></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Strategic decision: implement pruning directly on v1.5
       (inference-only method, no v1.0 reproduction needed)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Scaffolded evaluation harness <code>~/llava-med-pruning/</code> —
@@ -837,11 +990,23 @@ and 12-week plan.</p>
       (~990 MB total, all verified against authoritative sources)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Recovered from a <code>pip --force-reinstall</code> regression that broke
       the container → see <a href="bugs/#2-pip-install-force-reinstall-cascaded-and-clobbered-the-ngc-pinned-stack">Bugs &amp; Issues #2</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Implemented the harness end-to-end for the VQA-RAD path —
+      <code>metrics.py</code>, <code>model_loader.py</code>, <code>runner.py</code>, <code>run_eval.py</code>, and
+      the VQA-RAD loader (SLAKE + PathVQA loaders still stubbed)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Investigated a ~29-point baseline-vs-literature gap; verified
+      via the reference <code>model_vqa.py</code> that the harness is correct —
+      the gap is evaluation methodology, not a code bug</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Found and fixed an <code>answer_type</code> mislabeling bug in the VQA-RAD
+      loader → see <a href="bugs/#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions">Bugs &amp; Issues #3</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Ran <strong>E00</strong> baseline on VQA-RAD test — closed 0.537, open recall
+      0.340 → <a href="experiments/#e00-baseline-no-pruning">Experiments</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Put <code>~/llava-med-pruning/</code> under git version control</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Batch 3</strong> — implement the SLAKE and PathVQA dataset loaders,
+      then run E00 on all three benchmarks</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Fix the <code>closed_ended_accuracy</code> scoring leniency (whole-word
+      match is too lenient toward verbose answers)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Finish reading visual-token-pruning literature (ToMe, FastV,
       SparseVLM, GAP)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement the remaining 7 harness stubs</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run <strong>E00</strong> baseline evaluation on VQA-RAD test set
-      (first row of metrics)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Draft Week 2 plan</li>
 </ul>
 <p>See the <a href="weekly/week-01/">Week 1 log</a> for daily notes.</p>
@@ -949,7 +1114,7 @@ and 12-week plan.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="assets/javascripts/bundle.88dd0f4e.min.js"></script>

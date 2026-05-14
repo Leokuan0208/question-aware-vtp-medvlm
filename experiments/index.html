@@ -298,6 +298,8 @@
         <a href="../weekly/" class="md-tabs__link">
           
   
+    
+  
   Weekly Log
 
         </a>
@@ -558,10 +560,16 @@
   
     
     
-    
-      
       
         
+          
+        
+      
+        
+      
+    
+    
+      
       
     
     
@@ -572,16 +580,24 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../weekly/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Weekly Log
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
@@ -591,17 +607,83 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../weekly/week-01/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Week 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="../weekly/" class="md-nav__link">
+      <a href="../weekly/week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Overview
+    Day 1 — Sunday, May 10, 2026
   </span>
   
 
@@ -618,15 +700,86 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/" class="md-nav__link">
+      <a href="../weekly/week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Week 1
+    Day 2 — Monday, May 11, 2026
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-01/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 12, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-01/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 13, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-01/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 14, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -786,7 +939,9 @@ you'd documented is the one you didn't.</p>
 <h2 id="evaluation-harness">Evaluation harness<a class="headerlink" href="#evaluation-harness" title="Permanent link">&para;</a></h2>
 <p>All experiments are run through a shared harness at
 <code>~/llava-med-pruning/</code> (separate repo from LLaVA-Med itself, to keep
-the pruning work cleanly isolated). Design decisions:</p>
+the pruning work cleanly isolated). The code is on GitHub at
+<a href="https://github.com/Leokuan0208/llava-med-pruning">Leokuan0208/llava-med-pruning</a>.
+Design decisions:</p>
 <ul>
 <li><strong>CLI</strong> — <code>argparse</code> (over Hydra). Hydra is more powerful but adds a
   config-system learning curve I don't need for a 12-week project.</li>
@@ -798,9 +953,12 @@ the pruning work cleanly isolated). Design decisions:</p>
   pruning strategies without reloading the 15 GB model.</li>
 <li><strong>Datasets handled</strong> — VQA-RAD, SLAKE (English-only), PathVQA.</li>
 </ul>
-<p>Status (May 13, 2026): <strong>4 of 11 planned files implemented</strong> (CLI
-entry point, dataclasses for samples and loaded model, NoOp baseline
-pruning method). 7 documented stubs await fill-in.</p>
+<p>Status (May 14, 2026): <strong>VQA-RAD path complete end-to-end</strong> — all 11
+files implemented except the SLAKE and PathVQA dataset loaders, which
+remain stubs (Batch 3). The harness is under git version control. Its
+inference path is verified correct: running the reference
+<code>llava/eval/model_vqa.py</code> on VQA-RAD test questions produces
+word-for-word identical predictions.</p>
 <h2 id="summary-table">Summary table<a class="headerlink" href="#summary-table" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -818,13 +976,13 @@ pruning method). 7 documented stubs await fill-in.</p>
 <tbody>
 <tr>
 <td>E00</td>
-<td><em>pending</em></td>
+<td>May 14</td>
 <td>None (baseline)</td>
 <td>0%</td>
+<td>0.537 closed / 0.340 open</td>
 <td><em>pending</em></td>
-<td><em>pending</em></td>
-<td>—</td>
-<td>Reference run; harness in progress</td>
+<td>— (843 ms/sample)</td>
+<td>Reference run; VQA-RAD done, SLAKE/PathVQA pending</td>
 </tr>
 <tr>
 <td>E01</td>
@@ -863,33 +1021,70 @@ baseline and the random-pruning sanity floor) are the two reference
 points every later experiment should beat.</p>
 <hr />
 <h2 id="e00-baseline-no-pruning">E00 — Baseline (no pruning)<a class="headerlink" href="#e00-baseline-no-pruning" title="Permanent link">&para;</a></h2>
-<p><span class="pill pill--wip">Harness in progress</span></p>
+<p><span class="pill pill--wip">VQA-RAD done · SLAKE &amp; PathVQA pending</span></p>
 <p><strong>Goal</strong> — establish the reference accuracy and latency numbers we'll
 compare every pruning experiment against. No model changes.</p>
 <p><strong>Setup</strong>
 - Model: LLaVA-Med v1.5 (Mistral-7B), off-the-shelf weights, frozen
-- Datasets: VQA-RAD test split (451 samples), SLAKE English test split
-  (1,061 samples), PathVQA test split (6,719 samples)
+- Datasets: VQA-RAD test split (451 samples) — <strong>done</strong>; SLAKE English
+  test split (1,061 samples) and PathVQA test split (6,719 samples)
+  pending the Batch 3 dataset loaders
 - Hardware: see <a href="../setup/#hardware">Baseline (LLaVA-Med)</a>
-- Pruning method: <code>NoOp</code> (implemented — does nothing, just lets the
-  model run unmodified)</p>
-<p><strong>Status</strong>
-- Datasets downloaded and verified (May 13, 2026)
-- Harness scaffolded with NoOp method implemented (May 13, 2026)
-- Dataset loaders, metrics module, and runner still stubs — to be
-  completed before this experiment can run</p>
-<p><strong>Results</strong>
-- VQA-RAD closed-form accuracy: <em>pending</em>
-- VQA-RAD open-form accuracy: <em>pending</em>
-- SLAKE closed-form accuracy: <em>pending</em>
-- SLAKE open-form accuracy: <em>pending</em>
-- PathVQA closed-form accuracy: <em>pending</em>
-- PathVQA open-form accuracy: <em>pending</em>
-- Mean inference latency: <em>pending</em> ms / query
-- Peak VRAM: <em>pending</em> GB</p>
+- Pruning method: <code>BaselineMethod</code> (no-op — runs the model unmodified)
+- Decoding: single-turn, greedy (<code>temperature = 0.0</code>)</p>
+<p><strong>Results — VQA-RAD test (451 samples: 272 closed, 179 open)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Closed-ended accuracy</td>
+<td>0.537</td>
+</tr>
+<tr>
+<td>Open-ended recall</td>
+<td>0.340</td>
+</tr>
+<tr>
+<td>Overall accuracy</td>
+<td>0.459</td>
+</tr>
+<tr>
+<td>Mean latency</td>
+<td>842.5 ms / sample</td>
+</tr>
+<tr>
+<td>Peak GPU memory</td>
+<td>14.86 GiB</td>
+</tr>
+</tbody>
+</table>
+<p>SLAKE and PathVQA numbers pending — those loaders are the Batch 3 work.</p>
 <p><strong>Notes</strong></p>
-<p><em>Anything surprising, anomalous, or worth flagging — fill in after the
-first run.</em></p>
+<ul>
+<li><strong>On the literature gap.</strong> Published figures put LLaVA-Med on
+  VQA-RAD around ~0.84 closed-ended. The ~29-point gap was investigated
+  at length (see <a href="../weekly/week-01/day-05/#the-baseline-underperformance-investigation">Week 1, Day 5</a>).
+  Conclusion: the harness inference path is verified correct against
+  the reference <code>model_vqa.py</code>, and the gap is <strong>evaluation
+  methodology</strong>, not a code bug — the official v1.5 eval scores via
+  GPT-4-as-judge on a 50-question chat benchmark, not closed/open
+  exact-match on the full test set. The ~0.84 is a "neighbourhood"
+  target, not an exact figure to reproduce.</li>
+<li><strong>On the closed-ended number specifically.</strong> It is computed over
+  the corrected 272 closed questions (after <a href="../bugs/#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions">Bug #3</a>
+  fixed the <code>answer_type</code> labels). An earlier pre-fix run reported
+  0.546, but that was over a mislabeled set and is <strong>not comparable</strong> —
+  0.537 is the honest, valid reference.</li>
+<li><strong>Known open issue.</strong> <code>closed_ended_accuracy</code> uses lenient
+  whole-word matching, which may over- or under-credit verbose
+  answers. Tightening this is a tracked next-step; it could shift the
+  closed-ended number again, but in a <em>known and documented</em> way.</li>
+</ul>
 <hr />
 <h2 id="e01-random-pruning-sanity-floor">E01 — Random pruning (sanity floor)<a class="headerlink" href="#e01-random-pruning-sanity-floor" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--planned">Planned</span></p>
@@ -1021,13 +1216,13 @@ haven't actually learned anything.</p>
         
         
           
-          <a href="../weekly/" class="md-footer__link md-footer__link--next" aria-label="Next: Overview">
+          <a href="../weekly/" class="md-footer__link md-footer__link--next" aria-label="Next: Weekly Log — Overview">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Overview
+                Weekly Log — Overview
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1068,7 +1263,7 @@ haven't actually learned anything.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
