@@ -553,6 +553,8 @@
       
         
       
+        
+      
     
     
       
@@ -699,6 +701,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-06/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -826,9 +849,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#plan-for-the-rest-of-the-week-may-15-may-16" class="md-nav__link">
+  <a href="#day-6-friday-may-15-2026" class="md-nav__link">
     <span class="md-ellipsis">
-      Plan for the rest of the week (May 15 – May 16)
+      Day 6 — Friday, May 15, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plan-for-the-rest-of-the-week-may-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for the rest of the week (May 16)
     </span>
   </a>
   
@@ -906,28 +938,42 @@ is correct and the gap is evaluation methodology. Found and fixed an
 <code>answer_type</code> labeling bug (→ <a href="../../bugs/#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions">Bug #3</a>),
 banked the E00 baseline (closed 0.537, open recall 0.340), and put the
 harness under git version control.</p>
+<h3 id="day-6-friday-may-15-2026"><a href="day-06/">Day 6 — Friday, May 15, 2026</a><a class="headerlink" href="#day-6-friday-may-15-2026" title="Permanent link">&para;</a></h3>
+<p>Finished Batch 3 (SLAKE + PathVQA loaders) and completed the v1.5
+baseline row — SLAKE closed 0.587, PathVQA closed 0.587. With all
+three numbers side-by-side, the 24-32 point gap to published v1.0
+fine-tuned figures made the case to pivot: <strong>switching to LLaVA-Med
+v1.0's per-dataset fine-tuned delta weights</strong> is faster than
+fine-tuning v1.5 ourselves. Forked the harness to
+<code>~/llava-med-pruning-v1</code>, ran the VQA-RAD delta-merge successfully
+(~13 GB merged model), wrote v1.0's <code>model_loader.py</code> — then lost
+the evening to a torch/numpy ABI battle in the v1.0 venv. Server
+crashed before any push.</p>
 <hr />
-<h2 id="plan-for-the-rest-of-the-week-may-15-may-16">Plan for the rest of the week (May 15 – May 16)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-15-may-16" title="Permanent link">&para;</a></h2>
+<h2 id="plan-for-the-rest-of-the-week-may-16">Plan for the rest of the week (May 16)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-16" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read ToMe end-to-end; take structured notes in <code>resources.md</code>.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim FastV (closest prior art) to understand their pruning
-      insertion point inside the LM.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim SparseVLM (text-aware pruning, closest in <em>spirit</em> to this
-      project).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim GAP (position-ID correction after token drop — important
-      for RoPE-based Mistral).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Batch 3</strong> — implement the SLAKE and PathVQA dataset loaders
-      (the last two harness stubs), then run E00 on all three
-      benchmarks for a complete baseline row.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Address the <code>closed_ended_accuracy</code> scoring-leniency issue —
-      now a clean, isolated task (whole-word match is too lenient
-      toward verbose answers).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Resume the architecture deep-dive: do the print-statement
-      instrumentation exercise on <code>prepare_inputs_labels_for_multimodal</code>
-      to verify the 576-visual-tokens-at-contiguous-positions
-      assumption with our own eyes.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> File the CLI fix upstream on <code>microsoft/LLaVA-Med</code> (deferred
-      from earlier in the week; not blocking).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Bring up a fresh container from the v1.0 Dockerfile draft —
+      avoids the in-place pip patching that bit the env yesterday.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push the locally-banked <code>~/llava-med-pruning-v1</code> scaffold to a
+      new GitHub repo (didn't push yesterday — server crashed).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Finish the v1.0 harness adaptations: <code>eval/metrics.py</code>
+      (candidate-set argmax classification), <code>eval/runner.py</code> (v1.0
+      prompt with <code>&lt;im_patch&gt;×256</code>, stop-string <code>'###'</code>,
+      <code>temperature=0.7</code>), and the <code>train_open_answers.json</code>
+      candidate-set builder.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run E00 against the merged VQA-RAD-fine-tuned model — the real
+      v1.0 baseline, comparable directly to the ~0.84 published
+      figure.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Investigate the missing SLAKE delta on HuggingFace, or accept
+      that the SLAKE v1.0 track is blocked.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read ToMe end-to-end; take structured notes in <code>resources.md</code>
+      (slipped two days — still the next-most-important thing once
+      v1.0 is moving).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Address the <code>closed_ended_accuracy</code> scoring-leniency issue
+      (deferred — likely supplanted by the new candidate-set scoring
+      coming from the v1.0 work).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> File the CLI fix upstream on <code>microsoft/LLaVA-Med</code> (still
+      deferred; not blocking).</li>
 </ul>
 <hr />
 <h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>

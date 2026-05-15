@@ -518,9 +518,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#e00-baseline-no-pruning" class="md-nav__link">
+  <a href="#e00-baseline-no-pruning-v15" class="md-nav__link">
     <span class="md-ellipsis">
-      E00 — Baseline (no pruning)
+      E00 — Baseline (no pruning, v1.5)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-the-v10-reproduction-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      On the v1.0 reproduction track
     </span>
   </a>
   
@@ -619,6 +628,8 @@
       
         
           
+        
+      
         
       
         
@@ -777,6 +788,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-01/day-06/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -877,9 +909,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#e00-baseline-no-pruning" class="md-nav__link">
+  <a href="#e00-baseline-no-pruning-v15" class="md-nav__link">
     <span class="md-ellipsis">
-      E00 — Baseline (no pruning)
+      E00 — Baseline (no pruning, v1.5)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on-the-v10-reproduction-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      On the v1.0 reproduction track
     </span>
   </a>
   
@@ -953,12 +994,13 @@ Design decisions:</p>
   pruning strategies without reloading the 15 GB model.</li>
 <li><strong>Datasets handled</strong> — VQA-RAD, SLAKE (English-only), PathVQA.</li>
 </ul>
-<p>Status (May 14, 2026): <strong>VQA-RAD path complete end-to-end</strong> — all 11
-files implemented except the SLAKE and PathVQA dataset loaders, which
-remain stubs (Batch 3). The harness is under git version control. Its
-inference path is verified correct: running the reference
-<code>llava/eval/model_vqa.py</code> on VQA-RAD test questions produces
-word-for-word identical predictions.</p>
+<p>Status (May 15, 2026): <strong>Batch 3 complete — all 11 harness files
+implemented and verified.</strong> The full v1.5 baseline row is banked
+across all three benchmarks (see E00 below). A sibling harness
+<code>~/llava-med-pruning-v1</code> (forked from this one) is in early scaffold
+state for the LLaVA-Med v1.0 reproduction track — see the
+<a href="#on-the-v10-reproduction-track">v1.0 reproduction note</a> at the
+bottom of this page.</p>
 <h2 id="summary-table">Summary table<a class="headerlink" href="#summary-table" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -969,20 +1011,20 @@ word-for-word identical predictions.</p>
 <th>K (drop %)</th>
 <th>VQA-RAD acc</th>
 <th>SLAKE acc</th>
-<th>Latency Δ</th>
+<th>PathVQA acc</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>E00</td>
-<td>May 14</td>
-<td>None (baseline)</td>
+<td>May 14–15</td>
+<td>None (baseline, v1.5)</td>
 <td>0%</td>
 <td>0.537 closed / 0.340 open</td>
-<td><em>pending</em></td>
-<td>— (843 ms/sample)</td>
-<td>Reference run; VQA-RAD done, SLAKE/PathVQA pending</td>
+<td>0.587 closed / 0.395 open</td>
+<td>0.587 closed / 0.106 open</td>
+<td>v1.5 reference row complete; per-dataset latency 843 / 788 / 1073 ms</td>
 </tr>
 <tr>
 <td>E01</td>
@@ -1020,71 +1062,120 @@ word-for-word identical predictions.</p>
 baseline and the random-pruning sanity floor) are the two reference
 points every later experiment should beat.</p>
 <hr />
-<h2 id="e00-baseline-no-pruning">E00 — Baseline (no pruning)<a class="headerlink" href="#e00-baseline-no-pruning" title="Permanent link">&para;</a></h2>
-<p><span class="pill pill--wip">VQA-RAD done · SLAKE &amp; PathVQA pending</span></p>
+<h2 id="e00-baseline-no-pruning-v15">E00 — Baseline (no pruning, v1.5)<a class="headerlink" href="#e00-baseline-no-pruning-v15" title="Permanent link">&para;</a></h2>
+<p><span class="pill pill--done">Complete</span></p>
 <p><strong>Goal</strong> — establish the reference accuracy and latency numbers we'll
 compare every pruning experiment against. No model changes.</p>
 <p><strong>Setup</strong>
 - Model: LLaVA-Med v1.5 (Mistral-7B), off-the-shelf weights, frozen
-- Datasets: VQA-RAD test split (451 samples) — <strong>done</strong>; SLAKE English
-  test split (1,061 samples) and PathVQA test split (6,719 samples)
-  pending the Batch 3 dataset loaders
+- Datasets: VQA-RAD test (451 samples), SLAKE English test (1,061),
+  PathVQA test (6,719) — total 8,231 test questions across the row
 - Hardware: see <a href="../setup/#hardware">Baseline (LLaVA-Med)</a>
 - Pruning method: <code>BaselineMethod</code> (no-op — runs the model unmodified)
 - Decoding: single-turn, greedy (<code>temperature = 0.0</code>)</p>
-<p><strong>Results — VQA-RAD test (451 samples: 272 closed, 179 open)</strong></p>
+<p><strong>Results</strong></p>
 <table>
 <thead>
 <tr>
-<th>Metric</th>
-<th>Value</th>
+<th>Dataset</th>
+<th>Closed acc</th>
+<th>Open recall</th>
+<th>Overall</th>
+<th>Mean latency</th>
+<th>Peak GPU</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Closed-ended accuracy</td>
+<td>VQA-RAD</td>
 <td>0.537</td>
-</tr>
-<tr>
-<td>Open-ended recall</td>
 <td>0.340</td>
-</tr>
-<tr>
-<td>Overall accuracy</td>
 <td>0.459</td>
+<td>842.5 ms</td>
+<td>14.86 GiB</td>
 </tr>
 <tr>
-<td>Mean latency</td>
-<td>842.5 ms / sample</td>
+<td>SLAKE (English)</td>
+<td>0.587</td>
+<td>0.395</td>
+<td>0.470</td>
+<td>787.9 ms</td>
+<td>14.86 GiB</td>
 </tr>
 <tr>
-<td>Peak GPU memory</td>
+<td>PathVQA</td>
+<td>0.587</td>
+<td>0.106</td>
+<td>0.347</td>
+<td>1072.9 ms</td>
 <td>14.86 GiB</td>
 </tr>
 </tbody>
 </table>
-<p>SLAKE and PathVQA numbers pending — those loaders are the Batch 3 work.</p>
 <p><strong>Notes</strong></p>
 <ul>
-<li><strong>On the literature gap.</strong> Published figures put LLaVA-Med on
-  VQA-RAD around ~0.84 closed-ended. The ~29-point gap was investigated
-  at length (see <a href="../weekly/week-01/day-05/#the-baseline-underperformance-investigation">Week 1, Day 5</a>).
-  Conclusion: the harness inference path is verified correct against
-  the reference <code>model_vqa.py</code>, and the gap is <strong>evaluation
-  methodology</strong>, not a code bug — the official v1.5 eval scores via
-  GPT-4-as-judge on a 50-question chat benchmark, not closed/open
-  exact-match on the full test set. The ~0.84 is a "neighbourhood"
-  target, not an exact figure to reproduce.</li>
-<li><strong>On the closed-ended number specifically.</strong> It is computed over
-  the corrected 272 closed questions (after <a href="../bugs/#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions">Bug #3</a>
-  fixed the <code>answer_type</code> labels). An earlier pre-fix run reported
-  0.546, but that was over a mislabeled set and is <strong>not comparable</strong> —
-  0.537 is the honest, valid reference.</li>
+<li><strong>Closed-accuracy clustering at 0.587 (SLAKE and PathVQA).</strong> Both
+  datasets' closed questions are almost entirely yes/no, so they
+  produce essentially the same yes/no performance on this model —
+  not a coincidence, but a structural signal that the model isn't
+  doing anything dataset-specific for closed questions.</li>
+<li><strong>Open recall drops sharply on PathVQA</strong> (0.106 vs. 0.340 / 0.395).
+  PathVQA's open answers are long descriptive phrases
+  (<code>'thick with abundance of eosinophilic cytoplasm'</code>) where
+  multi-word token recall is intrinsically harder — same metric, very
+  different dataset difficulty. Not an indictment of the model.</li>
+<li><strong>Latency varies with image size, not benchmark.</strong> PathVQA's
+  heterogeneous and larger images add ~36% to the mean latency vs.
+  SLAKE's uniform 512×512. The image processor's resize step is the
+  bottleneck.</li>
+<li><strong>Peak GPU memory identical across all three</strong> (14.86 GiB) —
+  memory is dominated by model weights, not data. Useful to know:
+  the memory savings from pruning experiments will come from
+  sequence-length reduction, not data loading.</li>
+<li><strong>On the literature gap.</strong> Published figures for LLaVA-Med v1.0
+  (fine-tuned per dataset) sit at ~0.84 closed for VQA-RAD,
+  ~0.83 for SLAKE, ~0.91 for PathVQA — 24-32 points above the v1.5
+  zero-shot numbers above. The harness inference path is verified
+  correct against the reference <code>model_vqa.py</code> (see
+  <a href="../weekly/week-01/day-05/#the-baseline-underperformance-investigation">Week 1, Day 5</a>);
+  the gap is the difference between <strong>v1.5 zero-shot</strong> and <strong>v1.0
+  per-dataset fine-tuned</strong>, not a code bug. That gap is exactly what
+  motivates the v1.0 reproduction track below.</li>
+<li><strong>On the closed-ended numbers specifically.</strong> VQA-RAD is computed
+  over the corrected 272 closed questions (after <a href="../bugs/#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions">Bug #3</a>
+  fixed the <code>answer_type</code> labels); SLAKE and PathVQA use those
+  datasets' real <code>answer_type</code> fields (no heuristic needed).</li>
 <li><strong>Known open issue.</strong> <code>closed_ended_accuracy</code> uses lenient
   whole-word matching, which may over- or under-credit verbose
-  answers. Tightening this is a tracked next-step; it could shift the
-  closed-ended number again, but in a <em>known and documented</em> way.</li>
+  answers. This will likely be supplanted by the candidate-set argmax
+  scoring coming from the v1.0 reproduction work, not patched in
+  place.</li>
 </ul>
+<hr />
+<h2 id="on-the-v10-reproduction-track">On the v1.0 reproduction track<a class="headerlink" href="#on-the-v10-reproduction-track" title="Permanent link">&para;</a></h2>
+<p>As of May 15, the project has a second harness in early scaffold —
+<code>~/llava-med-pruning-v1</code>, forked from the v1.5 harness — targeting
+LLaVA-Med <strong>v1.0</strong> with the per-dataset fine-tuned delta weights
+published by <code>katielink/llava-med-7b-{vqarad,slake,pathvqa}-delta</code>.</p>
+<p><strong>Why a second track:</strong> the pruning method is inference-only, so the
+choice of base model affects only the <em>strength of the baseline</em> we
+compare against. v1.0's per-dataset fine-tuned weights sit roughly
+24-32 points above v1.5's zero-shot numbers (above), which is the
+right comparison point for a project that's claiming "preserves
+accuracy while reducing compute."</p>
+<p><strong>Status:</strong> VQA-RAD delta merged successfully into a ~13 GB merged
+model. The SLAKE delta on HuggingFace turned out to be empty (the
+weights were never actually uploaded under that name) — that track
+is currently blocked on locating an alternative source. PathVQA
+delta downloaded but not yet merged. The v1.0 evaluation harness
+itself is partial: <code>model_loader.py</code> written, <code>metrics.py</code> (with
+candidate-set argmax) and <code>runner.py</code> (with v1.0's prompt format,
+<code>'###'</code> stop string, and <code>temperature=0.7</code> stochastic decoding)
+pending. Full Day 6 writeup:
+<a href="../weekly/week-01/day-06/#the-strategic-pivot-switching-to-llava-med-v10">Week 1, Day 6</a>.</p>
+<p>Once the v1.0 track produces an E00 row directly comparable to
+published figures, the project decides whether the v1.0 harness
+becomes the primary track or stays a separate reference.</p>
 <hr />
 <h2 id="e01-random-pruning-sanity-floor">E01 — Random pruning (sanity floor)<a class="headerlink" href="#e01-random-pruning-sanity-floor" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--planned">Planned</span></p>
