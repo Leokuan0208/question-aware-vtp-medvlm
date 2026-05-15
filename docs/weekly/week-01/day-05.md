@@ -336,7 +336,7 @@ heuristically-mislabeled set, 0.537 over the correct 272 closed
 questions. The baseline didn't get worse; it became *honest*. A
 correct 0.537 is a valid reference; a wrong 0.546 was not. Full E00
 writeup is on the
-[Experiments](../../experiments.md#e00-baseline-no-pruning) page.
+[Experiments](../../experiments.md#e00-baseline-no-pruning-v15) page.
 
 ## Git initialised for the harness repo
 

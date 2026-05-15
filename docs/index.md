@@ -51,6 +51,9 @@ and 12-week plan.
       → [Week 1, Day 4](weekly/week-01/day-04.md#architecture-deep-dive-partial-paused-for-later)
 - [x] Strategic decision: implement pruning directly on v1.5
       (inference-only method, no v1.0 reproduction needed)
+      &nbsp; — _revised May 15: pivoted back to v1.0 once the complete
+      v1.5 baseline row showed the gap to published fine-tuned
+      figures_
 - [x] Scaffolded evaluation harness `~/llava-med-pruning/` —
       4 of 11 files implemented, 7 documented stubs awaiting fill-in
 - [x] Downloaded benchmark datasets: VQA-RAD, SLAKE, PathVQA
@@ -66,12 +69,29 @@ and 12-week plan.
 - [x] Found and fixed an `answer_type` mislabeling bug in the VQA-RAD
       loader → see [Bugs & Issues #3](bugs.md#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions)
 - [x] Ran **E00** baseline on VQA-RAD test — closed 0.537, open recall
-      0.340 → [Experiments](experiments.md#e00-baseline-no-pruning)
+      0.340 → [Experiments](experiments.md#e00-baseline-no-pruning-v15)
 - [x] Put `~/llava-med-pruning/` under git version control
-- [ ] **Batch 3** — implement the SLAKE and PathVQA dataset loaders,
-      then run E00 on all three benchmarks
-- [ ] Fix the `closed_ended_accuracy` scoring leniency (whole-word
-      match is too lenient toward verbose answers)
+- [x] **Batch 3 done** — implemented SLAKE + PathVQA loaders; ran E00
+      on all three v1.5 benchmarks. Complete v1.5 baseline row:
+      VQA-RAD closed 0.537 / open 0.340; SLAKE closed 0.587 / open
+      0.395; PathVQA closed 0.587 / open 0.106
+      → [Experiments](experiments.md#e00-baseline-no-pruning-v15)
+- [x] **Strategic pivot to LLaVA-Med v1.0** — once the full v1.5 row
+      was visible, the 24-32 point gap to published v1.0 fine-tuned
+      figures made v1.0's per-dataset delta weights the better
+      baseline. Forked the harness to `~/llava-med-pruning-v1`,
+      successfully merged the VQA-RAD delta (~13 GB merged model),
+      wrote v1.0's hand-rolled `model_loader.py`
+      → [Week 1, Day 6](weekly/week-01/day-06.md#the-strategic-pivot-switching-to-llava-med-v10)
+- [ ] Bring up a new container from the v1.0 Dockerfile (today's env
+      battle convinced us that in-place pip patching is too risky)
+- [ ] Finish v1.0 harness adaptations — `metrics.py` (candidate-set
+      argmax), `runner.py` (v1.0 prompt + stop criteria), the
+      candidate-set builder
+- [ ] Run E00 against the merged VQA-RAD-fine-tuned model — the real
+      v1.0 baseline, directly comparable to the ~0.84 published figure
+- [ ] Investigate the missing SLAKE delta on HuggingFace (the
+      `katielink/llava-med-7b-slake-delta` repo was empty)
 - [ ] Finish reading visual-token-pruning literature (ToMe, FastV,
       SparseVLM, GAP)
 - [ ] Draft Week 2 plan

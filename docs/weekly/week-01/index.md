@@ -54,29 +54,45 @@ is correct and the gap is evaluation methodology. Found and fixed an
 banked the E00 baseline (closed 0.537, open recall 0.340), and put the
 harness under git version control.
 
+### [Day 6 — Friday, May 15, 2026](day-06.md)
+
+Finished Batch 3 (SLAKE + PathVQA loaders) and completed the v1.5
+baseline row — SLAKE closed 0.587, PathVQA closed 0.587. With all
+three numbers side-by-side, the 24-32 point gap to published v1.0
+fine-tuned figures made the case to pivot: **switching to LLaVA-Med
+v1.0's per-dataset fine-tuned delta weights** is faster than
+fine-tuning v1.5 ourselves. Forked the harness to
+`~/llava-med-pruning-v1`, ran the VQA-RAD delta-merge successfully
+(~13 GB merged model), wrote v1.0's `model_loader.py` — then lost
+the evening to a torch/numpy ABI battle in the v1.0 venv. Server
+crashed before any push.
+
 ---
 
-## Plan for the rest of the week (May 15 – May 16)
+## Plan for the rest of the week (May 16)
 
-- [ ] Read ToMe end-to-end; take structured notes in `resources.md`.
-- [ ] Skim FastV (closest prior art) to understand their pruning
-      insertion point inside the LM.
-- [ ] Skim SparseVLM (text-aware pruning, closest in *spirit* to this
-      project).
-- [ ] Skim GAP (position-ID correction after token drop — important
-      for RoPE-based Mistral).
-- [ ] **Batch 3** — implement the SLAKE and PathVQA dataset loaders
-      (the last two harness stubs), then run E00 on all three
-      benchmarks for a complete baseline row.
-- [ ] Address the `closed_ended_accuracy` scoring-leniency issue —
-      now a clean, isolated task (whole-word match is too lenient
-      toward verbose answers).
-- [ ] Resume the architecture deep-dive: do the print-statement
-      instrumentation exercise on `prepare_inputs_labels_for_multimodal`
-      to verify the 576-visual-tokens-at-contiguous-positions
-      assumption with our own eyes.
-- [ ] File the CLI fix upstream on `microsoft/LLaVA-Med` (deferred
-      from earlier in the week; not blocking).
+- [ ] Bring up a fresh container from the v1.0 Dockerfile draft —
+      avoids the in-place pip patching that bit the env yesterday.
+- [ ] Push the locally-banked `~/llava-med-pruning-v1` scaffold to a
+      new GitHub repo (didn't push yesterday — server crashed).
+- [ ] Finish the v1.0 harness adaptations: `eval/metrics.py`
+      (candidate-set argmax classification), `eval/runner.py` (v1.0
+      prompt with `<im_patch>×256`, stop-string `'###'`,
+      `temperature=0.7`), and the `train_open_answers.json`
+      candidate-set builder.
+- [ ] Run E00 against the merged VQA-RAD-fine-tuned model — the real
+      v1.0 baseline, comparable directly to the ~0.84 published
+      figure.
+- [ ] Investigate the missing SLAKE delta on HuggingFace, or accept
+      that the SLAKE v1.0 track is blocked.
+- [ ] Read ToMe end-to-end; take structured notes in `resources.md`
+      (slipped two days — still the next-most-important thing once
+      v1.0 is moving).
+- [ ] Address the `closed_ended_accuracy` scoring-leniency issue
+      (deferred — likely supplanted by the new candidate-set scoring
+      coming from the v1.0 work).
+- [ ] File the CLI fix upstream on `microsoft/LLaVA-Med` (still
+      deferred; not blocking).
 
 ---
 
