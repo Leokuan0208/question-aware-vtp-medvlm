@@ -253,8 +253,8 @@ pruning hurt accuracy relative to no pruning."
   <span><span class="legend-dot legend-dot--beats"></span>beats stage-2 baseline</span>
 </div>
 
-<div class="comparison-table-wrapper" markdown="0">
-<table class="comparison-table" markdown="0">
+<div class="comparison-table-wrapper">
+<table class="comparison-table">
   <thead>
     <tr>
       <th class="config-header" rowspan="2">Config</th>
@@ -353,8 +353,8 @@ Reading down the table, the project's reproduction state is:
 
 This is a much more defensible reproduction story than "all the
 deltas are broken." The Day 9 priority becomes "find the closed-set
-scoring recipe discrepancy" rather than "give up on the deltas." Bug
-#5 needs a substantial narrative update once the `--answer-prompter`
+scoring recipe discrepancy" rather than "give up on the deltas."
+Bug #5 needs a substantial narrative update once the `--answer-prompter`
 hypothesis is tested.
 
 ## Phase 9 — Visual token pruning literature scan
