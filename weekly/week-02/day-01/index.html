@@ -946,9 +946,36 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#what-the-table-actually-shows" class="md-nav__link">
+  <a href="#note-on-the-open-metric" class="md-nav__link">
     <span class="md-ellipsis">
-      What the table actually shows
+      Note on the "Open" metric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-unified-comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      The unified comparison table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-the-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading the table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-this-reframes-day-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      How this reframes Day 7
     </span>
   </a>
   
@@ -1132,9 +1159,36 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#what-the-table-actually-shows" class="md-nav__link">
+  <a href="#note-on-the-open-metric" class="md-nav__link">
     <span class="md-ellipsis">
-      What the table actually shows
+      Note on the "Open" metric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-unified-comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      The unified comparison table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-the-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading the table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-this-reframes-day-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      How this reframes Day 7
     </span>
   </a>
   
@@ -1471,16 +1525,18 @@ above already exercised it end-to-end.</p>
   research contribution.</li>
 </ul>
 <h2 id="phase-85-paper-table-4-vs-our-reproduction-consolidated">Phase 8.5 — Paper Table 4 vs our reproduction (consolidated)<a class="headerlink" href="#phase-85-paper-table-4-vs-our-reproduction-consolidated" title="Permanent link">&para;</a></h2>
-<p>The numerical version of the verdict, side-by-side. The paper's
-Table 4 caption is unambiguous on the metric: <em>"For open-set
-questions, we report the recall for our free-form text generation
-method in column Open. For closed-set questions, we report the
-accuracy."</em> So the comparison is closed-accuracy vs our
+<p>The numerical version of the verdict, side-by-side.</p>
+<h3 id="note-on-the-open-metric">Note on the "Open" metric<a class="headerlink" href="#note-on-the-open-metric" title="Permanent link">&para;</a></h3>
+<p>The paper's Table 4 caption is unambiguous on the metric: <em>"For
+open-set questions, we report the recall for our free-form text
+generation method in column Open. For closed-set questions, we report
+the accuracy."</em> So the comparison is closed-accuracy vs our
 <code>closed_yes_no_accuracy</code>, and open-recall vs our <code>open_recall</code>. This
-metric definition discovery was itself a Day 8 finding — multiple
+metric-definition discovery was itself a Day 8 finding — multiple
 earlier days' analyses assumed the paper's "Open" column was
 candidate-set argmax accuracy, which would have shown a much larger
 (false) gap.</p>
+<h3 id="the-unified-comparison-table">The unified comparison table<a class="headerlink" href="#the-unified-comparison-table" title="Permanent link">&para;</a></h3>
 <p>The single unified table below collapses all the project's reproduction
 and pruning data into one place. The three configs (stage-2 zero-shot,
 the two FT-merged checkpoints) compare against paper Table 4 directly;
@@ -1563,7 +1619,7 @@ tokens — a small positive signal that question-aware selection helps.
 Both pruned rows are currently slower than baseline due to hook
 overhead dominating at low pruning ratios; speedup is expected to
 emerge at kr ≤ 0.5.</em></p>
-<h3 id="what-the-table-actually-shows">What the table actually shows<a class="headerlink" href="#what-the-table-actually-shows" title="Permanent link">&para;</a></h3>
+<h3 id="reading-the-table">Reading the table<a class="headerlink" href="#reading-the-table" title="Permanent link">&para;</a></h3>
 <p>Reading down the table, the project's reproduction state is:</p>
 <ul>
 <li>✅ <strong>Stage-2 row is all green</strong> — open-recall reproduces paper to
@@ -1588,6 +1644,7 @@ emerge at kr ≤ 0.5.</em></p>
   qsim-vs-random gap is +3.3 pts; whether it survives at higher
   pruning ratios is the Day 9 question.</li>
 </ul>
+<h3 id="how-this-reframes-day-7">How this reframes Day 7<a class="headerlink" href="#how-this-reframes-day-7" title="Permanent link">&para;</a></h3>
 <p>This is a much more defensible reproduction story than "all the
 deltas are broken." The Day 9 priority becomes "find the closed-set
 scoring recipe discrepancy" rather than "give up on the deltas." Bug</p>
