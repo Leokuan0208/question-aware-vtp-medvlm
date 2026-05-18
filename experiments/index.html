@@ -533,12 +533,36 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="On the v1.0 reproduction track">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paper-table-4-vs-ours-unified-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paper Table 4 vs ours — unified comparison
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus-our-5-epoch-ft-from-stage-2-attempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bonus: our 5-epoch FT-from-stage-2 attempt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#e01-random-pruning-sanity-floor" class="md-nav__link">
+  <a href="#e1-first-ablation-sweep-random-vs-question-similarity-pruning" class="md-nav__link">
     <span class="md-ellipsis">
-      E01 — Random pruning (sanity floor)
+      E1 — First ablation sweep (random vs question-similarity pruning)
     </span>
   </a>
   
@@ -572,6 +596,8 @@
       
         
           
+        
+      
         
       
         
@@ -628,6 +654,8 @@
       
         
           
+        
+      
         
       
         
@@ -809,6 +837,112 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-01/day-07/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../weekly/week-02/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-02/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -924,12 +1058,36 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="On the v1.0 reproduction track">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paper-table-4-vs-ours-unified-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paper Table 4 vs ours — unified comparison
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus-our-5-epoch-ft-from-stage-2-attempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bonus: our 5-epoch FT-from-stage-2 attempt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#e01-random-pruning-sanity-floor" class="md-nav__link">
+  <a href="#e1-first-ablation-sweep-random-vs-question-similarity-pruning" class="md-nav__link">
     <span class="md-ellipsis">
-      E01 — Random pruning (sanity floor)
+      E1 — First ablation sweep (random vs question-similarity pruning)
     </span>
   </a>
   
@@ -994,24 +1152,28 @@ Design decisions:</p>
   pruning strategies without reloading the 15 GB model.</li>
 <li><strong>Datasets handled</strong> — VQA-RAD, SLAKE (English-only), PathVQA.</li>
 </ul>
-<p>Status (May 15, 2026): <strong>Batch 3 complete — all 11 harness files
-implemented and verified.</strong> The full v1.5 baseline row is banked
-across all three benchmarks (see E00 below). A sibling harness
-<code>~/llava-med-pruning-v1</code> (forked from this one) is in early scaffold
-state for the LLaVA-Med v1.0 reproduction track — see the
-<a href="#on-the-v10-reproduction-track">v1.0 reproduction note</a> at the
-bottom of this page.</p>
+<p>Status (May 17, 2026): <strong>Baseline phase complete and first pruning
+ablation in hand.</strong> The v1.5 baseline row is banked, the v1.0
+stage-2 zero-shot baseline is verified (and cross-validated against
+Baron-GG's independently-merged stage-2), and <strong>the first
+question-aware pruning result is in: qsim beats baseline by +2.57
+pts at kr=0.75 on VQA-RAD</strong>. Single-datapoint, needs the rest of the
+Pareto curve to confirm. The sibling harness
+<a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
+is now the active development repo for v1.0 + pruning work.</p>
 <h2 id="summary-table">Summary table<a class="headerlink" href="#summary-table" title="Permanent link">&para;</a></h2>
+<p>Closed-ended accuracy across the experimental sequence. Open metrics
+and full per-experiment writeups live in the sections below.</p>
 <table>
 <thead>
 <tr>
 <th>ID</th>
 <th>Date</th>
-<th>Pruning strategy</th>
-<th>K (drop %)</th>
-<th>VQA-RAD acc</th>
-<th>SLAKE acc</th>
-<th>PathVQA acc</th>
+<th>Model · Strategy</th>
+<th>K (kept)</th>
+<th>VQA-RAD</th>
+<th>SLAKE</th>
+<th>PathVQA</th>
 <th>Notes</th>
 </tr>
 </thead>
@@ -1019,48 +1181,88 @@ bottom of this page.</p>
 <tr>
 <td>E00</td>
 <td>May 14–15</td>
-<td>None (baseline, v1.5)</td>
-<td>0%</td>
-<td>0.537 closed / 0.340 open</td>
-<td>0.587 closed / 0.395 open</td>
-<td>0.587 closed / 0.106 open</td>
-<td>v1.5 reference row complete; per-dataset latency 843 / 788 / 1073 ms</td>
+<td>v1.5 · baseline</td>
+<td>100%</td>
+<td>0.537</td>
+<td>0.587</td>
+<td>0.587</td>
+<td>v1.5 zero-shot reference row</td>
 </tr>
 <tr>
-<td>E01</td>
-<td><em>TBD</em></td>
-<td><em>e.g. random</em></td>
-<td><em>25%</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td>Sanity floor</td>
+<td>E0_v1.0</td>
+<td>May 16</td>
+<td>v1.0 stage-2 · baseline</td>
+<td>100%</td>
+<td>0.580</td>
+<td>—</td>
+<td>—</td>
+<td>First paper-comparable v1.0 number</td>
 </tr>
 <tr>
-<td>E02</td>
-<td><em>TBD</em></td>
-<td><em>e.g. attention-based</em></td>
-<td><em>25%</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td>Question-agnostic baseline</td>
+<td>E0_v1.0_b</td>
+<td>May 17</td>
+<td>v1.0 Baron-GG stage-2 · baseline</td>
+<td>100%</td>
+<td>0.577</td>
+<td>0.488</td>
+<td>0.556</td>
+<td>Cross-validation; agrees with ours within 0.5pt</td>
 </tr>
 <tr>
-<td>E03</td>
+<td>E0_v1.0_ft</td>
+<td>May 17</td>
+<td>v1.0 · 5-epoch full FT</td>
+<td>100%</td>
+<td>0.570</td>
+<td>—</td>
+<td>—</td>
+<td>FT didn't beat zero-shot — memorization</td>
+</tr>
+<tr>
+<td>E0_pathvqa_merged</td>
+<td>May 17</td>
+<td>v1.0 · published PathVQA delta</td>
+<td>100%</td>
+<td>—</td>
+<td>—</td>
+<td>0.601</td>
+<td>Degraded vs paper's 0.91 but functional</td>
+</tr>
+<tr>
+<td><strong>E1_random_kr0p75</strong></td>
+<td>May 17</td>
+<td>v1.0 stage-2 · random pruning</td>
+<td>75%</td>
+<td>56.99 closed / 30.37 open</td>
+<td>—</td>
+<td>—</td>
+<td>Sanity floor — within noise of baseline</td>
+</tr>
+<tr>
+<td><strong>E1_qsim_kr0p75</strong></td>
+<td>May 17</td>
+<td>v1.0 stage-2 · question-similarity</td>
+<td>75%</td>
+<td><strong>60.29</strong> closed / 28.53 open</td>
+<td>—</td>
+<td>—</td>
+<td><strong>+2.57 over baseline, +3.30 over random</strong></td>
+</tr>
+<tr>
+<td>E1_*_kr0p50 → kr0p10</td>
+<td><em>Day 9</em></td>
+<td>v1.0 stage-2 · random / qsim</td>
+<td>50%, 25%, 10%</td>
 <td><em>TBD</em></td>
-<td><em>Question-conditioned MLP v1</em></td>
-<td><em>25%</em></td>
 <td><em>TBD</em></td>
 <td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td>First real attempt</td>
+<td>Pareto curve, ~60 min total</td>
 </tr>
 </tbody>
 </table>
-<p>The cells in italics get filled in as we go. <strong>E00</strong> and <strong>E01</strong> (the
-baseline and the random-pruning sanity floor) are the two reference
-points every later experiment should beat.</p>
+<p>The decisive comparison is <strong>at each keep-ratio K, does qsim beat
+random?</strong> That's the project's central research thesis in numerical
+form. The Day-1-of-Week-2 sweep is the first real datapoint.</p>
 <hr />
 <h2 id="e00-baseline-no-pruning-v15">E00 — Baseline (no pruning, v1.5)<a class="headerlink" href="#e00-baseline-no-pruning-v15" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--done">Complete</span></p>
@@ -1153,83 +1355,376 @@ compare every pruning experiment against. No model changes.</p>
 </ul>
 <hr />
 <h2 id="on-the-v10-reproduction-track">On the v1.0 reproduction track<a class="headerlink" href="#on-the-v10-reproduction-track" title="Permanent link">&para;</a></h2>
-<p>As of May 15, the project has a second harness in early scaffold —
-<code>~/llava-med-pruning-v1</code>, forked from the v1.5 harness — targeting
-LLaVA-Med <strong>v1.0</strong> with the per-dataset fine-tuned delta weights
-published by <code>katielink/llava-med-7b-{vqarad,slake,pathvqa}-delta</code>.</p>
-<p><strong>Why a second track:</strong> the pruning method is inference-only, so the
-choice of base model affects only the <em>strength of the baseline</em> we
-compare against. v1.0's per-dataset fine-tuned weights sit roughly
-24-32 points above v1.5's zero-shot numbers (above), which is the
-right comparison point for a project that's claiming "preserves
-accuracy while reducing compute."</p>
-<p><strong>Status:</strong> VQA-RAD delta merged successfully into a ~13 GB merged
-model. The SLAKE delta on HuggingFace turned out to be empty (the
-weights were never actually uploaded under that name) — that track
-is currently blocked on locating an alternative source. PathVQA
-delta downloaded but not yet merged. The v1.0 evaluation harness
-itself is partial: <code>model_loader.py</code> written, <code>metrics.py</code> (with
-candidate-set argmax) and <code>runner.py</code> (with v1.0's prompt format,
-<code>'###'</code> stop string, and <code>temperature=0.7</code> stochastic decoding)
-pending. Full Day 6 writeup:
-<a href="../weekly/week-01/day-06/#the-strategic-pivot-switching-to-llava-med-v10">Week 1, Day 6</a>.</p>
-<p>Once the v1.0 track produces an E00 row directly comparable to
-published figures, the project decides whether the v1.0 harness
-becomes the primary track or stays a separate reference.</p>
-<hr />
-<h2 id="e01-random-pruning-sanity-floor">E01 — Random pruning (sanity floor)<a class="headerlink" href="#e01-random-pruning-sanity-floor" title="Permanent link">&para;</a></h2>
-<p><span class="pill pill--planned">Planned</span></p>
-<p><strong>Goal</strong> — drop K% of visual tokens uniformly at random. This is the
-floor: any "smart" pruning strategy must beat this. If it doesn't, we
-haven't actually learned anything.</p>
-<p><strong>Setup</strong>
-- Same as E00, plus: at the projector output, randomly drop K of the 576
-  visual tokens (independent uniform sampling per forward pass).
-- Run for K ∈ {10%, 25%, 50%, 75%}.</p>
-<p><strong>Results</strong></p>
+<p>As of May 17, the v1.0 evaluation harness is complete (pushed to
+<a href="https://github.com/Leokuan0208/llava-med-pruning-v1">Leokuan0208/llava-med-pruning-v1</a>)
+and has produced a complete reproduction snapshot across three
+configurations: our independently-merged stage-2, two of the
+published per-dataset fine-tuned deltas, and Baron-GG's
+community-mirror stage-2 as a cross-validation.</p>
+<p>The headline finding from Day 8 is: <strong>our open-recall reproduces the
+paper to within ~1 point across every dataset and every configuration
+tested</strong>. Closed-accuracy reproduces paper <em>on stage-2</em> but has a
+large gap <em>on the FT models</em> — which is now isolated as a
+measurement-recipe issue (almost certainly <code>--answer-prompter</code> or
+equivalent closed-set inference logic), not a corrupted-weights issue
+as Day 7 initially claimed.</p>
+<h3 id="paper-table-4-vs-ours-unified-comparison">Paper Table 4 vs ours — unified comparison<a class="headerlink" href="#paper-table-4-vs-ours-unified-comparison" title="Permanent link">&para;</a></h3>
+<p>The single unified table below collapses all of the project's
+reproduction data and the kr=0.75 pruning result into one place.
+The three configs at the top compare against paper Table 4 directly:
+stage-2 zero-shot is the paper's "60K-IM, stage-1 × 1, stage-2 × 3,
+FT × 0" row, and the two FT-merged rows compare against the FT=15
+columns. The two pruning rows underneath compare against <em>our</em>
+stage-2 baseline (not paper), since pruning is built on top of that
+and the relevant comparison is "did pruning hurt accuracy relative
+to no pruning."</p>
+<p>Per the paper's Table 4 caption: <em>"For open-set questions, we report
+the recall for our free-form text generation method in column Open.
+For closed-set questions, we report the accuracy in column Closed."</em>
+The "Open" metric is <strong>bag-of-words token recall</strong> — our
+<code>open_recall</code>, not <code>open_appearance_accuracy</code>. This metric-definition
+discovery was a Day 8 finding in itself; without it, the comparison
+would have shown the wrong number and looked like a much larger gap.</p>
+<div class="legend">
+  <span><span class="legend-dot legend-dot--good"></span>within 3 pts of comparator</span>
+  <span><span class="legend-dot legend-dot--warn"></span>3-10 pts</span>
+  <span><span class="legend-dot legend-dot--bad"></span>over 10 pts</span>
+  <span><span class="legend-dot legend-dot--beats"></span>beats stage-2 baseline</span>
+</div>
+
+<div class="comparison-table-wrapper" markdown="0">
+<table class="comparison-table" markdown="0">
+  <thead>
+    <tr>
+      <th class="config-header" rowspan="2">Config</th>
+      <th colspan="2">VQA-RAD closed</th>
+      <th colspan="2">VQA-RAD open</th>
+      <th colspan="2">SLAKE closed</th>
+      <th colspan="2">SLAKE open</th>
+      <th colspan="2">PathVQA closed</th>
+      <th colspan="2">PathVQA open</th>
+    </tr>
+    <tr>
+      <th>Ours</th><th>Paper</th>
+      <th>Ours</th><th>Paper</th>
+      <th>Ours</th><th>Paper</th>
+      <th>Ours</th><th>Paper</th>
+      <th>Ours</th><th>Paper</th>
+      <th>Ours</th><th>Paper</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="config-cell">Stage-2 zero-shot</td>
+      <td class="cell-good">57.72</td><td>61.40</td>
+      <td class="cell-good">29.52</td><td>28.23</td>
+      <td class="cell-good">48.80</td><td>52.16</td>
+      <td class="cell-good">38.28</td><td>39.17</td>
+      <td class="cell-good">55.56</td><td>54.05</td>
+      <td class="cell-good">11.67</td><td>12.30</td>
+    </tr>
+    <tr>
+      <td class="config-cell">VQA-RAD-merged (FT)</td>
+      <td class="cell-bad">20.96</td><td>84.19</td>
+      <td class="cell-good">60.05</td><td>61.53</td>
+      <td class="na-cell" colspan="8">dataset-specific FT — not applicable</td>
+    </tr>
+    <tr>
+      <td class="config-cell">PathVQA-merged (FT)</td>
+      <td class="na-cell" colspan="8">dataset-specific FT — not applicable</td>
+      <td class="cell-bad">60.05</td><td>91.21</td>
+      <td class="cell-good">37.13</td><td>37.95</td>
+    </tr>
+    <tr class="section-break">
+      <td colspan="13">Pruning ablation (applied to stage-2 zero-shot, VQA-RAD only)</td>
+    </tr>
+    <tr>
+      <td class="config-cell">Random pruning, kr=0.75</td>
+      <td class="cell-good">56.99</td><td>—</td>
+      <td class="cell-good">30.37</td><td>—</td>
+      <td class="na-cell" colspan="8">VQA-RAD only this run</td>
+    </tr>
+    <tr>
+      <td class="config-cell">Question-aware pruning, kr=0.75</td>
+      <td class="cell-beats">60.29</td><td>—</td>
+      <td class="cell-good">28.53</td><td>—</td>
+      <td class="na-cell" colspan="8">VQA-RAD only this run</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p><em>Pruning row colors compare against our stage-2 baseline (57.72
+closed), not the paper. The question-aware row at kr=0.75 beats
+baseline on closed accuracy (+2.6 pts) while removing 25% of visual
+tokens — a small positive signal that question-aware selection helps.
+Both pruned rows are currently slower than baseline due to hook
+overhead dominating at low pruning ratios; speedup is expected to
+emerge at kr ≤ 0.5.</em></p>
+<p><strong>Reading the table:</strong></p>
+<ul>
+<li>✅ <strong>Stage-2 row is all green</strong> — open-recall reproduces paper to
+  within ±1.3 pts across all three datasets, closed-accuracy within
+  ±4 pts. Independent cross-validation against Baron-GG's
+  community-mirror stage-2 produced identical numbers, closing off
+  "your merge is subtly wrong" as an explanation.</li>
+<li>✅ <strong>FT-merged open-recall is green</strong> — VQA-RAD-merged matches
+  paper within 1.5 pts; PathVQA-merged within 0.8 pts. Both fine-tuned
+  weights reproduce the paper's free-form behaviour.</li>
+<li>❌ <strong>FT-merged closed-accuracy is red</strong> — VQA-RAD-merged 63 pts
+  below paper, PathVQA-merged 31 pts. But the open-recall agreement
+  on the <em>same models</em> makes "the deltas are broken" impossible as an
+  explanation. Almost certainly a measurement-recipe issue (probably
+  <code>--answer-prompter</code>, a v1.0 inference flag we don't currently
+  apply), not corrupted weights.</li>
+<li>🟣 <strong>kr=0.75 pruning: qsim beats baseline.</strong> Question-aware
+  selection at 25% pruning scores 60.29 closed against the unpruned
+  baseline's 57.72 (+2.57 pts) and random pruning's 56.99 (+3.30 pts).
+  A small first signal that question-conditioning carries useful
+  information about which visual tokens to keep. Whether it survives
+  at higher pruning ratios is Day 9's question.</li>
+</ul>
+<p>The Day 7 conclusion was "the deltas are broken upstream and the
+recipe to reproduce Table 4 is gone." The May 17 evidence in this
+table substantially revises that:</p>
+<ol>
+<li><strong>The deltas are not random noise.</strong> VQA-RAD-merged matches paper
+   to within 1.5 pts on open-recall; PathVQA-merged reproduces a
+   ~15× lift over zero-shot on open quality (Baron-GG PathVQA F1
+   0.024 → PathVQA-merged 0.37). They're real fine-tuned models.</li>
+<li><strong>The closed-set gap is a measurement issue, not a weights issue.</strong>
+   The same weights match paper on one metric and disagree on
+   another. The conclusion has to be that <em>we are computing the
+   closed metric differently from how the paper does</em> — most likely
+   missing the answer-prompter flag in our inference recipe.</li>
+</ol>
+<p>Action items for Week 2:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Diagnose the closed-set measurement gap.</strong> Search the v1.0
+      reference code for <code>--answer-prompter</code>; apply it to our runner;
+      re-eval VQA-RAD-merged. If closed jumps from 21 → 80s, the
+      measurement-recipe hypothesis is confirmed and the
+      <a href="../bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>
+      narrative gets rewritten substantially.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update Bug #5 with the Day 8 findings regardless of whether
+      <code>--answer-prompter</code> works — the "all deltas broken" framing is
+      definitely wrong.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Once closed-set is reproducing, decide whether to train SLAKE
+      from stage-2 (no public delta to merge) or treat SLAKE as a
+      zero-shot-only dataset for pruning experiments.</li>
+</ul>
+<p>Full Day 8 writeup: <a href="../weekly/week-02/day-01/">Week 2, Day 1</a>.</p>
+<h3 id="bonus-our-5-epoch-ft-from-stage-2-attempt">Bonus: our 5-epoch FT-from-stage-2 attempt<a class="headerlink" href="#bonus-our-5-epoch-ft-from-stage-2-attempt" title="Permanent link">&para;</a></h3>
+<p>Independent of the reproduction question, Week 2 Day 1 also tried
+the most ambitious path: <strong>training per-dataset fine-tunes ourselves</strong>
+from stage-2 using the paper's documented recipe (full FT, <code>lr=2e-5</code>,
+cosine schedule, bf16). A 5-epoch full fine-tune of stage-2 → VQA-RAD
+train completed cleanly overnight (loss 1.13 → 0.004). Top-3
+checkpoint eval:</p>
 <table>
 <thead>
 <tr>
-<th>K</th>
-<th>VQA-RAD</th>
-<th>SLAKE</th>
-<th>PathVQA</th>
-<th>Latency</th>
+<th>Checkpoint</th>
+<th>Epoch</th>
+<th>Closed acc</th>
+<th>Open recall</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>10%</td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
+<td>checkpoint-675</td>
+<td>3</td>
+<td><strong>56.99</strong> ← best</td>
+<td><em>not recorded</em></td>
 </tr>
 <tr>
-<td>25%</td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
+<td>checkpoint-900</td>
+<td>4</td>
+<td>53.31</td>
+<td><em>not recorded</em></td>
 </tr>
 <tr>
-<td>50%</td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-</tr>
-<tr>
-<td>75%</td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
+<td>checkpoint-1125</td>
+<td>5</td>
+<td>56.62</td>
+<td><em>not recorded</em></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Conclusion</strong></p>
-<p><em>Fill in after running.</em></p>
+<p>The best FT checkpoint (56.99) is <strong>statistically indistinguishable
+from stage-2 zero-shot (57.72)</strong> within stochastic-decoding noise.
+Prediction inspection confirmed sensible English with a mild "no"
+bias — the FT memorized the training set (loss 0.004) but didn't
+transfer to test images. <strong>Note the asterisk:</strong> this comparison may
+itself be subject to the same closed-set measurement gap the table
+above identifies. If <code>--answer-prompter</code> lifts FT-model closed
+numbers as expected, this row gets re-evaluated. As of Day 8 the
+honest reading is "5 epochs at this recipe didn't improve over
+zero-shot under the metric we currently compute."</p>
+<hr />
+<h2 id="e1-first-ablation-sweep-random-vs-question-similarity-pruning">E1 — First ablation sweep (random vs question-similarity pruning)<a class="headerlink" href="#e1-first-ablation-sweep-random-vs-question-similarity-pruning" title="Permanent link">&para;</a></h2>
+<p><span class="pill pill--wip">kr=0.75 in · kr ∈ 0.50, 0.25, 0.10 pending</span></p>
+<p><strong>Goal</strong> — first test of the project's central research thesis:
+<strong>does question-aware visual-token pruning beat random pruning at
+the same keep-ratio?</strong></p>
+<p><strong>Setup</strong></p>
+<ul>
+<li>Model: LLaVA-Med v1.0 stage-2 merged (the canonical baseline
+  established Day 8 — closed 0.577 on VQA-RAD via Baron-GG)</li>
+<li>Dataset: VQA-RAD test (451 samples) — primary benchmark for the
+  ablation; SLAKE + PathVQA repeats follow if Day-9 results are
+  encouraging</li>
+<li>Pruning location: <strong>in-LLM</strong>, pre-forward hooks on all 32
+  <code>LlamaDecoderLayer</code> instances; scoring happens at layer 0,
+  selection-and-slicing propagates through the remaining 31 layers</li>
+<li>Methods compared:<ul>
+<li><code>random</code> — keep <code>floor(256 × K)</code> visual tokens, uniform random,
+  per-sample-deterministic via question_id hash seed</li>
+<li><code>qsim</code> — same keep count, cosine similarity to pooled question
+  embedding (mean of question text tokens' layer-0 hidden states)</li>
+</ul>
+</li>
+<li>Keep ratios: K ∈ {0.75, 0.50, 0.25, 0.10}</li>
+<li>Decoding: stochastic, <code>temperature=0.7</code> (matches v1.0 paper recipe)</li>
+</ul>
+<p><strong>Why this design</strong></p>
+<p>The "qsim vs random" framing is the cheapest decisive test of the
+project's thesis. If qsim consistently beats random by 2-5 pts at
+matched K, <strong>question-awareness adds signal for medical VQA
+pruning</strong> — the project's central claim is supported. If qsim ≈
+random, simpler question-awareness isn't enough and the method
+needs refinement (e.g. attention-based scoring à la FastV, or
+learned scoring). If qsim is <em>worse</em> than random, that's the most
+informative outcome — naive question-similarity actively misleads,
+forcing a deeper investigation.</p>
+<p>Per the literature scan (FastV, FasterVLM, ATP-LLaVA, FitPrune,
+HoloV, etc.), the expected pattern is small accuracy cost at low K
+(say 0.75 = 25% pruned) growing to substantial drops at high K
+(0.10 = 90% pruned). At the high-K stress regime, the gap between
+qsim and random should be most pronounced.</p>
+<p><strong>Results — VQA-RAD test (451 samples)</strong></p>
+<table>
+<thead>
+<tr>
+<th>K</th>
+<th>Method</th>
+<th style="text-align: right;">Closed acc</th>
+<th style="text-align: right;">Open recall</th>
+<th style="text-align: right;">Avg latency</th>
+<th style="text-align: right;">Δ closed vs baseline</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.00 (baseline)</td>
+<td>—</td>
+<td style="text-align: right;">57.72</td>
+<td style="text-align: right;">29.52</td>
+<td style="text-align: right;">1266 ms</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td><strong>0.75</strong></td>
+<td><strong>random</strong></td>
+<td style="text-align: right;"><strong>56.99</strong></td>
+<td style="text-align: right;"><strong>30.37</strong></td>
+<td style="text-align: right;"><strong>1335 ms</strong></td>
+<td style="text-align: right;"><strong>−0.73</strong></td>
+</tr>
+<tr>
+<td><strong>0.75</strong></td>
+<td><strong>qsim</strong></td>
+<td style="text-align: right;"><strong>60.29</strong></td>
+<td style="text-align: right;"><strong>28.53</strong></td>
+<td style="text-align: right;"><strong>1467 ms</strong></td>
+<td style="text-align: right;"><strong>+2.57</strong></td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>random</td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>qsim</td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>random</td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>qsim</td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+</tr>
+<tr>
+<td>0.10</td>
+<td>random</td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+</tr>
+<tr>
+<td>0.10</td>
+<td>qsim</td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+<td style="text-align: right;"><em>TBD</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Findings at kr=0.75 (one ratio, one seed)</strong></p>
+<ul>
+<li><strong>QSim beats random by +3.30 closed-accuracy points</strong>
+  (60.29 vs 56.99) at the same keep ratio — first positive
+  datapoint on the project's thesis.</li>
+<li><strong>QSim also beats the unpruned baseline by +2.57 pts</strong>
+  (60.29 vs 57.72) while removing 25% of visual tokens — the
+  "improvement <em>and</em> speedup" framing the literature considers a
+  surprise outcome.</li>
+<li><strong>Random pruning is statistically indistinguishable from
+  baseline</strong> (56.99 vs 57.72, within <code>temperature=0.7</code> decoding
+  noise). The 25% drop is small enough that random retention still
+  preserves the information the model needs.</li>
+<li><strong>Both pruning methods are slightly slower than baseline at this
+  ratio.</strong> Random +69 ms/sample (+5.5%), qsim +201 ms/sample
+  (+15.9%). Hook overhead (32 pre-forward hooks + the
+  <code>prepare_inputs_for_generation</code> patch) dominates the small compute
+  savings from dropping 64 visual tokens. Speedup is expected to
+  emerge at kr=0.50 or below where the token reduction is more
+  substantial. The qsim-vs-random 132 ms gap is the scoring cost
+  specifically.</li>
+<li><strong>Open recall</strong>: qsim −1.0 vs baseline, −1.8 vs random. Within
+  noise, but worth watching across the rest of the curve in case
+  qsim systematically trades open-set quality for closed-set gains.</li>
+</ul>
+<p><strong>Conclusion (partial)</strong></p>
+<p>One ratio is one datapoint, not a research result — the rest of the
+Pareto curve (kr ∈ 0.50, 0.25, 0.10) is what tests whether the
++3.3 pt qsim-over-random signal at kr=0.75 holds, grows, or
+disappears. The literature-scan prediction was that qsim's edge over
+random should <em>grow</em> at higher pruning ratios; kr=0.75 is the regime
+where the gap should be smallest. Seeing 3.3 pts here is encouraging.</p>
+<p>The latency-overhead surprise also reframes the speedup story:
+pruning has to clear a fixed-cost hurdle (~70-200 ms of hook
+overhead) before compute savings dominate. The crossover ratio is
+the second number Day 9 produces.</p>
 <hr />
 <h2 id="template-for-new-experiments">Template for new experiments<a class="headerlink" href="#template-for-new-experiments" title="Permanent link">&para;</a></h2>
 <p>Copy this block, paste it above the previous experiment, and bump the ID.</p>

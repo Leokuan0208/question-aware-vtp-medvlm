@@ -12,28 +12,28 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
-        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/">
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-02/">
       
       
-        <link rel="prev" href="../experiments/">
+        <link rel="prev" href="../week-01/day-07/">
       
       
-        <link rel="next" href="week-01/">
+        <link rel="next" href="day-01/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Weekly Log — Overview - Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Week 2 — Pruning method first implementation - Question-Aware Visual Token Pruning for Medical VLMs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,9 +52,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#weekly-log-overview" class="md-skip">
+        <a href="#week-2-pruning-method-first-implementation" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Weekly Log — Overview
+              Week 2 — Pruning method first implementation
             
           </span>
         </div>
@@ -223,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -240,7 +240,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../project/" class="md-tabs__link">
+      <a href="../../project/" class="md-tabs__link">
         
   
     
@@ -257,7 +257,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../setup/" class="md-tabs__link">
+      <a href="../../setup/" class="md-tabs__link">
         
   
     
@@ -274,7 +274,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../experiments/" class="md-tabs__link">
+      <a href="../../experiments/" class="md-tabs__link">
         
   
     
@@ -295,7 +295,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+        <a href="../" class="md-tabs__link">
           
   
     
@@ -313,7 +313,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../bugs/" class="md-tabs__link">
+      <a href="../../bugs/" class="md-tabs__link">
         
   
     
@@ -330,7 +330,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../resources/" class="md-tabs__link">
+      <a href="../../resources/" class="md-tabs__link">
         
   
     
@@ -364,7 +364,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -394,7 +394,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -414,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../project/" class="md-nav__link">
+      <a href="../../project/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -434,7 +434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/" class="md-nav__link">
+      <a href="../../setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -454,7 +454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../experiments/" class="md-nav__link">
+      <a href="../../experiments/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -504,7 +504,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -515,7 +515,7 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_5" id="__nav_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -572,7 +572,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="week-01/" class="md-nav__link ">
+            <a href="../week-01/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -605,7 +605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="week-01/day-01/" class="md-nav__link">
+      <a href="../week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -626,7 +626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="week-01/day-02/" class="md-nav__link">
+      <a href="../week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -647,7 +647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="week-01/day-03/" class="md-nav__link">
+      <a href="../week-01/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -668,7 +668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="week-01/day-04/" class="md-nav__link">
+      <a href="../week-01/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -689,7 +689,7 @@
   
   
     <li class="md-nav__item">
-      <a href="week-01/day-05/" class="md-nav__link">
+      <a href="../week-01/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -710,7 +710,7 @@
   
   
     <li class="md-nav__item">
-      <a href="week-01/day-06/" class="md-nav__link">
+      <a href="../week-01/day-06/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -731,7 +731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="week-01/day-07/" class="md-nav__link">
+      <a href="../week-01/day-07/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -757,6 +757,8 @@
                 
   
   
+    
+  
   
   
     
@@ -774,16 +776,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="week-02/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   <span class="md-ellipsis">
@@ -794,13 +796,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_3">
             <span class="md-nav__icon md-icon"></span>
             Week 2
@@ -816,7 +818,7 @@
   
   
     <li class="md-nav__item">
-      <a href="week-02/day-01/" class="md-nav__link">
+      <a href="day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -852,7 +854,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../bugs/" class="md-nav__link">
+      <a href="../../bugs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -872,7 +874,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../resources/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -912,18 +914,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-the-weekly-log-is-structured" class="md-nav__link">
+  <a href="#day-1-sunday-may-17-2026" class="md-nav__link">
     <span class="md-ellipsis">
-      How the weekly log is structured
+      Day 1 — Sunday, May 17, 2026
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-a-new-week" class="md-nav__link">
+  <a href="#plan-for-the-rest-of-the-week-may-18-may-23" class="md-nav__link">
     <span class="md-ellipsis">
-      Adding a new week
+      Plan for the rest of the week (May 18 – May 23)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reflections-end-of-week" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reflections (end-of-week)
     </span>
   </a>
   
@@ -944,7 +955,7 @@
                   
 
   
-    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/index.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-02/index.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -952,134 +963,63 @@
   
 
 
-<h1 id="weekly-log-overview">Weekly Log — Overview<a class="headerlink" href="#weekly-log-overview" title="Permanent link">&para;</a></h1>
-<p>A bird's-eye view of the 12-week timeline. Each week gets its own page
-with daily entries; this page is the table of contents.</p>
-<p>The phases come from the <a href="../project/#12-week-plan">Project Overview</a>
-page. Weeks run Sunday → Saturday.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Week</th>
-<th>Dates</th>
-<th>Phase</th>
-<th>Focus</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;"><a href="week-01/">1</a></td>
-<td>May 10 – May 16, 2026</td>
-<td>1 — Baseline &amp; lit</td>
-<td>LLaVA-Med setup, harness build, E00 baseline</td>
-<td><span class="pill pill--done">Done</span></td>
-</tr>
-<tr>
-<td style="text-align: center;"><a href="week-02/">2</a></td>
-<td>May 17 – May 23, 2026</td>
-<td>1 → 3</td>
-<td>Baseline closeout, first pruning method, ablation sweep</td>
-<td><span class="pill pill--wip">In progress</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">3</td>
-<td>May 24 – May 30, 2026</td>
-<td>2 — Codebase deep-dive</td>
-<td>Trace LLaVA-Med forward pass</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">4</td>
-<td>May 31 – Jun 6, 2026</td>
-<td>2</td>
-<td>Identify pruning insertion points</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">5</td>
-<td>Jun 7 – Jun 13, 2026</td>
-<td>3 — Scoring-head v1</td>
-<td>First trainable pruning module</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">6</td>
-<td>Jun 14 – Jun 20, 2026</td>
-<td>3</td>
-<td>Sanity-check results, debugging</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">7</td>
-<td>Jun 21 – Jun 27, 2026</td>
-<td>4 — Training &amp; ablations</td>
-<td>K-sweep</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">8</td>
-<td>Jun 28 – Jul 4, 2026</td>
-<td>4</td>
-<td>Head-architecture ablations</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">9</td>
-<td>Jul 5 – Jul 11, 2026</td>
-<td>5 — Full evaluation</td>
-<td>VQA-RAD / SLAKE benchmarks</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">10</td>
-<td>Jul 12 – Jul 18, 2026</td>
-<td>5</td>
-<td>Latency benchmarks, qualitative analysis</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">11</td>
-<td>Jul 19 – Jul 25, 2026</td>
-<td>6 — Write-up</td>
-<td>Draft report, figures</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-<tr>
-<td style="text-align: center;">12</td>
-<td>Jul 26 – Aug 1, 2026</td>
-<td>7 — Final</td>
-<td>Polished report, code release, demo</td>
-<td><span class="pill pill--planned">Planned</span></td>
-</tr>
-</tbody>
-</table>
-<h2 id="how-the-weekly-log-is-structured">How the weekly log is structured<a class="headerlink" href="#how-the-weekly-log-is-structured" title="Permanent link">&para;</a></h2>
-<p>Each week has an <strong>overview page</strong> (a short summary of every day, with
-the day titles linking through) plus one <strong>detail page per day</strong> under
-a <code>week-NN/</code> folder. Click a week in the sidebar to open its overview;
-use the expand arrow next to it to reveal the individual day pages.</p>
-<h2 id="adding-a-new-week">Adding a new week<a class="headerlink" href="#adding-a-new-week" title="Permanent link">&para;</a></h2>
-<p>When a new week starts:</p>
-<ol>
-<li>Create the week's overview page (e.g. <code>docs/weekly/week-02/index.md</code>) and a
-   folder for its day pages (<code>docs/weekly/week-02/</code>), then add a day
-   page per day (<code>day-01.md</code>, <code>day-02.md</code>, …) inside that folder. The
-   easiest path is to copy the Week 1 files and edit.</li>
-<li>In <code>mkdocs.yml</code>, under the <code>Weekly Log:</code> section, add the new week
-   as a nested block — the week's overview file goes <strong>first</strong> in the
-   list (that makes it the clickable section index), followed by the
-   day pages:</li>
-</ol>
-<div class="language-yaml highlight"><span class="filename">YAML</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Week 2</span><span class="p">:</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly/week-02/index.md</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly/week-02/day-01.md</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly/week-02/day-02.md</span>
-</span></code></pre></div>
-<ol>
-<li>Update the row for that week in the table above (link the week
-   number to its overview page, as Week 1 is).</li>
-</ol>
+<h1 id="week-2-pruning-method-first-implementation">Week 2 — Pruning method first implementation<a class="headerlink" href="#week-2-pruning-method-first-implementation" title="Permanent link">&para;</a></h1>
+<p><span class="pill pill--wip">In progress</span></p>
+<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature, closing out) → <strong>Phase 3
+beginning</strong> (Scoring-head v1) · <strong>Week 2 of 12</strong></p>
+<p><strong>Goal of the week</strong> — close out the baseline phase (canonical
+zero-shot numbers on all three datasets), then start the actual
+research contribution: a question-aware visual-token pruning method
+with random pruning as the comparison floor, run on VQA-RAD first.
+Read at least ToMe and FastV end-to-end.</p>
+<p>This page is the <strong>overview</strong> — a short summary of each day. Click
+any day's heading for the full detail page.</p>
+<hr />
+<h3 id="day-1-sunday-may-17-2026"><a href="day-01/">Day 1 — Sunday, May 17, 2026</a><a class="headerlink" href="#day-1-sunday-may-17-2026" title="Permanent link">&para;</a></h3>
+<p>The biggest day of the project so far. Morning evaluated the overnight
+5-epoch full-FT: closed accuracy 0.57 vs stage-2 zero-shot 0.58 —
+<strong>memorization without generalization</strong>, confirmed by prediction
+inspection. Closed out the baseline phase with cross-validation
+against Baron-GG's independently-merged stage-2 weights
+(VQA-RAD 0.5772 vs our 0.58, within 0.5 pts), revised the
+broken-deltas claim (VQA-RAD catastrophic, PathVQA
+degraded-but-functional, SLAKE missing), wired up SLAKE end-to-end.
+Afternoon shifted to the actual research contribution: built and
+verified the <strong>first working visual-token pruning method</strong>
+(in-LLM, pre-forward hooks on all 32 decoder layers, monkey-patched
+<code>prepare_inputs_for_generation</code> for decode-step mask coordination,
+five-iteration debugging saga). <strong>First kr=0.75 ablation result in</strong>:
+question-similarity pruning scored 60.29 closed on VQA-RAD vs random
+pruning's 56.99 (+3.30 pts) and the unpruned baseline's 57.72
+(+2.57 pts) — a positive first datapoint on the project's thesis,
+pending the rest of the Pareto curve.</p>
+<hr />
+<h2 id="plan-for-the-rest-of-the-week-may-18-may-23">Plan for the rest of the week (May 18 – May 23)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-18-may-23" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> kr=0.75 ablation result landed Day 1 (qsim +3.30 over random)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run the rest of the Pareto curve on VQA-RAD: random vs qsim
+      at kr ∈ {0.50, 0.25, 0.10}, ~60 min total</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Build the Pareto-frontier table (accuracy vs keep-ratio) for
+      the Experiments page</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push the Day 1 changes to GitHub (<code>llava-med-pruning-v1</code>)
+      after splitting into coherent commits</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read FastV end-to-end (closest prior art; same decode-step
+      coordination problem solved)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read ToMe end-to-end (token merging vs pruning framework)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim SparseVLM and GAP</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If kr ablation shows qsim ≈ random, design a second pruning
+      method (cross-attention scoring, or FastV-style layer-K
+      attention scoring)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Repeat the VQA-RAD ablation on SLAKE and PathVQA (the two
+      additional benchmarks) — assuming Day-1 results are encouraging</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <a href="../../bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>
+      with the revised broken-deltas narrative</li>
+</ul>
+<hr />
+<h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
+<p><em>Write this at the end of the week. The Day-1 milestone (first
+working pruning method) sets up the central research question for
+the rest of Week 2: does question-awareness beat random pruning?</em></p>
 
 
 
@@ -1115,7 +1055,7 @@ use the expand arrow next to it to reveal the individual day pages.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../experiments/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Experiments">
+          <a href="../week-01/day-07/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 7 — Saturday, May 16, 2026">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1125,20 +1065,20 @@ use the expand arrow next to it to reveal the individual day pages.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Experiments
+                Day 7 — Saturday, May 16, 2026
               </div>
             </div>
           </a>
         
         
           
-          <a href="week-01/" class="md-footer__link md-footer__link--next" aria-label="Next: Week 1 — Baseline setup &amp;amp; first contact">
+          <a href="day-01/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 1 — Sunday, May 17, 2026">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Week 1 — Baseline setup &amp; first contact
+                Day 1 — Sunday, May 17, 2026
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1179,12 +1119,12 @@ use the expand arrow next to it to reveal the individual day pages.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

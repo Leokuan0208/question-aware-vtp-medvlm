@@ -484,6 +484,8 @@
       
         
       
+        
+      
     
     
       
@@ -541,6 +543,8 @@
       
         
           
+        
+      
         
       
         
@@ -722,6 +726,112 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-07/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../week-02/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../week-02/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -858,9 +968,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#plan-for-the-rest-of-the-week-may-16" class="md-nav__link">
+  <a href="#day-7-saturday-may-16-2026" class="md-nav__link">
     <span class="md-ellipsis">
-      Plan for the rest of the week (May 16)
+      Day 7 — Saturday, May 16, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#end-of-week-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      End-of-week status
     </span>
   </a>
   
@@ -899,7 +1018,7 @@
 
 
 <h1 id="week-1-baseline-setup-first-contact">Week 1 — Baseline setup &amp; first contact<a class="headerlink" href="#week-1-baseline-setup-first-contact" title="Permanent link">&para;</a></h1>
-<p><span class="pill pill--wip">In progress</span></p>
+<p><span class="pill pill--done">Complete</span></p>
 <p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature) · <strong>Week 1 of 2 in this phase</strong></p>
 <p><strong>Goal of the week</strong> — get the LLaVA-Med baseline running end-to-end,
 confirm we can do inference, document the setup reproducibly, and start
@@ -949,37 +1068,113 @@ fine-tuning v1.5 ourselves. Forked the harness to
 (~13 GB merged model), wrote v1.0's <code>model_loader.py</code> — then lost
 the evening to a torch/numpy ABI battle in the v1.0 venv. Server
 crashed before any push.</p>
+<h3 id="day-7-saturday-may-16-2026"><a href="day-07/">Day 7 — Saturday, May 16, 2026</a><a class="headerlink" href="#day-7-saturday-may-16-2026" title="Permanent link">&para;</a></h3>
+<p>The most substantive day so far. Rebuilt a clean v1.0 Docker image,
+finished the v1.0 harness (model_loader, runner, metrics) and pushed
+it to GitHub at
+<a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>.
+The headline finding: <strong>all three published per-dataset fine-tuned
+delta weights are unusable</strong> — VQA-RAD-merged scored 0.21 closed vs.
+paper's ~0.84, PathVQA the same pattern, SLAKE delta is an empty repo
+on HuggingFace. Differential diagnosis via the <strong>stage-2 zero-shot
+checkpoint reproduced the paper's stage-2 row (0.58 closed, within 8
+pts of ~0.50)</strong>, validating the entire harness. The reproducibility
+gap is upstream in v1.0's public release. Three new bug entries on
+the project: the trailing assistant-role prompt bug
+(→ <a href="../../bugs/#4-llava-med-v10s-model_vqa_medpy-missing-trailing-assistant-role">Bug #4</a>),
+the broken-deltas reproducibility finding
+(→ <a href="../../bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>),
+and a corrected memory-budget analysis for 8-bit AdamW
+(→ <a href="../../bugs/#6-wrong-memory-accounting-for-8-bit-adamw">Bug #6</a>).
+Built a DeepSpeed Zero-2 full-FT pipeline through 8 troubleshooting
+iterations; it didn't launch tonight (one activation-policy fix away)
+and rolls into Week 2.</p>
 <hr />
-<h2 id="plan-for-the-rest-of-the-week-may-16">Plan for the rest of the week (May 16)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-16" title="Permanent link">&para;</a></h2>
+<h2 id="end-of-week-status">End-of-week status<a class="headerlink" href="#end-of-week-status" title="Permanent link">&para;</a></h2>
+<p>Week 1 closes here (May 16 is Saturday; Week 2 starts tomorrow). All
+Week-1-scope items completed except the literature reading, which
+genuinely slipped — that's the one thing to carry into Week 2 as
+explicit priority.</p>
+<p><strong>Items completed during Week 1:</strong></p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Bring up a fresh container from the v1.0 Dockerfile draft —
-      avoids the in-place pip patching that bit the env yesterday.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push the locally-banked <code>~/llava-med-pruning-v1</code> scaffold to a
-      new GitHub repo (didn't push yesterday — server crashed).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Finish the v1.0 harness adaptations: <code>eval/metrics.py</code>
-      (candidate-set argmax classification), <code>eval/runner.py</code> (v1.0
-      prompt with <code>&lt;im_patch&gt;×256</code>, stop-string <code>'###'</code>,
-      <code>temperature=0.7</code>), and the <code>train_open_answers.json</code>
-      candidate-set builder.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run E00 against the merged VQA-RAD-fine-tuned model — the real
-      v1.0 baseline, comparable directly to the ~0.84 published
-      figure.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Investigate the missing SLAKE delta on HuggingFace, or accept
-      that the SLAKE v1.0 track is blocked.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read ToMe end-to-end; take structured notes in <code>resources.md</code>
-      (slipped two days — still the next-most-important thing once
-      v1.0 is moving).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Address the <code>closed_ended_accuracy</code> scoring-leniency issue
-      (deferred — likely supplanted by the new candidate-set scoring
-      coming from the v1.0 work).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> File the CLI fix upstream on <code>microsoft/LLaVA-Med</code> (still
-      deferred; not blocking).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> LLaVA-Med v1.5 baseline running end-to-end with verified inference</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CLI stop-string bug found, root-caused, patched
+      (→ <a href="../../bugs/#1-llavaservecli-stops-generation-immediately-for-the-mistral-variant">Bug #1</a>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Documentation site live at
+      <a href="https://leokuan0208.github.io/question-aware-vtp-medvlm/">leokuan0208.github.io/question-aware-vtp-medvlm</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> First read-pass of <code>prepare_inputs_labels_for_multimodal</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Evaluation harness scaffolded then completed across all 11 files
+      (<code>llava-med-pruning</code> on GitHub) — VQA-RAD path verified bit-for-bit
+      against reference <code>model_vqa.py</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> All three benchmark datasets downloaded and verified</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>answer_type</code> mislabeling bug fixed
+      (→ <a href="../../bugs/#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions">Bug #3</a>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Complete v1.5 baseline row banked</strong> —
+      VQA-RAD 0.537 / SLAKE 0.587 / PathVQA 0.587 closed
+      (→ <a href="../../experiments/#e00-baseline-no-pruning-v15">Experiments</a>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Strategic pivot to LLaVA-Med v1.0 reasoned through with the
+      complete v1.5 row in hand</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Fresh v1.0 Docker image built (replaces yesterday's failed venv)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> v1.0 evaluation harness completed — model loader, runner,
+      metrics — and pushed to
+      <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> v1.0 stage-2 zero-shot baseline reproduces the paper (0.58
+      closed vs paper's ~0.50)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>All three published v1.0 per-dataset fine-tuned delta weights
+      confirmed unusable</strong> — VQA-RAD/PathVQA both score 0.21 vs paper's
+      0.84/0.91; SLAKE delta is an empty repo
+      (→ <a href="../../bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Full-FT pipeline at ~95% — scripts, candidate sets, DeepSpeed
+      Zero-2 config — one activation-policy fix away from launch</li>
+</ul>
+<p><strong>Items rolling into Week 2:</strong></p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> DeepSpeed activation-checkpointing setting fixed (Day 7 carry-over)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>5-epoch VQA-RAD full FT launched</strong> — running as a first pass
+      to gauge wall time and accuracy trajectory before committing to
+      the paper's 15-epoch best-performance setting</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read ToMe end-to-end; take structured notes in
+      <a href="../../resources/">resources.md</a> (slipped four days; explicit
+      Week-2 priority)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim FastV (closest prior art), SparseVLM (question-aware
+      pruning), GAP (position-ID correction after token drop)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run E0_v1.0 on all three datasets against the stage-2 merged
+      model — produces a v1.0 baseline row directly comparable to
+      the v1.5 row already on the Experiments page</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Begin Phase 2 of the project plan: codebase deep-dive with
+      print-statement instrumentation on
+      <code>prepare_inputs_labels_for_multimodal</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> File the CLI fix upstream on <code>microsoft/LLaVA-Med</code> (deferred
+      throughout Week 1; consider grouping with the Bug #4 PR)</li>
 </ul>
 <hr />
 <h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
-<p><em>Write this at the end of the week. A few sentences on what went well,
-what was harder than expected, what to do differently next week. The
-cumulative habit is the highest-value thing in a research log.</em></p>
+<p>Week 1 was supposed to be "get the baseline running and read some
+papers." It became something quite different. The baseline ran on
+Day 2; the rest of the week was building infrastructure (an
+evaluation harness, then a second evaluation harness) and chasing a
+gap to published numbers that turned out to be a real reproducibility
+problem with the upstream release. The literature reading didn't
+happen, and that's the biggest miss.</p>
+<p><strong>What worked.</strong> Documenting troubleshooting in detail as we went
+made the bug-page entries genuinely useful — Bug #2 (the
+<code>--force-reinstall</code> regression) and Bug #5 (the broken deltas) both
+needed careful reasoning that would have been impossible to
+reconstruct days later. The discipline of one harness file per
+batch, isolation-test before integration, paid off when the
+<code>answer_type</code> bug surfaced.</p>
+<p><strong>What was harder than expected.</strong> Environment work on someone
+else's container kept biting — the <code>pip --force-reinstall</code>
+regression on Day 4, the v1.0 venv ABI battle on Day 6, the
+DeepSpeed/pydantic/transformers three-way version conflict on Day 7.
+Three of seven days lost meaningful time to "the env isn't right."
+The Dockerfile-first approach (used on Day 7) is the way forward;
+in-place pip patching of a pinned environment is not.</p>
+<p><strong>What to do differently in Week 2.</strong> Carve out a <em>fixed</em> block of
+each day for literature reading, decoupled from the engineering work.
+A "no reading happens until X engineering task lands" framing was a
+mistake — the engineering kept expanding and the reading never
+started.</p>
 
 
 

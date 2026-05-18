@@ -556,6 +556,8 @@
       
         
       
+        
+      
     
     
       
@@ -608,6 +610,8 @@
       
         
           
+        
+      
         
       
         
@@ -780,6 +784,112 @@
   
   <span class="md-ellipsis">
     Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-01/day-07/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="weekly/week-02/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-02/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
   </span>
   
 
@@ -992,7 +1102,9 @@ each page.</p>
 and 12-week plan.</p>
 <h2 id="where-i-am-right-now">Where I am right now<a class="headerlink" href="#where-i-am-right-now" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--wip">In progress</span> &nbsp;
-<strong>Phase 1, Week 1 — Baseline setup.</strong></p>
+<strong>Phase 1, Week 2 — Baseline profiling &amp; literature.</strong> Week 1 closed
+out May 16; full ledger on the
+<a href="weekly/week-01/#end-of-week-status">Week 1 overview</a>.</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Stack sanity check (PyTorch, transformers, accelerate, flash-attn)</li>
@@ -1039,20 +1151,61 @@ and 12-week plan.</p>
       successfully merged the VQA-RAD delta (~13 GB merged model),
       wrote v1.0's hand-rolled <code>model_loader.py</code>
       → <a href="weekly/week-01/day-06/#the-strategic-pivot-switching-to-llava-med-v10">Week 1, Day 6</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Bring up a new container from the v1.0 Dockerfile (today's env
-      battle convinced us that in-place pip patching is too risky)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Finish v1.0 harness adaptations — <code>metrics.py</code> (candidate-set
-      argmax), <code>runner.py</code> (v1.0 prompt + stop criteria), the
-      candidate-set builder</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run E00 against the merged VQA-RAD-fine-tuned model — the real
-      v1.0 baseline, directly comparable to the ~0.84 published figure</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Investigate the missing SLAKE delta on HuggingFace (the
-      <code>katielink/llava-med-7b-slake-delta</code> repo was empty)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Rebuilt the v1.0 environment cleanly via Dockerfile and finished
+      the v1.0 harness — pushed to
+      <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>Leokuan0208/llava-med-pruning-v1</code></a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>v1.0 stage-2 zero-shot baseline reproduces the paper</strong> —
+      0.58 closed on VQA-RAD, within 8 pts of paper's stage-2 row
+      (~0.50). First paper-comparable v1.0 result in this project.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Day 7 finding "all three v1.0 deltas broken" recorded; <strong>revised
+      May 17</strong> after rebuilding the reproduction tables — see below.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Week 1 complete.</strong> Full ledger on the
+      <a href="weekly/week-01/#end-of-week-status">Week 1 overview</a>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> DeepSpeed activation-checkpointing fixed (Day 7 carry-over)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>5-epoch VQA-RAD full FT completed</strong> — closed 0.570 vs stage-2
+      zero-shot 0.580. <strong>Memorization without generalization</strong> (loss
+      1.13 → 0.004). Stage-2 zero-shot adopted as the canonical
+      v1.0 baseline.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>v1.0 baseline row extended to all three datasets</strong> —
+      cross-validated via Baron-GG: VQA-RAD 0.577, SLAKE 0.488,
+      PathVQA 0.556 (closed).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Reproduction tables consolidated</strong> — open-recall reproduces
+      paper to within ±1.5 pts across all configs/datasets;
+      closed-accuracy reproduces on stage-2 (±4 pts) but has a
+      31-63 pt gap on FT-merged models. The gap is almost certainly
+      a closed-set scoring-recipe issue (likely <code>--answer-prompter</code>),
+      not broken weights. Full tables on the
+      <a href="experiments/#on-the-v10-reproduction-track">Experiments page</a>
+      and <a href="weekly/week-02/day-01/#phase-85-paper-table-4-vs-our-reproduction-consolidated">Week 2, Day 1</a>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>SLAKE pipeline completed</strong> — loader wired into runner
+      registry; 216-entry candidate set built.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>First working visual-token pruning method</strong> — in-LLM pruning
+      with 32-layer hook architecture + decode-step mask
+      coordination; smoke-tested with random and qsim methods at
+      kr=0.5
+      → <a href="weekly/week-02/day-01/#phase-12-the-decode-step-debugging-saga-5-iterations">Week 2, Day 1</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>First ablation result at kr=0.75 in</strong> — on VQA-RAD,
+      question-similarity pruning scored 60.29 closed vs random
+      pruning's 56.99 (+3.30 pts) and vs the unpruned baseline's
+      57.72 (+2.57 pts). First positive datapoint on the project's
+      central thesis; needs the full Pareto curve to confirm.
+      → <a href="weekly/week-02/day-01/#phase-14-kr075-ablation-result-question-aware-pruning-beats-baseline">Week 2, Day 1, Phase 14</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run the remaining ablation ratios (kr ∈ 0.50, 0.25, 0.10) on
+      VQA-RAD to fill out the Pareto curve</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push Day 8's accumulated changes to
+      <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
+      (split into coherent commits)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <a href="bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>
+      with the revised "VQA-RAD catastrophic, PathVQA degraded, SLAKE
+      missing" narrative</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Finish reading visual-token-pruning literature (ToMe, FastV,
-      SparseVLM, GAP)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Draft Week 2 plan</li>
+      SparseVLM, GAP) — slipped five days</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Begin Phase 2 of the project plan: codebase deep-dive with
+      print-statement instrumentation on
+      <code>prepare_inputs_labels_for_multimodal</code></li>
 </ul>
-<p>See the <a href="weekly/week-01/">Week 1 log</a> for daily notes.</p>
+<p>See the <a href="weekly/week-01/">Week 1 log</a> and
+<a href="weekly/week-02/">Week 2 log</a> for daily notes.</p>
 <h2 id="how-this-site-is-organised">How this site is organised<a class="headerlink" href="#how-this-site-is-organised" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="project/">Project Overview</a></strong> — research question, motivation,

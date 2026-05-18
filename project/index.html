@@ -603,6 +603,8 @@
       
         
       
+        
+      
     
     
       
@@ -655,6 +657,8 @@
       
         
           
+        
+      
         
       
         
@@ -827,6 +831,112 @@
   
   <span class="md-ellipsis">
     Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-01/day-07/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../weekly/week-02/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-02/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
   </span>
   
 
@@ -1144,25 +1254,85 @@ question-aware <em>in the medical domain</em>, where the question encodes
 strong spatial priors (anatomy + finding type).</p>
 <h2 id="approach-sketch">Approach (sketch)<a class="headerlink" href="#approach-sketch" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
-  IMG[Input image] --&gt; VE[Vision encoder&lt;br/&gt;CLIP ViT-L]
-  VE --&gt; VT[576 visual tokens]
-  Q[Question text] --&gt; QE[Question embedding&lt;br/&gt;via LM]
-  VT --&gt; SCORE[Scoring head&lt;br/&gt;question-conditioned]
-  QE --&gt; SCORE
-  SCORE --&gt; KEEP[Top-K visual tokens]
-  KEEP --&gt; PROJ[Projector]
-  Q --&gt; LM
-  PROJ --&gt; LM[Mistral-7B LM]
-  LM --&gt; ANS[Answer]</code></pre>
-<p>The scoring head is the new component. Everything else is reused from
-LLaVA-Med. Open design choices to explore:</p>
+  IMG[Input image] --&gt; VE[Vision encoder&lt;br/&gt;CLIP ViT-L/14]
+  VE --&gt; VT[256 visual tokens]
+  Q[Question text] --&gt; TOK[Tokenize + embed&lt;br/&gt;via LM input embedding]
+  VT --&gt; PROJ[Projector&lt;br/&gt;Linear 1024→4096]
+  PROJ --&gt; EMB[Inject visual tokens&lt;br/&gt;between im_start / im_end]
+  TOK --&gt; EMB
+  EMB --&gt; L0[Layer 0 of LLaMA&lt;br/&gt;+ pruning hook]
+  TOK -.-&gt;|question vector&lt;br/&gt;for scoring| L0
+  L0 --&gt; SCORE[Score visual tokens&lt;br/&gt;cosine sim vs question]
+  SCORE --&gt; KEEP[Top-K kept&lt;br/&gt;in original order]
+  KEEP --&gt; L1[Layers 1-31&lt;br/&gt;+ attention_mask slice]
+  L1 --&gt; ANS[Answer]</code></pre>
+<p>The pruning logic is the new component; everything else is reused
+from LLaVA-Med v1.0. Each component, briefly:</p>
 <ul>
-<li>Where to put the scoring head — at the vision encoder output, or
-  inside the LM after a few layers (FastV-style).</li>
-<li>How to condition on the question — cross-attention, dot-product
-  scoring, or a small MLP.</li>
-<li>How to train it — start from a frozen LLaVA-Med, fine-tune with a
-  task loss, optionally distill from the unpruned model.</li>
+<li><strong>Vision encoder + projector</strong> are unmodified. CLIP-ViT-L/14 at
+  224×224 produces 256 visual tokens at the projector output, each in
+  the LLM's 4096-dim embedding space.</li>
+<li><strong>Pruning runs inside the LLM, at the input to layer 0.</strong> This is a
+  reversal of an earlier design choice — pre-projector pruning was
+  attempted first but is incompatible with LLaVA-Med v1.0's forward
+  pass, which validates that the number of visual feature vectors
+  matches the count of <code>&lt;im_patch&gt;</code> placeholder tokens in the prompt.
+  Pruning <em>after</em> the visual tokens are injected into the LLM's input
+  sequence sidesteps the validation. This is the same insertion point
+  FastV uses.</li>
+<li><strong>Scoring is cosine similarity against the pooled question
+  embedding.</strong> The question text gets tokenized and embedded through
+  the LLM's input embedding layer (the only space where it's directly
+  comparable to projected visual tokens), then mean-pooled to a single
+  4096-dim vector. Each visual token is scored against that vector via
+  cosine similarity; the top-K are kept in their original spatial
+  order.</li>
+<li><strong>Hook architecture spans all 32 LLaMA decoder layers.</strong> Layer 0's
+  pre-forward hook performs the scoring, the selection, and slicing
+  of <code>hidden_states</code> and <code>attention_mask</code>. Layers 1-31 each have a
+  pre-forward hook that re-slices <code>attention_mask</code> to match the pruned
+  sequence length the cache now holds. A monkey-patched
+  <code>prepare_inputs_for_generation</code> keeps the externally-maintained
+  decode-step <code>attention_mask</code> consistent with the pruned KV cache.
+  All of this is hook-based and training-free — no model surgery.</li>
+<li><strong>Random pruning is the comparison floor.</strong> Same hooks, same hyper-
+  parameters, same machinery; indices drawn from a seeded
+  <code>torch.Generator</code> instead of question similarity. The ablation
+  isolates the contribution of question-awareness specifically.</li>
+</ul>
+<p><strong>First result (May 17, kr=0.75 on VQA-RAD):</strong> question-aware pruning
+beats the unpruned stage-2 baseline by +2.6 pts closed accuracy
+(60.29 vs 57.72) while removing 25% of visual tokens; random pruning
+at the same ratio is within noise of baseline (56.99). One ratio is
+one datapoint — the full Pareto curve (kr ∈ 0.50, 0.25, 0.10) is
+what tests whether the +3.3 pt qsim-over-random gap holds, grows, or
+disappears. Full writeup:
+<a href="../weekly/week-02/day-01/#phase-14-kr075-ablation-result-question-aware-pruning-beats-baseline">Week 2, Day 1</a>.</p>
+<p><strong>Known limitations of the current approach</strong>, flagged up front:</p>
+<ul>
+<li><strong>Position-ID re-indexing</strong> — when visual tokens are dropped, the
+  remaining tokens get re-indexed contiguously. This is the
+  FastV-style convention and is accepted in the literature, but it's
+  worth noting that GAP-style positional preservation is an
+  alternative we haven't tested.</li>
+<li><strong>Latency overhead at low pruning ratios.</strong> Hook fixed-cost
+  (32 layer hooks + the <code>prepare_inputs_for_generation</code> patch + the
+  scoring computation) currently dominates the compute saved by
+  dropping 64 of 256 tokens. Speedup is expected to emerge at
+  kr ≤ 0.5 where the visual-token reduction is more substantial.</li>
+<li><strong>VQA-RAD only so far.</strong> SLAKE and PathVQA repeats follow once the
+  VQA-RAD Pareto curve is filled in.</li>
+</ul>
+<p>Open design choices not yet explored (will be Phase 4+):</p>
+<ul>
+<li><strong>Alternative scoring functions</strong> — cross-attention rather than
+  cosine similarity, FastV-style layer-K attention scoring, or a
+  small learned MLP.</li>
+<li><strong>Pruning at a later LLaMA layer</strong> — FastV finds that pruning after
+  layer 2-3 often outperforms pruning at layer 0 because early layers
+  contribute to the question representation that scoring depends on.</li>
+<li><strong>Per-question keep-ratio</strong> — easy questions don't need many tokens;
+  hard ones do. An adaptive kr could improve the Pareto curve.</li>
 </ul>
 <h2 id="12-week-plan">12-week plan<a class="headerlink" href="#12-week-plan" title="Permanent link">&para;</a></h2>
 <table>

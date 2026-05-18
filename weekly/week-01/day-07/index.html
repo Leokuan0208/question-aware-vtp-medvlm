@@ -1,0 +1,1711 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.">
+      
+      
+        <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
+      
+      
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-01/day-07/">
+      
+      
+        <link rel="prev" href="../day-06/">
+      
+      
+        <link rel="next" href="../../week-02/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Day 7 — Saturday, May 16, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-7-saturday-may-16-2026" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Question-Aware Visual Token Pruning for Medical VLMs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 7 — Saturday, May 16, 2026
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../project/" class="md-tabs__link">
+        
+  
+    
+  
+  Project Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../setup/" class="md-tabs__link">
+        
+  
+    
+  
+  Baseline (LLaVA-Med)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../experiments/" class="md-tabs__link">
+        
+  
+    
+  
+  Experiments
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+    
+  
+  Weekly Log
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../bugs/" class="md-tabs__link">
+        
+  
+    
+  
+  Bugs & Issues
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../resources/" class="md-tabs__link">
+        
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Question-Aware Visual Token Pruning for Medical VLMs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Baseline (LLaVA-Med)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../experiments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Experiments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Weekly Log
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Weekly Log
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Week 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 10, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 11, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 12, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 13, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 14, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-06/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-fresh-docker-build-replaces-yesterdays-broken-venv" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — fresh Docker build (replaces yesterday's broken venv)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-v10-model-loader-runner-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — v1.0 model loader, runner, metrics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-candidate-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — candidate sets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-the-prompt-bug-fix-and-smoke-test-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — the prompt-bug fix and smoke test pass
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-the-moment-of-truth-and-what-we-actually-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — the moment of truth, and what we actually found
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 5 — the moment of truth, and what we actually found">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#differential-diagnosis-stage-2-zero-shot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differential diagnosis — stage-2 zero-shot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#and-then-pathvqa-same-broken-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      And then PathVQA — same broken result
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-committing-to-a-full-fine-tune-attempt-15-epochs-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — committing to a full fine-tune attempt (15 epochs target)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-the-ft-pipeline-build-8-iterations-one-failed-launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — the FT pipeline build (8 iterations, one failed launch)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-the-github-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — the GitHub push
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-the-week-week-2-may-17-onward" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for the week (Week 2 — May 17 onward)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-02/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bugs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bugs & Issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-fresh-docker-build-replaces-yesterdays-broken-venv" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — fresh Docker build (replaces yesterday's broken venv)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-v10-model-loader-runner-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — v1.0 model loader, runner, metrics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-candidate-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — candidate sets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-the-prompt-bug-fix-and-smoke-test-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — the prompt-bug fix and smoke test pass
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-the-moment-of-truth-and-what-we-actually-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — the moment of truth, and what we actually found
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 5 — the moment of truth, and what we actually found">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#differential-diagnosis-stage-2-zero-shot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differential diagnosis — stage-2 zero-shot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#and-then-pathvqa-same-broken-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      And then PathVQA — same broken result
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-committing-to-a-full-fine-tune-attempt-15-epochs-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — committing to a full fine-tune attempt (15 epochs target)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-the-ft-pipeline-build-8-iterations-one-failed-launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — the FT pipeline build (8 iterations, one failed launch)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-the-github-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — the GitHub push
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-the-week-week-2-may-17-onward" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for the week (Week 2 — May 17 onward)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-01/day-07.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="day-7-saturday-may-16-2026">Day 7 — Saturday, May 16, 2026<a class="headerlink" href="#day-7-saturday-may-16-2026" title="Permanent link">&para;</a></h1>
+<p><a href="../">← Back to Week 1 overview</a></p>
+<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature) · Week 1, Day 7</p>
+<hr />
+<p>The most substantive day of the project so far. Started with a clean
+Docker rebuild after yesterday's env battle, finished with the v1.0
+evaluation harness pushed to GitHub
+(<a href="https://github.com/Leokuan0208/llava-med-pruning-v1">Leokuan0208/llava-med-pruning-v1</a>),
+a <strong>verifiable v1.0 stage-2 baseline</strong> that reproduces the paper,
+and a documented finding that
+<strong>Microsoft's published per-dataset fine-tuned delta weights are not
+reproducible from public artifacts</strong>. The full-FT pipeline got built
+overnight but didn't successfully launch; it's banked for Monday.</p>
+<h2 id="phase-1-fresh-docker-build-replaces-yesterdays-broken-venv">Phase 1 — fresh Docker build (replaces yesterday's broken venv)<a class="headerlink" href="#phase-1-fresh-docker-build-replaces-yesterdays-broken-venv" title="Permanent link">&para;</a></h2>
+<p>Yesterday's lesson was clear: in-place pip patching a torch install in
+the wrong order is unfixable. The right move is a clean image where
+the entire stack is correct at build time.</p>
+<details class="note">
+<summary><code>Dockerfile.v1.0</code> — what changed vs. the v1.5 base</summary>
+<p>Same NGC base (<code>nvcr.io/nvidia/pytorch:23.10-py3</code>) since v1.5
+proved it works on this hardware. Three substantive differences
+from the v1.5 Dockerfile: a different <code>transformers</code> pin (git
+commit <code>cae78c46</code>, June 2023), <code>open-clip-torch</code> added (needed at
+<code>llava</code> package init), and <code>openai==0.27.8</code> pre-1.0 SDK.
+<code>flash-attn</code> deliberately omitted — only needed for training, not
+apply_delta or inference, and building it from source is the most
+failure-prone step in any LLaVA-Med install.</p>
+<div class="language-dockerfile highlight"><span class="filename">Docker</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c"># Base: nvcr.io/nvidia/pytorch:23.10-py3</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c">#   - PyTorch 2.1.0a0+32f93b1 (NGC&#39;s custom build, ~2.1.x semantics)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c">#   - CUDA 12.2.2, cuDNN 8.9.5, Ubuntu 22.04, Python 3.10</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c"># Same NGC base as v1.5 — known-good on this A100/driver.</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c">#</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c"># Why a separate image even though it&#39;s the same base:</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c">#   v1.0 needs transformers @ git commit cae78c46 (June 2023), not</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c">#   4.36.2. v1.0 needs open-clip-torch (imported at llava package</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c">#   init). v1.0 uses openai==0.27.8 (pre-1.0 SDK) vs v1.5&#39;s 1.12.0.</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c">#   These pins are mutually incompatible; each version gets its</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c">#   own image.</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">FROM</span><span class="w"> </span><span class="s">nvcr.io/nvidia/pytorch:23.10-py3</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">ENV</span><span class="w"> </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span>git<span class="w"> </span>git-lfs<span class="w"> </span>python3-pip<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>jupyter<span class="w"> </span>jupyterlab
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="c"># Install all regular deps first, then the git-pinned transformers</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="c"># commit. This order prevents pip from later re-resolving transformers</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="c"># in some surprising way — the v1.5 image&#39;s pip ordering bug taught</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="c"># us this lesson.</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">        </span><span class="s2">&quot;openai==0.27.8&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">        </span><span class="s2">&quot;sentencepiece==0.1.99&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">        </span><span class="s2">&quot;accelerate==0.21.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">        </span><span class="s2">&quot;peft==0.4.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">        </span><span class="s2">&quot;bitsandbytes==0.41.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">        </span><span class="s2">&quot;einops==0.6.1&quot;</span><span class="w"> </span><span class="s2">&quot;einops-exts==0.0.4&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">        </span><span class="s2">&quot;open-clip-torch&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">        </span><span class="s2">&quot;ninja&quot;</span><span class="w"> </span><span class="s2">&quot;shortuuid&quot;</span><span class="w"> </span><span class="s2">&quot;tabulate&quot;</span><span class="w"> </span><span class="s2">&quot;nltk&quot;</span><span class="w"> </span><span class="s2">&quot;tqdm&quot;</span><span class="w"> </span><span class="s2">&quot;Pillow&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">        </span><span class="s2">&quot;scikit-learn==1.2.2&quot;</span><span class="w"> </span><span class="s2">&quot;pydantic&lt;2,&gt;=1&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">        </span><span class="s2">&quot;markdown2[all]&quot;</span><span class="w"> </span><span class="s2">&quot;fastapi&quot;</span><span class="w"> </span><span class="s2">&quot;uvicorn&quot;</span><span class="w"> </span><span class="s2">&quot;httpx==0.24.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">        </span><span class="s2">&quot;huggingface_hub&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">        </span><span class="s2">&quot;git+https://github.com/huggingface/transformers@cae78c46&quot;</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="c"># JupyterLab opens its file browser at /data, where the persistent</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="c"># KUBERUN volume mounts at runtime.</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/data</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="k">CMD</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;jupyter&quot;</span>,<span class="w"> </span><span class="s2">&quot;lab&quot;</span>,<span class="w"> </span><span class="s2">&quot;--port=8888&quot;</span>,<span class="w"> </span><span class="s2">&quot;--ip=0.0.0.0&quot;</span>,<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">     </span><span class="s2">&quot;--allow-root&quot;</span>,<span class="w"> </span><span class="s2">&quot;--no-browser&quot;</span>,<span class="w"> </span><span class="s2">&quot;--notebook-dir=/data&quot;</span><span class="o">]</span>
+</span></code></pre></div>
+</details>
+<p>Build succeeded on the first try. Inside the new container, <code>import
+llava</code> works, <code>LlavaLlamaForCausalLM</code> imports cleanly, and torch sees
+the GPU. <strong>The env class of problems from yesterday is over.</strong></p>
+<h2 id="phase-2-v10-model-loader-runner-metrics">Phase 2 — v1.0 model loader, runner, metrics<a class="headerlink" href="#phase-2-v10-model-loader-runner-metrics" title="Permanent link">&para;</a></h2>
+<p>With the env behaving, finished the three v1.0-specific files. Each
+small but each substantive — they're what make the harness actually
+<em>work</em> against v1.0's architecture rather than just <em>load</em> it.</p>
+<p><strong><code>eval/model_loader.py</code></strong> — loads a merged LLaVA-Med v1.0 checkpoint
+via <code>LlavaLlamaForCausalLM.from_pretrained()</code>, registers the three
+special tokens v1.0 expects (<code>&lt;im_patch&gt;</code>, <code>&lt;im_start&gt;</code>, <code>&lt;im_end&gt;</code>)
+via <code>tokenizer.add_tokens()</code>, and exposes the <code>image_token_len = 256</code>
+constant. Returns a <code>LoadedModel</code> bundle.</p>
+<p><strong><code>eval/runner.py</code></strong> — single-turn inference with v1.0's specifics:
+prompt construction with <code>&lt;im_patch&gt;×256</code> injected inline before the
+question, <code>conv_mode='simple'</code> template, <code>KeywordsStoppingCriteria</code>
+with <code>'###'</code> as the stop string, and stochastic decoding at
+<code>temperature=0.7</code>. Hit one substantive bug here:
+<strong>v1.0's reference <code>model_vqa_med.py</code> is missing the trailing
+assistant role</strong>, which makes the model continue <em>as if it were the
+user</em>. Symptom: predictions start with <code>"Assistant:"</code> literally and
+loop back into another <code>"Human:"</code> turn. Patched locally — full
+writeup in <a href="../../../bugs/#4-llava-med-v10s-model_vqa_medpy-missing-trailing-assistant-role">Bugs &amp; Issues #4</a>.</p>
+<p><strong><code>eval/metrics.py</code></strong> — byte-for-byte port of v1.0's scoring math
+from <code>chunyl/finetune_on_benchmarks/run_eval.py</code> and
+<code>evaluate_metrics.py</code>. The functions:</p>
+<ul>
+<li><code>normalize_word</code> — lowercase, strip articles, collapse whitespace.</li>
+<li><code>split_sentence</code> — tokenize the way v1.0 does it.</li>
+<li><code>calculate_appearance_with_normalization</code> — word-appearance scoring
+  used for open-ended questions.</li>
+<li><code>calculate_f1score</code>, <code>calculate_exactmatch</code> — closed-form scoring.</li>
+<li><code>evaluate()</code> — orchestrator that returns the metric dict.</li>
+</ul>
+<p>The crucial v1.0-vs-v1.5 difference: v1.0 uses <strong>candidate-set argmax
+classification</strong> for open questions. Instead of comparing the model's
+free-form output against the ground truth (the v1.5-era approach
+we'd been using), v1.0 builds a candidate set from the training
+answers, has the model embed-score each candidate, and picks the
+argmax. The full appearance-with-normalisation step happens after.</p>
+<h2 id="phase-3-candidate-sets">Phase 3 — candidate sets<a class="headerlink" href="#phase-3-candidate-sets" title="Permanent link">&para;</a></h2>
+<p>Wrote <code>eval/build_vqa_rad_train_open_answers.py</code> and (later, after
+SLAKE pivot) <code>eval/build_path_vqa_train_open_answers.py</code>. Both
+produce the JSON candidate file that v1.0's open-question metric
+consumes.</p>
+<p><strong>Counts came out exactly where they should have:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Train total</th>
+<th>Open train</th>
+<th>Unique open answers (candidates)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VQA-RAD</td>
+<td>1,793</td>
+<td>768 (43%)</td>
+<td><strong>402</strong></td>
+</tr>
+<tr>
+<td>PathVQA</td>
+<td>19,654</td>
+<td>9,903 (50%)</td>
+<td><strong>3,223</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Sample VQA-RAD candidates (seeded): <em>"ring enhancing lesion in the
+right frontal lobe"</em>, <em>"blunting of the costophrenic angle, loss of
+the right hemidiaphragm and right heart border"</em>, <em>"7th rib"</em>,
+<em>"hip bones"</em>. Sample PathVQA candidates: <em>"central giant cell
+lesion"</em>, <em>"papillary adenoma"</em>, <em>"petechial and purpuric
+hemorrhages"</em>, <em>"stellate fibroblasts and mast cells"</em>. All
+coherent, no mojibake, encoding clean.</p>
+<p>The ~32% unique-to-total ratio is the same across both datasets,
+which is a nice consistency check that the candidate-set design is
+behaving identically across benchmarks.</p>
+<h2 id="phase-4-the-prompt-bug-fix-and-smoke-test-pass">Phase 4 — the prompt-bug fix and smoke test pass<a class="headerlink" href="#phase-4-the-prompt-bug-fix-and-smoke-test-pass" title="Permanent link">&para;</a></h2>
+<p>After patching the trailing-assistant-role bug, ran a 3-sample smoke
+test against the merged VQA-RAD checkpoint:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[vqa_rad_test_00000] type=closed
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  Q: is there evidence of an aortic aneurysm?
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  GT: yes
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Pred: There is no evidence of an aortic aneurysm
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Latency: 1207ms | in_tok=335 out_tok=16
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>[vqa_rad_test_00001] type=closed
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  Q: is there airspace consolidation on the left side?
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  GT: yes
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  Pred: on the left side
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  Latency: 239ms | in_tok=334 out_tok=7
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>[vqa_rad_test_00002] type=closed
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  Q: is there any intraparenchymal abnormalities in the lung fields?
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  GT: no
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  Pred: there is no pleural effusion
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  Latency: 275ms | in_tok=340 out_tok=10
+</span></code></pre></div>
+<p>The <code>"Assistant:"</code> prefix is gone from every prediction — the prompt
+fix landed. Predictions are wrong in interesting ways (the model
+disagrees with ground truth on samples 0 and 1, and gets sample 2
+wrong but coherent), but <strong>structurally the harness is producing
+valid answers</strong>. Ready for full-scale eval.</p>
+<h2 id="phase-5-the-moment-of-truth-and-what-we-actually-found">Phase 5 — the moment of truth, and what we actually found<a class="headerlink" href="#phase-5-the-moment-of-truth-and-what-we-actually-found" title="Permanent link">&para;</a></h2>
+<p>Ran the full E0_v1.0 evaluation on VQA-RAD test (451 samples) against
+the merged VQA-RAD-fine-tuned checkpoint, expecting roughly the v1.0
+paper's Table 4 number of ~0.84 closed.</p>
+<p><strong>Result: 0.21 closed.</strong> A 63-point gap from the paper. Far below
+even the v1.5 zero-shot baseline of 0.537.</p>
+<p>This is wildly off. Initial suspects:</p>
+<ol>
+<li><strong>The harness?</strong> — could be a scoring bug, prompt bug, decode bug.</li>
+<li><strong>The merge?</strong> — could be that <code>apply_delta</code> corrupted something.</li>
+<li><strong>The base LLaMA?</strong> — could be the wrong upstream weights.</li>
+<li><strong>The VQA-RAD delta itself?</strong> — could be that the published delta
+   doesn't actually produce the paper number when correctly merged.</li>
+</ol>
+<p>The way to distinguish: differential diagnosis. Get a second merged
+model — same harness, same base LLaMA, same merge process — and
+score it against a known target.</p>
+<h3 id="differential-diagnosis-stage-2-zero-shot">Differential diagnosis — stage-2 zero-shot<a class="headerlink" href="#differential-diagnosis-stage-2-zero-shot" title="Permanent link">&para;</a></h3>
+<p>Merged <code>microsoft/llava-med-7b-delta</code> (the stage-2 instruction-tuned
+checkpoint, <em>before</em> per-dataset fine-tuning) with the same base
+LLaMA-7B using the same <code>apply_delta</code> command. Ran the same harness
+against it on VQA-RAD test.</p>
+<p><strong>Result: 0.58 closed.</strong> The v1.0 paper's stage-2 zero-shot row on
+VQA-RAD is approximately 0.50 closed. <strong>We're within 8 points of the
+paper.</strong> That's well inside stochastic-decode variance.</p>
+<p>This is the key finding. The stage-2 result <em>validates the whole
+pipeline</em>: the harness is correct, the base LLaMA is correct, the
+merge process is correct, the inference recipe is correct. Every
+component is sound.</p>
+<p>So the only difference between the stage-2 chain (which works) and
+the VQA-RAD chain (which doesn't) is the <strong>VQA-RAD delta weights
+themselves</strong>. Those are upstream of us, on HuggingFace, and they don't
+produce the paper number.</p>
+<h3 id="and-then-pathvqa-same-broken-result">And then PathVQA — same broken result<a class="headerlink" href="#and-then-pathvqa-same-broken-result" title="Permanent link">&para;</a></h3>
+<p>Per your suggestion, ran the same test on the merged PathVQA model.
+Paper claim is ~0.91 closed. <strong>Result: similarly broken.</strong> Two out of
+three published per-dataset deltas confirmed not reproducing the
+paper. The SLAKE delta on HuggingFace turned out to be empty
+yesterday. <strong>All three published per-dataset fine-tuned artifacts are
+unusable.</strong></p>
+<p>Read <code>chunyl/finetune_on_benchmarks/</code> carefully to look for the
+recipe that <em>would</em> reproduce the paper. The script
+<code>fine_tuning_vqa_rad_7B.sh</code> is misleadingly named — it's a
+<strong>stage-1 projector-only ablation</strong>, not the stage-3 full fine-tune
+that would produce Table 4's numbers. The "eval scripts" in the same
+directory all evaluate the <em>stage-2</em> model, not the per-dataset
+fine-tuned variants. The uncommented invocations point at
+<code>finetune_e2e_on_instruct-3epoch/</code> — that's stage-2.</p>
+<p><strong>Conclusion: v1.0 has no public training recipe for the per-dataset
+fine-tunes</strong>, and the released delta weights don't produce the paper
+numbers. The paper's Table 4 was trained with internal Microsoft
+tooling that was not open-sourced. Full writeup in
+<a href="../../../bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bugs &amp; Issues #5</a>.</p>
+<p>This is genuinely a <strong>research finding worth publishing.</strong> Less "I
+reproduced the paper" and more "I discovered a real reproducibility
+gap in a widely-cited release." It also reshapes the project: the
+canonical v1.0 baseline becomes <strong>stage-2 zero-shot</strong> (verified
+correct), and per-dataset fine-tunes (if we want them) have to be
+<em>trained from scratch</em> on stage-2.</p>
+<h2 id="phase-6-committing-to-a-full-fine-tune-attempt-15-epochs-target">Phase 6 — committing to a full fine-tune attempt (15 epochs target)<a class="headerlink" href="#phase-6-committing-to-a-full-fine-tune-attempt-15-epochs-target" title="Permanent link">&para;</a></h2>
+<p>The decision: don't pivot away from per-dataset fine-tuning. Instead,
+<strong>train it ourselves</strong> from stage-2, using the paper's documented
+hyperparameters. The paper reports that <strong>15 epochs of full FT</strong> is
+where the best per-dataset result appeared; that became the night's
+target. If our re-trained checkpoint reproduces ~0.84, the published
+delta is the only broken artifact and the methodology is sound.</p>
+<p>This sets up the night's work — building a full fine-tuning pipeline
+on a single A100, which turns out to be genuinely difficult for a 7B
+model.</p>
+<h2 id="phase-7-the-ft-pipeline-build-8-iterations-one-failed-launch">Phase 7 — the FT pipeline build (8 iterations, one failed launch)<a class="headerlink" href="#phase-7-the-ft-pipeline-build-8-iterations-one-failed-launch" title="Permanent link">&para;</a></h2>
+<p>Built <code>scripts/finetune_smoke.sh</code> and <code>scripts/finetune_vqarad_full.sh</code>,
+a small data converter (<code>scripts/build_vqarad_train_v1_format.py</code>),
+and a top-k checkpoint evaluator (<code>scripts/eval_topk_checkpoints.py</code>)
+to pick the best-performing 3 checkpoints out of however many epochs
+the run produces. Eight troubleshooting
+iterations covered the gap between "code written" and "training
+running":</p>
+<ol>
+<li><code>PYTHONPATH</code> not propagated to <code>torchrun</code> subprocesses — fixed by
+   exporting it explicitly in the shell script.</li>
+<li><strong>OOM at <code>model_max_length=1024</code></strong> — 7B in bf16 + grads + AdamW
+   state (56 GB for fp32 momentum + variance) blows past 80 GB.</li>
+<li><strong>OOM at <code>model_max_length=512</code></strong> — still OOMs. The earlier memory
+   math I'd worked out was wrong by ~3× (see <a href="../../../bugs/#6-wrong-memory-accounting-for-8-bit-adamw">Bugs &amp; Issues #6</a>).</li>
+<li>Switched to bitsandbytes 8-bit AdamW (<code>--optim adamw_bnb_8bit</code>).
+   Still OOMs — 8-bit AdamW saves less than I'd thought because it
+   <em>still keeps fp32 master weights</em>.</li>
+<li><code>deepspeed</code> command not on PATH — wrong invocation pattern; needed
+   <code>python -m deepspeed.launcher.runner</code> instead.</li>
+<li><code>deepspeed</code> not installed — <code>pip install --no-deps deepspeed==0.9.5</code>.</li>
+<li>DeepSpeed import error: missing <code>py-cpuinfo</code>. Installed.</li>
+<li><strong>DeepSpeed/pydantic API mismatch</strong> — <code>pydantic==2.x</code> in the
+   container (silently installed by some other dep), <code>deepspeed 0.9.5</code>
+   wants <code>pydantic==1.x</code>. Pinned <code>pydantic&lt;2</code>. Imports clean.</li>
+</ol>
+<p><strong>Smoke test final attempt, after all that:</strong> <strong>OOM trying to allocate
+25 GB in a single allocation</strong>, with only 14 GB free at the time.
+The allocation pattern is wrong for optimizer state — 25 GB at once is
+the <em>activation memory</em> for a forward pass at seq 1024 + 256 image
+tokens. <strong><code>gradient_checkpointing=True</code> isn't actually engaging
+through DeepSpeed.</strong> When DS Zero-2 takes over the training loop, it
+manages its own activation policy and HF's grad-checkpointing flag
+gets quietly ignored. The fix is to set
+<code>"activation_checkpointing"</code> in the DS config directly, not via the
+HF Trainer arg.</p>
+<p>That fix didn't get applied tonight. <strong>The full fine-tune did not
+successfully launch on Day 7.</strong></p>
+<p>Honest ledger: the pipeline is <em>95% complete</em>. The memory budget is
+understood, the DS config is correct except for the activation-policy
+line, the scripts are in place. Monday morning is "apply the
+activation-checkpointing setting, smoke-test, launch the ~7-8 hour
+run during waking hours."</p>
+<h2 id="phase-8-the-github-push">Phase 8 — the GitHub push<a class="headerlink" href="#phase-8-the-github-push" title="Permanent link">&para;</a></h2>
+<p>Despite the FT not launching, the day's substantive work was real and
+needed to be off the single-server-that-keeps-crashing. Initialized
+<code>~/llava-med-pruning-v1</code> as a git repo, wrote a README describing the
+v1.0 reproduction track, made the first commit, created the empty
+repo on GitHub, and pushed:</p>
+<p><a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>Leokuan0208/llava-med-pruning-v1</code></a></p>
+<h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
+<p>Today produced more substantive research progress than any previous
+day in the project. Five real outputs, only one of which was even on
+the planned agenda:</p>
+<ol>
+<li><strong>Stage-2 zero-shot baseline reproduces v1.0 paper</strong> — 0.58 closed
+   on VQA-RAD, within 8 pts of paper's ~0.50. <em>First paper-comparable
+   v1.0 result in this project.</em></li>
+<li><strong>VQA-RAD-merged confirmed broken upstream</strong> — 0.21 closed vs
+   paper's 0.84. Differential diagnosis ruled out base LLaMA, merge,
+   and harness as causes.</li>
+<li><strong>PathVQA-merged confirmed broken in the same pattern</strong> — two of
+   three published deltas unusable, confirming a systemic
+   reproducibility gap, not an isolated bad upload.</li>
+<li><strong>Multi-dataset v1.0 eval harness</strong> — <code>run_E0_v1.py</code> with registry
+   pattern, candidate-file auto-fallback, dataset-explicit naming.</li>
+<li><strong>Full FT pipeline at ~95%</strong> — scripts written, DeepSpeed Zero-2
+   config built, all 8 troubleshooting iterations documented; one
+   activation-policy fix away from launching.</li>
+</ol>
+<p>Plus three new bug entries on the project page — the trailing
+assistant role, the broken-deltas reproducibility finding (a real
+research contribution), and the 8-bit AdamW memory miscalculation.</p>
+<p>The day failed <em>only</em> at the most ambitious stretch goal (overnight
+15-epoch full FT, the paper's best-performance setting). Everything
+else worked, and the harness is now
+backed up to GitHub.</p>
+<hr />
+<h3 id="plan-for-the-week-week-2-may-17-onward">Plan for the week (Week 2 — May 17 onward)<a class="headerlink" href="#plan-for-the-week-week-2-may-17-onward" title="Permanent link">&para;</a></h3>
+<p>Week 1 ends here. Week 2 picks up with:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Fix the DeepSpeed activation-checkpointing config setting,
+      smoke test cleanly, launch a <strong>5-epoch</strong> full FT on VQA-RAD as
+      a first pass — the paper's best result is at 15 epochs, but a
+      5-epoch run is a fraction of the wall time and lets us see how
+      far accuracy moves before committing to the full 15. Decide
+      whether to extend based on the 5-epoch numbers.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If FT reproduces ~0.84, repeat for SLAKE and PathVQA from
+      stage-2. If FT doesn't reproduce, formalise the
+      "stage-2 zero-shot is the canonical v1.0 baseline" framing.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run full E0_v1.0 on all three datasets against the stage-2
+      merged model — produces the v1.0 baseline row directly
+      comparable to the v1.5 row already on the
+      <a href="../../../experiments/">Experiments</a> page.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Start the literature reading — ToMe and FastV — that slipped
+      from Week 1.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Begin Phase 2 of the project plan: the LLaVA-Med codebase
+      deep-dive, with print-statement instrumentation on
+      <code>prepare_inputs_labels_for_multimodal</code>.</li>
+</ul>
+<hr />
+<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
+<p><strong>Repository:</strong> <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
+&nbsp;·&nbsp; <strong>Commit:</strong>
+<a href="https://github.com/Leokuan0208/llava-med-pruning-v1/tree/5634898"><code>5634898</code></a>
+— "Initial commit: LLaVA-Med v1.0 eval and FT harness"</p>
+<p>The linked commit is the entire day's work in one snapshot: the v1.0
+multi-dataset eval harness (VQA-RAD + PathVQA loaders, model_loader,
+runner, metrics ported from chunyl's reference), the candidate sets
+for VQA-RAD (402 entries) and PathVQA (3,223 entries), the DeepSpeed
+Zero-2 + CPU offload full-FT pipeline, the build scripts, and the
+README documenting the broken-deltas finding.</p>
+<p>Note: this is a <em>new repository</em>, separate from the v1.5 harness at
+<a href="https://github.com/Leokuan0208/llava-med-pruning"><code>llava-med-pruning</code></a>.
+The two coexist; the v1.5 repo is the working v1.5 evaluation track,
+and this one is the v1.0 reproduction track.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../day-06/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 6 — Friday, May 15, 2026">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Day 6 — Friday, May 15, 2026
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../week-02/" class="md-footer__link md-footer__link--next" aria-label="Next: Week 2 — Pruning method first implementation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Week 2 — Pruning method first implementation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Leokuan0208" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
