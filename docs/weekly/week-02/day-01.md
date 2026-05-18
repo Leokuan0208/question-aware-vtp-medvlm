@@ -223,16 +223,21 @@ Pulling together everything from Phases 1-7:
 
 ## Phase 8.5 — Paper Table 4 vs our reproduction (consolidated)
 
-The numerical version of the verdict, side-by-side. The paper's
-Table 4 caption is unambiguous on the metric: *"For open-set
-questions, we report the recall for our free-form text generation
-method in column Open. For closed-set questions, we report the
-accuracy."* So the comparison is closed-accuracy vs our
+The numerical version of the verdict, side-by-side.
+
+### Note on the "Open" metric
+
+The paper's Table 4 caption is unambiguous on the metric: *"For
+open-set questions, we report the recall for our free-form text
+generation method in column Open. For closed-set questions, we report
+the accuracy."* So the comparison is closed-accuracy vs our
 `closed_yes_no_accuracy`, and open-recall vs our `open_recall`. This
-metric definition discovery was itself a Day 8 finding — multiple
+metric-definition discovery was itself a Day 8 finding — multiple
 earlier days' analyses assumed the paper's "Open" column was
 candidate-set argmax accuracy, which would have shown a much larger
 (false) gap.
+
+### The unified comparison table
 
 The single unified table below collapses all the project's reproduction
 and pruning data into one place. The three configs (stage-2 zero-shot,
@@ -318,7 +323,7 @@ Both pruned rows are currently slower than baseline due to hook
 overhead dominating at low pruning ratios; speedup is expected to
 emerge at kr ≤ 0.5.*
 
-### What the table actually shows
+### Reading the table
 
 Reading down the table, the project's reproduction state is:
 
@@ -343,6 +348,8 @@ Reading down the table, the project's reproduction state is:
   at the same ratio stays within noise of baseline (56.99). The
   qsim-vs-random gap is +3.3 pts; whether it survives at higher
   pruning ratios is the Day 9 question.
+
+### How this reframes Day 7
 
 This is a much more defensible reproduction story than "all the
 deltas are broken." The Day 9 priority becomes "find the closed-set
