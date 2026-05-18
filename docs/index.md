@@ -36,7 +36,9 @@ and 12-week plan.
 ## Where I am right now
 
 <span class="pill pill--wip">In progress</span> &nbsp;
-**Phase 1, Week 1 — Baseline setup.**
+**Phase 1, Week 2 — Baseline profiling & literature.** Week 1 closed
+out May 16; full ledger on the
+[Week 1 overview](weekly/week-01/index.md#end-of-week-status).
 
 - [x] Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)
 - [x] Stack sanity check (PyTorch, transformers, accelerate, flash-attn)
@@ -83,20 +85,61 @@ and 12-week plan.
       successfully merged the VQA-RAD delta (~13 GB merged model),
       wrote v1.0's hand-rolled `model_loader.py`
       → [Week 1, Day 6](weekly/week-01/day-06.md#the-strategic-pivot-switching-to-llava-med-v10)
-- [ ] Bring up a new container from the v1.0 Dockerfile (today's env
-      battle convinced us that in-place pip patching is too risky)
-- [ ] Finish v1.0 harness adaptations — `metrics.py` (candidate-set
-      argmax), `runner.py` (v1.0 prompt + stop criteria), the
-      candidate-set builder
-- [ ] Run E00 against the merged VQA-RAD-fine-tuned model — the real
-      v1.0 baseline, directly comparable to the ~0.84 published figure
-- [ ] Investigate the missing SLAKE delta on HuggingFace (the
-      `katielink/llava-med-7b-slake-delta` repo was empty)
+- [x] Rebuilt the v1.0 environment cleanly via Dockerfile and finished
+      the v1.0 harness — pushed to
+      [`Leokuan0208/llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1)
+- [x] **v1.0 stage-2 zero-shot baseline reproduces the paper** —
+      0.58 closed on VQA-RAD, within 8 pts of paper's stage-2 row
+      (~0.50). First paper-comparable v1.0 result in this project.
+- [x] Day 7 finding "all three v1.0 deltas broken" recorded; **revised
+      May 17** after rebuilding the reproduction tables — see below.
+- [x] **Week 1 complete.** Full ledger on the
+      [Week 1 overview](weekly/week-01/index.md#end-of-week-status).
+- [x] DeepSpeed activation-checkpointing fixed (Day 7 carry-over)
+- [x] **5-epoch VQA-RAD full FT completed** — closed 0.570 vs stage-2
+      zero-shot 0.580. **Memorization without generalization** (loss
+      1.13 → 0.004). Stage-2 zero-shot adopted as the canonical
+      v1.0 baseline.
+- [x] **v1.0 baseline row extended to all three datasets** —
+      cross-validated via Baron-GG: VQA-RAD 0.577, SLAKE 0.488,
+      PathVQA 0.556 (closed).
+- [x] **Reproduction tables consolidated** — open-recall reproduces
+      paper to within ±1.5 pts across all configs/datasets;
+      closed-accuracy reproduces on stage-2 (±4 pts) but has a
+      31-63 pt gap on FT-merged models. The gap is almost certainly
+      a closed-set scoring-recipe issue (likely `--answer-prompter`),
+      not broken weights. Full tables on the
+      [Experiments page](experiments.md#on-the-v10-reproduction-track)
+      and [Week 2, Day 1](weekly/week-02/day-01.md#phase-85-paper-table-4-vs-our-reproduction-consolidated).
+- [x] **SLAKE pipeline completed** — loader wired into runner
+      registry; 216-entry candidate set built.
+- [x] **First working visual-token pruning method** — in-LLM pruning
+      with 32-layer hook architecture + decode-step mask
+      coordination; smoke-tested with random and qsim methods at
+      kr=0.5
+      → [Week 2, Day 1](weekly/week-02/day-01.md#phase-12-the-decode-step-debugging-saga-5-iterations)
+- [x] **First ablation result at kr=0.75 in** — on VQA-RAD,
+      question-similarity pruning scored 60.29 closed vs random
+      pruning's 56.99 (+3.30 pts) and vs the unpruned baseline's
+      57.72 (+2.57 pts). First positive datapoint on the project's
+      central thesis; needs the full Pareto curve to confirm.
+      → [Week 2, Day 1, Phase 14](weekly/week-02/day-01.md#phase-14-kr075-ablation-result-question-aware-pruning-beats-baseline)
+- [ ] Run the remaining ablation ratios (kr ∈ 0.50, 0.25, 0.10) on
+      VQA-RAD to fill out the Pareto curve
+- [ ] Push Day 8's accumulated changes to
+      [`llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1)
+      (split into coherent commits)
+- [ ] Update [Bug #5](bugs.md#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible)
+      with the revised "VQA-RAD catastrophic, PathVQA degraded, SLAKE
+      missing" narrative
 - [ ] Finish reading visual-token-pruning literature (ToMe, FastV,
-      SparseVLM, GAP)
-- [ ] Draft Week 2 plan
+      SparseVLM, GAP) — slipped five days
+- [ ] Begin Phase 2 of the project plan: codebase deep-dive with
+      print-statement instrumentation on
+      `prepare_inputs_labels_for_multimodal`
 
-See the [Week 1 log](weekly/week-01/index.md) for daily notes.
+See the [Week 1 log](weekly/week-01/index.md) and
+[Week 2 log](weekly/week-02/index.md) for daily notes.
 
 ## How this site is organised
 

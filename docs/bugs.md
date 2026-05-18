@@ -8,6 +8,291 @@ what hypotheses were eliminated, not just the answer.
 
 ---
 
+---
+
+## #6 — Wrong memory accounting for 8-bit AdamW
+
+<span class="pill pill--done">Corrected</span>
+
+**Found** May 16, 2026 &nbsp; · &nbsp; **Severity** Low (analytical
+error, not a code bug — but it cost an iteration of fine-tuning
+setup) &nbsp; · &nbsp; **Upstream status** _n/a — my mistake, lesson
+logged_
+
+### What I observed
+
+While planning the 15-epoch VQA-RAD full fine-tune on a single 80 GB
+A100, I worked out the memory budget for full-FT 7B in bf16:
+
+- Parameters: 14 GB (7B × 2 bytes bf16)
+- Gradients: 14 GB
+- AdamW state (fp32 momentum + variance): 28 GB + 28 GB = **56 GB**
+- Activations + workspace: ~5-8 GB
+- **Total: ~89-92 GB → won't fit.**
+
+To bring it down, I switched the optimiser to `bitsandbytes` 8-bit
+AdamW (`--optim adamw_bnb_8bit`), claiming this would drop optimiser
+state from 56 GB to ~12 GB. The run OOM'd anyway.
+
+### Root cause (summary)
+
+**8-bit AdamW saves substantially less than I told myself it would.**
+`bitsandbytes.optim.AdamW8bit` quantises the first and second moments
+to 8-bit (saving 28 GB of the 56 GB I'd counted), but **still keeps
+fp32 master weights** (28 GB on its own — the optimiser holds an
+fp32 copy of the model parameters as the source of truth, updates
+those, and casts back to bf16 for the forward pass).
+
+Real savings: 56 GB → 28 GB (master) + 7 GB (8-bit momentum) + 7 GB
+(8-bit variance) = **42 GB**, not 12 GB. Net memory was therefore
+~75 GB, which is right at the 80 GB cliff and OOMs the moment any
+activation memory bumps up against it.
+
+### Fix (applied)
+
+The real fix for fitting 7B full-FT on 80 GB is **DeepSpeed Zero-2
+with bf16 master weights** — `"bf16_optimizer": true` in the DS
+config — which drops the master copy from 28 GB to 14 GB. That puts
+the total at ~56 GB, with comfortable headroom for activations and
+gradient checkpointing.
+
+Switched the pipeline to DeepSpeed Zero-2 and dropped the bnb
+8-bit AdamW (kept the package installed but the trainer no longer
+uses it). This is the standard recipe for single-GPU full-FT on a
+~7B model; should have been the first thing tried rather than the
+fifth iteration.
+
+### Notes / lessons
+
+- **bf16 master weights are the lever, not 8-bit optimiser quant.**
+  For full fine-tuning, the dominant cost is the master copy of
+  parameters held by the optimiser, not the momentum/variance state.
+  Halving master is worth more than 4× compressing the moments.
+- **`adamw_bnb_8bit` is more useful when paired with LoRA or other
+  parameter-efficient methods**, where the optimiser only updates a
+  small subset of parameters and master-weight cost is small.
+- **Sanity-check optimiser memory math** by reading the optimiser's
+  source. `bitsandbytes/optim/adamw.py` makes the fp32 master
+  explicit in a single line; ten minutes of reading would have saved
+  an iteration.
+
+### Upstream
+
+n/a — this was an analytical mistake on my end. No external bug.
+
+---
+
+## #5 — LLaVA-Med v1.0: published per-dataset fine-tuned deltas are not paper-reproducible
+
+<span class="pill pill--done">Documented finding</span>
+
+**Found** May 16, 2026 &nbsp; · &nbsp; **Severity** Critical
+(reproducibility gap in a widely-cited release) &nbsp; · &nbsp;
+**Upstream status** _Documented locally; consider filing on
+microsoft/LLaVA-Med after the FT-from-scratch attempt resolves
+the open question_
+
+### What I observed
+
+Microsoft's LLaVA-Med v1.0 release publishes three per-dataset
+fine-tuned delta weights on HuggingFace:
+
+- `microsoft/llava-med-7b-vqarad-delta`
+- `microsoft/llava-med-7b-slake-delta`
+- `microsoft/llava-med-7b-pathvqa-delta`
+
+The paper's Table 4 reports closed-form accuracy of ~0.84 (VQA-RAD),
+~0.83 (SLAKE), and ~0.91 (PathVQA) for these fine-tuned variants.
+
+After merging each delta with the documented base model (`huggyllama/llama-7b`,
+the canonical ungated mirror of LLaMA-1 7B that v1.0 was trained on)
+via `python -m llava.model.apply_delta` from the v1.0 repository,
+evaluating against each dataset's test split:
+
+- **VQA-RAD-merged** scored **0.21 closed** vs paper's ~0.84
+  (63-point gap).
+- **PathVQA-merged** scored similarly low (~0.20 closed) vs paper's
+  ~0.91 (a comparable ~70-point gap).
+- **SLAKE delta** is hosted as an *empty repository* on HuggingFace —
+  there are no weights to download (discovered May 15).
+
+In other words: **all three published per-dataset fine-tuned
+artifacts are unusable for reproducing the paper's headline numbers.**
+
+### Root cause (summary, by differential diagnosis)
+
+Suspects, eliminated one at a time:
+
+1. **The harness?** — Disproved by Suspect 4 below.
+2. **The base LLaMA?** — Disproved by Suspect 4.
+3. **The merge process?** — Disproved by Suspect 4.
+4. **The published delta itself?** — The remaining suspect.
+
+The decisive test was merging `microsoft/llava-med-7b-delta` (the
+*stage-2 instruction-tuned* checkpoint, *before* per-dataset
+fine-tuning) using the **same harness, the same base LLaMA, the same
+`apply_delta` process**, and evaluating against VQA-RAD test. Result:
+**0.58 closed**, within 8 pts of the paper's stage-2 zero-shot row
+(~0.50, well inside stochastic-decode variance).
+
+The stage-2 chain *works correctly*. Every component is sound. So the
+only thing that differs between the working chain and the broken
+chain is the per-dataset delta weights themselves. Those are
+upstream of us and do not produce the paper number.
+
+Reading `chunyl/finetune_on_benchmarks/` in the v1.0 repository for
+the recipe that *would* produce the paper number revealed:
+
+- **`fine_tuning_vqa_rad_7B.sh` is mislabeled.** Despite the name, it
+  configures a **stage-1 projector-only training ablation** (single
+  epoch, only the mm_projector trained, the LLM frozen). It's not
+  the stage-3 full fine-tune that produces Table 4's numbers.
+- **The "eval scripts" in the same directory all evaluate the
+  stage-2 model, not per-dataset fine-tuned variants.** The
+  uncommented `python llava/eval/model_vqa_med.py` invocations point
+  at paths ending in `finetune_e2e_on_instruct-3epoch/` — that's the
+  stage-2 checkpoint, not `vqa_rad-3epoch/` (which appears only in
+  *commented-out* lines).
+
+**The conclusion: the paper's Table 4 was produced by an internal
+Microsoft training pipeline that was not open-sourced.** The public
+release ships the stage-2 model + per-dataset deltas, but the deltas
+do not match the paper's checkpoints, and no public script reproduces
+them.
+
+### Fix (planned)
+
+Two paths forward, not mutually exclusive:
+
+1. **Train per-dataset fine-tunes from stage-2 ourselves.** The
+   paper documents the hyperparameters (15 epochs of full FT,
+   `lr=2e-5`, cosine schedule, `bf16`, etc.). If our re-trained
+   checkpoint reproduces ~0.84, we've confirmed the paper number is
+   real and the published delta is the only broken artifact —
+   pipeline built, smoke-test pending the DeepSpeed activation-policy
+   fix.
+2. **Adopt stage-2 zero-shot as the canonical v1.0 baseline.**
+   Verified-correct (0.58 closed on VQA-RAD matches paper's stage-2
+   row), available on HuggingFace, no fine-tuning required. Pruning
+   experiments measured against this give clean, reproducible
+   results.
+
+Path 1 is the ambitious option; Path 2 is the certain option. The
+project will pursue Path 1 as a Week-2 experiment; if it doesn't
+reproduce, Path 2 becomes the canonical baseline.
+
+### Notes / lessons
+
+- **Reproduction-by-merge is a single point of failure.** A
+  published delta with a single bit flipped is indistinguishable
+  from a correctly published one until you actually run inference and
+  check the number. Differential diagnosis (same chain, two
+  endpoints, one known target) is the cheapest way to localise the
+  fault.
+- **"Eval scripts in the official repo" don't necessarily evaluate
+  the model the paper reports on.** chunyl's eval scripts evaluate
+  *stage-2*, not the per-dataset fine-tuned model that Table 4
+  refers to. Always cross-check what an "official eval" actually
+  loads.
+- **This finding has citation value.** Any future paper or report
+  comparing against LLaVA-Med v1.0's fine-tuned numbers should be
+  aware that the published artifacts don't reproduce them. The
+  comparison target literally doesn't exist as a downloadable file.
+
+### Upstream
+
+Considering filing as an issue on `microsoft/LLaVA-Med` after the
+FT-from-scratch attempt finishes — if our re-trained checkpoint
+reproduces, we have a clean question to ask Microsoft (*"these
+deltas don't match your paper's numbers, here's what does"*). If our
+re-train also fails to reproduce, the question becomes *"what
+recipe actually produced Table 4?"*, which is a harder issue to
+file but a more important one.
+
+- [ ] Issue filed on microsoft/LLaVA-Med
+- [ ] Microsoft response received
+
+---
+
+## #4 — LLaVA-Med v1.0's `model_vqa_med.py` missing trailing assistant role
+
+<span class="pill pill--done">Patched locally</span>
+
+**Found** May 16, 2026 &nbsp; · &nbsp; **Severity** Moderate (without
+the fix, every prediction is structurally broken) &nbsp; · &nbsp;
+**Upstream status** _Patched locally; will file when the more
+substantial v1.0 findings are also ready_
+
+### What I observed
+
+When running v1.0's `model_vqa_med.py` against the merged VQA-RAD
+checkpoint, every prediction started literally with the word
+**`"Assistant:"`** and frequently looped back into another
+`"Human:"` turn before stopping. Examples:
+
+```
+Q: is there evidence of an aortic aneurysm?
+Pred: Assistant: There is no evidence of an aortic aneurysm. Human: is there any...
+```
+
+The structural breakage made closed-question matching essentially
+useless — the metric saw a hallucinated multi-turn dialogue, not an
+answer.
+
+### Root cause (summary)
+
+In `llava/eval/model_vqa_med.py`'s prompt construction, the v1.0
+conversation template builds a multi-turn `Human: ... Assistant: ...`
+sequence — but the reference code **does not append the trailing
+`Assistant:` role** to the prompt before generation. So the model
+sees a prompt ending in the user's question, and dutifully *completes
+as if it were the user*: it generates `Assistant: <answer>` (literally
+writing the role label), then continues into another `Human:` turn
+because that's the multi-turn pattern it was trained on.
+
+The fix is one line in the prompt-construction path: ensure the
+prompt ends with `"Assistant:"` (without trailing whitespace, which
+the conversation template handles) before being passed to `generate()`.
+
+### Fix (applied locally)
+
+In `eval/runner.py`'s `_build_prompt` function, append the assistant
+role explicitly after the user turn:
+
+```python
+conv.append_message(conv.roles[0], question_with_image_tokens)
+conv.append_message(conv.roles[1], None)   # trailing assistant role
+prompt = conv.get_prompt()
+```
+
+After the fix, predictions are coherent answers without the
+`"Assistant:"` literal prefix, and don't loop into a hallucinated
+second turn:
+
+```
+Q: is there evidence of an aortic aneurysm?
+Pred: There is no evidence of an aortic aneurysm
+```
+
+### Notes
+
+- The v1.5 (Mistral) conversation template handles this implicitly —
+  `mistral_instruct` ends with the assistant turn marker by design.
+  v1.0's `simple` template doesn't, which is the reason this affects
+  v1.0 only.
+- Every published v1.0 evaluation script in `llava/eval/` that uses
+  the `simple` conv template has this same omission. Anyone
+  reproducing v1.0 zero-shot evals from the public scripts will hit
+  the same bug — it's repository-wide.
+
+### Upstream
+
+- [ ] Issue filed on microsoft/LLaVA-Med
+- [ ] PR opened
+- [ ] Merged
+
+---
+
 ## #3 — VQA-RAD HuggingFace mirror dropped the `answer_type` field; loader heuristic mislabels closed questions
 
 <span class="pill pill--done">Fixed & verified</span>

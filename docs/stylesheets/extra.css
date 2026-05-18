@@ -284,3 +284,81 @@ body,
 .pill--planned { background: transparent;
                  color: var(--md-default-fg-color--light);
                  border: 1px solid var(--md-default-fg-color--lightest); }
+
+/* ---- Reproduction comparison table cell colors ------------------------- */
+/* Used in the "paper vs ours" comparison table on the Experiments page and
+   on Week 2, Day 1. Color encodes proximity to comparator (paper for non-
+   pruning rows, our stage-2 baseline for pruning rows).                    */
+
+.cell-good   { color: #2ea043; font-weight: 600; }  /* within 3 pts */
+.cell-warn   { color: #d99a3d; font-weight: 600; }  /* 3-10 pts */
+.cell-bad    { color: #f85149; font-weight: 600; }  /* over 10 pts */
+.cell-beats  { color: #a371f7; font-weight: 600; }  /* beats stage-2 baseline */
+
+/* Legend dots in the table caption */
+.legend-dot {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  vertical-align: -0.05em;
+  margin-right: 0.3em;
+}
+.legend-dot--good  { background: #2ea043; }
+.legend-dot--warn  { background: #d99a3d; }
+.legend-dot--bad   { background: #f85149; }
+.legend-dot--beats { background: #a371f7; }
+
+/* Comparison-table layout */
+.comparison-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;  /* momentum scroll on iOS */
+  margin: 1rem 0;
+}
+.comparison-table {
+  width: 100%;
+  min-width: 880px;            /* forces horizontal scroll on narrow viewports */
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  margin: 0;
+}
+.comparison-table th,
+.comparison-table td {
+  padding: 8px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+.comparison-table th {
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+  vertical-align: bottom;
+  line-height: 1.3;
+}
+.comparison-table th.config-header,
+.comparison-table td.config-cell {
+  text-align: left;
+  font-weight: 600;
+}
+.comparison-table td.config-cell {
+  font-weight: 500;
+}
+.comparison-table tr.section-break td {
+  padding-top: 0.6em;
+  border-top: 1px solid var(--md-default-fg-color--lighter);
+  font-style: italic;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.75rem;
+}
+.comparison-table td.na-cell {
+  text-align: center;
+  font-style: italic;
+  color: var(--md-default-fg-color--light);
+}
+.comparison-table .legend {
+  font-size: 0.74rem;
+  margin-bottom: 0.5em;
+  color: var(--md-default-fg-color--light);
+}
+.comparison-table .legend span + span {
+  margin-left: 1em;
+}
