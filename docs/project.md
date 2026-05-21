@@ -2,7 +2,7 @@
 
 ## Title
 
-**Question-Aware Visual Token Pruning for Medical VLMs.**
+<p class="project-title">Question-Aware Visual Token Pruning for Medical VLMs.</p>
 
 ## People
 
@@ -62,37 +62,63 @@ whether the shape of the trade-off actually looks like this.
 
 ## Related work (skim list — to read properly in Week 1–2)
 
-| Work | What it does | Why it's relevant |
-| ---- | ------------ | ----------------- |
-| LLaVA-Med (Li et al., 2023) | Medical instruction-tuned VLM | Our baseline |
-| ToMe (Bolya et al., ICLR 2023) | Token merging in ViTs | Pruning at the vision encoder level |
-| FastV (Chen et al., ECCV 2024) | Drops visual tokens inside the LM after early layers | Closest prior art for question-agnostic VLM pruning |
-| PruMerge (Shang et al., 2024) | Adaptive visual token reduction | Another VLM-side pruning approach |
-| SparseVLM (2024) | Text-aware visual token pruning | Question-aware angle in general VLMs |
-| GAP — Grounding-Aware Pruning | Position-ID fix after token drop | Critical correction for RoPE models |
-| _Add as you read._ |  |  |
+| Paper | Authors | Venue | Institution(s) | Why it's relevant |
+| ----- | ------- | ----- | -------------- | ----------------- |
+| [LLaVA-Med: Training a Large Language-and-Vision Assistant for Biomedicine in One Day](https://proceedings.neurips.cc/paper_files/paper/2023/hash/5abcdf8ecdcacba028c6662789194572-Abstract-Datasets_and_Benchmarks.html) | Li, Wong, Zhang et al. | NeurIPS 2023 (Datasets & Benchmarks, Spotlight) | Microsoft Research | Our baseline — medical instruction-tuned VLM |
+| [Token Merging: Your ViT But Faster (ToMe)](https://openreview.net/forum?id=JroZRaRw7Eu) | Bolya et al. | ICLR 2023 (notable top-5%) | Georgia Tech, Meta AI | Classic ViT-side token reduction; question-agnostic |
+| [An Image is Worth 1/2 Tokens After Layer 2 (FastV)](https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/10478.pdf) | Chen et al. | ECCV 2024 (Oral, top-2%) | Peking University, Alibaba Group | Closest prior art — drops visual tokens inside the LM after early layers |
+| [LLaVA-PruMerge: Adaptive Token Reduction for Efficient Large Multimodal Models](https://openaccess.thecvf.com/content/ICCV2025/html/Shang_LLaVA-PruMerge_Adaptive_Token_Reduction_for_Efficient_Large_Multimodal_Models_ICCV_2025_paper.html) | Shang et al. | ICCV 2025 | UCF, UW-Madison, USC, UIC | Adaptive token reduction conditioned on visual-encoder sparsity |
+| [SparseVLM: Visual Token Sparsification for Efficient VLM Inference](https://openreview.net/forum?id=80faIPZ67S) | Y. Zhang et al. | ICML 2025 (poster) | Peking University, Fudan, UC Berkeley, Panasonic | **Text-aware** visual token pruning in general VLMs — closest in spirit to our "question-aware" angle |
+| [Grounding-Aware Token Pruning (GAP)](https://arxiv.org/abs/2506.21873) | Chien et al. | arXiv 2025 (preprint) | National Tsing Hua University | Position-ID re-alignment fix after token drop — critical correction for RoPE-based VLMs |
+| [MedPruner: Training-Free Hierarchical Token Pruning for Efficient 3D Medical Image Understanding in VLMs](https://arxiv.org/abs/2603.11625) | Liu et al. | arXiv 2026 (preprint) | CUHK, Westlake University (+ collaborators) | Closest medical-domain prior art; 3D-focused but uses attention-based selection in a Medical VLM |
+| _Add as you read._ |  |  |  |  |
 
 The key gap: most prior work prunes tokens **without** reference to the
-question — they're question-agnostic. Our angle is making pruning
-question-aware *in the medical domain*, where the question encodes
-strong spatial priors (anatomy + finding type).
+question — they're question-agnostic. SparseVLM is the closest existing
+work to question-awareness, but operates on general VLMs. Our angle is
+making pruning question-aware *in the medical domain*, where the
+question encodes strong spatial priors (anatomy + finding type).
 
 ## Approach (sketch)
 
 ```mermaid
 flowchart LR
-  IMG[Input image] --> VE[Vision encoder<br/>CLIP ViT-L/14]
-  VE --> VT[256 visual tokens]
-  Q[Question text] --> TOK[Tokenize + embed<br/>via LM input embedding]
-  VT --> PROJ[Projector<br/>Linear 1024→4096]
-  PROJ --> EMB[Inject visual tokens<br/>between im_start / im_end]
+  IMG["Input image"]
+  Q["Question text"]
+
+  subgraph VIS["Vision branch"]
+    direction TB
+    VE["Vision encoder<br/>CLIP ViT-L/14"]
+    VT["256 visual tokens"]
+    PROJ["Projector<br/>Linear 1024 → 4096"]
+    VE --> VT --> PROJ
+  end
+
+  subgraph TXT["Text branch"]
+    direction TB
+    TOK["Tokenize + embed<br/>(LM input embedding)"]
+  end
+
+  EMB["Inject visual tokens<br/>between im_start / im_end"]
+
+  subgraph LLM["LLaMA decoder (32 layers)"]
+    direction TB
+    L0["Layer 0<br/>+ pruning hook"]
+    SCORE["Score visual tokens<br/>cosine sim vs question"]
+    KEEP["Keep top-K<br/>(original spatial order)"]
+    L1["Layers 1–31<br/>+ attention-mask slice"]
+    L0 --> SCORE --> KEEP --> L1
+  end
+
+  ANS["Answer"]
+
+  IMG --> VE
+  Q --> TOK
+  PROJ --> EMB
   TOK --> EMB
-  EMB --> L0[Layer 0 of LLaMA<br/>+ pruning hook]
-  TOK -.->|question vector<br/>for scoring| L0
-  L0 --> SCORE[Score visual tokens<br/>cosine sim vs question]
-  SCORE --> KEEP[Top-K kept<br/>in original order]
-  KEEP --> L1[Layers 1-31<br/>+ attention_mask slice]
-  L1 --> ANS[Answer]
+  EMB --> L0
+  TOK -. "question vector<br/>for scoring" .-> SCORE
+  L1 --> ANS
 ```
 
 The pruning logic is the new component; everything else is reused
