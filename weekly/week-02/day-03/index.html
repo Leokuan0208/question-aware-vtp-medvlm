@@ -12,22 +12,28 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-02/day-03/">
       
       
+        <link rel="prev" href="../day-02/">
       
-      <link rel="icon" href="/question-aware-vtp-medvlm/assets/images/favicon.png">
+      
+        <link rel="next" href="../day-04/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Day 3 — Tuesday, May 19, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
       
     
     
-      <link rel="stylesheet" href="/question-aware-vtp-medvlm/assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="/question-aware-vtp-medvlm/assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,9 +52,9 @@
       
     
     
-      <link rel="stylesheet" href="/question-aware-vtp-medvlm/stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("/question-aware-vtp-medvlm/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -73,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#day-3-tuesday-may-19-2026" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -83,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/question-aware-vtp-medvlm/." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -103,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Day 3 — Tuesday, May 19, 2026
             
           </span>
         </div>
@@ -212,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
     
@@ -229,7 +240,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/project/" class="md-tabs__link">
+      <a href="../../../project/" class="md-tabs__link">
         
   
     
@@ -246,7 +257,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/setup/" class="md-tabs__link">
+      <a href="../../../setup/" class="md-tabs__link">
         
   
     
@@ -263,7 +274,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/experiments/" class="md-tabs__link">
+      <a href="../../../experiments/" class="md-tabs__link">
         
   
     
@@ -278,11 +289,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/question-aware-vtp-medvlm/weekly/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
     
@@ -300,7 +313,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/bugs/" class="md-tabs__link">
+      <a href="../../../bugs/" class="md-tabs__link">
         
   
     
@@ -317,7 +330,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/resources/" class="md-tabs__link">
+      <a href="../../../resources/" class="md-tabs__link">
         
   
     
@@ -351,7 +364,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/question-aware-vtp-medvlm/." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -381,7 +394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -401,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/project/" class="md-nav__link">
+      <a href="../../../project/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -421,7 +434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/setup/" class="md-nav__link">
+      <a href="../../../setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -441,7 +454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/experiments/" class="md-nav__link">
+      <a href="../../../experiments/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -458,6 +471,8 @@
       
   
   
+    
+  
   
   
     
@@ -474,19 +489,22 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="/question-aware-vtp-medvlm/weekly/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -497,13 +515,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Weekly Log
@@ -554,7 +572,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="/question-aware-vtp-medvlm/weekly/week-01/" class="md-nav__link ">
+            <a href="../../week-01/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -587,7 +605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-01/" class="md-nav__link">
+      <a href="../../week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -608,7 +626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-02/" class="md-nav__link">
+      <a href="../../week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -629,7 +647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-03/" class="md-nav__link">
+      <a href="../../week-01/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -650,7 +668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-04/" class="md-nav__link">
+      <a href="../../week-01/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -671,7 +689,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-05/" class="md-nav__link">
+      <a href="../../week-01/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -692,7 +710,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-06/" class="md-nav__link">
+      <a href="../../week-01/day-06/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -713,7 +731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-07/" class="md-nav__link">
+      <a href="../../week-01/day-07/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -739,6 +757,8 @@
                 
   
   
+    
+  
   
   
     
@@ -762,16 +782,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="/question-aware-vtp-medvlm/weekly/week-02/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -788,7 +808,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_3">
             <span class="md-nav__icon md-icon"></span>
             Week 2
@@ -804,7 +824,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-02/day-01/" class="md-nav__link">
+      <a href="../day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -825,7 +845,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-02/day-02/" class="md-nav__link">
+      <a href="../day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -843,10 +863,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-02/day-03/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 19, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -855,6 +895,86 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-fastv-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What FastV does
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-i-cared-about-this-paper-specifically" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why I cared about this paper specifically
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#takeaways-relevant-to-our-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Takeaways relevant to our method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes-added-to-resourcesmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes added to resources.md
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Notes added to resources.md">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -867,7 +987,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-02/day-04/" class="md-nav__link">
+      <a href="../day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -903,7 +1023,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/bugs/" class="md-nav__link">
+      <a href="../../../bugs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -923,7 +1043,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/resources/" class="md-nav__link">
+      <a href="../../../resources/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -953,6 +1073,76 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-fastv-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What FastV does
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-i-cared-about-this-paper-specifically" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why I cared about this paper specifically
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#takeaways-relevant-to-our-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Takeaways relevant to our method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes-added-to-resourcesmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes added to resources.md
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Notes added to resources.md">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -964,8 +1154,112 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+  
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-02/day-03.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="day-3-tuesday-may-19-2026">Day 3 — Tuesday, May 19, 2026<a class="headerlink" href="#day-3-tuesday-may-19-2026" title="Permanent link">&para;</a></h1>
+<p><a href="../">← Back to Week 2 overview</a></p>
+<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature) · Week 2, Day 3 · <strong>Day 10
+of the project</strong></p>
+<hr />
+<p>Travel day. No coding — read <strong>FastV</strong> end-to-end on the plane.</p>
+<h2 id="what-fastv-does">What FastV does<a class="headerlink" href="#what-fastv-does" title="Permanent link">&para;</a></h2>
+<p>Chen et al., <em>"An Image is Worth 1/2 Tokens After Layer 2,"</em> ECCV
+2024 (Oral, top-2%).
+<a href="https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/10478.pdf">ECVA PDF</a>
+· <a href="https://arxiv.org/abs/2403.06764">arXiv:2403.06764</a></p>
+<p>Training-free visual-token pruning for VLMs. The core observation:
+<strong>inside the LLM, after the first 1-2 decoder layers, attention from
+generated tokens to visual tokens collapses dramatically</strong> — most
+visual tokens receive negligible attention from then on. So you can
+identify which visual tokens <em>will</em> be ignored and drop them after
+layer K (typically K=2-3 for LLaVA-1.5) with minimal accuracy loss.
+The selection is done by averaging attention weights from all
+non-visual tokens to each visual token at layer K, and keeping the
+top-K' by attention.</p>
+<h2 id="why-i-cared-about-this-paper-specifically">Why I cared about this paper specifically<a class="headerlink" href="#why-i-cared-about-this-paper-specifically" title="Permanent link">&para;</a></h2>
+<p>Two reasons. First, it's the <em>canonical</em> prior art for this style of
+method — anyone working on visual-token pruning has to address it.
+Second, my Day 1 implementation hit a real engineering problem
+around <code>generate()</code> and decode-step <code>attention_mask</code> coordination
+(the five-iteration debugging saga in
+<a href="../day-01/#phase-12-the-decode-step-debugging-saga-5-iterations">Week 2, Day 1, Phase 12</a>);
+FastV's published implementation solves the same problem and I
+wanted to see how cleanly.</p>
+<h2 id="takeaways-relevant-to-our-method">Takeaways relevant to our method<a class="headerlink" href="#takeaways-relevant-to-our-method" title="Permanent link">&para;</a></h2>
+<p>The reading shifted my thinking on a few of the open design
+questions:</p>
+<ul>
+<li><strong>Pruning at layer 0 (our current choice) is probably suboptimal.</strong>
+  FastV explicitly argues against early pruning — at layer 0 the
+  question representation hasn't yet formed in the residual stream,
+  so the question-conditioned scoring has weaker signal than it
+  would at layer 2-3. They run an ablation across K ∈ {0, 1, 2, 3,
+  4, 5} and find K=2 is the sweet spot. This is consistent with the
+  "Open design choices" note already on the
+  <a href="../../../project/#approach-sketch">Project Overview</a> page —
+  but the FastV reading promotes it from "thing to consider" to
+  "thing the literature has already settled."</li>
+<li><strong>Attention-based scoring is the established baseline.</strong> FastV
+  scores visual tokens by <em>received attention from non-visual
+  tokens at layer K</em>, not by similarity to a pooled question
+  embedding. Our cosine-similarity-to-question approach is simpler
+  but it's not what the field has converged on. A clean attention-
+  based scoring variant should be the next pruning method we
+  implement and put on the comparison plot.</li>
+<li><strong>The <code>generate()</code> integration is cleaner than ours.</strong> FastV
+  overrides <code>LlamaModel.forward</code> and <code>LlamaModel._prepare_decoder_attention_mask</code>
+  directly rather than using hooks + monkey-patching
+  <code>prepare_inputs_for_generation</code>. The result is fewer indirections,
+  no per-sample state, and (presumably) lower overhead. Worth a
+  refactor when we have a quiet day; not urgent because our current
+  approach works.</li>
+<li><strong>Position-ID handling is glossed over.</strong> FastV doesn't discuss the
+  position-ID re-alignment problem in detail. That's exactly what
+  <a href="../../../resources/#visual-token-pruning-the-actual-core-of-this-project">GAP</a>
+  (Chien et al., arXiv 2025) fixes — and FastV is one of the methods
+  GAP explicitly argues was <em>wrong</em> about position IDs. Reading GAP
+  next would be a natural complement.</li>
+</ul>
+<h2 id="notes-added-to-resourcesmd">Notes added to <code>resources.md</code><a class="headerlink" href="#notes-added-to-resourcesmd" title="Permanent link">&para;</a></h2>
+<p>Added a "Read May 19" marker and the takeaway about layer 2-3 being
+the FastV sweet spot to the
+<a href="../../../resources/#visual-token-pruning-the-actual-core-of-this-project">Resources page</a>
+entry for FastV.</p>
+<hr />
+<h3 id="plan-for-tomorrow">Plan for tomorrow<a class="headerlink" href="#plan-for-tomorrow" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>MedPruner</strong> (Liu et al., 2026) — closest medical-domain
+      prior art; 3D-focused but attention-based selection in a
+      Medical VLM.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>SwiftVLM</strong> (Qian et al., 2026) — the "bypass" paradigm,
+      where unselected tokens are forwarded to later layers for
+      re-evaluation rather than committed-pruned early.</li>
+</ul>
+<hr />
+<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
+<p><em>No code push — reading day, on a plane.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -983,6 +1277,44 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../day-02/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 2 — Monday, May 18, 2026">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Day 2 — Monday, May 18, 2026
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../day-04/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 4 — Wednesday, May 20, 2026">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Day 4 — Wednesday, May 20, 2026
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
@@ -1014,12 +1346,12 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "/question-aware-vtp-medvlm/", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "/question-aware-vtp-medvlm/assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="/question-aware-vtp-medvlm/assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
-        <script src="/question-aware-vtp-medvlm/javascripts/mathjax.js"></script>
+        <script src="../../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

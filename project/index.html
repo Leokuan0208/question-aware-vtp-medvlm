@@ -884,6 +884,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -937,6 +943,69 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-02/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 18, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-02/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 19, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-02/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 20, 2026
   </span>
   
 
@@ -1264,6 +1333,13 @@ whether the shape of the trade-off actually looks like this.</p>
 <td>Closest medical-domain prior art; 3D-focused but uses attention-based selection in a Medical VLM</td>
 </tr>
 <tr>
+<td><a href="https://arxiv.org/abs/2602.03134">SwiftVLM: Efficient Vision-Language Model Inference via Cross-Layer Token Bypass</a></td>
+<td>Qian et al.</td>
+<td>arXiv 2026 (preprint, Feb 2026)</td>
+<td>Tsinghua University</td>
+<td>Training-free pruning with a <strong>bypass</strong> paradigm — unselected tokens forwarded to later layers for re-evaluation rather than committed-pruned at shallow layers. Directly relevant to our open question of "where in the LLaMA stack to prune"</td>
+</tr>
+<tr>
 <td><em>Add as you read.</em></td>
 <td></td>
 <td></td>
@@ -1277,6 +1353,10 @@ question — they're question-agnostic. SparseVLM is the closest existing
 work to question-awareness, but operates on general VLMs. Our angle is
 making pruning question-aware <em>in the medical domain</em>, where the
 question encodes strong spatial priors (anatomy + finding type).</p>
+<p>The key gap: most prior work prunes tokens <strong>without</strong> reference to the
+question — they're question-agnostic. Our angle is making pruning
+question-aware <em>in the medical domain</em>, where the question encodes
+strong spatial priors (anatomy + finding type).</p>
 <h2 id="approach-sketch">Approach (sketch)<a class="headerlink" href="#approach-sketch" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
   IMG["Input image"]

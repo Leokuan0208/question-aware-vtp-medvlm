@@ -761,6 +761,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -814,6 +820,69 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-02/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 18, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-02/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 19, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-02/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 20, 2026
   </span>
   
 
@@ -1138,15 +1207,42 @@ Updated as I go.</p>
 <h3 id="visual-token-pruning-the-actual-core-of-this-project">Visual token pruning (the actual core of this project)<a class="headerlink" href="#visual-token-pruning-the-actual-core-of-this-project" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Token Merging: Your ViT But Faster (ToMe)</strong> — Bolya et al.,
-  ICLR 2023. <a href="https://arxiv.org/abs/2210.09461">arXiv:2210.09461</a> —
-  classic ViT-side token reduction; question-agnostic.</li>
+  ICLR 2023 (notable top-5%). <a href="https://openreview.net/forum?id=JroZRaRw7Eu">OpenReview</a> —
+  classic ViT-side token reduction; question-agnostic. <em>On reading list.</em></li>
 <li><strong>An Image is Worth 1/2 Tokens After Layer 2 (FastV)</strong> — Chen et al.,
-  ECCV 2024. <a href="https://arxiv.org/abs/2403.06764">arXiv:2403.06764</a> —
-  closest prior art; drops tokens inside the LM after early layers.</li>
+  ECCV 2024 (Oral, top-2%).
+  <a href="https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/10478.pdf">ECVA PDF</a> ·
+  <a href="https://arxiv.org/abs/2403.06764">arXiv:2403.06764</a> —
+  closest prior art; drops tokens inside the LM after early layers.
+  <strong>Read May 19, 2026.</strong> Key takeaway: pruning at layer 2-3 outperforms
+  layer 0 because the question representation needs the first few
+  layers to form; the <code>generate()</code> integration solves the same
+  decode-step <code>attention_mask</code> coordination problem we hit on Day 1.</li>
 <li><strong>LLaVA-PruMerge: Adaptive Token Reduction for Efficient Large
-  Multimodal Models</strong> — Shang et al., 2024.
-  <a href="https://arxiv.org/abs/2403.15388">arXiv:2403.15388</a> — adaptive pruning
-  conditioned on token redundancy.</li>
+  Multimodal Models</strong> — Shang et al., ICCV 2025.
+  <a href="https://openaccess.thecvf.com/content/ICCV2025/html/Shang_LLaVA-PruMerge_Adaptive_Token_Reduction_for_Efficient_Large_Multimodal_Models_ICCV_2025_paper.html">CVF Open Access</a> —
+  adaptive token reduction conditioned on visual-encoder sparsity.</li>
+<li><strong>SparseVLM: Visual Token Sparsification for Efficient VLM Inference</strong> —
+  Y. Zhang et al., ICML 2025 (poster).
+  <a href="https://openreview.net/forum?id=80faIPZ67S">OpenReview</a> —
+  text-aware visual token pruning in general VLMs; closest in spirit
+  to our "question-aware" angle.</li>
+<li><strong>Grounding-Aware Token Pruning (GAP)</strong> — Chien et al., arXiv 2025 (preprint).
+  <a href="https://arxiv.org/abs/2506.21873">arXiv:2506.21873</a> —
+  position-ID re-alignment fix after token drop; critical correction
+  for RoPE-based VLMs.</li>
+<li><strong>MedPruner: Training-Free Hierarchical Token Pruning for Efficient
+  3D Medical Image Understanding in VLMs</strong> — Liu et al., arXiv 2026
+  (preprint). <a href="https://arxiv.org/abs/2603.11625">arXiv:2603.11625</a> —
+  closest medical-domain prior art; 3D-focused but uses
+  attention-based selection in a Medical VLM. <strong>Read May 20, 2026.</strong></li>
+<li><strong>SwiftVLM: Efficient Vision-Language Model Inference via Cross-Layer
+  Token Bypass</strong> — Qian et al., arXiv 2026 (preprint, Feb 2026).
+  <a href="https://arxiv.org/abs/2602.03134">arXiv:2602.03134</a> —
+  training-free pruning with a "bypass" paradigm: unselected tokens are
+  forwarded to subsequent pruning stages for re-evaluation rather than
+  committed-pruned at shallow layers. Directly addresses our open
+  question of <em>where</em> in the LLaMA stack to prune. <strong>Read May 20, 2026.</strong></li>
 <li><em>Add as you read them. A one-line note on why each paper is useful is
   more helpful than a long summary.</em></li>
 </ul>

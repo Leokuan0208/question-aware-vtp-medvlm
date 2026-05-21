@@ -770,6 +770,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -823,6 +829,69 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 18, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 19, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 20, 2026
   </span>
   
 
@@ -923,6 +992,33 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#day-2-monday-may-18-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 2 — Monday, May 18, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-3-tuesday-may-19-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 3 — Tuesday, May 19, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-4-wednesday-may-20-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 4 — Wednesday, May 20, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#plan-for-the-rest-of-the-week-may-18-may-23" class="md-nav__link">
     <span class="md-ellipsis">
       Plan for the rest of the week (May 18 – May 23)
@@ -993,23 +1089,56 @@ question-similarity pruning scored 60.29 closed on VQA-RAD vs random
 pruning's 56.99 (+3.30 pts) and the unpruned baseline's 57.72
 (+2.57 pts) — a positive first datapoint on the project's thesis,
 pending the rest of the Pareto curve.</p>
+<h3 id="day-2-monday-may-18-2026"><a href="day-02/">Day 2 — Monday, May 18, 2026</a><a class="headerlink" href="#day-2-monday-may-18-2026" title="Permanent link">&para;</a></h3>
+<p>No research; full-day site cleanup pass. Rewrote <code>docs/project.md</code>
+(restyled title block via a new <code>.project-title</code> CSS class, expanded
+the Related Work table from 3 to 5 columns with proper venues and
+links to official sources, added <strong>MedPruner</strong> as closest
+medical-domain prior art, corrected PruMerge → ICCV 2025 and
+SparseVLM → ICML 2025, restructured the Approach Mermaid diagram
+into three named subgraphs). Widened the site's content area from
+61rem to 80rem so wide tables and diagrams stop bleeding off-screen.
+Cloned the repo to the laptop for two days of travel.</p>
+<h3 id="day-3-tuesday-may-19-2026"><a href="day-03/">Day 3 — Tuesday, May 19, 2026</a><a class="headerlink" href="#day-3-tuesday-may-19-2026" title="Permanent link">&para;</a></h3>
+<p>Travel day. Read <strong>FastV</strong> (Chen et al., ECCV 2024) end-to-end. Two
+takeaways for the project: (1) pruning at layer 2-3 is the
+literature-supported sweet spot, not layer 0 — our current
+single-layer-0 choice is likely suboptimal; (2) the <code>generate()</code>
+integration via overriding <code>LlamaModel._prepare_decoder_attention_mask</code>
+is cleaner than our hook + monkey-patch architecture and worth a
+refactor on a quiet day. Also bookmarked that FastV's
+attention-based scoring is the established baseline; our cosine-sim
+to question is simpler but not what the field has converged on, so
+an attention-based variant should be the next comparison method.</p>
+<h3 id="day-4-wednesday-may-20-2026"><a href="day-04/">Day 4 — Wednesday, May 20, 2026</a><a class="headerlink" href="#day-4-wednesday-may-20-2026" title="Permanent link">&para;</a></h3>
+<p>Second travel day. Read <strong>MedPruner</strong> (Liu et al., 2026; CUHK +
+Westlake) — closest medical-domain prior art, but 3D + attention +
+hierarchical, so methodologically complementary rather than
+competing. Then <strong>SwiftVLM</strong> (Qian et al., Tsinghua, Feb 2026) — the
+most interesting paper for the project so far. Their <strong>bypass</strong>
+paradigm holds pruned tokens in a buffer and re-evaluates them at
+later layers rather than committing to early pruning decisions;
+directly addresses our open "where to prune" question. Earmarked as
+a Phase 3+ extension once the single-layer Pareto curve is filled
+in.</p>
 <hr />
 <h2 id="plan-for-the-rest-of-the-week-may-18-may-23">Plan for the rest of the week (May 18 – May 23)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-18-may-23" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> kr=0.75 ablation result landed Day 1 (qsim +3.30 over random)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run the rest of the Pareto curve on VQA-RAD: random vs qsim
-      at kr ∈ {0.50, 0.25, 0.10}, ~60 min total</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Site cleanup (Day 2): project.md rewrite + CSS additions</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> FastV read end-to-end (Day 3)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MedPruner read (Day 4)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> SwiftVLM read (Day 4); added to Related Work + Resources</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Check the kr ∈ {0.50, 0.25, 0.10} sweep — launched end of Day 1,
+      still running in the background through three days of travel</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Build the Pareto-frontier table (accuracy vs keep-ratio) for
-      the Experiments page</li>
+      the Experiments page once results are in</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push the Day 1 changes to GitHub (<code>llava-med-pruning-v1</code>)
       after splitting into coherent commits</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read FastV end-to-end (closest prior art; same decode-step
-      coordination problem solved)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read ToMe end-to-end (token merging vs pruning framework)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim SparseVLM and GAP</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If kr ablation shows qsim ≈ random, design a second pruning
-      method (cross-attention scoring, or FastV-style layer-K
-      attention scoring)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (token merging vs pruning framework)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim <strong>SparseVLM</strong> and <strong>GAP</strong></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Design an attention-based scoring variant (FastV-style) as a
+      second pruning method for comparison</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Repeat the VQA-RAD ablation on SLAKE and PathVQA (the two
       additional benchmarks) — assuming Day-1 results are encouraging</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <a href="../../bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>

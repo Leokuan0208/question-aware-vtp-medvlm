@@ -12,22 +12,28 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-02/day-02/">
       
       
+        <link rel="prev" href="../day-01/">
       
-      <link rel="icon" href="/question-aware-vtp-medvlm/assets/images/favicon.png">
+      
+        <link rel="next" href="../day-03/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Day 2 — Monday, May 18, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
       
     
     
-      <link rel="stylesheet" href="/question-aware-vtp-medvlm/assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="/question-aware-vtp-medvlm/assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,9 +52,9 @@
       
     
     
-      <link rel="stylesheet" href="/question-aware-vtp-medvlm/stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("/question-aware-vtp-medvlm/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -73,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#day-2-monday-may-18-2026" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -83,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/question-aware-vtp-medvlm/." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -103,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Day 2 — Monday, May 18, 2026
             
           </span>
         </div>
@@ -212,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
     
@@ -229,7 +240,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/project/" class="md-tabs__link">
+      <a href="../../../project/" class="md-tabs__link">
         
   
     
@@ -246,7 +257,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/setup/" class="md-tabs__link">
+      <a href="../../../setup/" class="md-tabs__link">
         
   
     
@@ -263,7 +274,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/experiments/" class="md-tabs__link">
+      <a href="../../../experiments/" class="md-tabs__link">
         
   
     
@@ -278,11 +289,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/question-aware-vtp-medvlm/weekly/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
     
@@ -300,7 +313,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/bugs/" class="md-tabs__link">
+      <a href="../../../bugs/" class="md-tabs__link">
         
   
     
@@ -317,7 +330,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/question-aware-vtp-medvlm/resources/" class="md-tabs__link">
+      <a href="../../../resources/" class="md-tabs__link">
         
   
     
@@ -351,7 +364,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/question-aware-vtp-medvlm/." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -381,7 +394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -401,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/project/" class="md-nav__link">
+      <a href="../../../project/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -421,7 +434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/setup/" class="md-nav__link">
+      <a href="../../../setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -441,7 +454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/experiments/" class="md-nav__link">
+      <a href="../../../experiments/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -458,6 +471,8 @@
       
   
   
+    
+  
   
   
     
@@ -474,19 +489,22 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="/question-aware-vtp-medvlm/weekly/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -497,13 +515,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Weekly Log
@@ -554,7 +572,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="/question-aware-vtp-medvlm/weekly/week-01/" class="md-nav__link ">
+            <a href="../../week-01/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -587,7 +605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-01/" class="md-nav__link">
+      <a href="../../week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -608,7 +626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-02/" class="md-nav__link">
+      <a href="../../week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -629,7 +647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-03/" class="md-nav__link">
+      <a href="../../week-01/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -650,7 +668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-04/" class="md-nav__link">
+      <a href="../../week-01/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -671,7 +689,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-05/" class="md-nav__link">
+      <a href="../../week-01/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -692,7 +710,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-06/" class="md-nav__link">
+      <a href="../../week-01/day-06/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -713,7 +731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-01/day-07/" class="md-nav__link">
+      <a href="../../week-01/day-07/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -739,6 +757,8 @@
                 
   
   
+    
+  
   
   
     
@@ -762,16 +782,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="/question-aware-vtp-medvlm/weekly/week-02/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -788,7 +808,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_3">
             <span class="md-nav__icon md-icon"></span>
             Week 2
@@ -804,7 +824,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-02/day-01/" class="md-nav__link">
+      <a href="../day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -822,10 +842,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-02/day-02/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 18, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -834,6 +874,101 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#site-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Site changes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Site changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docsprojectmd-project-overview-rewrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      docs/project.md — Project Overview rewrite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docsstylesheetsextracss-two-additions" class="md-nav__link">
+    <span class="md-ellipsis">
+      docs/stylesheets/extra.css — two additions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-notes-from-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other notes from today
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-the-next-two-days-may-19-20-travel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for the next two days (May 19-20, travel)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -846,7 +981,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-02/day-03/" class="md-nav__link">
+      <a href="../day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -867,7 +1002,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/weekly/week-02/day-04/" class="md-nav__link">
+      <a href="../day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -903,7 +1038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/bugs/" class="md-nav__link">
+      <a href="../../../bugs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -923,7 +1058,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/question-aware-vtp-medvlm/resources/" class="md-nav__link">
+      <a href="../../../resources/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -953,6 +1088,91 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#site-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Site changes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Site changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docsprojectmd-project-overview-rewrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      docs/project.md — Project Overview rewrite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docsstylesheetsextracss-two-additions" class="md-nav__link">
+    <span class="md-ellipsis">
+      docs/stylesheets/extra.css — two additions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-notes-from-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other notes from today
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-the-next-two-days-may-19-20-travel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for the next two days (May 19-20, travel)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -964,8 +1184,126 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+  
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-02/day-02.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="day-2-monday-may-18-2026">Day 2 — Monday, May 18, 2026<a class="headerlink" href="#day-2-monday-may-18-2026" title="Permanent link">&para;</a></h1>
+<p><a href="../">← Back to Week 2 overview</a></p>
+<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature) · Week 2, Day 2 · <strong>Day 9 of
+the project</strong></p>
+<hr />
+<p>No research today — used the day as a site cleanup pass. Went through
+every page on the documentation site looking for things that bugged
+me, and consolidated the fixes into two files. Modest in scope but
+worth doing now while the early framing on the Project Overview page
+was still loose; the site is the deliverable that gets shared with
+the advisor and it needs to read cleanly.</p>
+<h2 id="site-changes">Site changes<a class="headerlink" href="#site-changes" title="Permanent link">&para;</a></h2>
+<h3 id="docsprojectmd-project-overview-rewrite"><code>docs/project.md</code> — Project Overview rewrite<a class="headerlink" href="#docsprojectmd-project-overview-rewrite" title="Permanent link">&para;</a></h3>
+<p>The overview page hadn't been touched substantively since the
+mid-Week-1 rewrite, and several things had drifted out of date:</p>
+<ul>
+<li><strong>Title block now uses a custom CSS class.</strong> The page's H2 "Title"
+  heading introduces the project name, and the project name itself
+  was just bold body text. Switched to a <code>&lt;p class="project-title"&gt;</code>
+  wrapper so the name can be sized between H1 and H2 (1.75rem),
+  matching the visual hierarchy of "section header → headline."</li>
+<li><strong>Related Work table expanded from 3 columns to 5.</strong> The previous
+  version was <em>paper · what it does · why it's relevant.</em> Replaced
+  with <em>paper (with link) · authors · venue · institution · why it's
+  relevant.</em> Two practical upsides: it's now legible at a glance who
+  did each piece and where it was published, and the link goes to the
+  official source (NeurIPS proceedings, OpenReview, ECVA, CVF Open
+  Access) with arXiv only as a fallback for preprints.</li>
+<li><strong>Venues corrected.</strong> PruMerge was attributed to "Shang et al.,
+  2024" — actually ICCV 2025. SparseVLM was attributed to "2024" —
+  actually ICML 2025 poster. Both had been bothering me since I
+  noticed during the literature scan on May 17.</li>
+<li><strong>MedPruner added</strong> (Liu et al., arXiv 2026, CUHK + Westlake) — the
+  closest medical-domain prior art. 3D-focused but uses
+  attention-based selection in a Medical VLM. The most directly
+  comparable published method to ours, so it warrants explicit
+  citation up front rather than buried in a later notes page.</li>
+<li><strong>Approach diagram restructured.</strong> The previous flat Mermaid graph
+  had thirteen nodes in a single horizontal flow, which read as a
+  wall of boxes at the new wider content width. Reorganised into
+  three named subgraphs — "Vision branch," "Text branch," and
+  "LLaMA decoder (32 layers)" — with the cross-branch edges drawn
+  between them. Conceptually the same diagram, visually much clearer
+  about which pieces belong together.</li>
+</ul>
+<h3 id="docsstylesheetsextracss-two-additions"><code>docs/stylesheets/extra.css</code> — two additions<a class="headerlink" href="#docsstylesheetsextracss-two-additions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Widened the content area</strong> from MkDocs Material's default 61rem
+  max-width to 80rem (<code>.md-grid { max-width: 80rem; }</code>). The site had
+  been feeling cramped — the comparison table on the Experiments
+  page was scrolling horizontally even on a 1440p monitor, and the
+  Mermaid diagrams were getting clipped. 80rem is enough headroom
+  for the wide comparison table without pushing prose to
+  uncomfortably-long line lengths.</li>
+<li><strong>Added <code>.project-title</code> class</strong> for the Project Overview title
+  block. Sized at 1.75rem with weight 700 (Inter), explicitly between
+  the H2 (1.4rem) above it and the page H1 (1.85rem) at the top.</li>
+</ul>
+<h2 id="other-notes-from-today">Other notes from today<a class="headerlink" href="#other-notes-from-today" title="Permanent link">&para;</a></h2>
+<p>While doing the cleanup pass I cloned the repo to my <strong>laptop</strong> at
+<code>D:\Project Website\question-aware-vtp-medvlm</code> so I can keep editing
+the site while travelling for the next two days. Hit the same
+PowerShell execution-policy gotcha from Day 3 of Week 1 and resolved
+it with the same one-line fix:</p>
+<div class="language-powershell highlight"><span class="filename">PowerShell</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">Set-ExecutionPolicy</span> <span class="n">RemoteSigned</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>
+</span></code></pre></div>
+<p>Worth re-noting that this is a <em>per-user</em> setting on a <em>per-machine</em>
+basis — <code>git config --global</code> syncs across machines via your git
+credentials, but PowerShell execution policy is local and has to be
+set once on each Windows install you work from.</p>
+<h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
+<p>A cleanup day, not a research day. Two files changed, no new
+results. The project overview is now in a state I'm not embarrassed
+to send to the advisor — that's the value.</p>
+<p>May 19 and May 20 are travel days; the plan is to spend them reading
+papers on the plane and writing them up in <code>resources.md</code> rather
+than coding. Pruning ablation results from the kr ∈ {0.50, 0.25,
+0.10} sweep that launched at the end of Day 1 are still pending —
+the server should be done by the time I'm back at the desk on
+May 21, and that's the first thing to look at.</p>
+<hr />
+<h3 id="plan-for-the-next-two-days-may-19-20-travel">Plan for the next two days (May 19-20, travel)<a class="headerlink" href="#plan-for-the-next-two-days-may-19-20-travel" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>May 19</strong> — Read FastV end-to-end (Chen et al., ECCV 2024).
+      Focus on the <code>generate()</code> integration, which solves the
+      decode-step mask coordination problem we hit on Day 1.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>May 20</strong> — Read MedPruner (Liu et al., 2026) and SwiftVLM
+      (Qian et al., 2026). MedPruner is the closest medical-domain
+      prior art; SwiftVLM's bypass paradigm is directly relevant to
+      our open question of <em>where</em> in the LLaMA stack to prune.</li>
+</ul>
+<hr />
+<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
+<p><em>No code push — site-only changes. Site changes deployed via the
+documentation repo's normal <code>git push</code> workflow (the GitHub Actions
+deploy then publishes to gh-pages within ~60 seconds).</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -983,6 +1321,44 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../day-01/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 1 — Sunday, May 17, 2026">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Day 1 — Sunday, May 17, 2026
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../day-03/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 3 — Tuesday, May 19, 2026">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Day 3 — Tuesday, May 19, 2026
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
@@ -1014,12 +1390,12 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "/question-aware-vtp-medvlm/", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "/question-aware-vtp-medvlm/assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="/question-aware-vtp-medvlm/assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
-        <script src="/question-aware-vtp-medvlm/javascripts/mathjax.js"></script>
+        <script src="../../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

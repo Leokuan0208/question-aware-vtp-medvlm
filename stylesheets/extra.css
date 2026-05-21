@@ -365,8 +365,7 @@ body,
 
 /* ---- Wider content area ------------------------------------------------- */
 /* Material's default .md-grid max-width is 61rem; bump it to give body
-   content, tables, and Mermaid diagrams more room. Adjust this number to
-   taste — higher = wider content but longer prose lines.                  */
+   content, tables, and Mermaid diagrams more room.                         */
 
 .md-grid {
   max-width: 80rem;
@@ -377,14 +376,14 @@ body,
    actual name. The name itself is rendered via
    <p class="project-title">…</p> so we can size it independently of body
    bold text. Sized between H2 (1.4rem) and H1 (1.85rem) — visually
-   prominent without competing with the page H1.                          */
+   prominent without competing with the page H1.                           */
 
-.md-typeset .project-title {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+.project-title {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, sans-serif;
   font-size: 1.75rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin: 0.2em 0 1.2em;
+  line-height: 1.25;
+  margin: 0.4em 0 1em 0;
   color: var(--md-default-fg-color);
 }
