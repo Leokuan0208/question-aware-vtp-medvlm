@@ -71,6 +71,7 @@ whether the shape of the trade-off actually looks like this.
 | [SparseVLM: Visual Token Sparsification for Efficient VLM Inference](https://openreview.net/forum?id=80faIPZ67S) | Y. Zhang et al. | ICML 2025 (poster) | Peking University, Fudan, UC Berkeley, Panasonic | **Text-aware** visual token pruning in general VLMs — closest in spirit to our "question-aware" angle |
 | [Grounding-Aware Token Pruning (GAP)](https://arxiv.org/abs/2506.21873) | Chien et al. | arXiv 2025 (preprint) | National Tsing Hua University | Position-ID re-alignment fix after token drop — critical correction for RoPE-based VLMs |
 | [MedPruner: Training-Free Hierarchical Token Pruning for Efficient 3D Medical Image Understanding in VLMs](https://arxiv.org/abs/2603.11625) | Liu et al. | arXiv 2026 (preprint) | CUHK, Westlake University (+ collaborators) | Closest medical-domain prior art; 3D-focused but uses attention-based selection in a Medical VLM |
+| [SwiftVLM: Efficient Vision-Language Model Inference via Cross-Layer Token Bypass](https://arxiv.org/abs/2602.03134) | Qian et al. | arXiv 2026 (preprint, Feb 2026) | Tsinghua University | Training-free pruning with a **bypass** paradigm — unselected tokens forwarded to later layers for re-evaluation rather than committed-pruned at shallow layers. Directly relevant to our open question of "where in the LLaMA stack to prune" |
 | _Add as you read._ |  |  |  |  |
 
 The key gap: most prior work prunes tokens **without** reference to the
@@ -78,6 +79,11 @@ question — they're question-agnostic. SparseVLM is the closest existing
 work to question-awareness, but operates on general VLMs. Our angle is
 making pruning question-aware *in the medical domain*, where the
 question encodes strong spatial priors (anatomy + finding type).
+
+The key gap: most prior work prunes tokens **without** reference to the
+question — they're question-agnostic. Our angle is making pruning
+question-aware *in the medical domain*, where the question encodes
+strong spatial priors (anatomy + finding type).
 
 ## Approach (sketch)
 

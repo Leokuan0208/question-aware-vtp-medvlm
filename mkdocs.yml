@@ -32,6 +32,9 @@ nav:
       - Week 2:
           - weekly/week-02/index.md
           - weekly/week-02/day-01.md
+          - weekly/week-02/day-02.md
+          - weekly/week-02/day-03.md
+          - weekly/week-02/day-04.md
   - Bugs & Issues: bugs.md
   - Resources: resources.md
 
