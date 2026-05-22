@@ -1169,11 +1169,18 @@ an MCQ-letter compliance smoke test against v1.0: <strong>0/11 responses
 started with a letter</strong>, confirming v1.0's instruction-following is
 fundamentally incompatible with the field's standardized eval format.
 <strong>Decision: pivot the project's base model to Qwen2.5-VL-7B-Instruct
-with VLMEvalKit + lmms-eval as the evaluation backbone.</strong> Wrote the
-new Dockerfile (NGC PyTorch 25.06 base), built the image, container
-is up; weights downloading at end of day. The headline pages stay on
-the May 17 numbers — the research story is too in-flux to update
-them yet.</p>
+with VLMEvalKit + lmms-eval as the evaluation backbone.</strong> Drafted a
+new Dockerfile on NGC PyTorch 25.06; first KUBERUN build failed on
+a dangling <code>/etc/pip/constraint.txt</code> reference (emptied vs deleted
+fix); second build's Step 1 import check surfaced a NumPy 2.x
+binary-incompatibility warning that required pinning <code>numpy&lt;2.0</code> in
+the Dockerfile and a third rebuild via KUBERUN. After that, Step 1
+and Step 2 verifications run clean. Step 3 (model load + 16 GB
+HuggingFace weight download) started; the 4th of N safetensor shards
+stopped updating its progress bar — could be a real stall, a
+reporting artifact, or already-into-the-loading phase. Day ended
+with the download in progress. The headline pages stay on the May 17
+numbers — the research story is too in-flux to update them yet.</p>
 <hr />
 <h2 id="plan-for-the-rest-of-the-week-may-18-may-23">Plan for the rest of the week (May 18 – May 23)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-18-may-23" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
@@ -1187,10 +1194,15 @@ them yet.</p>
       decision made</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Substring bug in v1.0 closed-set scorer documented (Day 5)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Pivot to Qwen2.5-VL-7B-Instruct (Day 5)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Qwen2.5-VL environment built (Day 5) — Dockerfile, container
-      running, weights downloading</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Confirm weights downloaded, run smoke test (MCQ-letter
-      compliance check)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Qwen2.5-VL Dockerfile drafted and image built on KUBERUN
+      (Day 5) — three submissions total: original, fix for the
+      constraint-file deletion error, fix for the NumPy 2.x conflict</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Container running, Step 1 + Step 2 import / library
+      verifications clean (Day 5)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Confirm Step 3's HuggingFace weight download finished —
+      stopped updating progress bar on safetensor 4 at end of Day 5</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run Step 4 — MCQ-letter compliance test against Qwen2.5-VL
+      (the test LLaVA-Med v1.0 failed at 0/11)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run zero-shot Qwen2.5-VL on VQA-RAD via VLMEvalKit — first
       reproducible baseline on the new stack</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Port <code>random</code> and <code>qsim</code> pruning to Qwen2.5-VL's decoder

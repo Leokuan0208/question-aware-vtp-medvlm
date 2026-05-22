@@ -1010,18 +1010,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-7-qwen25-vl-environment-setup" class="md-nav__link">
+  <a href="#phase-7-drafting-the-qwen25-vl-dockerfile" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 7 — Qwen2.5-VL environment setup
+      Phase 7 — Drafting the Qwen2.5-VL Dockerfile
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-8-image-build-container-up-weights-downloading" class="md-nav__link">
+  <a href="#phase-8-first-kuberun-build-constraint-file-failure-rebuild" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 8 — Image build, container up, weights downloading
+      Phase 8 — First KUBERUN build, constraint-file failure, rebuild
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-9-step-1-import-check-numpy-2x-conflict-second-rebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 9 — Step 1 import check, NumPy 2.x conflict, second rebuild
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-10-step-2-passes-step-3-stuck-on-safetensor-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 10 — Step 2 passes, Step 3 stuck on safetensor 4
     </span>
   </a>
   
@@ -1214,18 +1232,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-7-qwen25-vl-environment-setup" class="md-nav__link">
+  <a href="#phase-7-drafting-the-qwen25-vl-dockerfile" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 7 — Qwen2.5-VL environment setup
+      Phase 7 — Drafting the Qwen2.5-VL Dockerfile
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-8-image-build-container-up-weights-downloading" class="md-nav__link">
+  <a href="#phase-8-first-kuberun-build-constraint-file-failure-rebuild" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 8 — Image build, container up, weights downloading
+      Phase 8 — First KUBERUN build, constraint-file failure, rebuild
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-9-step-1-import-check-numpy-2x-conflict-second-rebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 9 — Step 1 import check, NumPy 2.x conflict, second rebuild
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-10-step-2-passes-step-3-stuck-on-safetensor-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 10 — Step 2 passes, Step 3 stuck on safetensor 4
     </span>
   </a>
   
@@ -1742,95 +1778,210 @@ verbosity inflation effect, and the community-wide reproduction
 failure of v1.0's per-dataset deltas) that become part of the
 related-work and motivation sections of the eventual writeup. They
 justify the migration as a methodological choice, not a defeat.</p>
-<h2 id="phase-7-qwen25-vl-environment-setup">Phase 7 — Qwen2.5-VL environment setup<a class="headerlink" href="#phase-7-qwen25-vl-environment-setup" title="Permanent link">&para;</a></h2>
-<p>With the decision made, set up the new environment. Decisions:</p>
+<h2 id="phase-7-drafting-the-qwen25-vl-dockerfile">Phase 7 — Drafting the Qwen2.5-VL Dockerfile<a class="headerlink" href="#phase-7-drafting-the-qwen25-vl-dockerfile" title="Permanent link">&para;</a></h2>
+<p>With the decision made, drafted a single Dockerfile in the project's
+established format — same shape as the LLaVA-Med v1.5 and v1.0
+Dockerfiles already on the <a href="../../../setup/">setup page</a>: one
+<code>FROM</code>, layered <code>RUN pip install</code> blocks for pinned dependencies,
+JupyterLab as the entrypoint command. The build itself is submitted
+through the HONGHU KUBERUN web interface (paste Dockerfile → platform
+builds the image → JupyterLab terminal is the entrypoint into the
+running container); no <code>docker</code> CLI involved at any step. Decisions
+on the contents:</p>
 <ul>
 <li><strong>Base image: <code>nvcr.io/nvidia/pytorch:25.06-py3</code>.</strong> Chose 25.06
   over the latest 26.04 because it's the last CUDA 12.x NGC release
-  (flash-attn pre-built wheels available), the R555+ driver
-  requirement is widely deployed, and 11 months of library maturity
-  means every Qwen2.5-VL dependency has tested wheels for this
-  stack.</li>
+  (flash-attn pre-built wheels available; CUDA 13 would force a
+  30-60 min source build), the R555+ driver requirement is widely
+  deployed on KUBERUN, and 11 months of library maturity means
+  every Qwen2.5-VL dependency has tested wheels for this stack.
+  NGC 25.06 ships Python 3.12, CUDA 12.9.1, PyTorch 2.8.0a0.</li>
 <li><strong>Eval framework: VLMEvalKit + lmms-eval.</strong> Both support
   Qwen2.5-VL and VQA-RAD/SLAKE/PathVQA out of the box. Adopting
   these eliminates the entire class of metric bugs we encountered
-  on the v1.0 track.</li>
+  on the v1.0 track (the substring bug found earlier today being
+  the biggest example).</li>
 <li><strong>Pruning method port: reuse <code>random</code> and <code>qsim</code> scoring logic
   on Qwen2.5-VL's standard HF transformers architecture.</strong> The
   hook target changes from <code>LlavaLlamaModel.model.layers</code> to
   Qwen2.5-VL's decoder layers; the scoring math is the same.</li>
 </ul>
-<p>Wrote a four-file environment package saved to <code>~/qwen-medvlm/</code>:</p>
+<h2 id="phase-8-first-kuberun-build-constraint-file-failure-rebuild">Phase 8 — First KUBERUN build, constraint-file failure, rebuild<a class="headerlink" href="#phase-8-first-kuberun-build-constraint-file-failure-rebuild" title="Permanent link">&para;</a></h2>
+<p>First draft of the Dockerfile pasted into KUBERUN. The build kicked
+off, and failed immediately at step 4:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>#7 [4/8] RUN pip3 install --no-cache-dir jupyter jupyterlab
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>#7 1.040 ERROR: Could not open requirements file:
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        [Errno 2] No such file or directory: &#39;/etc/pip/constraint.txt&#39;
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>#7 ERROR: process &quot;/bin/sh -c pip3 install --no-cache-dir jupyter jupyterlab&quot;
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        did not complete successfully: exit code: 1
+</span></code></pre></div>
+<p>The root cause: NGC's PyTorch base image ships with <code>/etc/pip.conf</code>
+configured to point at a constraint file at <code>/etc/pip/constraint.txt</code>,
+which pins <code>transformers</code> to a version older than Qwen2.5-VL needs
+(&lt; 4.49). I'd written the Dockerfile with <code>RUN rm -f
+/etc/pip/constraint.txt</code> to remove that pin — but <strong>deleting the
+file leaves the pip-config reference dangling</strong>, so the <em>next</em>
+<code>pip install</code> call (jupyter, in this case) crashes trying to read
+the now-missing file.</p>
+<p>The fix is to <strong>empty the file</strong> instead of deleting it. That way
+pip's config still finds a valid (empty) constraint file and skips
+straight through:</p>
+<div class="language-dockerfile highlight"><span class="filename">Docker</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">RUN</span><span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/pip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/pip/constraint.txt
+</span></code></pre></div>
+<p>Updated the Dockerfile, re-submitted through KUBERUN. Build
+succeeded on the second attempt, ~25 minutes total (the NGC base
+image is ~25 GB compressed; pulling it from NGC dominates the
+build time).</p>
 <details class="note">
-<summary><code>Dockerfile</code> — Qwen2.5-VL on NGC 25.06</summary>
-<p>Two important constraints baked in. First: the file
-<code>/etc/pip/constraint.txt</code> in the NGC image pins transformers to
-an older version than Qwen2.5-VL needs; emptying it (rather than
-deleting, which would break pip config) is necessary before
-layering newer deps. Second: NGC 25.06's PyTorch was compiled
-against NumPy 1.x, but VLMEvalKit's transitive deps would
-otherwise pull in NumPy 2.x and silently break <code>torch.export</code>.
-The <code>numpy&lt;2.0</code> pin blocks that.</p>
-<div class="language-dockerfile highlight"><span class="filename">Docker</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c"># Dockerfile for Qwen2.5-VL medical VQA + visual token pruning research</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c"># Base image: NGC PyTorch 25.06 -&gt; Python 3.12, CUDA 12.9.1, PyTorch 2.8</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">FROM</span><span class="w"> </span><span class="s">nvcr.io/nvidia/pytorch:25.06-py3</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c"># Ubuntu packages</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c"># git-lfs needed to pull model weights from HuggingFace</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c"># libgl1, libglib2.0-0 required by opencv-python (used by</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c"># qwen_vl_utils image preprocessing)</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span>git<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span>git-lfs<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span>python3-pip<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span>libgl1<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span>libglib2.0-0<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="c"># Empty NGC&#39;s pip constraint file: it pins transformers to an older</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="c"># version than Qwen2.5-VL needs (&gt;=4.49). Pip&#39;s config still references</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="c"># the file path, so we empty rather than delete it.</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="k">RUN</span><span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/pip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/pip/constraint.txt
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="c"># JupyterLab for the VM launch interface</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>jupyter<span class="w"> </span>jupyterlab
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="c"># Qwen2.5-VL core dependencies, version-pinned to a known-good</span>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="c"># combination tested with Qwen/Qwen2.5-VL-7B-Instruct as of mid-2025.</span>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="c"># CRITICAL: numpy&lt;2.0 -- NGC 25.06&#39;s PyTorch was compiled against</span>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="c"># NumPy 1.x; NumPy 2.x is binary-incompatible and breaks torch.export</span>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="c"># silently.</span>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">        </span><span class="s2">&quot;numpy&lt;2.0&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">        </span><span class="s2">&quot;transformers&gt;=4.49&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">        </span><span class="s2">&quot;qwen-vl-utils[decord]&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">        </span><span class="s2">&quot;vlmeval&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="w">        </span><span class="s2">&quot;vllm&gt;=0.7.2&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="w">        </span><span class="s2">&quot;accelerate&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="w">        </span><span class="s2">&quot;decord&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="w">        </span><span class="s2">&quot;pillow&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">        </span><span class="s2">&quot;opencv-python&quot;</span>
+<summary><code>Dockerfile</code> — Qwen2.5-VL on NGC 25.06 (working version, after Phase 9 NumPy fix)</summary>
+<p>This is the final working version that includes both the
+constraint-file emptying (from this phase) and the
+<code>numpy&lt;2.0</code> pin (added in Phase 9 below after the dependency
+conflict surfaced).</p>
+<div class="language-dockerfile highlight"><span class="filename">Docker</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c"># Dockerfile for Qwen2.5-VL medical VQA + visual token pruning research</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c"># Base image: NGC PyTorch 25.06 -&gt; Python 3.12, CUDA 12.9.1, PyTorch 2.8</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">FROM</span><span class="w"> </span><span class="s">nvcr.io/nvidia/pytorch:25.06-py3</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c"># Ubuntu packages</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c"># git-lfs needed to pull model weights from HuggingFace</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c"># libgl1, libglib2.0-0 required by opencv-python (used by</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c"># qwen_vl_utils image preprocessing)</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span>git<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span>git-lfs<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span>python3-pip<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span>libgl1<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span>libglib2.0-0<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c"># Empty NGC&#39;s pip constraint file: it pins transformers to an older</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="c"># version than Qwen2.5-VL needs (&gt;=4.49). Pip&#39;s config still references</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="c"># the file path, so we empty rather than delete it -- deleting would</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="c"># break every subsequent pip call.</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="k">RUN</span><span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/pip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/pip/constraint.txt
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="c"># JupyterLab - required by the HONGHU KUBERUN VM launch interface</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>jupyter<span class="w"> </span>jupyterlab
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="c"># Qwen2.5-VL core dependencies, version-pinned to a known-good</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="c"># combination tested with Qwen/Qwen2.5-VL-7B-Instruct as of mid-2025.</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="c"># CRITICAL: numpy&lt;2.0 -- NGC 25.06&#39;s PyTorch was compiled against</span>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="c"># NumPy 1.x; NumPy 2.x is binary-incompatible and breaks torch.export</span>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="c"># silently. The pin blocks transitive deps from upgrading numpy.</span>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">        </span><span class="s2">&quot;numpy&lt;2.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">        </span><span class="s2">&quot;transformers==4.49.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">        </span><span class="s2">&quot;qwen-vl-utils[decord]==0.0.10&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">        </span><span class="s2">&quot;vlmeval&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">        </span><span class="s2">&quot;accelerate&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">        </span><span class="s2">&quot;pydantic&gt;=2.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="w">        </span><span class="s2">&quot;pillow&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a><span class="w">        </span><span class="s2">&quot;opencv-python&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="w">        </span><span class="s2">&quot;tifffile&quot;</span>
+</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>
+</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="c"># Flash-Attention 2 - reinstall pinned, since NGC&#39;s pre-installed</span>
+</span><span id="__span-5-43"><a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a><span class="c"># version could vary between image pulls. 2.7.4.post1 has stable</span>
+</span><span id="__span-5-44"><a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a><span class="c"># Qwen2.5-VL support and CUDA 12.9 wheels.</span>
+</span><span id="__span-5-45"><a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>flash-attn<span class="o">==</span><span class="m">2</span>.7.4.post1<span class="w"> </span>--no-build-isolation
+</span><span id="__span-5-46"><a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a>
+</span><span id="__span-5-47"><a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a><span class="c"># Symlink so /data shows up in the JupyterLab file browser</span>
+</span><span id="__span-5-48"><a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="k">RUN</span><span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/data<span class="w"> </span>/root/data
+</span><span id="__span-5-49"><a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a>
+</span><span id="__span-5-50"><a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;jupyter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;lab&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--port=8888&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--ip=0.0.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--allow-root&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--no-browser&quot;</span><span class="p">]</span>
 </span></code></pre></div>
 </details>
-<p>The accompanying <code>docker-compose.yml</code> mounts the project code at
-<code>/workspace/</code>, the existing dataset directory at <code>/data/</code>, and an
-<code>hf_cache/</code> for HuggingFace weight downloads to persist across
-container restarts. A <code>smoke_test.py</code> loads the model and runs an
-MCQ-format prompt against a chest X-ray, asserting the response
-starts with "A" or "B" — the <em>exact</em> test LLaVA-Med v1.0 failed.</p>
-<h2 id="phase-8-image-build-container-up-weights-downloading">Phase 8 — Image build, container up, weights downloading<a class="headerlink" href="#phase-8-image-build-container-up-weights-downloading" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>~/qwen-medvlm
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>build<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>build.log<span class="w">    </span><span class="c1"># ~25 min</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>qwen-medvlm<span class="w"> </span>bash
+<h2 id="phase-9-step-1-import-check-numpy-2x-conflict-second-rebuild">Phase 9 — Step 1 import check, NumPy 2.x conflict, second rebuild<a class="headerlink" href="#phase-9-step-1-import-check-numpy-2x-conflict-second-rebuild" title="Permanent link">&para;</a></h2>
+<p>With the container running on KUBERUN, dropped into the JupyterLab
+terminal and ran a step-by-step verification — same pattern as the
+v1.0 setup days. <strong>Step 1</strong> was an inline heredoc import check that
+loads every library the project needs (PyTorch, transformers,
+qwen_vl_utils, flash-attn, vlmeval, Pillow, opencv, tifffile) and
+prints versions:</p>
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s">import torch</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="s">print(f&quot;PyTorch:        {torch.__version__}&quot;)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s">print(f&quot;CUDA available: {torch.cuda.is_available()}&quot;)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s">print(f&quot;CUDA version:   {torch.version.cuda}&quot;)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="s">if torch.cuda.is_available():</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="s">    print(f&quot;GPU:            {torch.cuda.get_device_name(0)}&quot;)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="s">import transformers; print(f&quot;transformers:   {transformers.__version__}&quot;)</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="s">import qwen_vl_utils;  print(&quot;qwen_vl_utils:  OK&quot;)</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="s">import flash_attn;     print(f&quot;flash-attn:     {flash_attn.__version__}&quot;)</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="s">import vlmeval;        print(&quot;vlmeval:        OK&quot;)</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="s">EOF</span>
 </span></code></pre></div>
-<p>Build succeeded on the first try. Container is up. The smoke test
-launched, and got as far as <code>Loading Qwen2.5-VL-7B-Instruct...</code> — at
-which point the first run started downloading the ~16 GB model weights
-from HuggingFace into the mounted cache.</p>
-<p><strong>Weights still downloading at end of day.</strong> The smoke test (and with
-it, the decisive MCQ-compliance check) is pending the download
-finishing. Tomorrow morning should pick that up.</p>
+<p>The output included a NumPy version warning at the top:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>A module that was compiled using NumPy 1.x cannot be run in
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>NumPy 2.x as it may crash. ...
+</span></code></pre></div>
+<p>This is the kind of warning that looks ignorable but isn't. NGC's
+PyTorch 2.8.0a0 was compiled against NumPy 1.x, but the
+<code>pip install</code> of VLMEvalKit and its transitive dependencies
+silently pulled in NumPy 2.x. PyTorch will mostly continue to work,
+but specific code paths (notably <code>torch.export</code>, used by some
+quantisation and serialisation flows) hit hard incompatibilities at
+runtime that show up as opaque <code>TypeError</code>s or <code>AttributeError</code>s
+mid-eval — exactly the kind of bug we don't want lurking in a
+multi-hour batch run.</p>
+<p>The fix is upstream of the install: <strong>pin NumPy to &lt; 2.0</strong> in the
+Dockerfile, <em>before</em> the line that installs VLMEvalKit. That way
+NumPy 2.x never enters the environment in the first place.</p>
+<p>Updated the Dockerfile (the version embedded in Phase 8's
+collapsible block above is the final version, with this pin already
+in place) and re-submitted through KUBERUN. Third build, succeeded
+cleanly. Re-ran the Step 1 import check; this time:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>PyTorch:        2.8.0a0+5228986c39.nv25.06
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>CUDA available: True
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>CUDA version:   12.9
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>GPU:            NVIDIA A100 80GB PCIe
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>GPU count:      1
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>NumPy:          1.26.4
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>transformers:   4.49.0
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>qwen_vl_utils:  OK
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>flash-attn:     2.7.4.post1
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>vlmeval:        OK
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>Pillow:         10.4.0
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>opencv:         4.13.0
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>tifffile:       2026.5.15
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>All imports succeeded with no warnings.
+</span></code></pre></div>
+<p>Clean — every library at the expected version, NumPy correctly
+locked to 1.26.4, no warnings of any kind. The environment is
+fully functional from a library-import standpoint.</p>
+<h2 id="phase-10-step-2-passes-step-3-stuck-on-safetensor-4">Phase 10 — Step 2 passes, Step 3 stuck on safetensor 4<a class="headerlink" href="#phase-10-step-2-passes-step-3-stuck-on-safetensor-4" title="Permanent link">&para;</a></h2>
+<p><strong>Step 2</strong> — additional minor verifications (GPU memory visible,
+<code>/data</code> symlink works, dataset directory reachable) — passed
+without surprises.</p>
+<p><strong>Step 3</strong> was the model-loading test. The script imports
+<code>Qwen2_5_VLForConditionalGeneration</code> and calls
+<code>.from_pretrained("Qwen/Qwen2.5-VL-7B-Instruct", ...)</code>, which
+triggers HuggingFace's first-run download of ~16 GB of weights into
+the mounted cache directory. The download streams in parallel
+across multiple safetensor shard files, with <code>tqdm</code> progress bars
+per file.</p>
+<p>The download started cleanly, three shards completed, and then
+<strong>the fourth safetensor file stopped updating its progress bar</strong>.
+The terminal sat without progress for several minutes. This could
+mean any of three things:</p>
+<ol>
+<li><strong>Real stall</strong> — HuggingFace's CDN or the local network hiccupped.</li>
+<li><strong>Reporting artifact</strong> — HuggingFace's downloader doesn't always
+   refresh per-file display when shards download in parallel; one
+   file appears stuck while another is actively progressing.</li>
+<li><strong>Past download, into loading</strong> — the shard finished and the loader
+   is now in the (slower, less verbose) "copy shard into GPU memory"
+   phase, which can pause visually for tens of seconds per shard.</li>
+</ol>
+<p>The day ran out before resolving which one. The download is in
+progress in the background of a long-running container; will pick
+up tomorrow morning by checking total cache-directory size and
+file-by-file <code>ls -lh</code> to see whether the total is still growing
+(case 1 vs case 2 vs case 3).</p>
+<p><strong>End-of-day state</strong>: KUBERUN-built image working, container up,
+JupyterLab accessible, Step 1 + Step 2 verifications clean, Step 3
+model download paused/progressing on safetensor 4 of N. The smoke
+test's decisive output — the MCQ-letter compliance check — is
+pending the download finishing.</p>
 <h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
 <p>A long, branching day. The findings, ranked by how much they reshape
 the project:</p>
@@ -1904,9 +2055,12 @@ ones that did.</p>
 <hr />
 <h3 id="plan-for-tomorrow-may-22-day-6-of-week-2">Plan for tomorrow (May 22, Day 6 of Week 2)<a class="headerlink" href="#plan-for-tomorrow-may-22-day-6-of-week-2" title="Permanent link">&para;</a></h3>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Wait for / confirm the Qwen2.5-VL weights finished downloading</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run the smoke test — assert MCQ-letter compliance on a sample
-      (the test LLaVA-Med v1.0 failed at 0/11)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Confirm Step 3's safetensor download completed (check
+      cache directory total size — if it's near 16 GB, the download
+      finished while the terminal was unresponsive)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run Step 4 — the MCQ-letter compliance test against
+      Qwen2.5-VL on a sample chest X-ray. This is the decisive test
+      LLaVA-Med v1.0 failed at 0/11</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If smoke passes: run zero-shot Qwen2.5-VL on VQA-RAD via
       VLMEvalKit's MCQ scorer; bank the canonical baseline numbers</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Port <code>random</code> and <code>qsim</code> scoring logic from
@@ -1929,9 +2083,12 @@ ones that did.</p>
 point of pivot: the in-LLM pruning method, the SLAKE wiring, the
 <code>eval_topk_checkpoints.py</code> script, the candidate-set builders. It's
 the natural "this is where we left this branch" snapshot before the
-work shifts to Qwen2.5-VL. The <code>~/qwen-medvlm/</code> environment is on
-disk but not yet in a versioned repo — that gets initialized
-tomorrow once the smoke test confirms the stack works.</p>
+work shifts to Qwen2.5-VL. The Qwen2.5-VL image lives inside KUBERUN
+(built from the Dockerfile in Phase 8's collapsible block), and the
+Dockerfile itself isn't yet in a versioned repo — that gets done
+tomorrow once the smoke test confirms the stack works, alongside
+initializing a new <code>llava-med-pruning-v2</code> (or similar) repo for the
+Qwen2.5-VL pruning code.</p>
 
 
 
