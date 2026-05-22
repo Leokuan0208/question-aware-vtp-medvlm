@@ -74,6 +74,29 @@ directly addresses our open "where to prune" question. Earmarked as
 a Phase 3+ extension once the single-layer Pareto curve is filled
 in.
 
+### [Day 5 — Thursday, May 21, 2026](day-05.md)
+
+The most consequential day of the project. Came back from travel to
+compile the kr ∈ {0.50, 0.25, 0.10} Pareto curve and instead found
+the curve's shape was anomalous — closed accuracy rising monotonically
+with pruning aggressiveness up to +7.35 pts at kr=0.10 qsim, while
+open recall stayed flat. Read `eval/metrics.py` carefully and found
+a real **substring bug in the LLaVA-Med v1.0 closed-set scorer**
+that inflates every published v1.0 closed-accuracy number by 9-12 pts
+uniformly. Word-boundary scoring closes most of the gap but a residual
++6.37 pt rise remains — partly explained as verbosity-inflation on
+lenient scorers. Under the strictest possible scorer (lead with
+yes/no), pruning does *not* improve closed accuracy at all. Then ran
+an MCQ-letter compliance smoke test against v1.0: **0/11 responses
+started with a letter**, confirming v1.0's instruction-following is
+fundamentally incompatible with the field's standardized eval format.
+**Decision: pivot the project's base model to Qwen2.5-VL-7B-Instruct
+with VLMEvalKit + lmms-eval as the evaluation backbone.** Wrote the
+new Dockerfile (NGC PyTorch 25.06 base), built the image, container
+is up; weights downloading at end of day. The headline pages stay on
+the May 17 numbers — the research story is too in-flux to update
+them yet.
+
 ---
 
 ## Plan for the rest of the week (May 18 – May 23)
@@ -83,20 +106,27 @@ in.
 - [x] FastV read end-to-end (Day 3)
 - [x] MedPruner read (Day 4)
 - [x] SwiftVLM read (Day 4); added to Related Work + Resources
-- [ ] Check the kr ∈ {0.50, 0.25, 0.10} sweep — launched end of Day 1,
-      still running in the background through three days of travel
-- [ ] Build the Pareto-frontier table (accuracy vs keep-ratio) for
-      the Experiments page once results are in
-- [ ] Push the Day 1 changes to GitHub (`llava-med-pruning-v1`)
-      after splitting into coherent commits
-- [ ] Read **ToMe** end-to-end (token merging vs pruning framework)
+- [x] kr ∈ {0.50, 0.25, 0.10} sweep compiled (Day 5) — anomalous
+      curve shape, substring bug found in v1.0 scorer, pivot
+      decision made
+- [x] Substring bug in v1.0 closed-set scorer documented (Day 5)
+- [x] Pivot to Qwen2.5-VL-7B-Instruct (Day 5)
+- [x] Qwen2.5-VL environment built (Day 5) — Dockerfile, container
+      running, weights downloading
+- [ ] Confirm weights downloaded, run smoke test (MCQ-letter
+      compliance check)
+- [ ] Run zero-shot Qwen2.5-VL on VQA-RAD via VLMEvalKit — first
+      reproducible baseline on the new stack
+- [ ] Port `random` and `qsim` pruning to Qwen2.5-VL's decoder
+      layers — the hook target changes, scoring math same
+- [ ] Re-run kr ∈ {0.75, 0.50, 0.25, 0.10} ablation on the new
+      stack with the correct scorer; this is the cleanest answer
+      to the project's central question
+- [ ] Read **ToMe** end-to-end (slipped 7+ days)
 - [ ] Skim **SparseVLM** and **GAP**
-- [ ] Design an attention-based scoring variant (FastV-style) as a
-      second pruning method for comparison
-- [ ] Repeat the VQA-RAD ablation on SLAKE and PathVQA (the two
-      additional benchmarks) — assuming Day-1 results are encouraging
-- [ ] Update [Bug #5](../../bugs.md#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible)
-      with the revised broken-deltas narrative
+- [ ] Rewrite [Bug #5](../../bugs.md#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible)
+      with consolidated open-recall + substring-bug findings, once
+      the new baseline is stable
 
 ---
 
