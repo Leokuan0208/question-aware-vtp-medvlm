@@ -1,0 +1,2047 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.">
+      
+      
+        <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
+      
+      
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-02/day-05/">
+      
+      
+        <link rel="prev" href="../day-04/">
+      
+      
+        <link rel="next" href="../../../bugs/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Day 5 — Thursday, May 21, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-5-thursday-may-21-2026" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Question-Aware Visual Token Pruning for Medical VLMs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 5 — Thursday, May 21, 2026
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../project/" class="md-tabs__link">
+        
+  
+    
+  
+  Project Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../setup/" class="md-tabs__link">
+        
+  
+    
+  
+  Baseline (LLaVA-Med)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../experiments/" class="md-tabs__link">
+        
+  
+    
+  
+  Experiments
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+    
+  
+  Weekly Log
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../bugs/" class="md-tabs__link">
+        
+  
+    
+  
+  Bugs & Issues
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../resources/" class="md-tabs__link">
+        
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Question-Aware Visual Token Pruning for Medical VLMs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Baseline (LLaVA-Med)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../experiments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Experiments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Weekly Log
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Weekly Log
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-01/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Week 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 10, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 11, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 12, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 13, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 14, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-06/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-07/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 18, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 19, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 20, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 21, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 21, 2026
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-inventory-of-the-may-17-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Inventory of the May 17 sweep
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-compiling-the-pareto-curve-and-noticing-the-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — Compiling the Pareto curve, and noticing the shape
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-substring-bug-in-the-v10-closed-set-scorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The substring bug in the v1.0 closed-set scorer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-self-correcting-two-earlier-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — Self-correcting two earlier claims
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-three-way-scoring-diagnostic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — Three-way scoring diagnostic
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-the-mcq-letter-test-and-the-decision-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — The MCQ-letter test, and the decision point
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-qwen25-vl-environment-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Qwen2.5-VL environment setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-image-build-container-up-weights-downloading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — Image build, container up, weights downloading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-stays-on-the-site-and-what-doesnt" class="md-nav__link">
+    <span class="md-ellipsis">
+      What stays on the site, and what doesn't
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What stays on the site, and what doesn't">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow-may-22-day-6-of-week-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow (May 22, Day 6 of Week 2)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bugs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bugs & Issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-inventory-of-the-may-17-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Inventory of the May 17 sweep
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-compiling-the-pareto-curve-and-noticing-the-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — Compiling the Pareto curve, and noticing the shape
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-substring-bug-in-the-v10-closed-set-scorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The substring bug in the v1.0 closed-set scorer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-self-correcting-two-earlier-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — Self-correcting two earlier claims
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-three-way-scoring-diagnostic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — Three-way scoring diagnostic
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-the-mcq-letter-test-and-the-decision-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — The MCQ-letter test, and the decision point
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-qwen25-vl-environment-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Qwen2.5-VL environment setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-image-build-container-up-weights-downloading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — Image build, container up, weights downloading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-stays-on-the-site-and-what-doesnt" class="md-nav__link">
+    <span class="md-ellipsis">
+      What stays on the site, and what doesn't
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What stays on the site, and what doesn't">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow-may-22-day-6-of-week-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow (May 22, Day 6 of Week 2)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-02/day-05.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="day-5-thursday-may-21-2026">Day 5 — Thursday, May 21, 2026<a class="headerlink" href="#day-5-thursday-may-21-2026" title="Permanent link">&para;</a></h1>
+<p><a href="../">← Back to Week 2 overview</a></p>
+<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature) · Week 2, Day 5 · <strong>Day 12 of
+the project</strong></p>
+<hr />
+<p>The most consequential day of the project so far, in a way I didn't
+expect. Came back from three days of travel expecting to compile the
+kr ∈ {0.50, 0.25, 0.10} sweep into a Pareto curve and ship it to the
+Experiments page. Instead, the day produced (1) a real bug in the
+LLaVA-Med v1.0 scorer that inflates every published v1.0 closed
+accuracy number by ~9-12 pts, (2) a residual rising-curve anomaly that
+isn't fully explained, (3) a series of self-corrections to earlier
+hypotheses, and (4) a decisive pivot away from LLaVA-Med v1.0 as the
+project's base model. The site's headline pages stay on the May 17
+numbers for now; this day-page is where the in-flux story lives.</p>
+<h2 id="phase-1-inventory-of-the-may-17-sweep">Phase 1 — Inventory of the May 17 sweep<a class="headerlink" href="#phase-1-inventory-of-the-may-17-sweep" title="Permanent link">&para;</a></h2>
+<p>First thing on returning to the desk: confirm the <code>nohup</code> background
+job from Day 1 had actually completed. Inventoried <code>results/</code>:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>E0_ablation_qsim_kr0p10_metrics.json     E0_ablation_random_kr0p10_metrics.json
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>E0_ablation_qsim_kr0p25_metrics.json     E0_ablation_random_kr0p25_metrics.json
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>E0_ablation_qsim_kr0p50_metrics.json     E0_ablation_random_kr0p50_metrics.json
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>E0_kr0p75_qsim_metrics.json              E0_kr0p75_random_metrics.json
+</span></code></pre></div>
+<p>All 8 ablation cells present, plus the Baron-GG stage-2 baseline
+already on disk. No missing runs, no crashed jobs. Also noticed and
+fixed a small thing: <code>scripts/run_E0_v1.py</code>'s config dict didn't
+include <code>keep_ratio</code> as a field, which made downstream parsing rely
+on regex-extracting the ratio from run names. Added the field for
+future runs.</p>
+<h2 id="phase-2-compiling-the-pareto-curve-and-noticing-the-shape">Phase 2 — Compiling the Pareto curve, and noticing the shape<a class="headerlink" href="#phase-2-compiling-the-pareto-curve-and-noticing-the-shape" title="Permanent link">&para;</a></h2>
+<p>Aggregating the 9 runs against the unpruned baseline (Baron-GG
+stage-2, 57.72 closed):</p>
+<table>
+<thead>
+<tr>
+<th>K (keep)</th>
+<th>Method</th>
+<th style="text-align: right;">Closed acc</th>
+<th style="text-align: right;">Open recall</th>
+<th style="text-align: right;">Latency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.00</td>
+<td>baseline</td>
+<td style="text-align: right;">57.72</td>
+<td style="text-align: right;">29.52</td>
+<td style="text-align: right;">1266 ms</td>
+</tr>
+<tr>
+<td>0.75</td>
+<td>random</td>
+<td style="text-align: right;">56.99</td>
+<td style="text-align: right;">30.37</td>
+<td style="text-align: right;">1335 ms</td>
+</tr>
+<tr>
+<td>0.75</td>
+<td>qsim</td>
+<td style="text-align: right;">60.29</td>
+<td style="text-align: right;">28.53</td>
+<td style="text-align: right;">1467 ms</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>random</td>
+<td style="text-align: right;">56.27</td>
+<td style="text-align: right;">28.94</td>
+<td style="text-align: right;">1395 ms</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>qsim</td>
+<td style="text-align: right;">53.31</td>
+<td style="text-align: right;">27.85</td>
+<td style="text-align: right;">1521 ms</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>random</td>
+<td style="text-align: right;">60.10</td>
+<td style="text-align: right;">27.65</td>
+<td style="text-align: right;">1467 ms</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>qsim</td>
+<td style="text-align: right;">62.42</td>
+<td style="text-align: right;">31.84</td>
+<td style="text-align: right;">1493 ms</td>
+</tr>
+<tr>
+<td>0.10</td>
+<td>random</td>
+<td style="text-align: right;">63.74</td>
+<td style="text-align: right;">26.21</td>
+<td style="text-align: right;">1524 ms</td>
+</tr>
+<tr>
+<td>0.10</td>
+<td>qsim</td>
+<td style="text-align: right;"><strong>65.07</strong></td>
+<td style="text-align: right;">28.65</td>
+<td style="text-align: right;">1568 ms</td>
+</tr>
+</tbody>
+</table>
+<p>This shape is anomalous. <strong>Closed accuracy rises monotonically with
+pruning aggressiveness, reaching +7.35 pts over baseline at qsim
+kr=0.10</strong>, while open recall stays flat or drifts down, and latency
+<em>never recovers</em> — even at 90% pruning, both methods are ~20% slower
+than baseline. The latency story alone is a problem (hook overhead
+dominating), but the rising closed accuracy is the surprising part:
+if dropping 90% of visual tokens <em>improves</em> closed-set accuracy,
+either the model wasn't using visual information at all in the
+baseline, or the closed metric isn't measuring what we think it is.</p>
+<p>Reasonable instincts at this point:</p>
+<ul>
+<li><strong>The metric is misbehaving.</strong> Possible — the v1.0 scorer is
+  substring-based and could be flagged by spurious matches.</li>
+<li><strong>The pruning is broken.</strong> Maybe pruning is causing degenerate
+  short outputs that happen to contain "yes" or "no" more reliably
+  than the baseline's verbose responses.</li>
+<li><strong>The result is real, sort of.</strong> Maybe partial visual corruption
+  forces the model to fall back to question-only language priors,
+  and that's a clean rule-based path that scores well on closed
+  questions. Unlikely but not impossible.</li>
+</ul>
+<p>Without prediction inspection, we couldn't tell. The original Day 1
++2.57 / +3.30 framing at kr=0.75 had assumed the metric was working;
+the full-curve shape now made that assumption testable.</p>
+<h2 id="phase-3-the-substring-bug-in-the-v10-closed-set-scorer">Phase 3 — The substring bug in the v1.0 closed-set scorer<a class="headerlink" href="#phase-3-the-substring-bug-in-the-v10-closed-set-scorer" title="Permanent link">&para;</a></h2>
+<p>Read <code>eval/metrics.py</code> carefully. Found the bug on the first careful
+pass:</p>
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Original LLaVA-Med v1.0 scoring logic (paraphrase):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">closed_yes_no_accuracy</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">gt</span><span class="p">):</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">pred_lower</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="k">if</span> <span class="s2">&quot;yes&quot;</span> <span class="ow">in</span> <span class="n">pred_lower</span><span class="p">:</span>  <span class="c1"># substring match!</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">gt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;yes&quot;</span> <span class="k">else</span> <span class="mi">0</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="k">if</span> <span class="s2">&quot;no&quot;</span> <span class="ow">in</span> <span class="n">pred_lower</span><span class="p">:</span>   <span class="c1"># substring match!</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">gt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;no&quot;</span> <span class="k">else</span> <span class="mi">0</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">return</span> <span class="mi">0</span>
+</span></code></pre></div>
+<p>The <code>in</code> check is a substring match, not a word match. So:</p>
+<ul>
+<li><em>"There is </em><em>no</em><em> evidence of pneumothorax"</em> → matches "no" → scored
+  as "no answer." Correct, by luck of which token came first.</li>
+<li><em>"</em><em>No</em><em>dules are visible bilaterally"</em> → matches "no" → scored as
+  "no answer." Wrong; this is an <em>open-set</em> description that the
+  scorer treats as a closed "no" answer.</li>
+<li><em>"</em><em>Yes</em><em>terday's scan showed..."</em> → would match "yes." Doesn't
+  appear in practice but illustrates the failure mode.</li>
+<li><em>"The lesion is </em><em>not</em><em> in the right lung"</em> → contains neither
+  "yes" nor "no" as substrings — scored as "no answer found" and gets
+  0, even though "not" is a clear negative.</li>
+</ul>
+<p>Most consequentially: <em>"There is also </em><em>no</em><em>dularity in..."</em> and
+similar verbose descriptive predictions get scored as "no" answers,
+which <strong>inflates the closed-set accuracy uniformly across all models
+that produce verbose responses.</strong> And the kicker: it inflates <em>more</em>
+when the model produces <em>more</em> verbose output — exactly what happens
+when pruning starts breaking the model's grounding and it falls back
+to generic radiology-prose templates.</p>
+<p>Rewrote the scorer using word-boundary matching:</p>
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">closed_yes_no_accuracy_fixed</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">gt</span><span class="p">):</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="c1"># Tokenize: lowercase, split on word boundaries</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">words</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\b[a-z]+\b&quot;</span><span class="p">,</span> <span class="n">pred</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="k">if</span> <span class="s2">&quot;yes&quot;</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">gt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;yes&quot;</span> <span class="k">else</span> <span class="mi">0</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="k">if</span> <span class="s2">&quot;no&quot;</span>  <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">gt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;no&quot;</span>  <span class="k">else</span> <span class="mi">0</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="k">return</span> <span class="mi">0</span>
+</span></code></pre></div>
+<p>Re-scored all 9 runs through both scorers (preserving the original
+metric in JSON for comparison, naming the new column <code>closed_strict</code>):</p>
+<table>
+<thead>
+<tr>
+<th>K</th>
+<th>Method</th>
+<th style="text-align: right;">Closed (substring, old)</th>
+<th style="text-align: right;">Closed (word-boundary, new)</th>
+<th style="text-align: right;">Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.00</td>
+<td>baseline</td>
+<td style="text-align: right;">57.72</td>
+<td style="text-align: right;">47.41</td>
+<td style="text-align: right;">−10.31</td>
+</tr>
+<tr>
+<td>0.75</td>
+<td>random</td>
+<td style="text-align: right;">56.99</td>
+<td style="text-align: right;">47.41</td>
+<td style="text-align: right;">−9.58</td>
+</tr>
+<tr>
+<td>0.75</td>
+<td>qsim</td>
+<td style="text-align: right;">60.29</td>
+<td style="text-align: right;">49.40</td>
+<td style="text-align: right;">−10.89</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>random</td>
+<td style="text-align: right;">56.27</td>
+<td style="text-align: right;">48.21</td>
+<td style="text-align: right;">−8.06</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>qsim</td>
+<td style="text-align: right;">53.31</td>
+<td style="text-align: right;">44.22</td>
+<td style="text-align: right;">−9.09</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>random</td>
+<td style="text-align: right;">60.10</td>
+<td style="text-align: right;">49.00</td>
+<td style="text-align: right;">−11.10</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>qsim</td>
+<td style="text-align: right;">62.42</td>
+<td style="text-align: right;">50.20</td>
+<td style="text-align: right;">−12.22</td>
+</tr>
+<tr>
+<td>0.10</td>
+<td>random</td>
+<td style="text-align: right;">63.74</td>
+<td style="text-align: right;">52.99</td>
+<td style="text-align: right;">−10.75</td>
+</tr>
+<tr>
+<td>0.10</td>
+<td>qsim</td>
+<td style="text-align: right;"><strong>65.07</strong></td>
+<td style="text-align: right;"><strong>53.78</strong></td>
+<td style="text-align: right;">−11.29</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The bug inflates every v1.0 closed-accuracy number by 9-12 pts
+uniformly.</strong> That includes every number the v1.0 paper reports for
+Table 4, and every reproduction attempt anyone has made using the
+released code. This is a real finding — and a publishable one in its
+own right.</p>
+<p>But on its own, the bug <em>doesn't explain the rising curve</em>. Looking
+at the word-boundary column: 47.41 (baseline) → 53.78 (qsim kr=0.10).
+<strong>The closed accuracy still rises by +6.37 pts under aggressive
+pruning, even after fixing the bug.</strong> Something else is going on.</p>
+<h2 id="phase-4-self-correcting-two-earlier-claims">Phase 4 — Self-correcting two earlier claims<a class="headerlink" href="#phase-4-self-correcting-two-earlier-claims" title="Permanent link">&para;</a></h2>
+<p>Before chasing the residual anomaly, two claims from the morning
+needed walking back:</p>
+<ol>
+<li><strong>"Open recall is falling" — wrong.</strong> I'd said earlier the open
+   recall was drifting down across the curve. Looking at the actual
+   numbers: 29.52, 30.37, 28.53, 28.94, 27.85, 27.65, 31.84, 26.21,
+   28.65. That's noise in a 0.26-0.32 band, not a monotonic trend.
+   Open recall is essentially flat, not degrading. The "visual
+   conditioning is breaking" framing I'd used was overstated.</li>
+<li><strong>"The Day 1 +2.57 / +3.30 result is wrong" — partially.</strong> The
+   substring-bug correction does pull the kr=0.75 qsim result back
+   to within noise of baseline on the strict metric (49.40 vs 47.41,
+   gap of +1.99 pts). So the headline "qsim beats baseline" claim
+   is weaker than reported, but not zero. The strict-metric gap
+   between qsim and random at kr=0.75 is still +1.99 pts. Not the
+   +3.30 pts I'd reported, but not nothing either.</li>
+</ol>
+<h2 id="phase-5-three-way-scoring-diagnostic">Phase 5 — Three-way scoring diagnostic<a class="headerlink" href="#phase-5-three-way-scoring-diagnostic" title="Permanent link">&para;</a></h2>
+<p>The substring bug exists on a spectrum of strictness. To bound the
+residual anomaly, ran the predictions through three scorers
+simultaneously:</p>
+<ul>
+<li><strong><code>strict</code></strong> — the prediction must <em>lead with</em> "yes" or "no" as
+  its first content word</li>
+<li><strong><code>medium</code></strong> — the prediction must contain "yes" or "no" as a
+  whole word anywhere</li>
+<li><strong><code>lenient</code></strong> — <code>medium</code>, plus also accepts "not" as a synonym for
+  "no"</li>
+</ul>
+<p>GT distribution on VQA-RAD closed test set: yes=118, no=133, other=21.
+Yes-share among yes/no: 0.4701 — slightly <em>no</em>-leaning, so "always
+yes" can't be the explanation.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th style="text-align: right;">Strict</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">Lenient</th>
+<th style="text-align: right;">Lenient−Strict gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline (Baron-GG)</td>
+<td style="text-align: right;">35.46</td>
+<td style="text-align: right;">42.23</td>
+<td style="text-align: right;">47.41</td>
+<td style="text-align: right;">11.95</td>
+</tr>
+<tr>
+<td>kr=0.75 random</td>
+<td style="text-align: right;">30.68</td>
+<td style="text-align: right;">41.43</td>
+<td style="text-align: right;">47.41</td>
+<td style="text-align: right;">16.73</td>
+</tr>
+<tr>
+<td>kr=0.75 qsim</td>
+<td style="text-align: right;">27.49</td>
+<td style="text-align: right;">39.04</td>
+<td style="text-align: right;">49.40</td>
+<td style="text-align: right;">21.91</td>
+</tr>
+<tr>
+<td>kr=0.50 random</td>
+<td style="text-align: right;">27.49</td>
+<td style="text-align: right;">39.84</td>
+<td style="text-align: right;">48.21</td>
+<td style="text-align: right;">20.72</td>
+</tr>
+<tr>
+<td>kr=0.50 qsim</td>
+<td style="text-align: right;">26.29</td>
+<td style="text-align: right;">35.06</td>
+<td style="text-align: right;">44.22</td>
+<td style="text-align: right;">17.93</td>
+</tr>
+<tr>
+<td>kr=0.25 random</td>
+<td style="text-align: right;">31.08</td>
+<td style="text-align: right;">42.23</td>
+<td style="text-align: right;">49.00</td>
+<td style="text-align: right;">17.93</td>
+</tr>
+<tr>
+<td>kr=0.25 qsim</td>
+<td style="text-align: right;">31.08</td>
+<td style="text-align: right;">43.03</td>
+<td style="text-align: right;">50.20</td>
+<td style="text-align: right;">19.12</td>
+</tr>
+<tr>
+<td>kr=0.10 random</td>
+<td style="text-align: right;">32.67</td>
+<td style="text-align: right;">46.61</td>
+<td style="text-align: right;">52.99</td>
+<td style="text-align: right;">20.32</td>
+</tr>
+<tr>
+<td>kr=0.10 qsim</td>
+<td style="text-align: right;"><strong>34.26</strong></td>
+<td style="text-align: right;">45.42</td>
+<td style="text-align: right;"><strong>53.78</strong></td>
+<td style="text-align: right;">19.52</td>
+</tr>
+</tbody>
+</table>
+<p>Two things this table tells us:</p>
+<ol>
+<li><strong>Under the strictest possible metric, pruning does NOT improve
+   closed accuracy.</strong> Baseline strict is 35.46; qsim kr=0.10 strict
+   is 34.26. The "pruning helps" story collapses entirely under
+   strict scoring — the model isn't getting <em>better</em> at answering
+   yes/no when pruned, it's getting <em>more verbose</em> in ways that
+   accidentally satisfy looser scorers.</li>
+<li><strong>The lenient-minus-strict gap widens under pruning.</strong> Baseline
+   gap is 11.95; pruned runs have gaps in the 17-22 range. So
+   pruning is creating exactly the kind of verbose output the
+   substring/lenient scorers reward spuriously. The substring bug
+   doesn't <em>create</em> the rising-curve effect on its own, but it
+   <em>amplifies</em> an effect that's there in any non-strict scorer.</li>
+</ol>
+<p>By this point in the day I was looking at a project where:</p>
+<ul>
+<li>The published baseline accuracy numbers I'd been comparing to are
+  inflated by 9-12 pts due to a scorer bug nobody had noticed.</li>
+<li>My own pruning method's +2.57 / +3.30 improvement collapses to
+  +1.99 / +3.19 under word-boundary scoring, and to essentially zero
+  (or negative) under strict scoring.</li>
+<li>The pruning architecture's hook overhead means latency <em>never
+  recovers</em> even at 90% pruning, so even if accuracy held flat
+  we'd be in a "no win" regime on the efficiency axis.</li>
+</ul>
+<p>This was the point where the question shifted from "what's the bug
+in our scorer?" to "is there a fundamental problem with our base
+model and evaluation methodology?"</p>
+<h2 id="phase-6-the-mcq-letter-test-and-the-decision-point">Phase 6 — The MCQ-letter test, and the decision point<a class="headerlink" href="#phase-6-the-mcq-letter-test-and-the-decision-point" title="Permanent link">&para;</a></h2>
+<p>Looked into how the modern medical-VLM literature handles closed-set
+scoring. The standard turns out to be <strong>MCQ-letter extraction</strong>:
+reformulate every closed question into multiple-choice with options
+A, B, C, ... and prompt the model with <em>"Answer with the option's
+letter from the given choices directly."</em> Scoring is a single-character
+equality check between extracted letter and ground-truth letter. This
+sidesteps the substring bug, the verbosity inflation, and the
+word-leading arbitrariness all at once.</p>
+<p>Wrote a 20-sample VQA-RAD smoke test with this MCQ format against
+the merged LLaVA-Med v1.0 weights.</p>
+<p><strong>Result: 0/11 letter extraction rate.</strong> The model produced verbose
+biomedical prose responses ("There is no evidence of pneumothorax in
+the chest x-ray image, and the heart appears to be of normal size...")
+that completely ignored the MCQ format instruction. Not a single
+response started with a letter.</p>
+<p>This is the diagnostic outcome that made the decision unavoidable:</p>
+<blockquote>
+<p>LLaVA-Med v1.0 was instruction-tuned in 2023 on biomedical dialogue
+data where every response is multi-sentence explanation. There is
+effectively no MCQ-format data in its training distribution, so it
+ignores MCQ instructions in favor of producing fluent biomedical
+prose. This isn't a fixable prompt-engineering problem — the model's
+response distribution is fundamentally shaped against the
+evaluation format the field has standardized on.</p>
+</blockquote>
+<p>Combined with everything else:</p>
+<ul>
+<li>Substring bug in the official scorer (inflates published numbers).</li>
+<li>32-layer hook architecture with position_id workarounds that
+  doesn't actually deliver latency wins.</li>
+<li>Published per-dataset deltas that don't reproduce the paper's
+  closed-set numbers (the May 16-17 finding, now re-contextualized).</li>
+<li>An instruction-following profile incompatible with modern eval
+  methodology.</li>
+<li>A model the pruning literature has moved off of — every recent
+  paper (FastV, GlimpsePrune, DivPrune, IDPruner) benchmarks on
+  Qwen2.5-VL-7B-Instruct.</li>
+</ul>
+<p><strong>Decision: pivot the project's base model to Qwen2.5-VL-7B-Instruct.</strong></p>
+<p>The work done on LLaVA-Med v1.0 is not wasted — it produced three
+methodologically substantive findings (the substring bug, the
+verbosity inflation effect, and the community-wide reproduction
+failure of v1.0's per-dataset deltas) that become part of the
+related-work and motivation sections of the eventual writeup. They
+justify the migration as a methodological choice, not a defeat.</p>
+<h2 id="phase-7-qwen25-vl-environment-setup">Phase 7 — Qwen2.5-VL environment setup<a class="headerlink" href="#phase-7-qwen25-vl-environment-setup" title="Permanent link">&para;</a></h2>
+<p>With the decision made, set up the new environment. Decisions:</p>
+<ul>
+<li><strong>Base image: <code>nvcr.io/nvidia/pytorch:25.06-py3</code>.</strong> Chose 25.06
+  over the latest 26.04 because it's the last CUDA 12.x NGC release
+  (flash-attn pre-built wheels available), the R555+ driver
+  requirement is widely deployed, and 11 months of library maturity
+  means every Qwen2.5-VL dependency has tested wheels for this
+  stack.</li>
+<li><strong>Eval framework: VLMEvalKit + lmms-eval.</strong> Both support
+  Qwen2.5-VL and VQA-RAD/SLAKE/PathVQA out of the box. Adopting
+  these eliminates the entire class of metric bugs we encountered
+  on the v1.0 track.</li>
+<li><strong>Pruning method port: reuse <code>random</code> and <code>qsim</code> scoring logic
+  on Qwen2.5-VL's standard HF transformers architecture.</strong> The
+  hook target changes from <code>LlavaLlamaModel.model.layers</code> to
+  Qwen2.5-VL's decoder layers; the scoring math is the same.</li>
+</ul>
+<p>Wrote a four-file environment package saved to <code>~/qwen-medvlm/</code>:</p>
+<details class="note">
+<summary><code>Dockerfile</code> — Qwen2.5-VL on NGC 25.06</summary>
+<p>Two important constraints baked in. First: the file
+<code>/etc/pip/constraint.txt</code> in the NGC image pins transformers to
+an older version than Qwen2.5-VL needs; emptying it (rather than
+deleting, which would break pip config) is necessary before
+layering newer deps. Second: NGC 25.06's PyTorch was compiled
+against NumPy 1.x, but VLMEvalKit's transitive deps would
+otherwise pull in NumPy 2.x and silently break <code>torch.export</code>.
+The <code>numpy&lt;2.0</code> pin blocks that.</p>
+<div class="language-dockerfile highlight"><span class="filename">Docker</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c"># Dockerfile for Qwen2.5-VL medical VQA + visual token pruning research</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c"># Base image: NGC PyTorch 25.06 -&gt; Python 3.12, CUDA 12.9.1, PyTorch 2.8</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">FROM</span><span class="w"> </span><span class="s">nvcr.io/nvidia/pytorch:25.06-py3</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c"># Ubuntu packages</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c"># git-lfs needed to pull model weights from HuggingFace</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c"># libgl1, libglib2.0-0 required by opencv-python (used by</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c"># qwen_vl_utils image preprocessing)</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span>git<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span>git-lfs<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span>python3-pip<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span>libgl1<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span>libglib2.0-0<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="c"># Empty NGC&#39;s pip constraint file: it pins transformers to an older</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="c"># version than Qwen2.5-VL needs (&gt;=4.49). Pip&#39;s config still references</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="c"># the file path, so we empty rather than delete it.</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="k">RUN</span><span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/pip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/pip/constraint.txt
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="c"># JupyterLab for the VM launch interface</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>jupyter<span class="w"> </span>jupyterlab
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="c"># Qwen2.5-VL core dependencies, version-pinned to a known-good</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="c"># combination tested with Qwen/Qwen2.5-VL-7B-Instruct as of mid-2025.</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="c"># CRITICAL: numpy&lt;2.0 -- NGC 25.06&#39;s PyTorch was compiled against</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="c"># NumPy 1.x; NumPy 2.x is binary-incompatible and breaks torch.export</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="c"># silently.</span>
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">        </span><span class="s2">&quot;numpy&lt;2.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">        </span><span class="s2">&quot;transformers&gt;=4.49&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">        </span><span class="s2">&quot;qwen-vl-utils[decord]&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">        </span><span class="s2">&quot;vlmeval&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="w">        </span><span class="s2">&quot;vllm&gt;=0.7.2&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="w">        </span><span class="s2">&quot;accelerate&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="w">        </span><span class="s2">&quot;decord&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="w">        </span><span class="s2">&quot;pillow&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">        </span><span class="s2">&quot;opencv-python&quot;</span>
+</span></code></pre></div>
+</details>
+<p>The accompanying <code>docker-compose.yml</code> mounts the project code at
+<code>/workspace/</code>, the existing dataset directory at <code>/data/</code>, and an
+<code>hf_cache/</code> for HuggingFace weight downloads to persist across
+container restarts. A <code>smoke_test.py</code> loads the model and runs an
+MCQ-format prompt against a chest X-ray, asserting the response
+starts with "A" or "B" — the <em>exact</em> test LLaVA-Med v1.0 failed.</p>
+<h2 id="phase-8-image-build-container-up-weights-downloading">Phase 8 — Image build, container up, weights downloading<a class="headerlink" href="#phase-8-image-build-container-up-weights-downloading" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>~/qwen-medvlm
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>build<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>build.log<span class="w">    </span><span class="c1"># ~25 min</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>qwen-medvlm<span class="w"> </span>bash
+</span></code></pre></div>
+<p>Build succeeded on the first try. Container is up. The smoke test
+launched, and got as far as <code>Loading Qwen2.5-VL-7B-Instruct...</code> — at
+which point the first run started downloading the ~16 GB model weights
+from HuggingFace into the mounted cache.</p>
+<p><strong>Weights still downloading at end of day.</strong> The smoke test (and with
+it, the decisive MCQ-compliance check) is pending the download
+finishing. Tomorrow morning should pick that up.</p>
+<h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
+<p>A long, branching day. The findings, ranked by how much they reshape
+the project:</p>
+<ol>
+<li><strong>Pivoted the project's base model from LLaVA-Med v1.0 to
+   Qwen2.5-VL-7B-Instruct.</strong> The biggest single decision of the
+   project so far. The work on v1.0 is repurposed as motivation
+   ("here are three concrete reasons modern medical-VLM research
+   needed to move off LLaVA-Med v1.0") rather than discarded.</li>
+<li><strong>The substring bug in the v1.0 closed-set scorer is real and
+   publishable.</strong> Inflates every published v1.0 closed-accuracy
+   number by 9-12 pts uniformly. Worth a section in the eventual
+   writeup as a methodology lesson.</li>
+<li><strong>The verbosity-inflation effect compounds the substring bug
+   under pruning.</strong> Lenient scorers reward pruned models that
+   produce more verbose output, creating the false appearance of
+   pruning improving accuracy. A real and reportable methodology
+   lesson.</li>
+<li><strong>The original kr=0.75 +2.57 / +3.30 result is partially
+   weakened, not eliminated.</strong> Word-boundary scoring drops the
+   improvement to +1.99 over baseline and +3.19 over random; strict
+   first-content-word scoring drops it to essentially zero or
+   negative. The qsim-vs-random comparison still has a small signal
+   under medium-strictness scoring; the qsim-vs-baseline claim is
+   noisy under strict scoring.</li>
+<li><strong>The residual rising-curve anomaly is partially explained but
+   not closed out.</strong> The substring bug accounts for a large fraction
+   but not all of the +7.35 pt original rise. The remaining +6.37
+   pt rise under word-boundary scoring may be the verbosity-inflation
+   effect on the medium scorer (the strict metric does not rise),
+   in which case it's a measurement artifact and not a real signal.
+   This needs cleaner methodology to verify, which is exactly what
+   the Qwen2.5-VL + VLMEvalKit migration provides.</li>
+</ol>
+<p><strong>Self-correction worth noting.</strong> I made two analytical mistakes
+during the day that I want to flag for the record:</p>
+<ul>
+<li>Initially framed "open recall is falling" as one of the
+  diagnostic signals. It isn't; it's noise in a 0.26-0.32 band.
+  Walked that back later in the day.</li>
+<li>Initially floated "the GT yes-distribution is skewed and 'always
+  yes' wins" as a hypothesis for the rising curve. The GT distribution
+  came back 47/53 — slightly no-leaning, so the hypothesis was
+  decisively refuted.</li>
+</ul>
+<p>Both are listed because the value of a research log includes the
+hypotheses that <em>didn't</em> survive contact with data, not just the
+ones that did.</p>
+<h2 id="what-stays-on-the-site-and-what-doesnt">What stays on the site, and what doesn't<a class="headerlink" href="#what-stays-on-the-site-and-what-doesnt" title="Permanent link">&para;</a></h2>
+<p>Per the editorial decision at end-of-day:</p>
+<ul>
+<li><strong>The site's headline pages (home, Experiments, Day 1 of Week 2)
+  keep the May 17 numbers</strong> (+2.57 / +3.30 framing at kr=0.75). The
+  research story is too in-flux today to update those pages
+  responsibly.</li>
+<li><strong>The Week 2 overview gets a Day 5 summary</strong> but the kr ablation
+  pending-item stays as-is rather than being marked complete —
+  because under cleaner methodology, the headline claim may not
+  hold.</li>
+<li><strong>No update to Bug #5</strong> — its narrative was due for revision based
+  on the open-recall reproduction story, but the substring bug
+  finding makes the closed-set part of Bug #5 also stale. Better to
+  rewrite once after Qwen2.5-VL produces reproducible baselines than
+  to do two passes.</li>
+<li><strong>Today's day-page (this page) is the canonical record</strong> of the
+  in-flux findings, the substring bug, the residual anomaly, and the
+  pivot decision. Anyone reading the site tomorrow can find the
+  current state of understanding here without disturbing the
+  established headline narrative.</li>
+</ul>
+<hr />
+<h3 id="plan-for-tomorrow-may-22-day-6-of-week-2">Plan for tomorrow (May 22, Day 6 of Week 2)<a class="headerlink" href="#plan-for-tomorrow-may-22-day-6-of-week-2" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Wait for / confirm the Qwen2.5-VL weights finished downloading</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run the smoke test — assert MCQ-letter compliance on a sample
+      (the test LLaVA-Med v1.0 failed at 0/11)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If smoke passes: run zero-shot Qwen2.5-VL on VQA-RAD via
+      VLMEvalKit's MCQ scorer; bank the canonical baseline numbers</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Port <code>random</code> and <code>qsim</code> scoring logic from
+      <code>eval/methods/</code> onto Qwen2.5-VL's decoder layers. The hook
+      target changes; the scoring math is the same</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Once both are in: re-run the kr ∈ {0.75, 0.50, 0.25, 0.10}
+      ablation on the new stack with the new (correct) scorer. This
+      is the experiment that answers the project's central
+      question cleanly</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Eventually: rewrite Bug #5 with both the open-recall finding
+      <em>and</em> the substring-bug finding consolidated, once we have a
+      stable baseline to compare against</li>
+</ul>
+<hr />
+<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
+<p><strong>Repository:</strong> <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
+&nbsp;·&nbsp; <strong>Commit:</strong>
+<a href="https://github.com/Leokuan0208/llava-med-pruning-v1/commit/14a62d3aa8dd3060c6075e19177099da3d0175ef"><code>14a62d3</code></a></p>
+<p>The commit captures the accumulated state of the v1.0 track at the
+point of pivot: the in-LLM pruning method, the SLAKE wiring, the
+<code>eval_topk_checkpoints.py</code> script, the candidate-set builders. It's
+the natural "this is where we left this branch" snapshot before the
+work shifts to Qwen2.5-VL. The <code>~/qwen-medvlm/</code> environment is on
+disk but not yet in a versioned repo — that gets initialized
+tomorrow once the smoke test confirms the stack works.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../day-04/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 4 — Wednesday, May 20, 2026">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Day 4 — Wednesday, May 20, 2026
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../bugs/" class="md-footer__link md-footer__link--next" aria-label="Next: Bugs &amp; Issues">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Bugs & Issues
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Leokuan0208" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

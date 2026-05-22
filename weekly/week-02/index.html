@@ -776,6 +776,8 @@
       
         
       
+        
+      
     
     
       
@@ -892,6 +894,27 @@
   
   <span class="md-ellipsis">
     Day 4 — Wednesday, May 20, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 21, 2026
   </span>
   
 
@@ -1019,6 +1042,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#day-5-thursday-may-21-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 5 — Thursday, May 21, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#plan-for-the-rest-of-the-week-may-18-may-23" class="md-nav__link">
     <span class="md-ellipsis">
       Plan for the rest of the week (May 18 – May 23)
@@ -1121,6 +1153,27 @@ later layers rather than committing to early pruning decisions;
 directly addresses our open "where to prune" question. Earmarked as
 a Phase 3+ extension once the single-layer Pareto curve is filled
 in.</p>
+<h3 id="day-5-thursday-may-21-2026"><a href="day-05/">Day 5 — Thursday, May 21, 2026</a><a class="headerlink" href="#day-5-thursday-may-21-2026" title="Permanent link">&para;</a></h3>
+<p>The most consequential day of the project. Came back from travel to
+compile the kr ∈ {0.50, 0.25, 0.10} Pareto curve and instead found
+the curve's shape was anomalous — closed accuracy rising monotonically
+with pruning aggressiveness up to +7.35 pts at kr=0.10 qsim, while
+open recall stayed flat. Read <code>eval/metrics.py</code> carefully and found
+a real <strong>substring bug in the LLaVA-Med v1.0 closed-set scorer</strong>
+that inflates every published v1.0 closed-accuracy number by 9-12 pts
+uniformly. Word-boundary scoring closes most of the gap but a residual
++6.37 pt rise remains — partly explained as verbosity-inflation on
+lenient scorers. Under the strictest possible scorer (lead with
+yes/no), pruning does <em>not</em> improve closed accuracy at all. Then ran
+an MCQ-letter compliance smoke test against v1.0: <strong>0/11 responses
+started with a letter</strong>, confirming v1.0's instruction-following is
+fundamentally incompatible with the field's standardized eval format.
+<strong>Decision: pivot the project's base model to Qwen2.5-VL-7B-Instruct
+with VLMEvalKit + lmms-eval as the evaluation backbone.</strong> Wrote the
+new Dockerfile (NGC PyTorch 25.06 base), built the image, container
+is up; weights downloading at end of day. The headline pages stay on
+the May 17 numbers — the research story is too in-flux to update
+them yet.</p>
 <hr />
 <h2 id="plan-for-the-rest-of-the-week-may-18-may-23">Plan for the rest of the week (May 18 – May 23)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-18-may-23" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
@@ -1129,20 +1182,27 @@ in.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> FastV read end-to-end (Day 3)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MedPruner read (Day 4)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> SwiftVLM read (Day 4); added to Related Work + Resources</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Check the kr ∈ {0.50, 0.25, 0.10} sweep — launched end of Day 1,
-      still running in the background through three days of travel</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Build the Pareto-frontier table (accuracy vs keep-ratio) for
-      the Experiments page once results are in</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push the Day 1 changes to GitHub (<code>llava-med-pruning-v1</code>)
-      after splitting into coherent commits</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (token merging vs pruning framework)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> kr ∈ {0.50, 0.25, 0.10} sweep compiled (Day 5) — anomalous
+      curve shape, substring bug found in v1.0 scorer, pivot
+      decision made</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Substring bug in v1.0 closed-set scorer documented (Day 5)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Pivot to Qwen2.5-VL-7B-Instruct (Day 5)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Qwen2.5-VL environment built (Day 5) — Dockerfile, container
+      running, weights downloading</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Confirm weights downloaded, run smoke test (MCQ-letter
+      compliance check)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run zero-shot Qwen2.5-VL on VQA-RAD via VLMEvalKit — first
+      reproducible baseline on the new stack</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Port <code>random</code> and <code>qsim</code> pruning to Qwen2.5-VL's decoder
+      layers — the hook target changes, scoring math same</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Re-run kr ∈ {0.75, 0.50, 0.25, 0.10} ablation on the new
+      stack with the correct scorer; this is the cleanest answer
+      to the project's central question</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (slipped 7+ days)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim <strong>SparseVLM</strong> and <strong>GAP</strong></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Design an attention-based scoring variant (FastV-style) as a
-      second pruning method for comparison</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Repeat the VQA-RAD ablation on SLAKE and PathVQA (the two
-      additional benchmarks) — assuming Day-1 results are encouraging</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <a href="../../bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>
-      with the revised broken-deltas narrative</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Rewrite <a href="../../bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>
+      with consolidated open-recall + substring-bug findings, once
+      the new baseline is stable</li>
 </ul>
 <hr />
 <h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
