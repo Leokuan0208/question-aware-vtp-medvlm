@@ -91,11 +91,18 @@ an MCQ-letter compliance smoke test against v1.0: **0/11 responses
 started with a letter**, confirming v1.0's instruction-following is
 fundamentally incompatible with the field's standardized eval format.
 **Decision: pivot the project's base model to Qwen2.5-VL-7B-Instruct
-with VLMEvalKit + lmms-eval as the evaluation backbone.** Wrote the
-new Dockerfile (NGC PyTorch 25.06 base), built the image, container
-is up; weights downloading at end of day. The headline pages stay on
-the May 17 numbers — the research story is too in-flux to update
-them yet.
+with VLMEvalKit + lmms-eval as the evaluation backbone.** Drafted a
+new Dockerfile on NGC PyTorch 25.06; first KUBERUN build failed on
+a dangling `/etc/pip/constraint.txt` reference (emptied vs deleted
+fix); second build's Step 1 import check surfaced a NumPy 2.x
+binary-incompatibility warning that required pinning `numpy<2.0` in
+the Dockerfile and a third rebuild via KUBERUN. After that, Step 1
+and Step 2 verifications run clean. Step 3 (model load + 16 GB
+HuggingFace weight download) started; the 4th of N safetensor shards
+stopped updating its progress bar — could be a real stall, a
+reporting artifact, or already-into-the-loading phase. Day ended
+with the download in progress. The headline pages stay on the May 17
+numbers — the research story is too in-flux to update them yet.
 
 ---
 
@@ -111,10 +118,15 @@ them yet.
       decision made
 - [x] Substring bug in v1.0 closed-set scorer documented (Day 5)
 - [x] Pivot to Qwen2.5-VL-7B-Instruct (Day 5)
-- [x] Qwen2.5-VL environment built (Day 5) — Dockerfile, container
-      running, weights downloading
-- [ ] Confirm weights downloaded, run smoke test (MCQ-letter
-      compliance check)
+- [x] Qwen2.5-VL Dockerfile drafted and image built on KUBERUN
+      (Day 5) — three submissions total: original, fix for the
+      constraint-file deletion error, fix for the NumPy 2.x conflict
+- [x] Container running, Step 1 + Step 2 import / library
+      verifications clean (Day 5)
+- [ ] Confirm Step 3's HuggingFace weight download finished —
+      stopped updating progress bar on safetensor 4 at end of Day 5
+- [ ] Run Step 4 — MCQ-letter compliance test against Qwen2.5-VL
+      (the test LLaVA-Med v1.0 failed at 0/11)
 - [ ] Run zero-shot Qwen2.5-VL on VQA-RAD via VLMEvalKit — first
       reproducible baseline on the new stack
 - [ ] Port `random` and `qsim` pruning to Qwen2.5-VL's decoder

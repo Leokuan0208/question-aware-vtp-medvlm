@@ -287,37 +287,76 @@ failure of v1.0's per-dataset deltas) that become part of the
 related-work and motivation sections of the eventual writeup. They
 justify the migration as a methodological choice, not a defeat.
 
-## Phase 7 — Qwen2.5-VL environment setup
+## Phase 7 — Drafting the Qwen2.5-VL Dockerfile
 
-With the decision made, set up the new environment. Decisions:
+With the decision made, drafted a single Dockerfile in the project's
+established format — same shape as the LLaVA-Med v1.5 and v1.0
+Dockerfiles already on the [setup page](../../setup.md): one
+`FROM`, layered `RUN pip install` blocks for pinned dependencies,
+JupyterLab as the entrypoint command. The build itself is submitted
+through the HONGHU KUBERUN web interface (paste Dockerfile → platform
+builds the image → JupyterLab terminal is the entrypoint into the
+running container); no `docker` CLI involved at any step. Decisions
+on the contents:
 
 - **Base image: `nvcr.io/nvidia/pytorch:25.06-py3`.** Chose 25.06
   over the latest 26.04 because it's the last CUDA 12.x NGC release
-  (flash-attn pre-built wheels available), the R555+ driver
-  requirement is widely deployed, and 11 months of library maturity
-  means every Qwen2.5-VL dependency has tested wheels for this
-  stack.
+  (flash-attn pre-built wheels available; CUDA 13 would force a
+  30-60 min source build), the R555+ driver requirement is widely
+  deployed on KUBERUN, and 11 months of library maturity means
+  every Qwen2.5-VL dependency has tested wheels for this stack.
+  NGC 25.06 ships Python 3.12, CUDA 12.9.1, PyTorch 2.8.0a0.
 - **Eval framework: VLMEvalKit + lmms-eval.** Both support
   Qwen2.5-VL and VQA-RAD/SLAKE/PathVQA out of the box. Adopting
   these eliminates the entire class of metric bugs we encountered
-  on the v1.0 track.
+  on the v1.0 track (the substring bug found earlier today being
+  the biggest example).
 - **Pruning method port: reuse `random` and `qsim` scoring logic
   on Qwen2.5-VL's standard HF transformers architecture.** The
   hook target changes from `LlavaLlamaModel.model.layers` to
   Qwen2.5-VL's decoder layers; the scoring math is the same.
 
-Wrote a four-file environment package saved to `~/qwen-medvlm/`:
+## Phase 8 — First KUBERUN build, constraint-file failure, rebuild
 
-??? note "`Dockerfile` — Qwen2.5-VL on NGC 25.06"
+First draft of the Dockerfile pasted into KUBERUN. The build kicked
+off, and failed immediately at step 4:
 
-    Two important constraints baked in. First: the file
-    `/etc/pip/constraint.txt` in the NGC image pins transformers to
-    an older version than Qwen2.5-VL needs; emptying it (rather than
-    deleting, which would break pip config) is necessary before
-    layering newer deps. Second: NGC 25.06's PyTorch was compiled
-    against NumPy 1.x, but VLMEvalKit's transitive deps would
-    otherwise pull in NumPy 2.x and silently break `torch.export`.
-    The `numpy<2.0` pin blocks that.
+```
+#7 [4/8] RUN pip3 install --no-cache-dir jupyter jupyterlab
+#7 1.040 ERROR: Could not open requirements file:
+        [Errno 2] No such file or directory: '/etc/pip/constraint.txt'
+#7 ERROR: process "/bin/sh -c pip3 install --no-cache-dir jupyter jupyterlab"
+        did not complete successfully: exit code: 1
+```
+
+The root cause: NGC's PyTorch base image ships with `/etc/pip.conf`
+configured to point at a constraint file at `/etc/pip/constraint.txt`,
+which pins `transformers` to a version older than Qwen2.5-VL needs
+(< 4.49). I'd written the Dockerfile with `RUN rm -f
+/etc/pip/constraint.txt` to remove that pin — but **deleting the
+file leaves the pip-config reference dangling**, so the *next*
+`pip install` call (jupyter, in this case) crashes trying to read
+the now-missing file.
+
+The fix is to **empty the file** instead of deleting it. That way
+pip's config still finds a valid (empty) constraint file and skips
+straight through:
+
+```dockerfile
+RUN mkdir -p /etc/pip && echo "" > /etc/pip/constraint.txt
+```
+
+Updated the Dockerfile, re-submitted through KUBERUN. Build
+succeeded on the second attempt, ~25 minutes total (the NGC base
+image is ~25 GB compressed; pulling it from NGC dominates the
+build time).
+
+??? note "`Dockerfile` — Qwen2.5-VL on NGC 25.06 (working version, after Phase 9 NumPy fix)"
+
+    This is the final working version that includes both the
+    constraint-file emptying (from this phase) and the
+    `numpy<2.0` pin (added in Phase 9 below after the dependency
+    conflict surfaced).
 
     ```dockerfile
     # Dockerfile for Qwen2.5-VL medical VQA + visual token pruning research
@@ -338,53 +377,149 @@ Wrote a four-file environment package saved to `~/qwen-medvlm/`:
 
     # Empty NGC's pip constraint file: it pins transformers to an older
     # version than Qwen2.5-VL needs (>=4.49). Pip's config still references
-    # the file path, so we empty rather than delete it.
+    # the file path, so we empty rather than delete it -- deleting would
+    # break every subsequent pip call.
     RUN mkdir -p /etc/pip && echo "" > /etc/pip/constraint.txt
 
-    # JupyterLab for the VM launch interface
+    # JupyterLab - required by the HONGHU KUBERUN VM launch interface
     RUN pip3 install --no-cache-dir jupyter jupyterlab
 
     # Qwen2.5-VL core dependencies, version-pinned to a known-good
     # combination tested with Qwen/Qwen2.5-VL-7B-Instruct as of mid-2025.
     # CRITICAL: numpy<2.0 -- NGC 25.06's PyTorch was compiled against
     # NumPy 1.x; NumPy 2.x is binary-incompatible and breaks torch.export
-    # silently.
+    # silently. The pin blocks transitive deps from upgrading numpy.
     RUN pip3 install --no-cache-dir \
             "numpy<2.0" \
-            "transformers>=4.49" \
-            "qwen-vl-utils[decord]" \
+            "transformers==4.49.0" \
+            "qwen-vl-utils[decord]==0.0.10" \
             "vlmeval" \
-            "vllm>=0.7.2" \
             "accelerate" \
-            "decord" \
+            "pydantic>=2.0" \
             "pillow" \
-            "opencv-python"
+            "opencv-python" \
+            "tifffile"
+
+    # Flash-Attention 2 - reinstall pinned, since NGC's pre-installed
+    # version could vary between image pulls. 2.7.4.post1 has stable
+    # Qwen2.5-VL support and CUDA 12.9 wheels.
+    RUN pip3 install --no-cache-dir flash-attn==2.7.4.post1 --no-build-isolation
+
+    # Symlink so /data shows up in the JupyterLab file browser
+    RUN ln -s /data /root/data
+
+    CMD ["jupyter", "lab", "--port=8888", "--ip=0.0.0.0", "--allow-root", "--no-browser"]
     ```
 
-The accompanying `docker-compose.yml` mounts the project code at
-`/workspace/`, the existing dataset directory at `/data/`, and an
-`hf_cache/` for HuggingFace weight downloads to persist across
-container restarts. A `smoke_test.py` loads the model and runs an
-MCQ-format prompt against a chest X-ray, asserting the response
-starts with "A" or "B" — the *exact* test LLaVA-Med v1.0 failed.
+## Phase 9 — Step 1 import check, NumPy 2.x conflict, second rebuild
 
-## Phase 8 — Image build, container up, weights downloading
+With the container running on KUBERUN, dropped into the JupyterLab
+terminal and ran a step-by-step verification — same pattern as the
+v1.0 setup days. **Step 1** was an inline heredoc import check that
+loads every library the project needs (PyTorch, transformers,
+qwen_vl_utils, flash-attn, vlmeval, Pillow, opencv, tifffile) and
+prints versions:
 
 ```bash
-cd ~/qwen-medvlm
-docker compose build 2>&1 | tee build.log    # ~25 min
-docker compose up -d
-docker compose exec qwen-medvlm bash
+python << 'EOF'
+import torch
+print(f"PyTorch:        {torch.__version__}")
+print(f"CUDA available: {torch.cuda.is_available()}")
+print(f"CUDA version:   {torch.version.cuda}")
+if torch.cuda.is_available():
+    print(f"GPU:            {torch.cuda.get_device_name(0)}")
+import transformers; print(f"transformers:   {transformers.__version__}")
+import qwen_vl_utils;  print("qwen_vl_utils:  OK")
+import flash_attn;     print(f"flash-attn:     {flash_attn.__version__}")
+import vlmeval;        print("vlmeval:        OK")
+EOF
 ```
 
-Build succeeded on the first try. Container is up. The smoke test
-launched, and got as far as `Loading Qwen2.5-VL-7B-Instruct...` — at
-which point the first run started downloading the ~16 GB model weights
-from HuggingFace into the mounted cache.
+The output included a NumPy version warning at the top:
 
-**Weights still downloading at end of day.** The smoke test (and with
-it, the decisive MCQ-compliance check) is pending the download
-finishing. Tomorrow morning should pick that up.
+```
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.x as it may crash. ...
+```
+
+This is the kind of warning that looks ignorable but isn't. NGC's
+PyTorch 2.8.0a0 was compiled against NumPy 1.x, but the
+`pip install` of VLMEvalKit and its transitive dependencies
+silently pulled in NumPy 2.x. PyTorch will mostly continue to work,
+but specific code paths (notably `torch.export`, used by some
+quantisation and serialisation flows) hit hard incompatibilities at
+runtime that show up as opaque `TypeError`s or `AttributeError`s
+mid-eval — exactly the kind of bug we don't want lurking in a
+multi-hour batch run.
+
+The fix is upstream of the install: **pin NumPy to < 2.0** in the
+Dockerfile, *before* the line that installs VLMEvalKit. That way
+NumPy 2.x never enters the environment in the first place.
+
+Updated the Dockerfile (the version embedded in Phase 8's
+collapsible block above is the final version, with this pin already
+in place) and re-submitted through KUBERUN. Third build, succeeded
+cleanly. Re-ran the Step 1 import check; this time:
+
+```
+PyTorch:        2.8.0a0+5228986c39.nv25.06
+CUDA available: True
+CUDA version:   12.9
+GPU:            NVIDIA A100 80GB PCIe
+GPU count:      1
+NumPy:          1.26.4
+transformers:   4.49.0
+qwen_vl_utils:  OK
+flash-attn:     2.7.4.post1
+vlmeval:        OK
+Pillow:         10.4.0
+opencv:         4.13.0
+tifffile:       2026.5.15
+All imports succeeded with no warnings.
+```
+
+Clean — every library at the expected version, NumPy correctly
+locked to 1.26.4, no warnings of any kind. The environment is
+fully functional from a library-import standpoint.
+
+## Phase 10 — Step 2 passes, Step 3 stuck on safetensor 4
+
+**Step 2** — additional minor verifications (GPU memory visible,
+`/data` symlink works, dataset directory reachable) — passed
+without surprises.
+
+**Step 3** was the model-loading test. The script imports
+`Qwen2_5_VLForConditionalGeneration` and calls
+`.from_pretrained("Qwen/Qwen2.5-VL-7B-Instruct", ...)`, which
+triggers HuggingFace's first-run download of ~16 GB of weights into
+the mounted cache directory. The download streams in parallel
+across multiple safetensor shard files, with `tqdm` progress bars
+per file.
+
+The download started cleanly, three shards completed, and then
+**the fourth safetensor file stopped updating its progress bar**.
+The terminal sat without progress for several minutes. This could
+mean any of three things:
+
+1. **Real stall** — HuggingFace's CDN or the local network hiccupped.
+2. **Reporting artifact** — HuggingFace's downloader doesn't always
+   refresh per-file display when shards download in parallel; one
+   file appears stuck while another is actively progressing.
+3. **Past download, into loading** — the shard finished and the loader
+   is now in the (slower, less verbose) "copy shard into GPU memory"
+   phase, which can pause visually for tens of seconds per shard.
+
+The day ran out before resolving which one. The download is in
+progress in the background of a long-running container; will pick
+up tomorrow morning by checking total cache-directory size and
+file-by-file `ls -lh` to see whether the total is still growing
+(case 1 vs case 2 vs case 3).
+
+**End-of-day state**: KUBERUN-built image working, container up,
+JupyterLab accessible, Step 1 + Step 2 verifications clean, Step 3
+model download paused/progressing on safetensor 4 of N. The smoke
+test's decisive output — the MCQ-letter compliance check — is
+pending the download finishing.
 
 ## Honest ledger of the day
 
@@ -463,9 +598,12 @@ Per the editorial decision at end-of-day:
 
 ### Plan for tomorrow (May 22, Day 6 of Week 2)
 
-- [ ] Wait for / confirm the Qwen2.5-VL weights finished downloading
-- [ ] Run the smoke test — assert MCQ-letter compliance on a sample
-      (the test LLaVA-Med v1.0 failed at 0/11)
+- [ ] Confirm Step 3's safetensor download completed (check
+      cache directory total size — if it's near 16 GB, the download
+      finished while the terminal was unresponsive)
+- [ ] Run Step 4 — the MCQ-letter compliance test against
+      Qwen2.5-VL on a sample chest X-ray. This is the decisive test
+      LLaVA-Med v1.0 failed at 0/11
 - [ ] If smoke passes: run zero-shot Qwen2.5-VL on VQA-RAD via
       VLMEvalKit's MCQ scorer; bank the canonical baseline numbers
 - [ ] Port `random` and `qsim` scoring logic from
@@ -491,6 +629,9 @@ The commit captures the accumulated state of the v1.0 track at the
 point of pivot: the in-LLM pruning method, the SLAKE wiring, the
 `eval_topk_checkpoints.py` script, the candidate-set builders. It's
 the natural "this is where we left this branch" snapshot before the
-work shifts to Qwen2.5-VL. The `~/qwen-medvlm/` environment is on
-disk but not yet in a versioned repo — that gets initialized
-tomorrow once the smoke test confirms the stack works.
+work shifts to Qwen2.5-VL. The Qwen2.5-VL image lives inside KUBERUN
+(built from the Dockerfile in Phase 8's collapsible block), and the
+Dockerfile itself isn't yet in a versioned repo — that gets done
+tomorrow once the smoke test confirms the stack works, alongside
+initializing a new `llava-med-pruning-v2` (or similar) repo for the
+Qwen2.5-VL pruning code.
