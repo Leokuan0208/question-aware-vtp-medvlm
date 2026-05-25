@@ -521,6 +521,8 @@
       
         
       
+        
+      
     
     
       
@@ -560,6 +562,27 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="baseline/huatuo-vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HuatuoGPT-Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1106,6 +1129,8 @@
       
         
       
+        
+      
     
     
       
@@ -1159,6 +1184,27 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, May 24, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-03/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Sunday, May 25, 2026
   </span>
   
 
@@ -1371,16 +1417,31 @@ each page.</p>
 and 12-week plan.</p>
 <h2 id="where-i-am-right-now">Where I am right now<a class="headerlink" href="#where-i-am-right-now" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--wip">In progress</span> &nbsp;
-<strong>Phase 1, Week 3 — Qwen2.5-VL baseline establishment.</strong> Week 1
-closed out May 16 (<a href="weekly/week-01/#end-of-week-status">overview</a>).
-Week 2 closed out May 23 with the LLaVA-Med v1.0 → Qwen2.5-VL pivot
+<strong>Phase 1, Week 3 — HuatuoGPT-Vision baseline reproduced + first
+pruning sweep running.</strong> Week 1 closed out May 16
+(<a href="weekly/week-01/#end-of-week-status">overview</a>). Week 2
+closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
 (<a href="weekly/week-02/#reflections-end-of-week">overview</a>). The
-pivot was <strong>validated May 24</strong> — Qwen2.5-VL scored 20/20 strict
-MCQ-letter compliance vs LLaVA-Med v1.0's 0/11 on May 20
-(<a href="weekly/week-03/day-01/#phase-3-mcq-letter-compliance-smoke-test-step-3">details</a>).
-Two-repo split is now in place:
-<a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a> is frozen,
-<a href="https://github.com/Leokuan0208/medical-vlm-pruning"><code>medical-vlm-pruning</code></a> is the active repo.</p>
+Qwen2.5-VL pivot was <strong>validated May 24</strong> with 20/20 strict MCQ-letter
+compliance
+(<a href="weekly/week-03/day-01/#phase-3-mcq-letter-compliance-smoke-test-step-3">details</a>);
+a second pivot followed on <strong>May 25</strong> to
+<a href="baseline/huatuo-vision/">HuatuoGPT-Vision-7B (LLaVA-v1.5 architecture)</a>
+for reproducibility, and the
+<a href="baseline/huatuo-vision/#baseline-metrics">paper Table 4 reproduced same-day</a>
+with 5/6 benchmarks within 0.55 pts of published numbers
+(<a href="weekly/week-03/day-02/">details</a>). The pruning framework
+(RandomPruner + QSimPruner + LatencyTracker; in-LLM layer-0
+integration via <code>Qwen2Model.forward</code> override + KV cache slicing)
+is written, smoke-tested, and pushed; an <strong>8-run overnight sweep</strong>
+(4 keep-ratios × 2 methods) is running in tmux with results landing
+Day 17. Three repos now:
+<a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
+(frozen, LLaVA-Med v1.0 phase),
+<a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning"><code>Qwen-v25-vl-med-pruning</code></a>
+(frozen, Qwen2.5-VL smoke-test artifact preserved), and
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>huatuo-llava-v15-med-pruning</code></a>
+(active, pruning framework at <code>c216bbe</code>).</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Stack sanity check (PyTorch, transformers, accelerate, flash-attn)</li>

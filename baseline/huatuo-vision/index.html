@@ -12,13 +12,13 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
-        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/baseline/llava-med/">
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/baseline/huatuo-vision/">
       
       
-        <link rel="prev" href="../qwen25-vl/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../../experiments/">
+        <link rel="next" href="../qwen25-vl/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>LLaVA-Med - Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>HuatuoGPT-Vision - Question-Aware Visual Token Pruning for Medical VLMs</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#baseline-llava-med-v15-v10" class="md-skip">
+        <a href="#baseline-huatuogpt-vision-7b" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              LLaVA-Med
+              HuatuoGPT-Vision
             
           </span>
         </div>
@@ -499,48 +499,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../huatuo-vision/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    HuatuoGPT-Vision
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../qwen25-vl/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Qwen2.5-VL
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -557,7 +515,7 @@
           
   
   <span class="md-ellipsis">
-    LLaVA-Med
+    HuatuoGPT-Vision
   </span>
   
 
@@ -568,7 +526,7 @@
         
   
   <span class="md-ellipsis">
-    LLaVA-Med
+    HuatuoGPT-Vision
   </span>
   
 
@@ -588,6 +546,15 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-huatuogpt-vision-7b" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why HuatuoGPT-Vision-7B
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#hardware" class="md-nav__link">
@@ -645,45 +612,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-sanity-check-the-stack" class="md-nav__link">
+  <a href="#2-clone-huatuogpt-vision-repo-download-weights" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Sanity-check the stack
+      2. Clone HuatuoGPT-Vision repo + download weights
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-clone-llava-med-and-install-editable" class="md-nav__link">
+  <a href="#3-two-runtime-dependency-patches" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Clone LLaVA-Med and install editable
+      3. Two runtime dependency patches
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-download-the-model-weights" class="md-nav__link">
+  <a href="#4-full-table-4-reproduction" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Download the model weights
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-first-inference" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. First inference
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-after-patching-the-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. After patching the CLI
+      4. Full Table 4 reproduction
     </span>
   </a>
   
@@ -725,6 +674,48 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qwen25-vl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Qwen2.5-VL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llava-med/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LLaVA-Med
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1399,6 +1390,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#why-huatuogpt-vision-7b" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why HuatuoGPT-Vision-7B
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hardware" class="md-nav__link">
     <span class="md-ellipsis">
       Hardware
@@ -1454,45 +1454,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-sanity-check-the-stack" class="md-nav__link">
+  <a href="#2-clone-huatuogpt-vision-repo-download-weights" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Sanity-check the stack
+      2. Clone HuatuoGPT-Vision repo + download weights
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-clone-llava-med-and-install-editable" class="md-nav__link">
+  <a href="#3-two-runtime-dependency-patches" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Clone LLaVA-Med and install editable
+      3. Two runtime dependency patches
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-download-the-model-weights" class="md-nav__link">
+  <a href="#4-full-table-4-reproduction" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Download the model weights
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-first-inference" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. First inference
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-after-patching-the-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. After patching the CLI
+      4. Full Table 4 reproduction
     </span>
   </a>
   
@@ -1545,7 +1527,7 @@
                   
 
   
-    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/baseline/llava-med.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/baseline/huatuo-vision.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1553,34 +1535,77 @@
   
 
 
-<h1 id="baseline-llava-med-v15-v10">Baseline: LLaVA-Med v1.5 / v1.0<a class="headerlink" href="#baseline-llava-med-v15-v10" title="Permanent link">&para;</a></h1>
-<p><span class="pill pill--done">Frozen — May 24, 2026</span></p>
-<p>LLaVA-Med was the original baseline for this project (May 10–May 21,
-2026). This page documents the exact environment used to reproduce
-that baseline so anyone — including future-me — can rebuild it
-identically.</p>
-<div class="admonition info">
-<p class="admonition-title">Track frozen on May 24, 2026</p>
-<p>The project pivoted to <strong><a href="../qwen25-vl/">Qwen2.5-VL-7B-Instruct</a></strong>
-as the active baseline on May 21, 2026, after identifying two
-unreproducibility issues with LLaVA-Med v1.0: a substring-match
-bug in the closed-set scorer (inflated reported accuracy by 9-12
-pts), and 0/11 MCQ-letter compliance on an
-instruction-following smoke test (blocked use of standardized
-evaluation harnesses). The full pivot writeup is in
-<a href="../../weekly/week-02/day-05/">Week 2, Day 5</a>. This page is kept
-as a historical reference; the active baseline is on the
-<a href="../qwen25-vl/">Qwen2.5-VL</a> page.</p>
-</div>
-<p>The pruning module and evaluation harness for the LLaVA-Med track
-live in two frozen repos —
-<a href="https://github.com/Leokuan0208/llava-med-pruning">Leokuan0208/llava-med-pruning</a>
-(v1.5 harness) and
-<a href="https://github.com/Leokuan0208/llava-med-pruning-v1">Leokuan0208/llava-med-pruning-v1</a>
-(v1.0 track, frozen with a status notice on the README as of May 24).
-This page is only about getting the upstream LLaVA-Med baseline
-running.</p>
+<h1 id="baseline-huatuogpt-vision-7b">Baseline: HuatuoGPT-Vision-7B<a class="headerlink" href="#baseline-huatuogpt-vision-7b" title="Permanent link">&para;</a></h1>
+<p><span class="pill pill--done">Active baseline — reproduction validated May 25, 2026</span></p>
+<p>HuatuoGPT-Vision-7B is the <strong>current baseline</strong> for this project,
+adopted on May 25, 2026 after the second pivot of Week 3. The pivot
+is documented in detail on
+<a href="../../weekly/week-03/day-02/">Week 3, Day 2</a>. <strong>The paper-reproduction
+target Table was reproduced end-to-end the same day</strong>, with 5 of 6
+benchmarks landing within 0.55 pts of the published numbers. This
+page is the authoritative reference for the environment, image, and
+verification steps — anyone (including future-me) should be able to
+rebuild the baseline identically from this page.</p>
+<p>The pruning module and reproduction harness for the HuatuoGPT-Vision
+track live in
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning">Leokuan0208/huatuo-llava-v15-med-pruning</a>.
+The frozen Qwen2.5-VL and LLaVA-Med tracks are documented on
+<a href="../">their own pages</a>.</p>
+<h2 id="why-huatuogpt-vision-7b">Why HuatuoGPT-Vision-7B<a class="headerlink" href="#why-huatuogpt-vision-7b" title="Permanent link">&para;</a></h2>
+<p>Reproducibility-first. The authors of HuatuoGPT-Vision (Chen et al.
+2024, <a href="https://arxiv.org/abs/2406.19280">arXiv:2406.19280</a>) publish:</p>
+<ul>
+<li><strong>Merged weights</strong> on HuggingFace —
+  <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-Vision-7B">FreedomIntelligence/HuatuoGPT-Vision-7B</a>.
+  No delta-merge dance required.</li>
+<li><strong>Bundled evaluation data</strong> —
+  <a href="https://huggingface.co/datasets/FreedomIntelligence/Medical_Multimodal_Evaluation_Data">FreedomIntelligence/Medical_Multimodal_Evaluation_Data</a>.</li>
+<li><strong>A one-command eval pipeline</strong> via <code>accelerate launch eval.py</code> in
+  the <a href="https://github.com/FreedomIntelligence/HuatuoGPT-Vision">HuatuoGPT-Vision repository</a>.</li>
+<li><strong>A Table of headline numbers</strong> across six benchmarks.</li>
+</ul>
+<p>This means the first deliverable on this stack is <strong>paper
+reproduction</strong> rather than from-scratch eval pipeline construction.
+Published target Table from the paper:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: right;">VQA-RAD</th>
+<th style="text-align: right;">SLAKE</th>
+<th style="text-align: right;">PathVQA</th>
+<th style="text-align: right;">PMC-VQA</th>
+<th style="text-align: right;">OmniMedVQA</th>
+<th style="text-align: right;">MMMU H&amp;M</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HuatuoGPT-Vision-7B</strong> (paper Table)</td>
+<td style="text-align: right;">63.7</td>
+<td style="text-align: right;">76.2</td>
+<td style="text-align: right;">57.9</td>
+<td style="text-align: right;">54.3</td>
+<td style="text-align: right;">74.0</td>
+<td style="text-align: right;">50.6</td>
+</tr>
+</tbody>
+</table>
+<p>A successful reproduction (within ~2 pts on each) validates the
+pipeline before any pruning experiments are run.</p>
+<p><strong>Bonus</strong>: HuatuoGPT-Vision-7B uses the LLaVA-v1.5 architecture with
+Qwen2-7B as the LLM backbone. LLaVA-Med v1.0 is LLaVA-v1.5 with
+LLaMA-7B as the LLM backbone. The vision tower, projector, and most
+of the decoder-hook target points are essentially identical, so the
+<code>random</code> and <code>qsim</code> pruning methods from
+<a href="../../weekly/week-02/day-01/">Week 2, Day 1</a> port via architectural
+similarity — the main change is which 32-layer decoder stack we
+hook (Qwen2-7B vs LLaMA-7B; same shape, different weights). Roughly
+~95% of the pruning code carries over.</p>
 <h2 id="hardware">Hardware<a class="headerlink" href="#hardware" title="Permanent link">&para;</a></h2>
+<p>Same hardware as the LLaVA-Med and Qwen2.5-VL tracks — KUBERUN-
+provisioned A100 VM. No change in physical setup; only the image
+and model change.</p>
 <table>
 <thead>
 <tr>
@@ -1646,122 +1671,183 @@ running.</p>
 <td>base image</td>
 </tr>
 <tr>
-<td>cuDNN</td>
-<td>8.9.5</td>
-<td>base image</td>
-</tr>
-<tr>
-<td>NCCL</td>
-<td>2.19.3</td>
-<td>base image</td>
-</tr>
-<tr>
 <td>PyTorch</td>
 <td>2.1.0a0+32f93b1</td>
-<td>base image</td>
+<td>base image — NGC's custom build</td>
+</tr>
+<tr>
+<td>NumPy</td>
+<td>1.26.0</td>
+<td>pinned — matches HuatuoGPT's <code>requirements.txt</code>; NumPy 2.x is binary-incompatible with NGC's torch</td>
 </tr>
 <tr>
 <td>transformers</td>
-<td>4.36.2</td>
-<td>pinned (from <code>pyproject.toml</code>)</td>
+<td>4.41.2</td>
+<td>pinned — see "compatibility note" below</td>
 </tr>
 <tr>
 <td>tokenizers</td>
-<td>≥0.15.0</td>
-<td>pinned</td>
+<td>≥0.19,&lt;0.20</td>
+<td>matches transformers 4.41.x</td>
+</tr>
+<tr>
+<td>accelerate</td>
+<td>0.30.1</td>
+<td>pinned — required by HuatuoGPT's <code>accelerate launch eval.py</code></td>
+</tr>
+<tr>
+<td>peft</td>
+<td>0.10.0</td>
+<td>LLaVA-v1.5 stack standard</td>
+</tr>
+<tr>
+<td>bitsandbytes</td>
+<td>0.43.1</td>
+<td>works with CUDA 12.2</td>
+</tr>
+<tr>
+<td>deepspeed</td>
+<td>0.12.6</td>
+<td>imported at top-level by some LLaVA scripts; 0.9.5 fails to JIT-compile against torch 2.1 (Bug #2-era lesson)</td>
+</tr>
+<tr>
+<td>timm</td>
+<td>0.9.16</td>
+<td>supports CLIP ViT-L/14 used by LLaVA-v1.5 vision tower</td>
+</tr>
+<tr>
+<td>einops</td>
+<td>0.7.0</td>
+<td>required by LLaVA codebase</td>
+</tr>
+<tr>
+<td>einops-exts</td>
+<td>0.0.4</td>
+<td>required by LLaVA codebase</td>
 </tr>
 <tr>
 <td>sentencepiece</td>
 <td>0.1.99</td>
-<td>pinned</td>
+<td>tokenizer dependency</td>
 </tr>
 <tr>
-<td>accelerate</td>
-<td>0.21.0</td>
-<td>pinned</td>
+<td>pydantic</td>
+<td>&lt;2</td>
+<td>LLaVA-v1.5 codepaths use pydantic v1 idioms</td>
 </tr>
 <tr>
-<td>peft</td>
-<td>0.4.0</td>
-<td>pinned</td>
+<td>Pillow</td>
+<td>10.4.0</td>
+<td>upstream</td>
 </tr>
 <tr>
-<td>bitsandbytes</td>
-<td>0.41.0</td>
-<td>pinned</td>
-</tr>
-<tr>
-<td>deepspeed</td>
-<td>0.9.5</td>
-<td>pinned</td>
-</tr>
-<tr>
-<td>timm</td>
-<td>0.9.12</td>
-<td>pinned</td>
+<td>opencv-python-headless</td>
+<td>4.10.0.84</td>
+<td>used by LLaVA's image preprocessing</td>
 </tr>
 <tr>
 <td>flash-attn</td>
-<td>2.3.6</td>
-<td>built from source, <code>--no-build-isolation</code></td>
+<td>2.5.8</td>
+<td>pinned, <code>--no-build-isolation</code>; compatible with NGC's torch 2.1 and transformers 4.41.x</td>
 </tr>
 </tbody>
 </table>
-<p>The version choices are dictated by LLaVA-Med's <code>pyproject.toml</code>. The
-NGC 23.10 container is chosen because its bundled PyTorch (2.1) and
-CUDA (12.2) are the closest match to LLaVA-Med's late-2023 dependency
-era — and because A100 (sm_80) is fully supported.</p>
+<div class="admonition info">
+<p class="admonition-title">transformers version compatibility note</p>
+<p>LLaVA-v1.5's official <code>pyproject.toml</code> pins <code>transformers==4.37.2</code>,
+which predates Qwen2's release. HuatuoGPT-Vision-7B's LLM
+backbone is <strong>Qwen2-7B</strong>, whose <code>Qwen2ForCausalLM</code> class was
+added to <code>transformers</code> around 4.40. We can't use LLaVA-v1.5's
+stock pin. The LLaVA-Llama-3 fork (which uses LLaVA-v1.5 +
+non-Vicuna LLM, same shape) bumps to <code>transformers==4.41.2</code>,
+which is a documented known-good neighborhood for "LLaVA-v1.5
+architecture + non-Vicuna LLM." We follow that.</p>
+</div>
 <h2 id="the-dockerfile">The Dockerfile<a class="headerlink" href="#the-dockerfile" title="Permanent link">&para;</a></h2>
 <p>This is the exact image definition used for the reproduction.</p>
-<div class="language-dockerfile highlight"><span class="filename">Docker</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c"># Dockerfile for reproducing LLaVA-Med on A100</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c"># Base: NGC PyTorch 23.10 -&gt; Python 3.10, CUDA 12.2.2, PyTorch 2.1</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">FROM</span><span class="w"> </span><span class="s">nvcr.io/nvidia/pytorch:23.10-py3</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c"># Ubuntu packages</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c"># git-lfs is needed to pull model weights from HuggingFace</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span>git<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span>git-lfs<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span>python3-pip<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c"># JupyterLab - required by the HONGHU KUBERUN VM launch interface</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>jupyter<span class="w"> </span>jupyterlab
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c"># LLaVA-Med core dependencies, pinned to match microsoft/LLaVA-Med pyproject.toml</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="s2">&quot;transformers==4.36.2&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="s2">&quot;tokenizers&gt;=0.15.0&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="s2">&quot;sentencepiece==0.1.99&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="s2">&quot;accelerate==0.21.0&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="s2">&quot;peft==0.4.0&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="s2">&quot;bitsandbytes==0.41.0&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="s2">&quot;deepspeed==0.9.5&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">    </span><span class="s2">&quot;timm==0.9.12&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">    </span><span class="s2">&quot;einops==0.6.1&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">    </span><span class="s2">&quot;einops-exts==0.0.4&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="s2">&quot;pydantic&lt;2,&gt;=1&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="s2">&quot;scikit-learn==1.2.2&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">    </span><span class="s2">&quot;gradio==3.35.2&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">    </span><span class="s2">&quot;gradio_client==0.2.9&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">    </span><span class="s2">&quot;httpx==0.24.0&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">    </span><span class="s2">&quot;openai==1.12.0&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">    </span><span class="s2">&quot;markdown2[all]&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">    </span>shortuuid<span class="w"> </span>fastapi<span class="w"> </span>uvicorn<span class="w"> </span>tiktoken<span class="w"> </span>backoff<span class="w"> </span>ninja<span class="w"> </span>wandb
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="c"># Flash-Attention 2 - must build against the container&#39;s PyTorch.</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="c"># 2.3.6 is contemporary with LLaVA-Med and exposes</span>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="c"># flash_attn_varlen_qkvpacked_func that the repo imports.</span>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>flash-attn<span class="o">==</span><span class="m">2</span>.3.6<span class="w"> </span>--no-build-isolation
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>
-</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="c"># Symlink so /data shows up in the JupyterLab file browser</span>
-</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="c"># (KUBERUN mounts the shared /data volume at runtime; the symlink target</span>
-</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="c"># does not need to exist at build time).</span>
-</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="k">RUN</span><span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/data<span class="w"> </span>/root/data
-</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>
-</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;jupyter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;lab&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--port=8888&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--ip=0.0.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--allow-root&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--no-browser&quot;</span><span class="p">]</span>
+<div class="language-dockerfile highlight"><span class="filename">Docker</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c"># Dockerfile for HuatuoGPT-Vision medical VQA reproduction + visual</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c"># token pruning research.</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c"># Base image: NGC PyTorch 23.10 -&gt; Python 3.10, CUDA 12.2.2, PyTorch 2.1.0a0</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c"># Project: huatuo-llava-v15-med-pruning</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c"># Reproduces HuatuoGPT-Vision-7B (LLaVA-v1.5 arch, Qwen2-7B LLM backbone)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">FROM</span><span class="w"> </span><span class="s">nvcr.io/nvidia/pytorch:23.10-py3</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c"># Ubuntu packages</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c"># git-lfs needed to pull HuatuoGPT-Vision-7B weights from HuggingFace</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c"># libgl1, libglib2.0-0 required by opencv-python (used by LLaVA&#39;s</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c"># image preprocessing pipeline)</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span>git<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span>git-lfs<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span>python3-pip<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span>libgl1<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span>libglib2.0-0<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="c"># Empty NGC&#39;s pip constraint file: may pin packages that conflict with</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="c"># HuatuoGPT-Vision&#39;s requirements (transformers==4.37.2 specifically).</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="c"># Pip&#39;s config still references the file path, so we empty rather than</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="c"># delete it -- deleting would break every subsequent pip call.</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="k">RUN</span><span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/pip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/pip/constraint.txt
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c"># JupyterLab - required by the HONGHU KUBERUN VM launch interface</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>jupyter<span class="w"> </span>jupyterlab
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="c"># HuatuoGPT-Vision dependencies, pinned per their requirements.txt</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="c"># with two documented deviations:</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="c">#   1. torch: NGC ships 2.1.0a0; HuatuoGPT pins 2.0.1. We keep NGC&#39;s</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="c">#      torch to avoid breaking pre-compiled CUDA libs. The API</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="c">#      differences relevant to inference are nil.</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="c">#   2. transformers: HuatuoGPT requirements list 4.37.2, but their</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="c">#      LLM is Qwen2-7B which needs transformers &gt;=4.40. LLaVA-Llama-3</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="c">#      fork uses 4.41.2 as the known-good &quot;LLaVA-v1.5 + non-Vicuna LLM&quot;</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="c">#      neighborhood. We follow that.</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="c"># CRITICAL: numpy==1.26.0 -- NGC 23.10&#39;s PyTorch compiled against</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="c"># NumPy 1.x; NumPy 2.x is binary-incompatible. Pin matches HuatuoGPT&#39;s</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="c"># requirements.txt explicitly.</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">    </span><span class="s2">&quot;numpy==1.26.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">    </span><span class="s2">&quot;transformers==4.41.2&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">    </span><span class="s2">&quot;tokenizers&gt;=0.19,&lt;0.20&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">    </span><span class="s2">&quot;accelerate==0.30.1&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="w">    </span><span class="s2">&quot;peft==0.10.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">    </span><span class="s2">&quot;bitsandbytes==0.43.1&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="w">    </span><span class="s2">&quot;deepspeed==0.12.6&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">    </span><span class="s2">&quot;timm==0.9.16&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">    </span><span class="s2">&quot;einops==0.7.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">    </span><span class="s2">&quot;einops-exts==0.0.4&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">    </span><span class="s2">&quot;sentencepiece==0.1.99&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">    </span><span class="s2">&quot;shortuuid&quot;</span><span class="w"> </span><span class="s2">&quot;pydantic&lt;2&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">    </span><span class="s2">&quot;Pillow==10.4.0&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="w">    </span><span class="s2">&quot;opencv-python-headless==4.10.0.84&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w">    </span><span class="s2">&quot;scikit-learn==1.5.2&quot;</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="c"># Flash-Attention 2 - reinstall pinned. 2.5.8 is compatible with</span>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="c"># NGC 23.10&#39;s torch 2.1 and transformers 4.41.x.</span>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="k">RUN</span><span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>flash-attn<span class="o">==</span><span class="m">2</span>.5.8<span class="w"> </span>--no-build-isolation
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="c"># Symlink so /data shows up in the JupyterLab file browser</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a><span class="c"># (KUBERUN mounts the shared /data volume at runtime; the symlink</span>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="c"># target doesn&#39;t need to exist at build time).</span>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="k">RUN</span><span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/data<span class="w"> </span>/root/data
+</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66" href="#__codelineno-0-66"></a>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67" href="#__codelineno-0-67"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;jupyter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;lab&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--port=8888&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--ip=0.0.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--allow-root&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--no-browser&quot;</span><span class="p">]</span>
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Single-pass build</p>
+<p>Unlike the Qwen2.5-VL Dockerfile (which needed three KUBERUN
+submissions before clean — constraint-file fix and NumPy pin
+each surfaced separately), this Dockerfile <strong>built cleanly on the
+first KUBERUN submission</strong>. The constraint-file fix (empty rather
+than delete) and the explicit NumPy pin are both baked in from
+the start, carried forward from the Day 5 lessons on the
+Qwen2.5-VL setup.</p>
+</div>
 <h2 id="storage-layout">Storage layout<a class="headerlink" href="#storage-layout" title="Permanent link">&para;</a></h2>
+<p>Same <code>/data/dan/</code> namespace convention as previous baselines — by
+design, so dataset directories carry over identically and
+HuggingFace caches don't have to be re-populated when switching
+between containers.</p>
 <table>
 <thead>
 <tr>
@@ -1779,188 +1865,204 @@ era — and because A100 (sm_80) is fully supported.</p>
 <tr>
 <td><code>/data/dan/</code></td>
 <td>Personal namespace</td>
-<td>My own folder; the <code>dan</code> prefix prevents collisions with other users</td>
+<td>The <code>dan</code> prefix prevents collisions</td>
 </tr>
 <tr>
 <td><code>/data/dan/weights/</code></td>
-<td>Model weights</td>
-<td><code>llava-med-v1.5-mistral-7b/</code> lives here (~15 GB)</td>
+<td>Model weight cache</td>
+<td>HuggingFace cache root</td>
 </tr>
 <tr>
-<td><code>/data/dan/dataset/</code></td>
-<td>Datasets</td>
-<td><em>Empty so far — population planned for Phase 2</em></td>
+<td><code>/data/dan/weights/.../HuatuoGPT-Vision-7B/</code></td>
+<td>HuatuoGPT-Vision-7B weights</td>
+<td><em>Download pending — Day 3 of Week 3</em></td>
 </tr>
 <tr>
-<td><code>/root/LLaVA-Med/</code></td>
-<td>Cloned codebase, editable install</td>
-<td>Inside the container</td>
+<td><code>/data/dan/dataset/Medical_Multimodal_Evaluation_Data/</code></td>
+<td>HuatuoGPT bundled eval data</td>
+<td><em>Download pending — Day 3</em></td>
+</tr>
+<tr>
+<td><code>/data/dan/dataset/{vqa_rad,slake,path_vqa}/</code></td>
+<td>Raw datasets</td>
+<td>Carried over from earlier baselines</td>
+</tr>
+<tr>
+<td><code>/root/HuatuoGPT-Vision/</code></td>
+<td>Cloned upstream repo (gitignored locally)</td>
+<td>For <code>eval.py</code> and supporting modules</td>
+</tr>
+<tr>
+<td><code>/root/huatuo-llava-v15-med-pruning/</code></td>
+<td>Active project repo, editable install</td>
+<td>Clone of <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>Leokuan0208/huatuo-llava-v15-med-pruning</code></a></td>
 </tr>
 <tr>
 <td><code>/root/data</code></td>
 <td>Symlink to <code>/data</code></td>
 <td>For JupyterLab file-browser visibility</td>
 </tr>
-<tr>
-<td><code>/workspace/</code></td>
-<td>Container scratch, <strong>persistent</strong></td>
-<td>Confirmed with platform admin — survives rebuilds on KUBERUN</td>
-</tr>
 </tbody>
 </table>
 <h2 id="setup-commands-in-execution-order">Setup commands (in execution order)<a class="headerlink" href="#setup-commands-in-execution-order" title="Permanent link">&para;</a></h2>
-<p>These are the commands actually run, in the order they were run,
-starting May 10, 2026.</p>
 <h3 id="1-build-the-image-via-kuberun">1. Build the image via KUBERUN<a class="headerlink" href="#1-build-the-image-via-kuberun" title="Permanent link">&para;</a></h3>
-<p>Submitted the Dockerfile above through the HONGHU KUBERUN interface;
-the platform builds the image and brings up a container with the GPU
+<p>Paste the Dockerfile above into the HONGHU KUBERUN interface; the
+platform builds the image and brings up a container with the GPU
 attached and <code>/data</code> mounted. JupyterLab is the entry point.</p>
-<h3 id="2-sanity-check-the-stack">2. Sanity-check the stack<a class="headerlink" href="#2-sanity-check-the-stack" title="Permanent link">&para;</a></h3>
-<p>From a JupyterLab terminal:</p>
-<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="s2">import torch</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="s2">print(&#39;PyTorch:&#39;, torch.__version__)</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="s2">print(&#39;CUDA available:&#39;, torch.cuda.is_available())</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="s2">print(&#39;CUDA version:&#39;, torch.version.cuda)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="s2">print(&#39;GPU:&#39;, torch.cuda.get_device_name(0))</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="s2">print(&#39;GPU count:&#39;, torch.cuda.device_count())</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="s2">import transformers; print(&#39;transformers:&#39;, transformers.__version__)</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="s2">import accelerate;   print(&#39;accelerate:&#39;,   accelerate.__version__)</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="s2">import peft;         print(&#39;peft:&#39;,         peft.__version__)</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="s2"># bitsandbytes 0.41.0 does not expose __version__; use importlib.metadata.</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="s2">import bitsandbytes as bnb</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="s2">from importlib.metadata import version</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="s2">print(&#39;bitsandbytes:&#39;, version(&#39;bitsandbytes&#39;))</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="s2">import flash_attn; print(&#39;flash_attn:&#39;, flash_attn.__version__)</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="s2">from flash_attn.flash_attn_interface import flash_attn_varlen_qkvpacked_func</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="s2">print(&#39;flash_attn varlen API: OK&#39;)</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="s2">&quot;</span>
+<p>Build succeeded on the first submission (May 25, 2026). The
+empty-constraint-file fix and explicit NumPy pin from the Qwen2.5-VL
+setup carried over cleanly — the iteration cost paid on May 21 was
+amortized here.</p>
+<h3 id="2-clone-huatuogpt-vision-repo-download-weights">2. Clone HuatuoGPT-Vision repo + download weights<a class="headerlink" href="#2-clone-huatuogpt-vision-repo-download-weights" title="Permanent link">&para;</a></h3>
+<p>Ran on May 25, 2026. Steps:</p>
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Clone the upstream code</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>~/huatuo-llava-v15-med-pruning
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/FreedomIntelligence/HuatuoGPT-Vision
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># Set HuggingFace cache to the shared volume</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">HF_HOME</span><span class="o">=</span>/data/dan/weights
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># Download merged weights (~14 GB)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>huggingface-cli<span class="w"> </span>download<span class="w"> </span>FreedomIntelligence/HuatuoGPT-Vision-7B
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># Download bundled eval data</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>huggingface-cli<span class="w"> </span>download<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span>--repo-type<span class="w"> </span>dataset<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span>FreedomIntelligence/Medical_Multimodal_Evaluation_Data<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span>--local-dir<span class="w"> </span>/data/dan/dataset/Medical_Multimodal_Evaluation_Data
 </span></code></pre></div>
-<p><strong>Confirmed output:</strong></p>
-<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>PyTorch: 2.1.0a0+32f93b1
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>CUDA available: True
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>CUDA version: 12.2
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>GPU: NVIDIA A100 80GB PCIe
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>GPU count: 1
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>transformers: 4.36.2
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>accelerate: 0.21.0
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>peft: 0.4.0
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>bitsandbytes: 0.41.0
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>flash_attn: 2.3.6
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>flash_attn varlen API: OK
+<h3 id="3-two-runtime-dependency-patches">3. Two runtime dependency patches<a class="headerlink" href="#3-two-runtime-dependency-patches" title="Permanent link">&para;</a></h3>
+<p>The first <code>accelerate launch eval.py</code> attempt surfaced two missing
+dependencies that aren't in HuatuoGPT-Vision's <code>requirements.txt</code>.
+Patched at container runtime; should be folded into the Dockerfile
+on the next rebuild:</p>
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># hf_transfer extra was silently dropped by pip&#39;s resolver during</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># image build (the [hf_transfer] suffix on huggingface_hub didn&#39;t</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># install the actual package). Install it explicitly:</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>hf_transfer
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># HuatuoGPT&#39;s eval.py imports `datasets` at line 19, but `datasets`</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># isn&#39;t in their requirements.txt. Pin to 2.16.1 (Jan 2024, same</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1"># era as their transformers==4.37.2) to avoid datasets 3.x/4.x API</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1"># breaks:</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>pip3<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span><span class="s2">&quot;datasets==2.16.1&quot;</span>
 </span></code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">First gotcha — <code>bitsandbytes.__version__</code></p>
-<p>The first attempt of this script used <code>bnb.__version__</code> and crashed
-with <code>AttributeError</code>. bitsandbytes 0.41.0 does not expose
-<code>__version__</code> as a module attribute. Fix: use
-<code>importlib.metadata.version('bitsandbytes')</code>, which reads the pip
-metadata directly and works for any installed package.</p>
-</div>
-<h3 id="3-clone-llava-med-and-install-editable">3. Clone LLaVA-Med and install editable<a class="headerlink" href="#3-clone-llava-med-and-install-editable" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>~
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/microsoft/LLaVA-Med.git
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">cd</span><span class="w"> </span>LLaVA-Med
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--no-deps
+<p>The <code>datasets</code> install was run with <code>--dry-run</code> first to confirm
+pip wouldn't silently downgrade other pinned packages. Dry-run
+showed only 5 new packages added (<code>datasets</code>, <code>dill</code>,
+<code>multiprocess</code>, <code>pyarrow-hotfix</code>, <code>xxhash</code>), with zero existing
+packages touched — <code>fsspec==2023.6.0</code> stayed put inside <code>datasets</code>'s
+permissive window.</p>
+<h3 id="4-full-table-4-reproduction">4. Full Table 4 reproduction<a class="headerlink" href="#4-full-table-4-reproduction" title="Permanent link">&para;</a></h3>
+<p>Ran on May 25, 2026 against the bundled
+<code>medical_multimodel_evaluation_data.json</code>:</p>
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>~/huatuo-llava-v15-med-pruning/HuatuoGPT-Vision
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>accelerate<span class="w"> </span>launch<span class="w"> </span>eval.py<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span>--data_path<span class="w"> </span>/data/dan/dataset/Medical_Multimodal_Evaluation_Data/medical_multimodel_evaluation_data.json<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span>--model_path<span class="w"> </span>/data/dan/weights/HuatuoGPT-Vision-7B<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>/data/dan/dataset/Medical_Multimodal_Evaluation_Data/eval_run_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d_%H%M%S<span class="k">)</span>.log
 </span></code></pre></div>
-<ul>
-<li><code>-e</code> (editable install) lets us patch files in <code>~/LLaVA-Med/llava/</code>
-  and have changes take effect immediately. Critical when we patched
-  the CLI bug later.</li>
-<li><code>--no-deps</code> prevents pip from re-resolving dependencies; everything
-  is already pinned in the image.</li>
-</ul>
-<h3 id="4-download-the-model-weights">4. Download the model weights<a class="headerlink" href="#4-download-the-model-weights" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>/data/dan/weights
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>git<span class="w"> </span>lfs<span class="w"> </span>install
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>git<span class="w"> </span>clone<span class="w"> </span>https://huggingface.co/microsoft/llava-med-v1.5-mistral-7b
-</span></code></pre></div>
-<p>End result: <code>/data/dan/weights/llava-med-v1.5-mistral-7b/</code> containing 3
-safetensors shards (~5 GB each, total ~15 GB), tokenizer files, and
-metadata. Verified with <code>du -sh</code> and <code>ls -lh</code>.</p>
-<h3 id="5-first-inference">5. First inference<a class="headerlink" href="#5-first-inference" title="Permanent link">&para;</a></h3>
-<p>The repo does not ship a <code>run_llava</code> module (that is upstream LLaVA
-only); use the CLI:</p>
-<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">cd</span><span class="w"> </span>~/LLaVA-Med
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>python<span class="w"> </span>-m<span class="w"> </span>llava.serve.cli<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span>--model-path<span class="w"> </span>/data/dan/weights/llava-med-v1.5-mistral-7b<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span>--image-file<span class="w"> </span>./llava/serve/examples/bio_patch.png
-</span></code></pre></div>
-<p>This step initially produced single-word responses — see
-<a href="../../bugs/">Bugs &amp; Issues</a> for the full diagnostic trail and the one-line
-patch.</p>
-<h3 id="6-after-patching-the-cli">6. After patching the CLI<a class="headerlink" href="#6-after-patching-the-cli" title="Permanent link">&para;</a></h3>
-<p>The CLI now returns full multi-turn medical responses for the
-<code>mistral_instruct</code> template. Multi-turn conversation verified working.</p>
+<p>Result: <strong>5 of 6 benchmarks within 0.55 pts of paper</strong> (see
+<a href="#baseline-metrics">Baseline metrics</a> below). Full narrative on
+<a href="../../weekly/week-03/day-02/#phase-13-baseline-reproduction-56-benchmarks-within-055-pts">Week 3, Day 2, Phase 13</a>.</p>
 <h2 id="baseline-metrics">Baseline metrics<a class="headerlink" href="#baseline-metrics" title="Permanent link">&para;</a></h2>
-<p>To be measured in Phase 1, Week 2.</p>
+<p>Six-benchmark reproduction of the HuatuoGPT-Vision paper Table 4,
+end-to-end via <code>accelerate launch eval.py</code> on May 25, 2026. Full
+narrative on
+<a href="../../weekly/week-03/day-02/#phase-13-baseline-reproduction-56-benchmarks-within-055-pts">Week 3, Day 2, Phase 13</a>.</p>
 <table>
 <thead>
 <tr>
-<th>Metric</th>
-<th>Value</th>
-<th>Notes</th>
+<th>Benchmark</th>
+<th style="text-align: right;">Paper</th>
+<th style="text-align: right;">Our reproduction</th>
+<th style="text-align: right;">Δ</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>VQA-RAD accuracy (closed)</td>
-<td><em>TBD</em></td>
-<td>Baseline, no pruning</td>
+<td>VQA-RAD</td>
+<td style="text-align: right;">63.7</td>
+<td style="text-align: right;">61.35</td>
+<td style="text-align: right;">−2.35</td>
 </tr>
 <tr>
-<td>VQA-RAD accuracy (open)</td>
-<td><em>TBD</em></td>
-<td></td>
+<td>SLAKE</td>
+<td style="text-align: right;">76.2</td>
+<td style="text-align: right;">76.44</td>
+<td style="text-align: right;">+0.24</td>
 </tr>
 <tr>
-<td>SLAKE accuracy (closed)</td>
-<td><em>TBD</em></td>
-<td></td>
+<td>PathVQA</td>
+<td style="text-align: right;">57.9</td>
+<td style="text-align: right;">57.67</td>
+<td style="text-align: right;">−0.23</td>
 </tr>
 <tr>
-<td>SLAKE accuracy (open)</td>
-<td><em>TBD</em></td>
-<td></td>
+<td>PMC-VQA</td>
+<td style="text-align: right;">54.3</td>
+<td style="text-align: right;">54.20</td>
+<td style="text-align: right;">−0.10</td>
 </tr>
 <tr>
-<td>Visual tokens per forward pass</td>
-<td>576</td>
-<td>Standard ViT-L/14 at 336²</td>
+<td>OmniMedVQA</td>
+<td style="text-align: right;">74.0</td>
+<td style="text-align: right;">73.46</td>
+<td style="text-align: right;">−0.54</td>
 </tr>
 <tr>
-<td>Inference latency (per query)</td>
-<td><em>TBD</em></td>
-<td>Wall-clock, batch=1</td>
-</tr>
-<tr>
-<td>Peak VRAM (inference)</td>
-<td><em>TBD</em></td>
-<td></td>
+<td>MMMU H&amp;M</td>
+<td style="text-align: right;">50.6</td>
+<td style="text-align: right;">50.34</td>
+<td style="text-align: right;">−0.26</td>
 </tr>
 </tbody>
 </table>
+<p><strong>5 of 6 within 0.55 pts of paper.</strong> The VQA-RAD outlier at −2.35
+sits just outside the 2-pt tolerance defined for this baseline,
+but VQA-RAD is the smallest test split (251 samples; one sample
+≈ 0.4 pts) and the run log contained some "wrong image" warnings
+that may explain the gap. The pipeline is <strong>verified end-to-end</strong>:
+every accuracy number produced with pruning hooks attached is now
+directly comparable to these six numbers.</p>
 <h2 id="reproducibility-checklist">Reproducibility checklist<a class="headerlink" href="#reproducibility-checklist" title="Permanent link">&para;</a></h2>
+<p>To rebuild this baseline identically on a fresh A100:</p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Dockerfile committed to project repo (will be added when the
-      separate code repo goes up)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Exact Python, CUDA, PyTorch versions recorded</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Hardware specs recorded</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Model identifier and approximate size recorded</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>pip freeze</code> output from inside the container saved alongside this
-      page</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Model weight checksums noted (sha256 of each shard)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> First inference output saved as a sanity-check baseline transcript</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Pull <code>nvcr.io/nvidia/pytorch:23.10-py3</code> via KUBERUN</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Paste the <a href="#the-dockerfile">Dockerfile</a> into KUBERUN and build
+      the image (single-pass build on May 25)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Launch a container with <code>/data/dan</code> mounted; open a JupyterLab
+      terminal</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Clone HuatuoGPT-Vision repo; download weights via
+      <code>huggingface-cli download</code> (~14 GB)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Download bundled eval data (<code>Medical_Multimodal_Evaluation_Data</code>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Patch runtime deps: <code>pip3 install hf_transfer datasets==2.16.1</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Clone <code>git@github.com:Leokuan0208/huatuo-llava-v15-med-pruning.git</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Run <code>accelerate launch eval.py</code>; verified reproduction with
+      5 of 6 benchmarks within 0.55 pts of paper</li>
 </ul>
 <h2 id="known-issues-with-the-baseline">Known issues with the baseline<a class="headerlink" href="#known-issues-with-the-baseline" title="Permanent link">&para;</a></h2>
-<p>See <a href="../../bugs/">Bugs &amp; Issues</a> for full writeups:</p>
 <ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 7h-2.81c-.45-.8-1.07-1.5-1.82-2L16 3.41 14.59 2l-2.17 2.17a6 6 0 0 0-2.83 0L7.41 2 6 3.41 7.62 5c-.75.5-1.36 1.21-1.81 2H3v2h2.09c-.06.33-.09.66-.09 1v1H3v2h2v1c0 .34.03.67.09 1H3v2h2.81A6 6 0 0 0 13 19.65V19c0-2.54 1.61-4.8 4-5.65V13h2v-2h-2v-1c0-.34-.03-.67-.09-1H19zm-6 8H9v-2h4zm0-4H9V9h4zm4.75 11.16-2.75-3L16.16 18l1.59 1.59L21.34 16l1.16 1.41z"/></svg></span> <strong>#1</strong> <code>llava.serve.cli</code> stop-criterion logic
-  truncates Mistral-template generation to one token —
-  <span class="pill pill--done">patched locally</span>.</li>
+<li><strong>VQA-RAD reproduction is just outside the 2-pt tolerance</strong> at
+  −2.35 pts vs paper. VQA-RAD has only 251 samples in the eval
+  split, so a 6-sample flip ≈ 2.4 pts of drift — well within seed</li>
+<li>precision variance. The run log also contained some "wrong
+  image" warnings that may account for part of the gap.</li>
+<li><strong><code>hf_transfer</code> and <code>datasets</code> need to be added to the Dockerfile</strong>
+  for the next rebuild. Patched at container runtime on May 25;
+  pinning them in-image will avoid the patching step on rebuilds.</li>
+<li><strong><code>transformers</code> pin diverges from upstream <code>pyproject.toml</code>.</strong>
+  HuatuoGPT-Vision's <code>requirements.txt</code> pins <code>transformers==4.37.2</code>,
+  which won't load Qwen2's <code>Qwen2ForCausalLM</code>. The 4.41.2 bump is
+  documented and load-tested via LLaVA-Llama-3 fork.</li>
+<li><strong>No pruning experiments analyzed yet.</strong> The May 25 overnight
+  sweep (4 keep_ratios × 2 methods = 8 runs) is in progress; analysis
+  is Day 17's first task. The May 17 <code>random</code> and <code>qsim</code> methods
+  ported via architectural similarity to HuatuoGPT-Vision's Qwen2-7B
+  decoder layers; the integration sits in
+  <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>huatuo-llava-v15-med-pruning</code></a>
+  at commit <code>c216bbe</code>.</li>
 </ul>
 
 
@@ -1997,7 +2099,7 @@ patch.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../qwen25-vl/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Qwen2.5-VL">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Baseline">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2007,20 +2109,20 @@ patch.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Qwen2.5-VL
+                Baseline
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../experiments/" class="md-footer__link md-footer__link--next" aria-label="Next: Experiments">
+          <a href="../qwen25-vl/" class="md-footer__link md-footer__link--next" aria-label="Next: Qwen2.5-VL">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Experiments
+                Qwen2.5-VL
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -26,7 +26,7 @@
     
     
       
-        <title>Week 3 — Qwen2.5-VL baseline and codebase deep-dive - Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Week 3 — Baseline selection & paper reproduction setup - Question-Aware Visual Token Pruning for Medical VLMs</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#week-3-qwen25-vl-baseline-and-codebase-deep-dive" class="md-skip">
+        <a href="#week-3-baseline-selection-paper-reproduction-setup" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Week 3 — Qwen2.5-VL baseline and codebase deep-dive
+              Week 3 — Baseline selection &amp; paper reproduction setup
             
           </span>
         </div>
@@ -447,6 +447,8 @@
       
         
       
+        
+      
     
     
       
@@ -486,6 +488,27 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../baseline/huatuo-vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HuatuoGPT-Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1039,6 +1062,8 @@
       
         
       
+        
+      
     
     
       
@@ -1092,6 +1117,27 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, May 24, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Sunday, May 25, 2026
   </span>
   
 
@@ -1192,9 +1238,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#plan-for-the-rest-of-the-week-may-25-may-30" class="md-nav__link">
+  <a href="#day-2-sunday-may-25-2026" class="md-nav__link">
     <span class="md-ellipsis">
-      Plan for the rest of the week (May 25 – May 30)
+      Day 2 — Sunday, May 25, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plan-for-the-rest-of-the-week-may-26-may-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for the rest of the week (May 26 – May 30)
     </span>
   </a>
   
@@ -1232,16 +1287,20 @@
   
 
 
-<h1 id="week-3-qwen25-vl-baseline-and-codebase-deep-dive">Week 3 — Qwen2.5-VL baseline and codebase deep-dive<a class="headerlink" href="#week-3-qwen25-vl-baseline-and-codebase-deep-dive" title="Permanent link">&para;</a></h1>
+<h1 id="week-3-baseline-selection-paper-reproduction-setup">Week 3 — Baseline selection &amp; paper reproduction setup<a class="headerlink" href="#week-3-baseline-selection-paper-reproduction-setup" title="Permanent link">&para;</a></h1>
 <p><span class="pill pill--wip">In progress</span></p>
-<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature, closing out) → <strong>Phase 2
-beginning</strong> (Codebase deep-dive) · <strong>Week 3 of 12</strong></p>
-<p><strong>Goal of the week</strong> — establish the canonical unpruned Qwen2.5-VL
-baseline on VQA-RAD / SLAKE / PathVQA via VLMEvalKit (the standardized
-evaluation backbone the field has converged on), and start porting
-the <code>random</code> and <code>qsim</code> pruning methods from the frozen v1.0 codebase
-onto Qwen2.5-VL's decoder layers. The May 21 pivot decision now needs
-to be paid off with real numbers on the new stack.</p>
+<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature, closing out) · <strong>Week 3 of
+12</strong></p>
+<p><strong>Goal of the week (as planned May 23)</strong> — establish the canonical
+unpruned Qwen2.5-VL baseline on VQA-RAD / SLAKE / PathVQA via
+VLMEvalKit, then start porting the <code>random</code> and <code>qsim</code> pruning
+methods.</p>
+<p><strong>Goal of the week (as revised May 25)</strong> — set up HuatuoGPT-Vision-7B
+(LLaVA-v1.5 architecture) as the active baseline and reproduce its
+published Table 4 numbers across six benchmarks. The May 21 →
+May 24 → May 25 pivot chain landed on a base model where
+<em>reproducibility comes first</em>: the authors publish weights, eval
+data, a one-command pipeline, and a target Table.</p>
 <p>This page is the <strong>overview</strong> — a short summary of each day. Click
 any day's heading for the full detail page.</p>
 <hr />
@@ -1263,38 +1322,72 @@ top of <code>14a62d3</code>, fresh <code>medical-vlm-pruning</code> repo initial
 flat <code>scripts/ pruning/ eval/</code> layout. First artifact committed:
 <code>scripts/mcq_compliance_smoke.py</code>, polished to silence both transformer
 warnings and write durable per-run JSON.</p>
+<h3 id="day-2-sunday-may-25-2026"><a href="day-02/">Day 2 — Sunday, May 25, 2026</a><a class="headerlink" href="#day-2-sunday-may-25-2026" title="Permanent link">&para;</a></h3>
+<p>A "decision day" that became a four-milestone execution day. Came
+in planning the VLMEvalKit setup, ended with a <strong>second pivot</strong> —
+to <strong>HuatuoGPT-Vision-7B (LLaVA-v1.5 architecture)</strong> for
+reproducibility — <em>and</em> paper Table 4 reproduced same-day. Discovery
+chain: literature survey for expected Qwen2.5-VL baselines →
+preprocessing isn't reproducible → checked VLMEvalKit/lmms-eval
+registry and discovered (correcting the May 21 claim) <strong>neither
+harness has VQA-RAD/SLAKE/PathVQA built in</strong> → surveyed published
+test suites → considered HuatuoGPT-Vision-7B as base model →
+<strong>final decision</strong> based on its published weights / bundled eval data
+/ one-command pipeline / target Table. Two repo transitions today:
+<code>medical-vlm-pruning</code> renamed → <code>Qwen-v25-vl-med-pruning</code> frozen at
+<code>c5ce256</code> (Qwen2.5-VL 20/20 smoke test preserved as artifact); new
+<code>huatuo-llava-v15-med-pruning</code> initialized + pruning framework pushed
+at <code>c216bbe</code>. HuatuoGPT-Vision Dockerfile drafted and <strong>image built
+cleanly on KUBERUN first attempt</strong> (the constraint-file and NumPy-pin
+lessons from Day 5 carried over). After two runtime dependency
+patches (<code>hf_transfer</code>, <code>datasets==2.16.1</code>), <code>accelerate launch
+eval.py</code> ran end-to-end: <strong>5 of 6 benchmarks within 0.55 pts of
+paper</strong> (VQA-RAD 61.35, SLAKE 76.44, PathVQA 57.67, PMC-VQA 54.20,
+OmniMedVQA 73.46, MMMU H&amp;M 50.34). With baseline reproduction
+validated, wrote the pruning framework (RandomPruner + QSimPruner +
+LatencyTracker, integrated via <code>Qwen2Model.forward</code> override +
+layer-0 KV cache slicing), verified by 5 unit smoke tests + a
+1,500-sample real-model match at kr=1.0 (100% identical to baseline).
+Closed the day with an <strong>8-run overnight sweep</strong> launched in tmux
+(4 keep-ratios × 2 methods, ~12 hours).</p>
 <hr />
-<h2 id="plan-for-the-rest-of-the-week-may-25-may-30">Plan for the rest of the week (May 25 – May 30)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-25-may-30" title="Permanent link">&para;</a></h2>
+<h2 id="plan-for-the-rest-of-the-week-may-26-may-30">Plan for the rest of the week (May 26 – May 30)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-26-may-30" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Verify Qwen2.5-VL weight download integrity (Day 1)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Qwen2.5-VL load smoke test on A100 (Day 1)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MCQ-letter compliance smoke test — <strong>20/20 strict</strong> validates
       the pivot (Day 1)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Repo reorganization — freeze old, init new (Day 1)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Install <strong>VLMEvalKit</strong> into the container, pinned for
-      reproducibility</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Wire up Qwen2.5-VL as a VLMEvalKit model with the cached
-      weights path</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run VLMEvalKit on <strong>VQA-RAD closed</strong> (full 272-question
-      canonical set) — produces the <strong>unpruned-baseline number</strong> every
-      pruning experiment will be measured against</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Repeat for <strong>SLAKE</strong> and <strong>PathVQA</strong> closed</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Port <code>RandomPruning</code> from the frozen v1.0 code onto Qwen2.5-VL's
-      decoder layers — the scoring math is the same; only the hook
-      target changes from <code>LlavaLlamaModel.model.layers</code> to
-      Qwen2.5-VL's equivalent</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Port <code>QuestionSimilarityPruning</code> the same way</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> First kr=0.75 ablation on the new stack — comparable, finally,
-      to the literature</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Literature survey for expected baseline numbers (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Final base-model decision: HuatuoGPT-Vision-7B (LLaVA-v1.5
+      architecture) (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Repo transition: <code>Qwen-v25-vl-med-pruning</code> frozen,
+      <code>huatuo-llava-v15-med-pruning</code> initialized (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HuatuoGPT-Vision Dockerfile drafted and image built on KUBERUN
+      (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Clone HuatuoGPT-Vision repo; download weights (~14 GB) (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Download <code>Medical_Multimodal_Evaluation_Data</code> (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Paper Table 4 reproduction: 5/6 within 0.55 pts</strong> (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Port <code>RandomPruning</code> and <code>QuestionSimilarityPruning</code> onto
+      HuatuoGPT-Vision-7B's decoder layers (Day 2; commit <code>c216bbe</code>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Verify pruning framework: 5 unit smoke tests + 1500-sample
+      real-model match at kr=1.0 (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Launch overnight sweep: 4 keep_ratios × 2 methods = 8 runs in
+      tmux (Day 2; results land Day 3)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Analyze the overnight sweep results; plot the Pareto curves</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Fold <code>hf_transfer</code> and <code>datasets==2.16.1</code> into the Dockerfile
+      so the next image rebuild doesn't need runtime patching</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (still pending from Week 2)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim <strong>SparseVLM</strong> and <strong>GAP</strong></li>
 </ul>
 <hr />
 <h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
-<p><em>Write this at the end of the week. The Day-1 milestone (pivot
-validated) opens up the rest of Phase 1 — establishing a real,
-defensible baseline on Qwen2.5-VL — and the transition into
-Phase 2 (codebase deep-dive into Qwen2.5-VL's architecture).</em></p>
+<p><em>Write this at the end of the week. Two pivots in two days felt like
+flailing on Day 2; whether it was actually flailing or whether it
+was the right call gets decided by whether the HuatuoGPT-Vision
+reproduction lands cleanly. If Table 4 reproduces within ~2 pts, the
+pivot chain was navigation; if it doesn't, the pivot chain was
+churn.</em></p>
 
 
 

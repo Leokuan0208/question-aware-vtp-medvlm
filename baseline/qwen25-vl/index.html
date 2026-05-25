@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/baseline/qwen25-vl/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../huatuo-vision/">
       
       
         <link rel="next" href="../llava-med/">
@@ -449,6 +449,8 @@
       
         
       
+        
+      
     
     
       
@@ -491,6 +493,27 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../huatuo-vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HuatuoGPT-Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1200,6 +1223,8 @@
       
         
       
+        
+      
     
     
       
@@ -1253,6 +1278,27 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, May 24, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../weekly/week-03/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Sunday, May 25, 2026
   </span>
   
 
@@ -1490,19 +1536,33 @@
 
 
 <h1 id="baseline-qwen25-vl-7b-instruct">Baseline: Qwen2.5-VL-7B-Instruct<a class="headerlink" href="#baseline-qwen25-vl-7b-instruct" title="Permanent link">&para;</a></h1>
-<p><span class="pill pill--wip">Active baseline — May 24, 2026 onward</span></p>
-<p>Qwen2.5-VL-7B-Instruct is the <strong>current baseline</strong> for this project,
-adopted on May 21, 2026 after the pivot from LLaVA-Med v1.0. The
-pivot is documented in detail on
-<a href="../../weekly/week-02/day-05/">Week 2, Day 5</a>. This page is the
-authoritative reference for the environment, image, and verification
-steps — anyone (including future-me) should be able to rebuild the
-baseline identically from this page.</p>
-<p>The pruning module and evaluation harness for the Qwen2.5-VL track
-live in
-<a href="https://github.com/Leokuan0208/medical-vlm-pruning">Leokuan0208/medical-vlm-pruning</a>.
-The frozen LLaVA-Med track is documented on
-<a href="../llava-med/">its own page</a>.</p>
+<p><span class="pill pill--done">Frozen — May 25, 2026</span></p>
+<p>Qwen2.5-VL-7B-Instruct was the active baseline for one day
+(May 24-25, 2026). The MCQ-letter compliance smoke test passed
+20/20 strict — confirming the LLaVA-Med v1.0 → Qwen2.5-VL pivot
+was the right move — but a literature survey on May 25 revealed
+that VLMEvalKit / lmms-eval don't actually support the three
+target datasets (VQA-RAD, SLAKE, PathVQA) out of the box, which
+made the reproducibility story weaker than expected. <strong>The project
+pivoted again to HuatuoGPT-Vision-7B (LLaVA-v1.5 architecture)</strong> on
+May 25, since the HuatuoGPT-Vision authors publish merged weights,
+bundled eval data, a one-command pipeline, and a Table of headline
+numbers — i.e. a paper-reproducible target. The full pivot writeup
+is on <a href="../../weekly/week-03/day-02/">Week 3, Day 2</a>.</p>
+<div class="admonition info">
+<p class="admonition-title">Track frozen on May 25, 2026</p>
+<p>This page is kept as a historical reference. The active
+baseline is now <strong><a href="../huatuo-vision/">HuatuoGPT-Vision-7B</a></strong>.
+The Qwen2.5-VL 20/20 MCQ-letter compliance smoke test is
+preserved as a real artifact on the frozen
+<a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning"><code>Qwen-v25-vl-med-pruning</code></a>
+repository (<code>scripts/mcq_compliance_smoke.py</code>, frozen at
+<a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning/commit/c5ce256026f4f7b0dd291af4cd40b2b381897ba4"><code>c5ce256</code></a>).</p>
+</div>
+<p>The frozen repository for this baseline is
+<a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning">Leokuan0208/Qwen-v25-vl-med-pruning</a>
+(renamed from <code>medical-vlm-pruning</code> on May 25). The active baseline
+is on the <a href="../huatuo-vision/">HuatuoGPT-Vision</a> page.</p>
 <h2 id="hardware">Hardware<a class="headerlink" href="#hardware" title="Permanent link">&para;</a></h2>
 <p>Same hardware as the LLaVA-Med track — KUBERUN-provisioned A100 VM.
 No change in physical setup; only the image and model changed.</p>
@@ -1750,9 +1810,9 @@ PathVQA) are reachable identically from both images.</p>
 <td>VQA-RAD, SLAKE, PathVQA (carried over from LLaVA-Med track)</td>
 </tr>
 <tr>
-<td><code>/root/medical-vlm-pruning/</code></td>
+<td><code>/root/Qwen-v25-vl-med-pruning/</code></td>
 <td>Active project repo, editable install</td>
-<td>Clone of <a href="https://github.com/Leokuan0208/medical-vlm-pruning"><code>Leokuan0208/medical-vlm-pruning</code></a></td>
+<td>Clone of <a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning"><code>Leokuan0208/Qwen-v25-vl-med-pruning</code></a></td>
 </tr>
 <tr>
 <td><code>/root/data</code></td>
@@ -1894,7 +1954,7 @@ loads from cache are faster.</p>
 questions from the VQA-RAD test parquet, reformatted as MCQ with
 A/B option-order shuffled per sample, greedy decoding,
 <code>max_new_tokens=16</code>, seed=42. Script lives at
-<a href="https://github.com/Leokuan0208/medical-vlm-pruning/blob/main/scripts/mcq_compliance_smoke.py"><code>scripts/mcq_compliance_smoke.py</code></a>
+<a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning/blob/main/scripts/mcq_compliance_smoke.py"><code>scripts/mcq_compliance_smoke.py</code></a>
 in the active repo.</p>
 <p><strong>Confirmed output (May 24, 2026):</strong></p>
 <div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>strict MCQ compliance: 20/20 (100.0%)
@@ -1947,8 +2007,8 @@ and PathVQA (6,719 test).</p>
       verify with <code>du -sh</code> and <code>ls -L</code></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run the <a href="#4-model-load-smoke-test">Step 4 load smoke test</a>;
       confirm <code>params: 8.29 B</code> and <code>loaded with flash_attention_2</code></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Clone <code>git@github.com:Leokuan0208/medical-vlm-pruning.git</code>;
-      run <a href="https://github.com/Leokuan0208/medical-vlm-pruning/blob/main/scripts/mcq_compliance_smoke.py"><code>scripts/mcq_compliance_smoke.py</code></a>;
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Clone <code>git@github.com:Leokuan0208/Qwen-v25-vl-med-pruning.git</code>;
+      run <a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning/blob/main/scripts/mcq_compliance_smoke.py"><code>scripts/mcq_compliance_smoke.py</code></a>;
       confirm 20/20 strict compliance</li>
 </ul>
 <h2 id="known-issues-with-the-baseline">Known issues with the baseline<a class="headerlink" href="#known-issues-with-the-baseline" title="Permanent link">&para;</a></h2>
@@ -2018,7 +2078,7 @@ and PathVQA (6,719 test).</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Baseline">
+          <a href="../huatuo-vision/" class="md-footer__link md-footer__link--prev" aria-label="Previous: HuatuoGPT-Vision">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2028,7 +2088,7 @@ and PathVQA (6,719 test).</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Baseline
+                HuatuoGPT-Vision
               </div>
             </div>
           </a>
