@@ -18,6 +18,7 @@ nav:
   - Project Overview: project.md
   - Baseline:
       - baseline/index.md
+      - HuatuoGPT-Vision: baseline/huatuo-vision.md
       - Qwen2.5-VL: baseline/qwen25-vl.md
       - LLaVA-Med: baseline/llava-med.md
   - Experiments: experiments.md
@@ -42,6 +43,7 @@ nav:
       - Week 3:
           - weekly/week-03/index.md
           - weekly/week-03/day-01.md
+          - weekly/week-03/day-02.md
   - Bugs & Issues: bugs.md
   - Resources: resources.md
 

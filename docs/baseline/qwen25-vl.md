@@ -1,20 +1,33 @@
 # Baseline: Qwen2.5-VL-7B-Instruct
 
-<span class="pill pill--wip">Active baseline — May 24, 2026 onward</span>
+<span class="pill pill--done">Frozen — May 25, 2026</span>
 
-Qwen2.5-VL-7B-Instruct is the **current baseline** for this project,
-adopted on May 21, 2026 after the pivot from LLaVA-Med v1.0. The
-pivot is documented in detail on
-[Week 2, Day 5](../weekly/week-02/day-05.md). This page is the
-authoritative reference for the environment, image, and verification
-steps — anyone (including future-me) should be able to rebuild the
-baseline identically from this page.
+Qwen2.5-VL-7B-Instruct was the active baseline for one day
+(May 24-25, 2026). The MCQ-letter compliance smoke test passed
+20/20 strict — confirming the LLaVA-Med v1.0 → Qwen2.5-VL pivot
+was the right move — but a literature survey on May 25 revealed
+that VLMEvalKit / lmms-eval don't actually support the three
+target datasets (VQA-RAD, SLAKE, PathVQA) out of the box, which
+made the reproducibility story weaker than expected. **The project
+pivoted again to HuatuoGPT-Vision-7B (LLaVA-v1.5 architecture)** on
+May 25, since the HuatuoGPT-Vision authors publish merged weights,
+bundled eval data, a one-command pipeline, and a Table of headline
+numbers — i.e. a paper-reproducible target. The full pivot writeup
+is on [Week 3, Day 2](../weekly/week-03/day-02.md).
 
-The pruning module and evaluation harness for the Qwen2.5-VL track
-live in
-[Leokuan0208/medical-vlm-pruning](https://github.com/Leokuan0208/medical-vlm-pruning).
-The frozen LLaVA-Med track is documented on
-[its own page](llava-med.md).
+!!! info "Track frozen on May 25, 2026"
+    This page is kept as a historical reference. The active
+    baseline is now **[HuatuoGPT-Vision-7B](huatuo-vision.md)**.
+    The Qwen2.5-VL 20/20 MCQ-letter compliance smoke test is
+    preserved as a real artifact on the frozen
+    [`Qwen-v25-vl-med-pruning`](https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning)
+    repository (`scripts/mcq_compliance_smoke.py`, frozen at
+    [`c5ce256`](https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning/commit/c5ce256026f4f7b0dd291af4cd40b2b381897ba4)).
+
+The frozen repository for this baseline is
+[Leokuan0208/Qwen-v25-vl-med-pruning](https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning)
+(renamed from `medical-vlm-pruning` on May 25). The active baseline
+is on the [HuatuoGPT-Vision](huatuo-vision.md) page.
 
 ## Hardware
 
@@ -150,7 +163,7 @@ PathVQA) are reachable identically from both images.
 | `/data/dan/weights/` | Model weight cache | HuggingFace cache root for the container's `HF_HOME` |
 | `/data/dan/weights/hub/models--Qwen--Qwen2.5-VL-7B-Instruct/` | Qwen2.5-VL weights | ~16 GB across 5 safetensors shards + config / tokenizer / processor files |
 | `/data/dan/dataset/` | Datasets | VQA-RAD, SLAKE, PathVQA (carried over from LLaVA-Med track) |
-| `/root/medical-vlm-pruning/` | Active project repo, editable install | Clone of [`Leokuan0208/medical-vlm-pruning`](https://github.com/Leokuan0208/medical-vlm-pruning) |
+| `/root/Qwen-v25-vl-med-pruning/` | Active project repo, editable install | Clone of [`Leokuan0208/Qwen-v25-vl-med-pruning`](https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning) |
 | `/root/data` | Symlink to `/data` | For JupyterLab file-browser visibility |
 | `/workspace/` | Container scratch, **persistent** | Survives rebuilds on KUBERUN |
 
@@ -311,7 +324,7 @@ The decision-validating test of the pivot. 20 random yes/no closed
 questions from the VQA-RAD test parquet, reformatted as MCQ with
 A/B option-order shuffled per sample, greedy decoding,
 `max_new_tokens=16`, seed=42. Script lives at
-[`scripts/mcq_compliance_smoke.py`](https://github.com/Leokuan0208/medical-vlm-pruning/blob/main/scripts/mcq_compliance_smoke.py)
+[`scripts/mcq_compliance_smoke.py`](https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning/blob/main/scripts/mcq_compliance_smoke.py)
 in the active repo.
 
 **Confirmed output (May 24, 2026):**
@@ -357,8 +370,8 @@ To rebuild this baseline identically on a fresh A100:
       verify with `du -sh` and `ls -L`
 - [ ] Run the [Step 4 load smoke test](#4-model-load-smoke-test);
       confirm `params: 8.29 B` and `loaded with flash_attention_2`
-- [ ] Clone `git@github.com:Leokuan0208/medical-vlm-pruning.git`;
-      run [`scripts/mcq_compliance_smoke.py`](https://github.com/Leokuan0208/medical-vlm-pruning/blob/main/scripts/mcq_compliance_smoke.py);
+- [ ] Clone `git@github.com:Leokuan0208/Qwen-v25-vl-med-pruning.git`;
+      run [`scripts/mcq_compliance_smoke.py`](https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning/blob/main/scripts/mcq_compliance_smoke.py);
       confirm 20/20 strict compliance
 
 ## Known issues with the baseline

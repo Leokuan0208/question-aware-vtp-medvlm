@@ -36,16 +36,31 @@ and 12-week plan.
 ## Where I am right now
 
 <span class="pill pill--wip">In progress</span> &nbsp;
-**Phase 1, Week 3 — Qwen2.5-VL baseline establishment.** Week 1
-closed out May 16 ([overview](weekly/week-01/index.md#end-of-week-status)).
-Week 2 closed out May 23 with the LLaVA-Med v1.0 → Qwen2.5-VL pivot
+**Phase 1, Week 3 — HuatuoGPT-Vision baseline reproduced + first
+pruning sweep running.** Week 1 closed out May 16
+([overview](weekly/week-01/index.md#end-of-week-status)). Week 2
+closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
 ([overview](weekly/week-02/index.md#reflections-end-of-week)). The
-pivot was **validated May 24** — Qwen2.5-VL scored 20/20 strict
-MCQ-letter compliance vs LLaVA-Med v1.0's 0/11 on May 20
-([details](weekly/week-03/day-01.md#phase-3-mcq-letter-compliance-smoke-test-step-3)).
-Two-repo split is now in place:
-[`llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1) is frozen,
-[`medical-vlm-pruning`](https://github.com/Leokuan0208/medical-vlm-pruning) is the active repo.
+Qwen2.5-VL pivot was **validated May 24** with 20/20 strict MCQ-letter
+compliance
+([details](weekly/week-03/day-01.md#phase-3-mcq-letter-compliance-smoke-test-step-3));
+a second pivot followed on **May 25** to
+[HuatuoGPT-Vision-7B (LLaVA-v1.5 architecture)](baseline/huatuo-vision.md)
+for reproducibility, and the
+[paper Table 4 reproduced same-day](baseline/huatuo-vision.md#baseline-metrics)
+with 5/6 benchmarks within 0.55 pts of published numbers
+([details](weekly/week-03/day-02.md)). The pruning framework
+(RandomPruner + QSimPruner + LatencyTracker; in-LLM layer-0
+integration via `Qwen2Model.forward` override + KV cache slicing)
+is written, smoke-tested, and pushed; an **8-run overnight sweep**
+(4 keep-ratios × 2 methods) is running in tmux with results landing
+Day 17. Three repos now:
+[`llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1)
+(frozen, LLaVA-Med v1.0 phase),
+[`Qwen-v25-vl-med-pruning`](https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning)
+(frozen, Qwen2.5-VL smoke-test artifact preserved), and
+[`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning)
+(active, pruning framework at `c216bbe`).
 
 - [x] Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)
 - [x] Stack sanity check (PyTorch, transformers, accelerate, flash-attn)
