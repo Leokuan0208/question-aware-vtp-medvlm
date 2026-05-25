@@ -9,8 +9,8 @@ page. Weeks run Sunday → Saturday.
 | Week | Dates | Phase | Focus | Status |
 | :--: | ----- | ----- | ----- | ------ |
 | [1](week-01/index.md)  | May 10 – May 16, 2026 | 1 — Baseline & lit | LLaVA-Med setup, harness build, E00 baseline | <span class="pill pill--done">Done</span> |
-| [2](week-02/index.md)  | May 17 – May 23, 2026 | 1 → 3 | Baseline closeout, first pruning method, ablation sweep | <span class="pill pill--wip">In progress</span> |
-| 3  | May 24 – May 30, 2026 | 2 — Codebase deep-dive | Trace LLaVA-Med forward pass | <span class="pill pill--planned">Planned</span> |
+| [2](week-02/index.md)  | May 17 – May 23, 2026 | 1 → 3 | Baseline closeout, first pruning method, substring bug found, **pivot to Qwen2.5-VL** | <span class="pill pill--done">Done</span> |
+| [3](week-03/index.md)  | May 24 – May 30, 2026 | 1 → 2 | Qwen2.5-VL baseline establishment, codebase deep-dive | <span class="pill pill--wip">In progress</span> |
 | 4  | May 31 – Jun 6, 2026  | 2 | Identify pruning insertion points | <span class="pill pill--planned">Planned</span> |
 | 5  | Jun 7 – Jun 13, 2026  | 3 — Scoring-head v1 | First trainable pruning module | <span class="pill pill--planned">Planned</span> |
 | 6  | Jun 14 – Jun 20, 2026 | 3 | Sanity-check results, debugging | <span class="pill pill--planned">Planned</span> |

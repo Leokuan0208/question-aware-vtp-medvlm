@@ -291,7 +291,7 @@ justify the migration as a methodological choice, not a defeat.
 
 With the decision made, drafted a single Dockerfile in the project's
 established format — same shape as the LLaVA-Med v1.5 and v1.0
-Dockerfiles already on the [setup page](../../setup.md): one
+Dockerfiles already on the [setup page](../../baseline/llava-med.md): one
 `FROM`, layered `RUN pip install` blocks for pinned dependencies,
 JupyterLab as the entrypoint command. The build itself is submitted
 through the HONGHU KUBERUN web interface (paste Dockerfile → platform

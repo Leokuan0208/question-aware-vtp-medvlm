@@ -1,6 +1,6 @@
 # Week 2 — Pruning method first implementation
 
-<span class="pill pill--wip">In progress</span>
+<span class="pill pill--done">Complete</span>
 
 **Phase 1 of 7** (Baseline & Literature, closing out) → **Phase 3
 beginning** (Scoring-head v1) · **Week 2 of 12**
@@ -144,6 +144,46 @@ numbers — the research story is too in-flux to update them yet.
 
 ## Reflections (end-of-week)
 
-_Write this at the end of the week. The Day-1 milestone (first
-working pruning method) sets up the central research question for
-the rest of Week 2: does question-awareness beat random pruning?_
+Week 2 was supposed to be "fill in the Pareto curve and ship a clean
+research result on LLaVA-Med v1.0." It became something quite
+different: a week that started with an apparent +2.57 pt accuracy
+improvement at kr=0.75 and ended with the project changing base
+models entirely.
+
+**What worked.** The investigative discipline of Day 5 — noticing
+the anomalous curve shape, reading `eval/metrics.py` carefully,
+running the three-way strict/medium/lenient diagnostic, and then
+the MCQ-letter compliance smoke test — produced findings that are
+substantive enough to be the project's eventual related-work
+section. The substring bug in the v1.0 closed-set scorer inflates
+every published v1.0 number by 9-12 pts uniformly; the verbosity-
+inflation effect compounds it under pruning; the
+instruction-following profile is incompatible with the field's
+standardized evaluation methodology. None of that was obvious going
+in.
+
+**What was harder than expected.** Trusting the original kr=0.75
+result for four days (May 17 → May 21) before the curve shape
+forced a closer look at the scorer. The +2.57 / +3.30 framing was
+attractive enough to celebrate and not interrogate; the rest of the
+Pareto curve was what made it un-celebratable. Lesson: rising
+accuracy under aggressive pruning is a red flag, not a positive
+signal. *Any* time more pruning helps, the metric is the suspect
+before the method.
+
+**Self-correction worth flagging.** Two analytical mistakes on
+Day 5 made it into the day-page record on purpose — the "open
+recall is falling" framing that turned out to be noise, and the
+"GT yes-bias" hypothesis that was decisively refuted by the actual
+distribution. Both belong on a research log; the hypotheses that
+don't survive contact with data are as informative as the ones
+that do.
+
+**What to do differently in Week 3.** Bake the strict scorer in
+from the start on Qwen2.5-VL. The site's headline pages still show
+the May 17 +2.57 / +3.30 framing per the editorial decision to
+keep them stable until Qwen2.5-VL produces clean numbers; that
+narrative gets rewritten in Week 3 once VLMEvalKit's MCQ-letter
+scoring produces a real baseline. The site's day pages tell the
+in-flux story honestly; the headline pages get the consolidated
+canonical numbers when they exist.

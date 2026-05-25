@@ -70,7 +70,7 @@ compare every pruning experiment against. No model changes.
 - Model: LLaVA-Med v1.5 (Mistral-7B), off-the-shelf weights, frozen
 - Datasets: VQA-RAD test (451 samples), SLAKE English test (1,061),
   PathVQA test (6,719) — total 8,231 test questions across the row
-- Hardware: see [Baseline (LLaVA-Med)](setup.md#hardware)
+- Hardware: see [Baseline (LLaVA-Med)](baseline/llava-med.md#hardware)
 - Pruning method: `BaselineMethod` (no-op — runs the model unmodified)
 - Decoding: single-turn, greedy (`temperature = 0.0`)
 
@@ -167,8 +167,8 @@ would have shown the wrong number and looked like a much larger gap.
   <span><span class="legend-dot legend-dot--beats"></span>beats stage-2 baseline</span>
 </div>
 
-<div class="comparison-table-wrapper" markdown="0">
-<table class="comparison-table" markdown="0">
+<div class="comparison-table-wrapper">
+<table class="comparison-table">
   <thead>
     <tr>
       <th class="config-header" rowspan="2">Config</th>

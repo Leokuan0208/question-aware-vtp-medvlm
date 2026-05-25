@@ -36,9 +36,16 @@ and 12-week plan.
 ## Where I am right now
 
 <span class="pill pill--wip">In progress</span> &nbsp;
-**Phase 1, Week 2 — Baseline profiling & literature.** Week 1 closed
-out May 16; full ledger on the
-[Week 1 overview](weekly/week-01/index.md#end-of-week-status).
+**Phase 1, Week 3 — Qwen2.5-VL baseline establishment.** Week 1
+closed out May 16 ([overview](weekly/week-01/index.md#end-of-week-status)).
+Week 2 closed out May 23 with the LLaVA-Med v1.0 → Qwen2.5-VL pivot
+([overview](weekly/week-02/index.md#reflections-end-of-week)). The
+pivot was **validated May 24** — Qwen2.5-VL scored 20/20 strict
+MCQ-letter compliance vs LLaVA-Med v1.0's 0/11 on May 20
+([details](weekly/week-03/day-01.md#phase-3-mcq-letter-compliance-smoke-test-step-3)).
+Two-repo split is now in place:
+[`llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1) is frozen,
+[`medical-vlm-pruning`](https://github.com/Leokuan0208/medical-vlm-pruning) is the active repo.
 
 - [x] Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)
 - [x] Stack sanity check (PyTorch, transformers, accelerate, flash-attn)
@@ -145,7 +152,7 @@ See the [Week 1 log](weekly/week-01/index.md) and
 
 - **[Project Overview](project.md)** — research question, motivation,
   hypothesis, related work, the 12-week plan. *Read this first.*
-- **[Baseline (LLaVA-Med)](setup.md)** — how the LLaVA-Med baseline is
+- **[Baseline](baseline/index.md)** — how the LLaVA-Med baseline is
   installed and configured, with hardware, versions, commands, and
   gotchas.
 - **[Experiments](experiments.md)** — running log of pruning strategies
