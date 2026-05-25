@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/experiments/">
       
       
-        <link rel="prev" href="../setup/">
+        <link rel="prev" href="../baseline/llava-med/">
       
       
         <link rel="next" href="../weekly/">
@@ -256,16 +256,19 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="../setup/" class="md-tabs__link">
-        
+    
+    
+      <li class="md-tabs__item">
+        <a href="../baseline/" class="md-tabs__link">
+          
   
     
   
-  Baseline (LLaVA-Med)
+  Baseline
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -433,16 +436,103 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../baseline/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Baseline
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Baseline
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../setup/" class="md-nav__link">
+      <a href="../baseline/qwen25-vl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Baseline (LLaVA-Med)
+    Qwen2.5-VL
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../baseline/llava-med/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LLaVA-Med
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -596,6 +686,8 @@
       
         
           
+        
+      
         
       
         
@@ -1043,6 +1135,91 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../weekly/week-03/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 3
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Week 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-03/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 24, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1364,7 +1541,7 @@ compare every pruning experiment against. No model changes.</p>
 - Model: LLaVA-Med v1.5 (Mistral-7B), off-the-shelf weights, frozen
 - Datasets: VQA-RAD test (451 samples), SLAKE English test (1,061),
   PathVQA test (6,719) — total 8,231 test questions across the row
-- Hardware: see <a href="../setup/#hardware">Baseline (LLaVA-Med)</a>
+- Hardware: see <a href="../baseline/llava-med/#hardware">Baseline (LLaVA-Med)</a>
 - Pruning method: <code>BaselineMethod</code> (no-op — runs the model unmodified)
 - Decoding: single-turn, greedy (<code>temperature = 0.0</code>)</p>
 <p><strong>Results</strong></p>
@@ -1484,8 +1661,8 @@ would have shown the wrong number and looked like a much larger gap.</p>
   <span><span class="legend-dot legend-dot--beats"></span>beats stage-2 baseline</span>
 </div>
 
-<div class="comparison-table-wrapper" markdown="0">
-<table class="comparison-table" markdown="0">
+<div class="comparison-table-wrapper">
+<table class="comparison-table">
   <thead>
     <tr>
       <th class="config-header" rowspan="2">Config</th>
@@ -1877,7 +2054,7 @@ the second number Day 9 produces.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../setup/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Baseline (LLaVA-Med)">
+          <a href="../baseline/llava-med/" class="md-footer__link md-footer__link--prev" aria-label="Previous: LLaVA-Med">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1887,7 +2064,7 @@ the second number Day 9 produces.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Baseline (LLaVA-Med)
+                LLaVA-Med
               </div>
             </div>
           </a>

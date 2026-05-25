@@ -12,24 +12,28 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
-        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/setup/">
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/baseline/llava-med/">
       
       
+        <link rel="prev" href="../qwen25-vl/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+        <link rel="next" href="../../experiments/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Baseline: LLaVA-Med - Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>LLaVA-Med - Question-Aware Visual Token Pruning for Medical VLMs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,9 +52,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#baseline-llava-med" class="md-skip">
+        <a href="#baseline-llava-med-v15-v10" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -110,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Baseline: LLaVA-Med
+              LLaVA-Med
             
           </span>
         </div>
@@ -219,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -236,7 +240,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../project/" class="md-tabs__link">
+      <a href="../../project/" class="md-tabs__link">
         
   
     
@@ -251,11 +255,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../baseline/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
     
@@ -273,7 +279,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../experiments/" class="md-tabs__link">
+      <a href="../../experiments/" class="md-tabs__link">
         
   
     
@@ -292,7 +298,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../weekly/" class="md-tabs__link">
+        <a href="../../weekly/" class="md-tabs__link">
           
   
     
@@ -310,7 +316,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../bugs/" class="md-tabs__link">
+      <a href="../../bugs/" class="md-tabs__link">
         
   
     
@@ -327,7 +333,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../resources/" class="md-tabs__link">
+      <a href="../../resources/" class="md-tabs__link">
         
   
     
@@ -361,7 +367,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -391,7 +397,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -411,7 +417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../project/" class="md-nav__link">
+      <a href="../../project/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -428,6 +434,8 @@
       
   
   
+    
+  
   
   
     
@@ -444,19 +452,22 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../baseline/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -467,13 +478,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Baseline
@@ -489,7 +500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../baseline/qwen25-vl/" class="md-nav__link">
+      <a href="../qwen25-vl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -507,10 +518,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../baseline/llava-med/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    LLaVA-Med
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -519,6 +550,158 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardware
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#software-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Software stack
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Dockerfile
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage layout
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-commands-in-execution-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup commands (in execution order)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup commands (in execution order)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-build-the-image-via-kuberun" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Build the image via KUBERUN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-sanity-check-the-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Sanity-check the stack
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-clone-llava-med-and-install-editable" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Clone LLaVA-Med and install editable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-download-the-model-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Download the model weights
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-first-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. First inference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-after-patching-the-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. After patching the CLI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#baseline-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Baseline metrics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reproducibility-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reproducibility checklist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-issues-with-the-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known issues with the baseline
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -538,7 +721,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../experiments/" class="md-nav__link">
+      <a href="../../experiments/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -585,7 +768,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/" class="md-nav__link ">
+            <a href="../../weekly/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -653,7 +836,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-01/" class="md-nav__link ">
+            <a href="../../weekly/week-01/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -686,7 +869,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-01/" class="md-nav__link">
+      <a href="../../weekly/week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -707,7 +890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-02/" class="md-nav__link">
+      <a href="../../weekly/week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -728,7 +911,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-03/" class="md-nav__link">
+      <a href="../../weekly/week-01/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -749,7 +932,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-04/" class="md-nav__link">
+      <a href="../../weekly/week-01/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -770,7 +953,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-05/" class="md-nav__link">
+      <a href="../../weekly/week-01/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -791,7 +974,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-06/" class="md-nav__link">
+      <a href="../../weekly/week-01/day-06/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -812,7 +995,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-07/" class="md-nav__link">
+      <a href="../../weekly/week-01/day-07/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -872,7 +1055,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-02/" class="md-nav__link ">
+            <a href="../../weekly/week-02/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -905,7 +1088,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-01/" class="md-nav__link">
+      <a href="../../weekly/week-02/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -926,7 +1109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-02/" class="md-nav__link">
+      <a href="../../weekly/week-02/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -947,7 +1130,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-03/" class="md-nav__link">
+      <a href="../../weekly/week-02/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -968,7 +1151,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-04/" class="md-nav__link">
+      <a href="../../weekly/week-02/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -989,7 +1172,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-05/" class="md-nav__link">
+      <a href="../../weekly/week-02/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1041,7 +1224,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-03/" class="md-nav__link ">
+            <a href="../../weekly/week-03/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1074,7 +1257,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-01/" class="md-nav__link">
+      <a href="../../weekly/week-03/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1110,7 +1293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../bugs/" class="md-nav__link">
+      <a href="../../bugs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1130,7 +1313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../resources/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1316,7 +1499,7 @@
                   
 
   
-    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/setup.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/baseline/llava-med.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1324,14 +1507,32 @@
   
 
 
-<h1 id="baseline-llava-med">Baseline: LLaVA-Med<a class="headerlink" href="#baseline-llava-med" title="Permanent link">&para;</a></h1>
-<p>LLaVA-Med is the <strong>baseline</strong> we're modifying. This page documents the
-exact environment used to reproduce the baseline so anyone — including
-future-me — can rebuild it identically.</p>
-<p>The pruning module and evaluation harness live in a separate project
-repo —
-<a href="https://github.com/Leokuan0208/llava-med-pruning">Leokuan0208/llava-med-pruning</a>;
-this page is only about getting the upstream baseline
+<h1 id="baseline-llava-med-v15-v10">Baseline: LLaVA-Med v1.5 / v1.0<a class="headerlink" href="#baseline-llava-med-v15-v10" title="Permanent link">&para;</a></h1>
+<p><span class="pill pill--done">Frozen — May 24, 2026</span></p>
+<p>LLaVA-Med was the original baseline for this project (May 10–May 21,
+2026). This page documents the exact environment used to reproduce
+that baseline so anyone — including future-me — can rebuild it
+identically.</p>
+<div class="admonition info">
+<p class="admonition-title">Track frozen on May 24, 2026</p>
+<p>The project pivoted to <strong><a href="../qwen25-vl/">Qwen2.5-VL-7B-Instruct</a></strong>
+as the active baseline on May 21, 2026, after identifying two
+unreproducibility issues with LLaVA-Med v1.0: a substring-match
+bug in the closed-set scorer (inflated reported accuracy by 9-12
+pts), and 0/11 MCQ-letter compliance on an
+instruction-following smoke test (blocked use of standardized
+evaluation harnesses). The full pivot writeup is in
+<a href="../../weekly/week-02/day-05/">Week 2, Day 5</a>. This page is kept
+as a historical reference; the active baseline is on the
+<a href="../qwen25-vl/">Qwen2.5-VL</a> page.</p>
+</div>
+<p>The pruning module and evaluation harness for the LLaVA-Med track
+live in two frozen repos —
+<a href="https://github.com/Leokuan0208/llava-med-pruning">Leokuan0208/llava-med-pruning</a>
+(v1.5 harness) and
+<a href="https://github.com/Leokuan0208/llava-med-pruning-v1">Leokuan0208/llava-med-pruning-v1</a>
+(v1.0 track, frozen with a status notice on the README as of May 24).
+This page is only about getting the upstream LLaVA-Med baseline
 running.</p>
 <h2 id="hardware">Hardware<a class="headerlink" href="#hardware" title="Permanent link">&para;</a></h2>
 <table>
@@ -1643,7 +1844,7 @@ only); use the CLI:</p>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span>--image-file<span class="w"> </span>./llava/serve/examples/bio_patch.png
 </span></code></pre></div>
 <p>This step initially produced single-word responses — see
-<a href="../bugs/">Bugs &amp; Issues</a> for the full diagnostic trail and the one-line
+<a href="../../bugs/">Bugs &amp; Issues</a> for the full diagnostic trail and the one-line
 patch.</p>
 <h3 id="6-after-patching-the-cli">6. After patching the CLI<a class="headerlink" href="#6-after-patching-the-cli" title="Permanent link">&para;</a></h3>
 <p>The CLI now returns full multi-turn medical responses for the
@@ -1709,7 +1910,7 @@ patch.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> First inference output saved as a sanity-check baseline transcript</li>
 </ul>
 <h2 id="known-issues-with-the-baseline">Known issues with the baseline<a class="headerlink" href="#known-issues-with-the-baseline" title="Permanent link">&para;</a></h2>
-<p>See <a href="../bugs/">Bugs &amp; Issues</a> for full writeups:</p>
+<p>See <a href="../../bugs/">Bugs &amp; Issues</a> for full writeups:</p>
 <ul>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 7h-2.81c-.45-.8-1.07-1.5-1.82-2L16 3.41 14.59 2l-2.17 2.17a6 6 0 0 0-2.83 0L7.41 2 6 3.41 7.62 5c-.75.5-1.36 1.21-1.81 2H3v2h2.09c-.06.33-.09.66-.09 1v1H3v2h2v1c0 .34.03.67.09 1H3v2h2.81A6 6 0 0 0 13 19.65V19c0-2.54 1.61-4.8 4-5.65V13h2v-2h-2v-1c0-.34-.03-.67-.09-1H19zm-6 8H9v-2h4zm0-4H9V9h4zm4.75 11.16-2.75-3L16.16 18l1.59 1.59L21.34 16l1.16 1.41z"/></svg></span> <strong>#1</strong> <code>llava.serve.cli</code> stop-criterion logic
   truncates Mistral-template generation to one token —
@@ -1746,6 +1947,44 @@ patch.</p>
         <footer class="md-footer">
   
     
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../qwen25-vl/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Qwen2.5-VL">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Qwen2.5-VL
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../experiments/" class="md-footer__link md-footer__link--next" aria-label="Next: Experiments">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Experiments
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1776,12 +2015,12 @@ patch.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

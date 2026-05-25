@@ -256,16 +256,19 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="../../setup/" class="md-tabs__link">
-        
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../baseline/" class="md-tabs__link">
+          
   
     
   
-  Baseline (LLaVA-Med)
+  Baseline
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -433,16 +436,103 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../baseline/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Baseline
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Baseline
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../setup/" class="md-nav__link">
+      <a href="../../baseline/qwen25-vl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Baseline (LLaVA-Med)
+    Qwen2.5-VL
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../baseline/llava-med/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LLaVA-Med
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -480,6 +570,8 @@
       
         
           
+        
+      
         
       
         
@@ -932,6 +1024,91 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../week-03/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 3
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Week 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../week-03/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 24, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1092,7 +1269,7 @@
 
 
 <h1 id="week-2-pruning-method-first-implementation">Week 2 — Pruning method first implementation<a class="headerlink" href="#week-2-pruning-method-first-implementation" title="Permanent link">&para;</a></h1>
-<p><span class="pill pill--wip">In progress</span></p>
+<p><span class="pill pill--done">Complete</span></p>
 <p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature, closing out) → <strong>Phase 3
 beginning</strong> (Scoring-head v1) · <strong>Week 2 of 12</strong></p>
 <p><strong>Goal of the week</strong> — close out the baseline phase (canonical
@@ -1218,9 +1395,45 @@ numbers — the research story is too in-flux to update them yet.</p>
 </ul>
 <hr />
 <h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
-<p><em>Write this at the end of the week. The Day-1 milestone (first
-working pruning method) sets up the central research question for
-the rest of Week 2: does question-awareness beat random pruning?</em></p>
+<p>Week 2 was supposed to be "fill in the Pareto curve and ship a clean
+research result on LLaVA-Med v1.0." It became something quite
+different: a week that started with an apparent +2.57 pt accuracy
+improvement at kr=0.75 and ended with the project changing base
+models entirely.</p>
+<p><strong>What worked.</strong> The investigative discipline of Day 5 — noticing
+the anomalous curve shape, reading <code>eval/metrics.py</code> carefully,
+running the three-way strict/medium/lenient diagnostic, and then
+the MCQ-letter compliance smoke test — produced findings that are
+substantive enough to be the project's eventual related-work
+section. The substring bug in the v1.0 closed-set scorer inflates
+every published v1.0 number by 9-12 pts uniformly; the verbosity-
+inflation effect compounds it under pruning; the
+instruction-following profile is incompatible with the field's
+standardized evaluation methodology. None of that was obvious going
+in.</p>
+<p><strong>What was harder than expected.</strong> Trusting the original kr=0.75
+result for four days (May 17 → May 21) before the curve shape
+forced a closer look at the scorer. The +2.57 / +3.30 framing was
+attractive enough to celebrate and not interrogate; the rest of the
+Pareto curve was what made it un-celebratable. Lesson: rising
+accuracy under aggressive pruning is a red flag, not a positive
+signal. <em>Any</em> time more pruning helps, the metric is the suspect
+before the method.</p>
+<p><strong>Self-correction worth flagging.</strong> Two analytical mistakes on
+Day 5 made it into the day-page record on purpose — the "open
+recall is falling" framing that turned out to be noise, and the
+"GT yes-bias" hypothesis that was decisively refuted by the actual
+distribution. Both belong on a research log; the hypotheses that
+don't survive contact with data are as informative as the ones
+that do.</p>
+<p><strong>What to do differently in Week 3.</strong> Bake the strict scorer in
+from the start on Qwen2.5-VL. The site's headline pages still show
+the May 17 +2.57 / +3.30 framing per the editorial decision to
+keep them stable until Qwen2.5-VL produces clean numbers; that
+narrative gets rewritten in Week 3 once VLMEvalKit's MCQ-letter
+scoring produces a real baseline. The site's day pages tell the
+in-flux story honestly; the headline pages get the consolidated
+canonical numbers when they exist.</p>
 
 
 

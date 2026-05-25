@@ -12,28 +12,28 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
-        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/project/">
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-03/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../week-02/day-05/">
       
       
-        <link rel="next" href="../baseline/">
+        <link rel="next" href="day-01/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Project Overview - Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Week 3 — Qwen2.5-VL baseline and codebase deep-dive - Question-Aware Visual Token Pruning for Medical VLMs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,9 +52,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#project-overview" class="md-skip">
+        <a href="#week-3-qwen25-vl-baseline-and-codebase-deep-dive" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Project Overview
+              Week 3 — Qwen2.5-VL baseline and codebase deep-dive
             
           </span>
         </div>
@@ -223,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -238,11 +238,9 @@
         
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
         
   
     
@@ -261,7 +259,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../baseline/" class="md-tabs__link">
+        <a href="../../baseline/" class="md-tabs__link">
           
   
     
@@ -279,7 +277,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../experiments/" class="md-tabs__link">
+      <a href="../../experiments/" class="md-tabs__link">
         
   
     
@@ -294,11 +292,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../weekly/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
     
@@ -316,7 +316,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../bugs/" class="md-tabs__link">
+      <a href="../../bugs/" class="md-tabs__link">
         
   
     
@@ -333,7 +333,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../resources/" class="md-tabs__link">
+      <a href="../../resources/" class="md-tabs__link">
         
   
     
@@ -367,7 +367,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -397,7 +397,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -414,30 +414,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Project Overview
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -446,107 +426,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#title" class="md-nav__link">
-    <span class="md-ellipsis">
-      Title
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#people" class="md-nav__link">
-    <span class="md-ellipsis">
-      People
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#motivation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Motivation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#research-question" class="md-nav__link">
-    <span class="md-ellipsis">
-      Research question
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hypothesis" class="md-nav__link">
-    <span class="md-ellipsis">
-      Hypothesis
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#related-work-skim-list-to-read-properly-in-week-12" class="md-nav__link">
-    <span class="md-ellipsis">
-      Related work (skim list — to read properly in Week 1–2)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#approach-sketch" class="md-nav__link">
-    <span class="md-ellipsis">
-      Approach (sketch)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-week-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      12-week plan
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#success-criteria" class="md-nav__link">
-    <span class="md-ellipsis">
-      Success criteria
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -583,7 +462,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../baseline/" class="md-nav__link ">
+            <a href="../../baseline/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -616,7 +495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../baseline/qwen25-vl/" class="md-nav__link">
+      <a href="../../baseline/qwen25-vl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -637,7 +516,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../baseline/llava-med/" class="md-nav__link">
+      <a href="../../baseline/llava-med/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -665,7 +544,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../experiments/" class="md-nav__link">
+      <a href="../../experiments/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -682,6 +561,8 @@
       
   
   
+    
+  
   
   
     
@@ -700,19 +581,22 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -723,13 +607,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Weekly Log
@@ -780,7 +664,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-01/" class="md-nav__link ">
+            <a href="../week-01/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -813,7 +697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-01/" class="md-nav__link">
+      <a href="../week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -834,7 +718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-02/" class="md-nav__link">
+      <a href="../week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -855,7 +739,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-03/" class="md-nav__link">
+      <a href="../week-01/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -876,7 +760,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-04/" class="md-nav__link">
+      <a href="../week-01/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -897,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-05/" class="md-nav__link">
+      <a href="../week-01/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -918,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-06/" class="md-nav__link">
+      <a href="../week-01/day-06/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -939,7 +823,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-07/" class="md-nav__link">
+      <a href="../week-01/day-07/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -999,7 +883,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-02/" class="md-nav__link ">
+            <a href="../week-02/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1032,7 +916,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-01/" class="md-nav__link">
+      <a href="../week-02/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1053,7 +937,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-02/" class="md-nav__link">
+      <a href="../week-02/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1074,7 +958,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-03/" class="md-nav__link">
+      <a href="../week-02/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1095,7 +979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-04/" class="md-nav__link">
+      <a href="../week-02/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1116,7 +1000,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-05/" class="md-nav__link">
+      <a href="../week-02/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1142,6 +1026,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1159,16 +1045,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-03/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   <span class="md-ellipsis">
@@ -1179,13 +1065,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_4">
             <span class="md-nav__icon md-icon"></span>
             Week 3
@@ -1201,7 +1087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-01/" class="md-nav__link">
+      <a href="day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1237,7 +1123,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../bugs/" class="md-nav__link">
+      <a href="../../bugs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1257,7 +1143,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../resources/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1297,81 +1183,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#title" class="md-nav__link">
+  <a href="#day-1-sunday-may-24-2026" class="md-nav__link">
     <span class="md-ellipsis">
-      Title
+      Day 1 — Sunday, May 24, 2026
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#people" class="md-nav__link">
+  <a href="#plan-for-the-rest-of-the-week-may-25-may-30" class="md-nav__link">
     <span class="md-ellipsis">
-      People
+      Plan for the rest of the week (May 25 – May 30)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#motivation" class="md-nav__link">
+  <a href="#reflections-end-of-week" class="md-nav__link">
     <span class="md-ellipsis">
-      Motivation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#research-question" class="md-nav__link">
-    <span class="md-ellipsis">
-      Research question
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hypothesis" class="md-nav__link">
-    <span class="md-ellipsis">
-      Hypothesis
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#related-work-skim-list-to-read-properly-in-week-12" class="md-nav__link">
-    <span class="md-ellipsis">
-      Related work (skim list — to read properly in Week 1–2)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#approach-sketch" class="md-nav__link">
-    <span class="md-ellipsis">
-      Approach (sketch)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-week-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      12-week plan
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#success-criteria" class="md-nav__link">
-    <span class="md-ellipsis">
-      Success criteria
+      Reflections (end-of-week)
     </span>
   </a>
   
@@ -1392,7 +1224,7 @@
                   
 
   
-    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/project.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-03/index.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1400,337 +1232,69 @@
   
 
 
-<h1 id="project-overview">Project Overview<a class="headerlink" href="#project-overview" title="Permanent link">&para;</a></h1>
-<h2 id="title">Title<a class="headerlink" href="#title" title="Permanent link">&para;</a></h2>
-<p class="project-title">Question-Aware Visual Token Pruning for Medical VLMs.</p>
-
-<h2 id="people">People<a class="headerlink" href="#people" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Role</th>
-<th>Person</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Researcher</td>
-<td>Li-Wen Kuan (關力文) — Leo Kuan</td>
-</tr>
-<tr>
-<td>Advisor</td>
-<td>Yuan-Kai Wang (王元凱)</td>
-</tr>
-<tr>
-<td>Institution</td>
-<td>Fu Jen Catholic University (輔仁天主教大學)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
-<p>Medical vision–language models like LLaVA-Med work by:</p>
-<ol>
-<li>Passing an image through a vision encoder (typically a CLIP ViT)
-   that produces a sequence of <strong>visual tokens</strong> — one per image patch
-   plus a global token. For a standard 336×336 input with patch size
-   14, that's 576 tokens.</li>
-<li>Projecting those tokens into the language model's embedding space.</li>
-<li>Prepending them to the user's text question and letting the LM
-   generate an answer.</li>
-</ol>
-<p>Most of those 576 tokens are not relevant to any given question. A
-question like <em>"Is there a pneumothorax in the right lung?"</em> depends on
-a small region of the image; the rest is noise that the model must
-nonetheless attend over at full cost.</p>
-<p><strong>The opportunity:</strong> if we can identify which visual tokens matter
-<em>for the specific question being asked</em> and drop the rest, we can:</p>
-<ul>
-<li>Reduce inference compute (fewer tokens through the LM).</li>
-<li>Potentially improve answer quality (less distractor signal).</li>
-<li>Make the model more interpretable (we can visualise which patches it
-  kept).</li>
+<h1 id="week-3-qwen25-vl-baseline-and-codebase-deep-dive">Week 3 — Qwen2.5-VL baseline and codebase deep-dive<a class="headerlink" href="#week-3-qwen25-vl-baseline-and-codebase-deep-dive" title="Permanent link">&para;</a></h1>
+<p><span class="pill pill--wip">In progress</span></p>
+<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature, closing out) → <strong>Phase 2
+beginning</strong> (Codebase deep-dive) · <strong>Week 3 of 12</strong></p>
+<p><strong>Goal of the week</strong> — establish the canonical unpruned Qwen2.5-VL
+baseline on VQA-RAD / SLAKE / PathVQA via VLMEvalKit (the standardized
+evaluation backbone the field has converged on), and start porting
+the <code>random</code> and <code>qsim</code> pruning methods from the frozen v1.0 codebase
+onto Qwen2.5-VL's decoder layers. The May 21 pivot decision now needs
+to be paid off with real numbers on the new stack.</p>
+<p>This page is the <strong>overview</strong> — a short summary of each day. Click
+any day's heading for the full detail page.</p>
+<hr />
+<h3 id="day-1-sunday-may-24-2026"><a href="day-01/">Day 1 — Sunday, May 24, 2026</a><a class="headerlink" href="#day-1-sunday-may-24-2026" title="Permanent link">&para;</a></h3>
+<p>Pivot validation day. Confirmed the Qwen2.5-VL weight download
+completed cleanly (16 GB, 5 shards, all config/tokenizer/processor
+files present); load smoke test passed (8.29B params, bf16,
+flash-attn 2, ~16.6 GB GPU mem, 8.8s cold load); processor and
+tokenizer come up with <code>Qwen2VLImageProcessor</code> and <code>Qwen2TokenizerFast</code>.
+<strong>The decisive test: 20/20 strict MCQ-letter compliance</strong> on a 20-sample
+VQA-RAD smoke test, against LLaVA-Med v1.0's 0/11 on the equivalent
+test on May 20. Side observation: 75% letter-correct on the same 20
+samples — in the ballpark of published Qwen2.5-VL VQA-RAD closed
+numbers. <strong>The pivot is validated.</strong> Then a brief detour reorganizing
+the project's repos: tried Option A (single repo with <code>llava_med_v1/</code>
++ <code>qwen25vl/</code> subfolders), reverted to Option B (two separate repos)
+— <code>llava-med-pruning-v1</code> frozen with a status-notice README commit on
+top of <code>14a62d3</code>, fresh <code>medical-vlm-pruning</code> repo initialized with a
+flat <code>scripts/ pruning/ eval/</code> layout. First artifact committed:
+<code>scripts/mcq_compliance_smoke.py</code>, polished to silence both transformer
+warnings and write durable per-run JSON.</p>
+<hr />
+<h2 id="plan-for-the-rest-of-the-week-may-25-may-30">Plan for the rest of the week (May 25 – May 30)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-25-may-30" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Verify Qwen2.5-VL weight download integrity (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Qwen2.5-VL load smoke test on A100 (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MCQ-letter compliance smoke test — <strong>20/20 strict</strong> validates
+      the pivot (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Repo reorganization — freeze old, init new (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Install <strong>VLMEvalKit</strong> into the container, pinned for
+      reproducibility</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Wire up Qwen2.5-VL as a VLMEvalKit model with the cached
+      weights path</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run VLMEvalKit on <strong>VQA-RAD closed</strong> (full 272-question
+      canonical set) — produces the <strong>unpruned-baseline number</strong> every
+      pruning experiment will be measured against</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Repeat for <strong>SLAKE</strong> and <strong>PathVQA</strong> closed</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Port <code>RandomPruning</code> from the frozen v1.0 code onto Qwen2.5-VL's
+      decoder layers — the scoring math is the same; only the hook
+      target changes from <code>LlavaLlamaModel.model.layers</code> to
+      Qwen2.5-VL's equivalent</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Port <code>QuestionSimilarityPruning</code> the same way</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> First kr=0.75 ablation on the new stack — comparable, finally,
+      to the literature</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (still pending from Week 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim <strong>SparseVLM</strong> and <strong>GAP</strong></li>
 </ul>
-<h2 id="research-question">Research question<a class="headerlink" href="#research-question" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>Can a question-conditioned token-pruning mechanism preserve — or
-improve — medical VQA accuracy on standard benchmarks while
-meaningfully reducing inference cost on the LLaVA-Med baseline?</p>
-</blockquote>
-<h2 id="hypothesis">Hypothesis<a class="headerlink" href="#hypothesis" title="Permanent link">&para;</a></h2>
-<p>A lightweight scoring head, conditioned on the question embedding, can
-rank visual tokens by relevance and prune the bottom K% with negligible
-accuracy loss. We expect:</p>
-<ul>
-<li><strong>Lower bound:</strong> at K = 25%, accuracy on VQA-RAD / SLAKE drops by
-  less than 1 absolute point.</li>
-<li><strong>Upper bound:</strong> at K = 50%, accuracy may drop by 2–4 points but
-  latency drops more than proportionally because attention cost is
-  quadratic in token count.</li>
-<li><strong>Sweet spot:</strong> somewhere in between, ideally with a regime where
-  accuracy <em>improves</em> on questions that target small image regions.</li>
-</ul>
-<p>This is a hypothesis, not a result — the experiments will tell us
-whether the shape of the trade-off actually looks like this.</p>
-<h2 id="related-work-skim-list-to-read-properly-in-week-12">Related work (skim list — to read properly in Week 1–2)<a class="headerlink" href="#related-work-skim-list-to-read-properly-in-week-12" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Paper</th>
-<th>Authors</th>
-<th>Venue</th>
-<th>Institution(s)</th>
-<th>Why it's relevant</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/5abcdf8ecdcacba028c6662789194572-Abstract-Datasets_and_Benchmarks.html">LLaVA-Med: Training a Large Language-and-Vision Assistant for Biomedicine in One Day</a></td>
-<td>Li, Wong, Zhang et al.</td>
-<td>NeurIPS 2023 (Datasets &amp; Benchmarks, Spotlight)</td>
-<td>Microsoft Research</td>
-<td>Our baseline — medical instruction-tuned VLM</td>
-</tr>
-<tr>
-<td><a href="https://openreview.net/forum?id=JroZRaRw7Eu">Token Merging: Your ViT But Faster (ToMe)</a></td>
-<td>Bolya et al.</td>
-<td>ICLR 2023 (notable top-5%)</td>
-<td>Georgia Tech, Meta AI</td>
-<td>Classic ViT-side token reduction; question-agnostic</td>
-</tr>
-<tr>
-<td><a href="https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/10478.pdf">An Image is Worth 1/2 Tokens After Layer 2 (FastV)</a></td>
-<td>Chen et al.</td>
-<td>ECCV 2024 (Oral, top-2%)</td>
-<td>Peking University, Alibaba Group</td>
-<td>Closest prior art — drops visual tokens inside the LM after early layers</td>
-</tr>
-<tr>
-<td><a href="https://openaccess.thecvf.com/content/ICCV2025/html/Shang_LLaVA-PruMerge_Adaptive_Token_Reduction_for_Efficient_Large_Multimodal_Models_ICCV_2025_paper.html">LLaVA-PruMerge: Adaptive Token Reduction for Efficient Large Multimodal Models</a></td>
-<td>Shang et al.</td>
-<td>ICCV 2025</td>
-<td>UCF, UW-Madison, USC, UIC</td>
-<td>Adaptive token reduction conditioned on visual-encoder sparsity</td>
-</tr>
-<tr>
-<td><a href="https://openreview.net/forum?id=80faIPZ67S">SparseVLM: Visual Token Sparsification for Efficient VLM Inference</a></td>
-<td>Y. Zhang et al.</td>
-<td>ICML 2025 (poster)</td>
-<td>Peking University, Fudan, UC Berkeley, Panasonic</td>
-<td><strong>Text-aware</strong> visual token pruning in general VLMs — closest in spirit to our "question-aware" angle</td>
-</tr>
-<tr>
-<td><a href="https://arxiv.org/abs/2506.21873">Grounding-Aware Token Pruning (GAP)</a></td>
-<td>Chien et al.</td>
-<td>arXiv 2025 (preprint)</td>
-<td>National Tsing Hua University</td>
-<td>Position-ID re-alignment fix after token drop — critical correction for RoPE-based VLMs</td>
-</tr>
-<tr>
-<td><a href="https://arxiv.org/abs/2603.11625">MedPruner: Training-Free Hierarchical Token Pruning for Efficient 3D Medical Image Understanding in VLMs</a></td>
-<td>Liu et al.</td>
-<td>arXiv 2026 (preprint)</td>
-<td>CUHK, Westlake University (+ collaborators)</td>
-<td>Closest medical-domain prior art; 3D-focused but uses attention-based selection in a Medical VLM</td>
-</tr>
-<tr>
-<td><a href="https://arxiv.org/abs/2602.03134">SwiftVLM: Efficient Vision-Language Model Inference via Cross-Layer Token Bypass</a></td>
-<td>Qian et al.</td>
-<td>arXiv 2026 (preprint, Feb 2026)</td>
-<td>Tsinghua University</td>
-<td>Training-free pruning with a <strong>bypass</strong> paradigm — unselected tokens forwarded to later layers for re-evaluation rather than committed-pruned at shallow layers. Directly relevant to our open question of "where in the LLaMA stack to prune"</td>
-</tr>
-<tr>
-<td><em>Add as you read.</em></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>The key gap: most prior work prunes tokens <strong>without</strong> reference to the
-question — they're question-agnostic. SparseVLM is the closest existing
-work to question-awareness, but operates on general VLMs. Our angle is
-making pruning question-aware <em>in the medical domain</em>, where the
-question encodes strong spatial priors (anatomy + finding type).</p>
-<p>The key gap: most prior work prunes tokens <strong>without</strong> reference to the
-question — they're question-agnostic. Our angle is making pruning
-question-aware <em>in the medical domain</em>, where the question encodes
-strong spatial priors (anatomy + finding type).</p>
-<h2 id="approach-sketch">Approach (sketch)<a class="headerlink" href="#approach-sketch" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart LR
-  IMG["Input image"]
-  Q["Question text"]
-
-  subgraph VIS["Vision branch"]
-    direction TB
-    VE["Vision encoder&lt;br/&gt;CLIP ViT-L/14"]
-    VT["256 visual tokens"]
-    PROJ["Projector&lt;br/&gt;Linear 1024 → 4096"]
-    VE --&gt; VT --&gt; PROJ
-  end
-
-  subgraph TXT["Text branch"]
-    direction TB
-    TOK["Tokenize + embed&lt;br/&gt;(LM input embedding)"]
-  end
-
-  EMB["Inject visual tokens&lt;br/&gt;between im_start / im_end"]
-
-  subgraph LLM["LLaMA decoder (32 layers)"]
-    direction TB
-    L0["Layer 0&lt;br/&gt;+ pruning hook"]
-    SCORE["Score visual tokens&lt;br/&gt;cosine sim vs question"]
-    KEEP["Keep top-K&lt;br/&gt;(original spatial order)"]
-    L1["Layers 1–31&lt;br/&gt;+ attention-mask slice"]
-    L0 --&gt; SCORE --&gt; KEEP --&gt; L1
-  end
-
-  ANS["Answer"]
-
-  IMG --&gt; VE
-  Q --&gt; TOK
-  PROJ --&gt; EMB
-  TOK --&gt; EMB
-  EMB --&gt; L0
-  TOK -. "question vector&lt;br/&gt;for scoring" .-&gt; SCORE
-  L1 --&gt; ANS</code></pre>
-<p>The pruning logic is the new component; everything else is reused
-from LLaVA-Med v1.0. Each component, briefly:</p>
-<ul>
-<li><strong>Vision encoder + projector</strong> are unmodified. CLIP-ViT-L/14 at
-  224×224 produces 256 visual tokens at the projector output, each in
-  the LLM's 4096-dim embedding space.</li>
-<li><strong>Pruning runs inside the LLM, at the input to layer 0.</strong> This is a
-  reversal of an earlier design choice — pre-projector pruning was
-  attempted first but is incompatible with LLaVA-Med v1.0's forward
-  pass, which validates that the number of visual feature vectors
-  matches the count of <code>&lt;im_patch&gt;</code> placeholder tokens in the prompt.
-  Pruning <em>after</em> the visual tokens are injected into the LLM's input
-  sequence sidesteps the validation. This is the same insertion point
-  FastV uses.</li>
-<li><strong>Scoring is cosine similarity against the pooled question
-  embedding.</strong> The question text gets tokenized and embedded through
-  the LLM's input embedding layer (the only space where it's directly
-  comparable to projected visual tokens), then mean-pooled to a single
-  4096-dim vector. Each visual token is scored against that vector via
-  cosine similarity; the top-K are kept in their original spatial
-  order.</li>
-<li><strong>Hook architecture spans all 32 LLaMA decoder layers.</strong> Layer 0's
-  pre-forward hook performs the scoring, the selection, and slicing
-  of <code>hidden_states</code> and <code>attention_mask</code>. Layers 1-31 each have a
-  pre-forward hook that re-slices <code>attention_mask</code> to match the pruned
-  sequence length the cache now holds. A monkey-patched
-  <code>prepare_inputs_for_generation</code> keeps the externally-maintained
-  decode-step <code>attention_mask</code> consistent with the pruned KV cache.
-  All of this is hook-based and training-free — no model surgery.</li>
-<li><strong>Random pruning is the comparison floor.</strong> Same hooks, same hyper-
-  parameters, same machinery; indices drawn from a seeded
-  <code>torch.Generator</code> instead of question similarity. The ablation
-  isolates the contribution of question-awareness specifically.</li>
-</ul>
-<p><strong>First result (May 17, kr=0.75 on VQA-RAD):</strong> question-aware pruning
-beats the unpruned stage-2 baseline by +2.6 pts closed accuracy
-(60.29 vs 57.72) while removing 25% of visual tokens; random pruning
-at the same ratio is within noise of baseline (56.99). One ratio is
-one datapoint — the full Pareto curve (kr ∈ 0.50, 0.25, 0.10) is
-what tests whether the +3.3 pt qsim-over-random gap holds, grows, or
-disappears. Full writeup:
-<a href="../weekly/week-02/day-01/#phase-14-kr075-ablation-result-question-aware-pruning-beats-baseline">Week 2, Day 1</a>.</p>
-<p><strong>Known limitations of the current approach</strong>, flagged up front:</p>
-<ul>
-<li><strong>Position-ID re-indexing</strong> — when visual tokens are dropped, the
-  remaining tokens get re-indexed contiguously. This is the
-  FastV-style convention and is accepted in the literature, but it's
-  worth noting that GAP-style positional preservation is an
-  alternative we haven't tested.</li>
-<li><strong>Latency overhead at low pruning ratios.</strong> Hook fixed-cost
-  (32 layer hooks + the <code>prepare_inputs_for_generation</code> patch + the
-  scoring computation) currently dominates the compute saved by
-  dropping 64 of 256 tokens. Speedup is expected to emerge at
-  kr ≤ 0.5 where the visual-token reduction is more substantial.</li>
-<li><strong>VQA-RAD only so far.</strong> SLAKE and PathVQA repeats follow once the
-  VQA-RAD Pareto curve is filled in.</li>
-</ul>
-<p>Open design choices not yet explored (will be Phase 4+):</p>
-<ul>
-<li><strong>Alternative scoring functions</strong> — cross-attention rather than
-  cosine similarity, FastV-style layer-K attention scoring, or a
-  small learned MLP.</li>
-<li><strong>Pruning at a later LLaMA layer</strong> — FastV finds that pruning after
-  layer 2-3 often outperforms pruning at layer 0 because early layers
-  contribute to the question representation that scoring depends on.</li>
-<li><strong>Per-question keep-ratio</strong> — easy questions don't need many tokens;
-  hard ones do. An adaptive kr could improve the Pareto curve.</li>
-</ul>
-<h2 id="12-week-plan">12-week plan<a class="headerlink" href="#12-week-plan" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Phase</th>
-<th>Weeks</th>
-<th>Focus</th>
-<th>Deliverable</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">1</td>
-<td>1–2</td>
-<td>Baseline &amp; literature</td>
-<td>Reproduced LLaVA-Med, lit-review notes, profiling numbers</td>
-</tr>
-<tr>
-<td style="text-align: center;">2</td>
-<td>3–4</td>
-<td>Codebase deep-dive</td>
-<td>Diagram of LLaVA-Med's forward pass, identified pruning insertion points</td>
-</tr>
-<tr>
-<td style="text-align: center;">3</td>
-<td>5–6</td>
-<td>Scoring-head v1</td>
-<td>First trainable pruning module, sanity-check results</td>
-</tr>
-<tr>
-<td style="text-align: center;">4</td>
-<td>7–8</td>
-<td>Training &amp; ablations</td>
-<td>K-sweep, head-architecture ablations</td>
-</tr>
-<tr>
-<td style="text-align: center;">5</td>
-<td>9–10</td>
-<td>Full evaluation</td>
-<td>VQA-RAD / SLAKE numbers, latency benchmarks</td>
-</tr>
-<tr>
-<td style="text-align: center;">6</td>
-<td>11</td>
-<td>Write-up</td>
-<td>Draft report, figures</td>
-</tr>
-<tr>
-<td style="text-align: center;">7</td>
-<td>12</td>
-<td>Final report &amp; demo</td>
-<td>Polished report, code release</td>
-</tr>
-</tbody>
-</table>
-<p>These dates will shift; the <a href="../weekly/">Weekly Log</a> tracks what
-actually happens.</p>
-<h2 id="success-criteria">Success criteria<a class="headerlink" href="#success-criteria" title="Permanent link">&para;</a></h2>
-<p>The project is a success if <strong>any</strong> of the following are true:</p>
-<ol>
-<li>We achieve ≥40% token reduction with &lt;1pt accuracy drop on VQA-RAD
-   and SLAKE.</li>
-<li>We find a question-type regime where pruning <em>improves</em> accuracy.</li>
-<li>We produce a clean, reusable pruning module that other researchers
-   can plug into LLaVA-Med or similar VLMs.</li>
-</ol>
-<p>The project is <strong>not</strong> a failure if pruning doesn't help — a careful
-negative result with proper ablations is also a useful contribution.</p>
+<hr />
+<h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
+<p><em>Write this at the end of the week. The Day-1 milestone (pivot
+validated) opens up the rest of Phase 1 — establishing a real,
+defensible baseline on Qwen2.5-VL — and the transition into
+Phase 2 (codebase deep-dive into Qwen2.5-VL's architecture).</em></p>
 
 
 
@@ -1766,7 +1330,7 @@ negative result with proper ablations is also a useful contribution.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+          <a href="../week-02/day-05/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 5 — Thursday, May 21, 2026">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1776,20 +1340,20 @@ negative result with proper ablations is also a useful contribution.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Home
+                Day 5 — Thursday, May 21, 2026
               </div>
             </div>
           </a>
         
         
           
-          <a href="../baseline/" class="md-footer__link md-footer__link--next" aria-label="Next: Baseline">
+          <a href="day-01/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 1 — Sunday, May 24, 2026">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Baseline
+                Day 1 — Sunday, May 24, 2026
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1830,12 +1394,12 @@ negative result with proper ablations is also a useful contribution.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
