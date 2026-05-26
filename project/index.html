@@ -526,6 +526,66 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#methods-roadmap-tiers-1-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods Roadmap (Tiers 1-3)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods Roadmap (Tiers 1-3)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-medical-vqa-admits-different-methods-than-general-vqa" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why medical VQA admits different methods than general VQA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-cheap-defensible-probably-useful" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 1 — Cheap, defensible, probably-useful
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-medical-specific-extensions-the-papers-novel-angle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 2 — Medical-specific extensions (the paper's novel angle)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-speculative-paper-shaping-if-1-2-results-are-strong" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3 — Speculative, paper-shaping if 1-2 results are strong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-papers-pitch-if-tier-1-2-land" class="md-nav__link">
+    <span class="md-ellipsis">
+      The paper's pitch (if Tier 1-2 land)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#12-week-plan" class="md-nav__link">
     <span class="md-ellipsis">
       12-week plan
@@ -1406,6 +1466,66 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#methods-roadmap-tiers-1-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods Roadmap (Tiers 1-3)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods Roadmap (Tiers 1-3)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-medical-vqa-admits-different-methods-than-general-vqa" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why medical VQA admits different methods than general VQA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-cheap-defensible-probably-useful" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 1 — Cheap, defensible, probably-useful
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-medical-specific-extensions-the-papers-novel-angle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 2 — Medical-specific extensions (the paper's novel angle)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-speculative-paper-shaping-if-1-2-results-are-strong" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3 — Speculative, paper-shaping if 1-2 results are strong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-papers-pitch-if-tier-1-2-land" class="md-nav__link">
+    <span class="md-ellipsis">
+      The paper's pitch (if Tier 1-2 land)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#12-week-plan" class="md-nav__link">
     <span class="md-ellipsis">
       12-week plan
@@ -1594,15 +1714,20 @@ whether the shape of the trade-off actually looks like this.</p>
 </tr>
 </tbody>
 </table>
-<p>The key gap: most prior work prunes tokens <strong>without</strong> reference to the
-question — they're question-agnostic. SparseVLM is the closest existing
-work to question-awareness, but operates on general VLMs. Our angle is
-making pruning question-aware <em>in the medical domain</em>, where the
-question encodes strong spatial priors (anatomy + finding type).</p>
-<p>The key gap: most prior work prunes tokens <strong>without</strong> reference to the
-question — they're question-agnostic. Our angle is making pruning
-question-aware <em>in the medical domain</em>, where the question encodes
-strong spatial priors (anatomy + finding type).</p>
+<p>The key gap: most prior work prunes tokens <strong>without</strong> reference to
+the question — they're question-agnostic. SparseVLM is the closest
+existing work to question-awareness, but operates on general VLMs.
+Our angle is making pruning question-aware <em>in the medical domain</em>,
+where the question encodes strong spatial priors (anatomy + finding
+type). The
+<a href="../weekly/week-03/day-03/#phase-8-two-literature-surveys-during-the-sweep">Day 17 literature survey</a>
+also surfaced two new neighbors: <strong>ZSPAPrune (Oct 2025)</strong> uses our
+exact mean-pooled cosine score as its "relevance" phase and adds
+diversity selection on top; <strong>ResPrune</strong> evaluates our exact
+formula as its Setting-3 ablation and reports it as the weakest of
+three formulations (Setting-1, max-similarity-across-text-tokens,
+wins by ~3 pts). Both feed directly into the
+<a href="#methods-roadmap-tiers-1-3">Methods Roadmap</a> below.</p>
 <h2 id="approach-sketch">Approach (sketch)<a class="headerlink" href="#approach-sketch" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
   IMG["Input image"]
@@ -1709,6 +1834,124 @@ disappears. Full writeup:
 <li><strong>Per-question keep-ratio</strong> — easy questions don't need many tokens;
   hard ones do. An adaptive kr could improve the Pareto curve.</li>
 </ul>
+<h2 id="methods-roadmap-tiers-1-3">Methods Roadmap (Tiers 1-3)<a class="headerlink" href="#methods-roadmap-tiers-1-3" title="Permanent link">&para;</a></h2>
+<p>Synthesised on
+<a href="../weekly/week-03/day-03/#phase-8-two-literature-surveys-during-the-sweep">Day 17</a>
+from two literature surveys: the cosine-similarity scoring landscape
+and the token-merging-and-medical-VQA properties landscape. The
+tiers are ordered by combined "expected upside × ease of
+implementation" — Tier 1 is cheap and probably-useful, Tier 2 is
+medical-specific and methodologically interesting, Tier 3 is
+speculative and frames the paper around if Tier 1-2 results are
+strong.</p>
+<h3 id="why-medical-vqa-admits-different-methods-than-general-vqa">Why medical VQA admits different methods than general VQA<a class="headerlink" href="#why-medical-vqa-admits-different-methods-than-general-vqa" title="Permanent link">&para;</a></h3>
+<p>Three identifiable properties from the medical-imaging literature
+that should shape method choice:</p>
+<ul>
+<li><strong>High background-to-signal ratio.</strong> Chest X-rays are mostly
+  black borders + uniform soft tissue; pathology slides have
+  vast stretches of stroma punctuated by clusters of interest.
+  ViTAS (Ahmed et al., 2026) on MIMIC-CXR: <em>"less but more relevant
+  visual input is not only sufficient but superior."</em> <strong>Implication:
+  the redundancy ceiling is higher than general VQA — aggressive
+  compression should work better here.</strong></li>
+<li><strong>Lesions are small and localized.</strong> Medical-VQA survey (Lin et
+  al., 2023): <em>"the task needs to focus on a fine-grained scale
+  because a lesion is microscopic."</em> <strong>Implication: drop the 3
+  tokens with the lesion and the question can't be answered, no
+  matter how many other tokens you keep. Token-level individual
+  scoring (like QSim) is vulnerable; spatial-coherence-aware
+  scoring is potentially valuable.</strong></li>
+<li><strong>Question types strongly predict which tokens matter.</strong> Modality
+  ("CT or MRI?") needs almost any patch; abnormality
+  ("is there a pneumothorax?") needs the lesion region.
+  <strong>Implication: per-question-type adaptive compression — aggressive
+  for modality/plane, conservative for abnormality — is
+  medical-VQA-specific and not in the general-VQA pruning
+  literature.</strong></li>
+</ul>
+<h3 id="tier-1-cheap-defensible-probably-useful">Tier 1 — Cheap, defensible, probably-useful<a class="headerlink" href="#tier-1-cheap-defensible-probably-useful" title="Permanent link">&para;</a></h3>
+<p>Small code changes; expected to give the strongest results-per-hour
+return. Add these to the sweep design before scaling to other
+benchmarks.</p>
+<ul>
+<li><strong>A. Max-similarity-across-text-tokens scoring</strong> (ResPrune
+  Setting-1). Replace QSim's mean-pool-then-cosine with
+  per-visual-token max-similarity across all question text tokens.
+  ResPrune's published ablation: Setting-1 → 98.4% vs Setting-3
+  (our current formula) → 95.4%. Same data structures, same hooks,
+  one-line scoring change.</li>
+<li><strong>B. Token merging at the same insertion point</strong> (ToMe-style).
+  Replace the "drop the bottom (1-kr)" step with "merge each
+  discarded token into its nearest kept neighbor in embedding
+  space." Same hook architecture; same target keep count for clean
+  comparison against pruning. Tests whether the high-redundancy
+  property of medical imaging is being underused by pure pruning.</li>
+<li><strong>C. Hybrid prune+merge baseline</strong> (PruMerge-style). Score by
+  QSim, keep top-K, merge each discarded token into its nearest
+  kept neighbor. Target the same final count as pure pruning so
+  the comparison is clean.</li>
+</ul>
+<p>Adding A, B, C grows the sweep to ~5 methods × 4 keep-ratios = 20
+runs, roughly 10-12 hours of compute. Manageable.</p>
+<h3 id="tier-2-medical-specific-extensions-the-papers-novel-angle">Tier 2 — Medical-specific extensions (the paper's novel angle)<a class="headerlink" href="#tier-2-medical-specific-extensions-the-papers-novel-angle" title="Permanent link">&para;</a></h3>
+<p>Where the paper's contribution gets distinctive. Each item leverages
+one of the medical-VQA properties above.</p>
+<ul>
+<li><strong>D. Question-type-conditional compression.</strong> Detect question type
+  from the text via simple keyword matching ("modality" / "plane" /
+  "anatomy" / "abnormality"); route to different keep-ratios per
+  type (aggressive for modality/plane, conservative for abnormality).
+  Medical-specific in a way general-VQA pruning can't be; rule is
+  simple enough to be defensible without learned components.</li>
+<li><strong>E. Spatial-coherence-aware QSim.</strong> After scoring, give a bonus
+  to tokens whose 4-spatial-neighbors also score highly. Addresses
+  the "lesions are localized" property — for an abnormality
+  question, keep the <em>whole lesion region</em>, not 3 random tokens
+  from inside it.</li>
+<li><strong>F. Question-text reweighting.</strong> Weight question tokens by
+  content-richness (TF-IDF or token embedding norm) before
+  averaging in QSim. Addresses sub-word tokenization noise —
+  "pneumothorax" splits into multiple sub-pieces; the meaningful
+  piece should count more than the article "a".</li>
+</ul>
+<h3 id="tier-3-speculative-paper-shaping-if-1-2-results-are-strong">Tier 3 — Speculative, paper-shaping if 1-2 results are strong<a class="headerlink" href="#tier-3-speculative-paper-shaping-if-1-2-results-are-strong" title="Permanent link">&para;</a></h3>
+<p>These are the experiments that, if they land, redefine the paper's
+narrative from "method evaluation" to "diagnostic study of medical
+VLM behavior under compression".</p>
+<ul>
+<li><strong>G. Test for "Visual Aphasia" in our results.</strong> Run an ablation
+  that replaces visual tokens with random noise after pruning,
+  keeping the question. If accuracy doesn't drop much, the model
+  is doing shortcut learning rather than visual grounding. HEAL-
+  MedVQA-style finding; if present, contributes "current medical
+  VLMs aren't using visual information as well as their accuracy
+  numbers suggest, and pruning gains come partly from compute
+  reduction on non-diagnostic tokens" as a substantive observation.</li>
+<li><strong>H. Re-evaluate on RadImageNet-VQA.</strong> A shortcut-resistant
+  medical VQA benchmark designed so text-only accuracy is near
+  random. If our pruning methods hold up there, that's much
+  stronger evidence than holding up on VQA-RAD where text-only
+  does ~33%.</li>
+</ul>
+<h3 id="the-papers-pitch-if-tier-1-2-land">The paper's pitch (if Tier 1-2 land)<a class="headerlink" href="#the-papers-pitch-if-tier-1-2-land" title="Permanent link">&para;</a></h3>
+<p>Combining the threads from both surveys:</p>
+<blockquote>
+<p>A study of visual token compression for medical VLMs: we (a)
+systematically benchmark question-aware pruning, diversity-aware
+pruning, and merging-based compression across keep-ratios; (b)
+propose a hybrid prune-and-merge framework that exploits the
+high background-to-signal ratio characteristic of medical
+imaging; (c) introduce question-type-conditional compression
+that leverages the structured taxonomy of medical VQA
+questions; and (d) characterize when text-awareness genuinely
+helps versus when it co-occurs with shortcut learning.</p>
+</blockquote>
+<p>This frames the work around the medical <em>application</em> (where
+there's a real gap), backs into methods (where individual
+techniques have prior art but the combination is novel), and
+front-loads the empirical analysis (which is where the
+contribution is genuinely original).</p>
 <h2 id="12-week-plan">12-week plan<a class="headerlink" href="#12-week-plan" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

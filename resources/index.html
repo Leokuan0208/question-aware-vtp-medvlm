@@ -1254,6 +1254,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#added-day-17-may-26-2026-from-the-cosine-similarity-literature-survey" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added Day 17 — May 26, 2026 (from the cosine-similarity literature survey)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added-day-17-from-the-medical-vqa-properties-survey" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added Day 17 (from the medical-VQA-properties survey)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#medical-vqa-benchmarks" class="md-nav__link">
     <span class="md-ellipsis">
       Medical VQA benchmarks
@@ -1360,6 +1378,24 @@
   <a href="#visual-token-pruning-the-actual-core-of-this-project" class="md-nav__link">
     <span class="md-ellipsis">
       Visual token pruning (the actual core of this project)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added-day-17-may-26-2026-from-the-cosine-similarity-literature-survey" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added Day 17 — May 26, 2026 (from the cosine-similarity literature survey)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added-day-17-from-the-medical-vqa-properties-survey" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added Day 17 (from the medical-VQA-properties survey)
     </span>
   </a>
   
@@ -1489,8 +1525,98 @@ Updated as I go.</p>
   forwarded to subsequent pruning stages for re-evaluation rather than
   committed-pruned at shallow layers. Directly addresses our open
   question of <em>where</em> in the LLaMA stack to prune. <strong>Read May 20, 2026.</strong></li>
-<li><em>Add as you read them. A one-line note on why each paper is useful is
-  more helpful than a long summary.</em></li>
+</ul>
+<h3 id="added-day-17-may-26-2026-from-the-cosine-similarity-literature-survey">Added Day 17 — May 26, 2026 (from the cosine-similarity literature survey)<a class="headerlink" href="#added-day-17-may-26-2026-from-the-cosine-similarity-literature-survey" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>ZSPAPrune: Zero-Shot Prompt-Aware Visual Token Pruning for VLMs</strong>
+  — Zhang et al., arXiv October 2025.
+  Uses <strong>the same mean-pooled question / cosine-similarity scoring
+  as our QSim</strong> as its "relevance" phase, then adds a diversity
+  selection phase that picks tokens maximizing dissimilarity to the
+  current selection. <strong>Our QSim is the simpler "relevance only" half
+  of ZSPAPrune.</strong> Tier-1 candidate (add diversity term to QSim) is
+  motivated directly by this paper.</li>
+<li><strong>ResPrune: Relevance-and-Smoothness Token Pruning</strong>
+  — Li et al., 2026.
+  Evaluates exactly our scoring formula as their <em>Setting-3</em>
+  ablation and reports it as the <strong>weakest of three</strong> formulations
+  (Setting-1: max-similarity-per-visual-token across text tokens →
+  98.4%; Setting-2: averaged-similarity → 98.1%; Setting-3:
+  pooled-text cosine → 95.4%). The Tier-1 max-similarity follow-up
+  is motivated by this paper directly.</li>
+<li><strong>FasterVLM: CLS-Attention-Based Visual Token Pruning for VLMs</strong>
+  — He et al., 2025.
+  Text-agnostic; uses CLIP CLS attention as the scoring signal,
+  prunes between vision encoder and LLM. Critiques in-LLM text-visual
+  attention as inaccurate; relevant negative comparison for our
+  text-aware angle.</li>
+<li><strong>VisionZip: Token Selection for Vision-Language Models</strong>
+  — Yang et al., 2025.
+  Post-projector, pre-LLM pruning using CLS-attention. <strong>v2 of our
+  patcher operates at the same insertion point as VisionZip.</strong></li>
+<li><strong>ReDiPrune: Text-Relevance and Diversity Pruning</strong>
+  — 2025/2026 preprint.
+  Closest architectural neighbor to v2: text-relevance + diversity,
+  post-projector, pre-LLM. Combines what ZSPAPrune does (relevance</li>
+<li>diversity) with the v2 insertion point.</li>
+<li><strong>HoloV: Holistic Visual Token Pruning</strong>
+  — October 2025.
+  Identifies that attention-based pruning concentrates kept tokens
+  in a few salient regions and <strong>loses global context</strong>. Direct
+  critique of formulations like ours; motivates Tier-2 E
+  (spatial-coherence-aware QSim) and Tier-1 A/C (diversity terms).</li>
+<li><strong>"When Token Pruning is Worse than Random"</strong>
+  — December 2025.
+  Strong null result: in deep LLM layers, existing token pruning
+  methods perform similarly or worse than random pruning. Doesn't
+  say all pruning is useless — says the chosen <em>metric</em> often
+  isn't doing useful work; speedup comes from "any 50% of tokens"
+  rather than "the right 50%". <strong>Our random comparison floor at
+  every keep_ratio is the experimental control that catches this
+  regime.</strong></li>
+<li><strong>PDrop: Progressive Visual Token Drop in MLLMs</strong> — 2025.
+  In-LLM pruning at multiple progressive layer depths.</li>
+<li><strong>PuMer: Prune-and-Merge Token Reduction for Efficient VL Models</strong>
+  — Cao et al., ACL 2023.
+  Text-informed pruning of irrelevant tokens + similarity-based
+  merging of redundant ones, combined into a single end-to-end
+  framework. The canonical "hybrid prune+merge" reference for our
+  Tier-1 C experiment.</li>
+<li><strong>AIM: Adaptive Inference Merging for Multimodal LLMs</strong>
+  — 2024-2025.
+  Per-sample decides how much to prune vs merge based on image
+  information density. Homogeneous radiograph → aggressive
+  pruning; busy histology slide → more merging.</li>
+</ul>
+<h3 id="added-day-17-from-the-medical-vqa-properties-survey">Added Day 17 (from the medical-VQA-properties survey)<a class="headerlink" href="#added-day-17-from-the-medical-vqa-properties-survey" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>ViTAS: Visual Token Adaptive Selection for Medical VLMs</strong>
+  — Ahmed et al., 2026.
+  MIMIC-CXR summarization: <em>"selectively focusing on pathology-
+  relevant visual patches rather than full images yields
+  substantially better performance — less but more relevant
+  visual input is not only sufficient but superior."</em> Direct
+  evidence for the high-background-to-signal property of medical
+  imaging.</li>
+<li><strong>HEAL-MedVQA: Diagnosing Shortcut Learning in Medical VQA</strong>
+  — 2025.
+  Diagnostic study showing current medical VLMs rely heavily on
+  text-shortcut features, with visual grounding much weaker than
+  accuracy numbers suggest. Motivates the Tier-3 G ablation
+  (visual aphasia test).</li>
+<li>
+<p><strong>A Comprehensive Survey on Medical Visual Question Answering</strong>
+  — Lin et al., 2023.
+  Establishes the question-type taxonomy (modality / plane /
+  anatomy / abnormality) and the localization property:
+  <em>"the task needs to focus on a fine-grained scale because a
+  lesion is microscopic."</em> The conceptual backbone of the Methods
+  Roadmap's medical-VQA-property arguments.</p>
+</li>
+<li>
+<p><em>Add as you read them. A one-line note on why each paper is useful is
+  more helpful than a long summary.</em></p>
+</li>
 </ul>
 <h3 id="medical-vqa-benchmarks">Medical VQA benchmarks<a class="headerlink" href="#medical-vqa-benchmarks" title="Permanent link">&para;</a></h3>
 <ul>

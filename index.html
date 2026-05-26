@@ -1418,7 +1418,7 @@ and 12-week plan.</p>
 <h2 id="where-i-am-right-now">Where I am right now<a class="headerlink" href="#where-i-am-right-now" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--wip">In progress</span> &nbsp;
 <strong>Phase 1, Week 3 — HuatuoGPT-Vision baseline reproduced + first
-pruning sweep running.</strong> Week 1 closed out May 16
+successfully-pruned sweep complete.</strong> Week 1 closed out May 16
 (<a href="weekly/week-01/#end-of-week-status">overview</a>). Week 2
 closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
 (<a href="weekly/week-02/#reflections-end-of-week">overview</a>). The
@@ -1430,18 +1430,33 @@ a second pivot followed on <strong>May 25</strong> to
 for reproducibility, and the
 <a href="baseline/huatuo-vision/#baseline-metrics">paper Table 4 reproduced same-day</a>
 with 5/6 benchmarks within 0.55 pts of published numbers
-(<a href="weekly/week-03/day-02/">details</a>). The pruning framework
-(RandomPruner + QSimPruner + LatencyTracker; in-LLM layer-0
-integration via <code>Qwen2Model.forward</code> override + KV cache slicing)
-is written, smoke-tested, and pushed; an <strong>8-run overnight sweep</strong>
-(4 keep-ratios × 2 methods) is running in tmux with results landing
-Day 17. Three repos now:
+(<a href="weekly/week-03/day-02/">details</a>). The pruning framework's
+first incarnation
+(<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/c216bbe"><code>c216bbe</code></a>)
+turned out to be a no-op — diagnosed Day 17 from a smell-test
+showing <strong>bit-identical scores across all 8 overnight runs</strong>.
+<a href="weekly/week-03/day-03/">Day 17</a> was a four-act day: morning
+diagnosis, <strong>v1 fix cascade</strong> (three real bugs:
+<code>prepare_inputs_labels_for_multimodal_new</code> method rename,
+attention-mask frame reconciliation, position_ids RoPE OOB),
+<strong>v1 → v2 architectural rewrite</strong> (prune <em>before</em> the LLM trunk
+instead of after layer 0; 130 lines vs 280, ~30% speedup at
+kr=0.5), and the <strong>first successfully-pruned 8-run sweep</strong>
+(<code>{qsim, random} × {0.75, 0.5, 0.25, 0.1}</code> across 6 benchmarks).
+Three commits pushed today:
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/72bdd28"><code>72bdd28</code></a>
+(archive v1),
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/85cb249"><code>85cb249</code></a>
+(install v2),
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568"><code>24ef568</code></a>
+(sweep results). Numerical analysis deferred to Day 18. Three repos
+now:
 <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
 (frozen, LLaVA-Med v1.0 phase),
 <a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning"><code>Qwen-v25-vl-med-pruning</code></a>
 (frozen, Qwen2.5-VL smoke-test artifact preserved), and
 <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>huatuo-llava-v15-med-pruning</code></a>
-(active, pruning framework at <code>c216bbe</code>).</p>
+(active).</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Stack sanity check (PyTorch, transformers, accelerate, flash-attn)</li>
@@ -1527,8 +1542,36 @@ Day 17. Three repos now:
       57.72 (+2.57 pts). First positive datapoint on the project's
       central thesis; needs the full Pareto curve to confirm.
       → <a href="weekly/week-02/day-01/#phase-14-kr075-ablation-result-question-aware-pruning-beats-baseline">Week 2, Day 1, Phase 14</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run the remaining ablation ratios (kr ∈ 0.50, 0.25, 0.10) on
-      VQA-RAD to fill out the Pareto curve</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Yesterday's 8-run sweep (<code>c216bbe</code>) diagnosed as a no-op.</strong>
+      Smell-test showed bit-identical scores across all 8
+      configurations on May 26 morning. Root cause: wrong patch
+      target — HuatuoGPT-Vision forks LLaVA's multimodal-prep
+      method into a <code>_new</code>-suffixed variant we hadn't wrapped.
+      → <a href="weekly/week-03/day-03/#phase-1-morning-the-smell-test-that-found-the-bug">Week 3, Day 3, Phase 1</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>v1 fix cascade</strong> — three real bugs fixed in sequence:
+      method rename, attention-mask frame reconciliation,
+      position_ids RoPE OOB. v1 archived as a research artifact
+      at <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/72bdd28"><code>72bdd28</code></a>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>v1 → v2 architectural rewrite.</strong> Pre-LLM pruning instead of
+      post-layer-0; 130 lines vs 280, ~30% inference speedup at
+      kr=0.5. Pushed at
+      <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/85cb249"><code>85cb249</code></a>.
+      → <a href="weekly/week-03/day-03/#phase-5-the-pre-llm-rewrite-v2">Week 3, Day 3, Phase 5</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>First successfully-pruned 8-run sweep complete.</strong>
+      {qsim, random} × {kr=0.75, 0.5, 0.25, 0.1} across 6
+      benchmarks on HuatuoGPT-Vision-7B; ~4-5h wall time. Per-run
+      <code>__scores.json</code> + <code>__latency_summary.json</code> files committed at
+      <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568"><code>24ef568</code></a>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Two literature surveys written.</strong> (1) Cosine-similarity
+      scoring positioned: QSim ≈ ZSPAPrune's relevance phase ≈
+      ResPrune's Setting-3 baseline; not novel as a formula.
+      (2) Token merging vs pruning; medical-VQA properties →
+      <a href="project/#methods-roadmap-tiers-1-3">Methods Roadmap (Tier 1/2/3)</a>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Numerical analysis of the v2 sweep</strong> (Day 18 priority) —
+      Pareto curves, headline number, E2 writeup on the
+      Experiments page</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Tier-1 follow-up: max-similarity scoring</strong> (ResPrune
+      Setting-1) once the v2 sweep is analyzed</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push Day 8's accumulated changes to
       <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
       (split into coherent commits)</li>
@@ -1541,8 +1584,9 @@ Day 17. Three repos now:
       print-statement instrumentation on
       <code>prepare_inputs_labels_for_multimodal</code></li>
 </ul>
-<p>See the <a href="weekly/week-01/">Week 1 log</a> and
-<a href="weekly/week-02/">Week 2 log</a> for daily notes.</p>
+<p>See the <a href="weekly/week-01/">Week 1 log</a>,
+<a href="weekly/week-02/">Week 2 log</a>, and
+<a href="weekly/week-03/">Week 3 log</a> for daily notes.</p>
 <h2 id="how-this-site-is-organised">How this site is organised<a class="headerlink" href="#how-this-site-is-organised" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="project/">Project Overview</a></strong> — research question, motivation,

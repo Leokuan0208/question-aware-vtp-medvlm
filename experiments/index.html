@@ -1467,15 +1467,32 @@ Design decisions:</p>
   pruning strategies without reloading the 15 GB model.</li>
 <li><strong>Datasets handled</strong> — VQA-RAD, SLAKE (English-only), PathVQA.</li>
 </ul>
-<p>Status (May 17, 2026): <strong>Baseline phase complete and first pruning
-ablation in hand.</strong> The v1.5 baseline row is banked, the v1.0
-stage-2 zero-shot baseline is verified (and cross-validated against
-Baron-GG's independently-merged stage-2), and <strong>the first
-question-aware pruning result is in: qsim beats baseline by +2.57
-pts at kr=0.75 on VQA-RAD</strong>. Single-datapoint, needs the rest of the
-Pareto curve to confirm. The sibling harness
-<a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
-is now the active development repo for v1.0 + pruning work.</p>
+<p>Status (May 26, 2026): <strong>The May 25 (<code>c216bbe</code>) pruning framework
+was retroactively diagnosed as a no-op</strong> on May 26 morning — all 8
+overnight runs produced bit-identical scores
+(<a href="../weekly/week-03/day-03/#phase-1-morning-the-smell-test-that-found-the-bug">full writeup</a>;
+<a href="../bugs/#7-monkey-patching-vendor-forked-method-renames">Bug #7</a>).
+Day 17 spent fixing the v1 patcher (three real bugs;
+<a href="../bugs/#7-monkey-patching-vendor-forked-method-renames">#7</a> and
+<a href="../bugs/#8-frame-mismatches-between-hf-generate-and-the-pruned-state">#8</a>),
+then rewriting it as <strong>v2 — pre-LLM pruning</strong> instead of
+post-layer-0
+(<a href="../weekly/week-03/day-03/#phase-5-the-pre-llm-rewrite-v2">Day 17, Phase 5</a>).
+The v2 sweep ran cleanly in ~4-5h and the result files are committed
+at
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568"><code>24ef568</code></a>;
+<strong>numerical analysis (E2) is Day 18's first task</strong> so it's done
+with a fresh head rather than at 11pm.</p>
+<p>The earlier v1.5 baseline row is banked, the v1.0 stage-2 zero-shot
+baseline is verified (and cross-validated against Baron-GG's
+independently-merged stage-2), the kr=0.75 LLaVA-Med-v1.0 ablation
+result from May 17 stands (qsim +2.57 over baseline) but is from a
+<strong>different codebase and base model</strong> than the v2 sweep — the two
+result sets aren't directly comparable. The active eval harness for
+HuatuoGPT-Vision-7B pruning is
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>huatuo-llava-v15-med-pruning</code></a>;
+the historical LLaVA-Med v1.0 harness is preserved frozen at
+<a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>.</p>
 <h2 id="summary-table">Summary table<a class="headerlink" href="#summary-table" title="Permanent link">&para;</a></h2>
 <p>Closed-ended accuracy across the experimental sequence. Open metrics
 and full per-experiment writeups live in the sections below.</p>
@@ -1564,14 +1581,34 @@ and full per-experiment writeups live in the sections below.</p>
 <td><strong>+2.57 over baseline, +3.30 over random</strong></td>
 </tr>
 <tr>
-<td>E1_*_kr0p50 → kr0p10</td>
-<td><em>Day 9</em></td>
-<td>v1.0 stage-2 · random / qsim</td>
-<td>50%, 25%, 10%</td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td><em>TBD</em></td>
-<td>Pareto curve, ~60 min total</td>
+<td>E0_huatuo</td>
+<td>May 25</td>
+<td>HuatuoGPT-Vision-7B · baseline</td>
+<td>100%</td>
+<td>0.6135</td>
+<td>0.7644</td>
+<td>0.5767</td>
+<td>Paper Table 4 reproduction — total 0.6787 across 6 benchmarks (<a href="../baseline/huatuo-vision/#baseline-metrics">details</a>)</td>
+</tr>
+<tr>
+<td>~~E1_huatuo_sweep_c216bbe~~</td>
+<td>May 25</td>
+<td>HuatuoGPT-Vision-7B · v1 patcher</td>
+<td>various</td>
+<td><em><strong>no-op (bug)</strong></em></td>
+<td><em>no-op</em></td>
+<td><em>no-op</em></td>
+<td><strong>Retroactively diagnosed as a no-op May 26</strong> (<a href="../bugs/#7-monkey-patching-vendor-forked-method-renames">Bug #7</a>)</td>
+</tr>
+<tr>
+<td>E2_v2_huatuo_sweep</td>
+<td>May 26</td>
+<td>HuatuoGPT-Vision-7B · v2 patcher</td>
+<td>75/50/25/10%</td>
+<td><em>analysis pending</em></td>
+<td><em>analysis pending</em></td>
+<td><em>analysis pending</em></td>
+<td>First successfully-pruned sweep on HuatuoGPT; 8 runs committed at <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568"><code>24ef568</code></a>. Writeup &amp; Pareto curves Day 18.</td>
 </tr>
 </tbody>
 </table>
