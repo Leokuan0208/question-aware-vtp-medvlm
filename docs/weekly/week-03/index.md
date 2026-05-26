@@ -72,6 +72,42 @@ layer-0 KV cache slicing), verified by 5 unit smoke tests + a
 Closed the day with an **8-run overnight sweep** launched in tmux
 (4 keep-ratios × 2 methods, ~12 hours).
 
+### [Day 3 — Tuesday, May 26, 2026](day-03.md)
+
+A debugging-and-rewrite day. Morning smell-test of yesterday's
+sweep found **bit-identical scores across all 8 configurations** —
+yesterday's 8-run sweep was a no-op. Root cause: HuatuoGPT-Vision
+forks LLaVA's `prepare_inputs_labels_for_multimodal` into a
+`_new`-suffixed variant and routes everything through it; our
+patcher wrapped the original, which exists on the class but is
+dead code in HuatuoGPT's path. One-line fix exposed two more bugs
+in sequence — **the v1 fix cascade**: attention-mask frame
+reconciliation between HF generate's unpruned-frame state and our
+pruned-frame KV cache, then position_ids RoPE index-out-of-bounds
+from HF passing unpruned-frame indices into our pruned-frame
+rotary tables. All three fixed; v1 ran 545+ samples cleanly.
+Then the architectural lesson surfaced: trunk-modification has a
+fragile integration tax that doesn't actually buy anything for
+QSim under causal attention (visual tokens can't attend forward to
+question tokens at any layer). Rewrote as **v2: prune visual
+tokens BEFORE the LLM trunk runs**, dropping code from 280 → 130
+lines and ~30% of inference latency at kr=0.5. v2 smoke-tested,
+both patcher commits pushed
+([`72bdd28`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/72bdd28),
+[`85cb249`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/85cb249)),
+the **8-run v2 sweep** relaunched and completed cleanly in ~4-5
+hours. Result files committed at
+[`24ef568`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568);
+numerical analysis deferred to Day 4 with a fresh head. In parallel,
+two thick literature surveys: **(1)** cosine-similarity scoring
+positioned against ZSPAPrune (uses our formula as the "relevance"
+phase) and ResPrune (evaluates our formula as their Setting-3
+baseline, the weakest of three formulations); **(2)** token
+merging vs pruning and three medical-VQA properties
+(background-to-signal, lesion localization, question-type structure)
+that shape a new **Methods Roadmap (Tier 1/2/3)** added to the
+project page.
+
 ---
 
 ## Plan for the rest of the week (May 26 – May 30)
@@ -97,7 +133,35 @@ Closed the day with an **8-run overnight sweep** launched in tmux
       real-model match at kr=1.0 (Day 2)
 - [x] Launch overnight sweep: 4 keep_ratios × 2 methods = 8 runs in
       tmux (Day 2; results land Day 3)
-- [ ] Analyze the overnight sweep results; plot the Pareto curves
+- [x] Smell-test the overnight sweep — **caught a no-op bug**: all
+      8 runs produced bit-identical scores. Diagnosed as the wrong
+      monkey-patch target (Day 3)
+- [x] **v1 fix cascade** — three real bugs fixed: method rename to
+      `_new` variant, attention-mask frame reconciliation,
+      position_ids RoPE index-out-of-bounds (Day 3; archived as
+      `pruning/archive/patcher_v1_post_layer0.py` at
+      [`72bdd28`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/72bdd28))
+- [x] **v1 → v2 architectural rewrite** — pre-LLM pruning instead
+      of post-layer-0; 130 lines vs 280, ~30% speedup at kr=0.5
+      (Day 3; commit
+      [`85cb249`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/85cb249))
+- [x] **8-run v2 sweep completed** — first successfully-pruned
+      sweep on this codebase; results committed at
+      [`24ef568`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568)
+      (Day 3; numerical analysis deferred to Day 4)
+- [x] Cosine-similarity literature positioned against ZSPAPrune,
+      ResPrune, SparseVLM, FastV, FasterVLM, VisionZip,
+      LLaVA-PruMerge, HoloV (Day 3)
+- [x] Token-merging literature surveyed; hybrid prune+merge frameworks
+      (PuMer, LLaVA-PruMerge, AIM) characterized; medical-VQA
+      properties → Methods Roadmap Tier 1/2/3 written (Day 3)
+- [ ] **Numerical analysis of the v2 sweep** — Pareto curves
+      (accuracy vs keep-ratio, accuracy vs latency); decide on the
+      headline number (Day 4 priority)
+- [ ] Write up E2 (the v2 sweep) on the Experiments page
+- [ ] Tier-1 follow-up: **max-similarity scoring** (ResPrune
+      Setting-1) — small code change, likely upgrade over QSim's
+      mean-pooled formulation
 - [ ] Fold `hf_transfer` and `datasets==2.16.1` into the Dockerfile
       so the next image rebuild doesn't need runtime patching
 - [ ] Read **ToMe** end-to-end (still pending from Week 2)

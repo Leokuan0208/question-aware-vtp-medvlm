@@ -8,6 +8,455 @@ what hypotheses were eliminated, not just the answer.
 
 ---
 
+## #9 — "Verification-at-no-op" smoke-test antipattern
+
+<span class="pill pill--done">Resolved</span>
+
+**Found** May 26, 2026 · **Severity** High (gave false confidence
+that the entire pruning framework was working) · **Upstream status**
+_n/a — research-code methodology lesson_
+
+### What I observed
+
+On May 25 (Day 16), the new pruning framework was verified by a
+"1,500-sample real-model match at `kr=1.0`" smoke test that confirmed
+the patched model produced **100% identical predictions to the
+unpatched baseline**. This was treated as strong evidence that
+the patcher integration was correct. The framework was pushed at
+[`c216bbe`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/c216bbe)
+and an overnight sweep launched.
+
+On May 26 morning, the smell-test of the sweep showed
+**bit-identical scores across all 8 configurations** — at every
+keep-ratio, on every benchmark, for both QSim and Random. The
+patcher had never actually pruned anything during the overnight
+sweep. The kr=1.0 test had cleared, but the patch was attached to
+a dead branch
+([#7](#7-monkey-patching-vendor-forked-method-renames)) and the
+sweep was a no-op.
+
+### Root cause
+
+A smoke test where the **system-under-test is a no-op by
+construction** can never verify that the system fires when it
+should. At `keep_ratio = 1.0`, *every* pruning algorithm is a no-op
+— `argsort → top-K` where K equals the input length always returns
+all the inputs. So "kr=1.0 matches baseline" verifies that the
+patcher *doesn't corrupt anything when no tokens are dropped* —
+which is a useful but insufficient property. It cannot distinguish
+between two situations:
+
+- **Patcher attached, pruning skipped because kr=1.0** (correct
+  wiring, no-op by design)
+- **Patcher attached to a dead branch, never executes during
+  inference at all** (incorrect wiring, no-op by accident)
+
+Both produce the same observable behavior: predictions identical
+to baseline. The test passes either way.
+
+### Fix
+
+Two complementary structural changes:
+
+1. **Replace kr=1.0 smoke tests with kr=0.5 smoke tests that
+   require predictions to differ from baseline.** When the test
+   is "did the model produce different outputs than the unpatched
+   baseline?" rather than "did the model produce the same outputs?",
+   no-op attachments are caught immediately. This is the test the
+   May 25 framework needed and didn't have.
+2. **Add an observability sentinel inside the patched code.** Print
+   one line — `[PATCHER v2] first prune confirmed: seq X -> Y` —
+   the first time the patched code actually executes during a run.
+   Silent attachment is now distinguishable from silent execution.
+   The sentinel only fires once per run (gated by a flag in
+   `_STATE`) so it doesn't spam the log.
+
+The v2 patcher
+([`85cb249`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/85cb249))
+implements both: the once-per-run sentinel fires within the first
+~30 seconds of a real eval, and the v2 sweep itself functions as
+a kr-varying smoke test (results differ across configs → pruning
+is firing).
+
+### Notes / lessons
+
+- **Designing a smoke test, ask: "what failure modes does this
+  test rule out, and what failure modes does it leave open?"**
+  The kr=1.0 test ruled out "patcher corrupts the model output"
+  and left open "patcher never fires." The latter is the more
+  common failure mode for monkey-patched research code.
+- **Observability inside the patched code, not just at the patch
+  site.** `patch_model()` prints "patcher applied" at attach time,
+  but that print can succeed even when the patch attaches to a
+  dead branch. A sentinel inside the patched code is the only
+  thing that proves the patched code actually runs.
+- **Test failure modes that match the deployment situation.**
+  Pruning will always run with kr < 1.0 in deployment, so the
+  smoke test should also exercise kr < 1.0. The "test what you
+  ship" principle.
+
+### Upstream
+
+- [ ] Issue filed — _n/a, methodology lesson_
+- [ ] PR opened — _n/a_
+- [ ] Merged — _n/a_
+
+---
+
+## #8 — Frame mismatches between HF generate and the pruned state
+
+<span class="pill pill--done">Resolved (v1); sidestepped by design (v2)</span>
+
+**Found** May 26, 2026 · **Severity** High (caused two consecutive
+CUDA crashes during the v1 fix cascade) · **Upstream status**
+_n/a — design choice in HF transformers; our pruning approach has
+to coexist with it_
+
+### What I observed
+
+After fixing the wrong-method monkey patch
+([#7](#7-monkey-patching-vendor-forked-method-renames)) and getting
+the v1 patcher to actually fire, the first sample completed
+successfully but the **second sample crashed at decode step 0**:
+
+```text
+RuntimeError: CUDA error: device-side assert triggered
+  [4D attention mask shape mismatch:
+   expected (1, 1, 1, 346), got (1, 1, 1, 632)]
+```
+
+After fixing that, the third crash hit at decode step 1:
+
+```text
+RuntimeError: CUDA error: device-side assert triggered
+  (rotary cos table index out of bounds:
+   requested index 631, table size 346)
+```
+
+Both crashes are different surface symptoms of the same underlying
+issue.
+
+### Root cause
+
+HuggingFace's `generate()` loop maintains state — `attention_mask`
+length, `position_ids` values — **in the original prompt frame**,
+i.e. computed from the unpruned prompt length. Our KV cache, after
+layer-0 pruning, holds state **in the pruned frame**. At every
+decode step, HF passes its unpruned-frame state into our
+forward replacement, which then uses that state to index into our
+pruned-frame structures (the 4D attention mask, the rotary cos/sin
+tables, position_ids).
+
+Concretely, with kr=0.5 on a 632-token prompt:
+
+| Quantity | HF generate maintains | Our trunk needs |
+| --- | --- | --- |
+| Prompt length | 632 (original) | 344 (pruned) |
+| `attention_mask.shape[-1]` after N decode steps | 632 + N | 344 + N |
+| `position_ids` at decode | cumsum from unpruned mask: `[631, 632, ...]` | pruned-frame: `[344, 345, ...]` |
+| Rotary cos/sin table size | n/a | 344 + N |
+
+So at decode step 1, HF passes `position_ids = [632]` into a
+forward replacement whose rotary table is 346 entries long → CUDA
+index 632 into a length-346 tensor → out of bounds.
+
+### Fix (v1)
+
+Two reconciliations at the entry to the forward replacement:
+
+1. **Slice the 2D attention mask** down to the last
+   `past_key_values_length + seq_length` entries — bringing HF's
+   unpruned-frame mask into our pruned frame before the 4D mask
+   construction.
+2. **Ignore HF's position_ids and recompute unconditionally** from
+   `past_key_values_length` using
+   `torch.arange(past_kv_len, past_kv_len + seq_len)`. This stays
+   inside the pruned cache frame at every step.
+
+Both fixes are inside v1's `Qwen2Model.forward` override and
+preserved in
+`pruning/archive/patcher_v1_post_layer0.py` as the canonical
+record.
+
+### Fix (v2 — by design)
+
+**v2 sidesteps the entire category of bug** by pruning *before* the
+LLM trunk runs. The patcher attaches to
+`prepare_inputs_labels_for_multimodal_new` and slices the spliced
+`inputs_embeds` to the pruned length. HF generate then constructs
+`attention_mask`, `position_ids`, and the KV cache **from the
+already-pruned sequence length**. There is no "original frame" to
+reconcile against because HF generate never sees the original
+frame. Frame consistency is structural, not maintained by ad-hoc
+slicing.
+
+This is why v2 dropped from 280 lines (v1) to 130 lines — most of
+v1's complexity was managing frame consistency that v2 makes
+unnecessary by construction.
+
+### Troubleshooting trail
+
+#### Step 1 — Smoke probe ran sample 0 cleanly; sample 1 hit a 4D-mask shape error
+
+The mask construction inside `_prepare_4d_causal_attention_mask`
+expects `attention_mask.shape[-1] == past_key_values_length +
+seq_length`. HF passes a 2D mask in the unpruned frame; we'd already
+sliced layer-0's KV cache to the pruned frame; the dimensions
+mismatched at sample 1's decode step (sample 0 worked because
+prefill has `attention_mask=None`).
+
+Read the
+[transformers 4.41 source for `Qwen2Model.forward`](https://github.com/huggingface/transformers/blob/v4.41.2/src/transformers/models/qwen2/modeling_qwen2.py)
+to confirm the assumed invariant, then added the slice block at
+the entry to the forward replacement.
+
+#### Step 2 — Mask fix worked; new crash on `position_ids`
+
+Now the 4D mask construction succeeded but the next decode step
+hit the rotary OOB. HF computes `position_ids` from the 2D mask via
+`cumsum - 1`; even though we'd sliced the mask for the 4D
+construction, HF's `prepare_inputs_for_generation` had already
+computed position_ids upstream from the *unsliced* mask.
+
+Read the transformers `generate()` source's
+`prepare_inputs_for_generation` path; confirmed position_ids comes
+in already computed and we have no influence over it before this
+point.
+
+#### Step 3 — Decision: don't try to fix `position_ids` upstream; recompute it locally
+
+The cleanest fix is to ignore the value HF passes and compute it
+ourselves from `past_key_values_length`. This is unconditional —
+the v1 forward replacement now always uses
+`torch.arange(past_kv_len, past_kv_len + seq_len)` regardless of
+what HF passed.
+
+After this fix, v1 ran ~545 samples without crashing.
+
+### Notes / lessons
+
+- **HF generate's internal state is the source of truth from its
+  perspective.** Modifying what the LLM trunk operates on
+  mid-flight (which is what pruning inside `Qwen2Model.forward`
+  is) creates an impedance mismatch that must be reconciled at
+  every point HF generate's state crosses into our pruned trunk.
+  Each reconciliation point is a potential bug surface.
+- **The architectural cost of trunk-modification was the real
+  finding.** Three bugs in v1 weren't independent — they were all
+  instances of "HF generate maintains unpruned-frame state we
+  have to reconcile with our pruned-frame trunk." Once we saw the
+  pattern, v2's pre-LLM rewrite was the natural conclusion.
+- **Published pre-LLM pruning methods (VisionZip, SparseVLM v1,
+  FastV's k=0 mode) avoid this whole problem by construction.**
+  We had to learn the hard way what they presumably learned the
+  same way.
+
+### Upstream
+
+- [ ] Issue filed — _n/a; the design is HF's choice, our adaptation
+      is the work_
+- [ ] PR opened — _n/a_
+- [ ] Merged — _n/a_
+
+---
+
+## #7 — Monkey-patching vendor-forked method renames
+
+<span class="pill pill--done">Resolved</span>
+
+**Found** May 26, 2026 · **Severity** High (caused the entire May
+25 overnight sweep to silently be a no-op — 12 hours of compute
+produced bit-identical baseline numbers across all 8 configurations)
+· **Upstream status** _n/a — class of failure mode in
+monkey-patch-based research code_
+
+### What I observed
+
+The May 25 pruning framework
+([`c216bbe`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/c216bbe))
+monkey-patched two methods on HuatuoGPT-Vision's model object:
+
+```python
+# pruning/patcher.py (May 25 version)
+original = model.prepare_inputs_labels_for_multimodal  # records visual_span
+model.prepare_inputs_labels_for_multimodal = wrapped
+```
+
+`patch_model()` ran without errors and printed
+`patcher applied: pruner=QSim_mean_kr0.50`. The May 25 kr=1.0
+smoke test passed (100% identical predictions, see
+[#9](#9-verification-at-no-op-smoke-test-antipattern)). The
+8-run sweep ran 12 hours overnight without errors.
+
+On May 26 morning, the smell-test of the sweep showed:
+
+```text
+=== HuatuoGPT-Vision-7B__QSim_mean_kr0.10__scores.json ===
+  total: 0.6787
+=== HuatuoGPT-Vision-7B__QSim_mean_kr0.25__scores.json ===
+  total: 0.6787
+...
+=== HuatuoGPT-Vision-7B__RandomPruner_kr0.75__scores.json ===
+  total: 0.6787
+```
+
+**Every one of the 8 runs produced bit-identical scores, on every
+dataset, including across QSim and Random methods.** Two methods
+selecting completely different sets of tokens cannot produce
+identical predictions — the patcher had never actually fired during
+the overnight sweep.
+
+### Root cause
+
+HuatuoGPT-Vision **subclasses LLaVA's mixin and writes a custom
+variant** of `prepare_inputs_labels_for_multimodal` named
+`prepare_inputs_labels_for_multimodal_new`, then routes both
+`forward` and `generate` through the `_new` variant:
+
+```python
+# HuatuoGPT-Vision/llava/model/language_model/llava_qwen2.py
+def forward(self, ...):
+    ...
+    (
+        input_ids, position_ids, attention_mask, past_key_values, inputs_embeds, labels
+    # ) = self.prepare_inputs_labels_for_multimodal(   # original, now dead
+    ) = self.prepare_inputs_labels_for_multimodal_new(  # actually called
+        input_ids, position_ids, attention_mask, past_key_values, labels, images
+    )
+
+def generate(self, inputs, images, **kwargs):
+    ...
+    (
+        ...
+    ) = self.prepare_inputs_labels_for_multimodal_new(  # also _new here
+        inputs, ...
+    )
+```
+
+The original `prepare_inputs_labels_for_multimodal` still exists on
+the class — it's inherited from the LLaMA mixin and never deleted —
+but **nothing in HuatuoGPT-Vision's actual execution path calls it
+anymore**. The commented-out reference (literally preserved in
+their source as `# ) = self.prepare_inputs_labels_for_multimodal(`)
+is a record of what they replaced when they forked.
+
+The May 25 patcher attached its wrapper to the original method by
+name. Class-level reflection (e.g. `dir(model)`) shows both methods
+exist; nothing in standard introspection reveals that the original
+is unreachable from the live code path. Silent attachment, silent
+non-execution.
+
+### Fix
+
+One-line change to `patcher.py`, in two places:
+
+```python
+# Before
+original = model.prepare_inputs_labels_for_multimodal
+model.prepare_inputs_labels_for_multimodal = wrapped
+
+# After
+original = model.prepare_inputs_labels_for_multimodal_new
+model.prepare_inputs_labels_for_multimodal_new = wrapped
+```
+
+After the fix, the patcher fires on the first sample of every run.
+Confirmed via the sentinel
+`[PATCHER] prepare_inputs called: visual_span=(5, 581)` printing
+within the first ~15 seconds of inference.
+
+### Troubleshooting trail
+
+#### Step 1 — Confirm the issue is patcher-side, not eval-side
+
+Two hypotheses for bit-identical scores: (a) eval harness caching
+predictions across configs, or (b) patcher attaching silently but
+never executing. Latency summaries showed identical p50/p95/mean
+across all 8 runs *including at kr=0.1* — if pruning at kr=0.1
+were firing, the LLM ops would drop substantially. Constant
+latency was the smoking gun for hypothesis (b).
+
+#### Step 2 — Add observability inside the patched code
+
+Three diagnostic prints added: at the entry to the wrapper, at the
+entry to the forward replacement, and after the actual pruning
+step. A 90-second probe with the prints enabled — and **all three
+prints stayed silent**. The wrapper never fired. Forward
+replacement never fired. Yet `patch_model()` reported success.
+This located the bug in attachment, not in pruning math.
+
+#### Step 3 — Read HuatuoGPT-Vision's actual model code
+
+The class subclasses `LlavaQwen2`. Opened
+`HuatuoGPT-Vision/llava/model/language_model/llava_qwen2.py` and
+searched for `prepare_inputs_labels`. Found:
+
+```python
+# ) = self.prepare_inputs_labels_for_multimodal(  # the original
+) = self.prepare_inputs_labels_for_multimodal_new(  # what runs
+```
+
+The commented-out reference is the smoking gun — HuatuoGPT
+explicitly forked the method, renamed it `_new`, and switched
+both `forward` and `generate` to route through the new variant.
+The original is dead code in this subclass.
+
+#### Step 4 — Apply the one-line fix, re-probe
+
+Changed two occurrences of `prepare_inputs_labels_for_multimodal`
+to `prepare_inputs_labels_for_multimodal_new` in `patcher.py`.
+The 90-second probe with prints enabled now showed:
+
+```text
+[PATCHER] prepare_inputs called: visual_span=(5, 581)
+[PATCHER] forward called: seq_len=632, do_prune=True, ...
+[PATCHER] pruning applied: seq 632 -> 344, visual 576 -> 288
+```
+
+All three prints firing. Patcher attached and executing.
+
+### Notes / lessons
+
+- **The killer of monkey-patch-based research code: patches that
+  attach to methods that exist on the class but aren't called by
+  anything in the real execution path.** This is what computer
+  scientists call "action at a distance" — behavior is changing
+  somewhere far from where the change is visible. Standard
+  introspection (`dir(obj)`, `hasattr`) can't detect it because
+  the method actually exists.
+- **Always read the subclass before patching the mixin.** LLaVA's
+  `LlavaMetaForCausalLM` mixin is the documented API. But
+  HuatuoGPT-Vision (and many downstream forks) override mixin
+  methods with custom variants, sometimes under different names.
+  The mixin's documented method may be inherited but unreachable.
+- **Patch attachment is not patch execution.** Always add a
+  sentinel print **inside the patched code**, not just at attach
+  time. The May 25 patcher printed "patcher applied" at attach
+  but had no in-code observability — that gap is what made the
+  no-op silent. The v2 sentinel pattern (one-per-run flag-gated
+  print) is now the standard going forward.
+- **A related shell-pipeline gotcha worth noting here** rather
+  than as its own bug entry: the `tee` race condition. `tee` opens
+  its output file at process start; if the path's directory
+  doesn't exist yet (because the Python script's `os.makedirs`
+  hasn't run), `tee` fails with `No such file or directory` but
+  the rest of the pipeline keeps running and the result files
+  still get written. The fix: put `mkdir -p "$OUTPUT_DIR"` inside
+  the loop before the tee. Cheap defensive move; affected one
+  run's log capture during the May 26 v2 sweep launch.
+- **Vendor-fork renames are a recurring pattern.** HuatuoGPT did
+  this in one place that mattered; other downstream forks
+  (LLaVA-Next, LLaVA-Med v1.0 variants) likely do similar things.
+  Worth budgeting time when adapting research code that
+  monkey-patches a subclassed mixin.
+
+### Upstream
+
+- [ ] Issue filed — _n/a; the rename is HuatuoGPT-Vision's
+      legitimate fork choice and not a bug in their code._
+- [ ] PR opened — _n/a_
+- [ ] Merged — _n/a_
+
 ---
 
 ## #6 — Wrong memory accounting for 8-bit AdamW

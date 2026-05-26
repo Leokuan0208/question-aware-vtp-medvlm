@@ -37,7 +37,7 @@ and 12-week plan.
 
 <span class="pill pill--wip">In progress</span> &nbsp;
 **Phase 1, Week 3 — HuatuoGPT-Vision baseline reproduced + first
-pruning sweep running.** Week 1 closed out May 16
+successfully-pruned sweep complete.** Week 1 closed out May 16
 ([overview](weekly/week-01/index.md#end-of-week-status)). Week 2
 closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
 ([overview](weekly/week-02/index.md#reflections-end-of-week)). The
@@ -49,18 +49,33 @@ a second pivot followed on **May 25** to
 for reproducibility, and the
 [paper Table 4 reproduced same-day](baseline/huatuo-vision.md#baseline-metrics)
 with 5/6 benchmarks within 0.55 pts of published numbers
-([details](weekly/week-03/day-02.md)). The pruning framework
-(RandomPruner + QSimPruner + LatencyTracker; in-LLM layer-0
-integration via `Qwen2Model.forward` override + KV cache slicing)
-is written, smoke-tested, and pushed; an **8-run overnight sweep**
-(4 keep-ratios × 2 methods) is running in tmux with results landing
-Day 17. Three repos now:
+([details](weekly/week-03/day-02.md)). The pruning framework's
+first incarnation
+([`c216bbe`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/c216bbe))
+turned out to be a no-op — diagnosed Day 17 from a smell-test
+showing **bit-identical scores across all 8 overnight runs**.
+[Day 17](weekly/week-03/day-03.md) was a four-act day: morning
+diagnosis, **v1 fix cascade** (three real bugs:
+`prepare_inputs_labels_for_multimodal_new` method rename,
+attention-mask frame reconciliation, position_ids RoPE OOB),
+**v1 → v2 architectural rewrite** (prune *before* the LLM trunk
+instead of after layer 0; 130 lines vs 280, ~30% speedup at
+kr=0.5), and the **first successfully-pruned 8-run sweep**
+(`{qsim, random} × {0.75, 0.5, 0.25, 0.1}` across 6 benchmarks).
+Three commits pushed today:
+[`72bdd28`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/72bdd28)
+(archive v1),
+[`85cb249`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/85cb249)
+(install v2),
+[`24ef568`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568)
+(sweep results). Numerical analysis deferred to Day 18. Three repos
+now:
 [`llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1)
 (frozen, LLaVA-Med v1.0 phase),
 [`Qwen-v25-vl-med-pruning`](https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning)
 (frozen, Qwen2.5-VL smoke-test artifact preserved), and
 [`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning)
-(active, pruning framework at `c216bbe`).
+(active).
 
 - [x] Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)
 - [x] Stack sanity check (PyTorch, transformers, accelerate, flash-attn)
@@ -146,8 +161,36 @@ Day 17. Three repos now:
       57.72 (+2.57 pts). First positive datapoint on the project's
       central thesis; needs the full Pareto curve to confirm.
       → [Week 2, Day 1, Phase 14](weekly/week-02/day-01.md#phase-14-kr075-ablation-result-question-aware-pruning-beats-baseline)
-- [ ] Run the remaining ablation ratios (kr ∈ 0.50, 0.25, 0.10) on
-      VQA-RAD to fill out the Pareto curve
+- [x] **Yesterday's 8-run sweep (`c216bbe`) diagnosed as a no-op.**
+      Smell-test showed bit-identical scores across all 8
+      configurations on May 26 morning. Root cause: wrong patch
+      target — HuatuoGPT-Vision forks LLaVA's multimodal-prep
+      method into a `_new`-suffixed variant we hadn't wrapped.
+      → [Week 3, Day 3, Phase 1](weekly/week-03/day-03.md#phase-1-morning-the-smell-test-that-found-the-bug)
+- [x] **v1 fix cascade** — three real bugs fixed in sequence:
+      method rename, attention-mask frame reconciliation,
+      position_ids RoPE OOB. v1 archived as a research artifact
+      at [`72bdd28`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/72bdd28).
+- [x] **v1 → v2 architectural rewrite.** Pre-LLM pruning instead of
+      post-layer-0; 130 lines vs 280, ~30% inference speedup at
+      kr=0.5. Pushed at
+      [`85cb249`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/85cb249).
+      → [Week 3, Day 3, Phase 5](weekly/week-03/day-03.md#phase-5-the-pre-llm-rewrite-v2)
+- [x] **First successfully-pruned 8-run sweep complete.**
+      {qsim, random} × {kr=0.75, 0.5, 0.25, 0.1} across 6
+      benchmarks on HuatuoGPT-Vision-7B; ~4-5h wall time. Per-run
+      `__scores.json` + `__latency_summary.json` files committed at
+      [`24ef568`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568).
+- [x] **Two literature surveys written.** (1) Cosine-similarity
+      scoring positioned: QSim ≈ ZSPAPrune's relevance phase ≈
+      ResPrune's Setting-3 baseline; not novel as a formula.
+      (2) Token merging vs pruning; medical-VQA properties →
+      [Methods Roadmap (Tier 1/2/3)](project.md#methods-roadmap-tiers-1-3).
+- [ ] **Numerical analysis of the v2 sweep** (Day 18 priority) —
+      Pareto curves, headline number, E2 writeup on the
+      Experiments page
+- [ ] **Tier-1 follow-up: max-similarity scoring** (ResPrune
+      Setting-1) once the v2 sweep is analyzed
 - [ ] Push Day 8's accumulated changes to
       [`llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1)
       (split into coherent commits)
@@ -160,8 +203,9 @@ Day 17. Three repos now:
       print-statement instrumentation on
       `prepare_inputs_labels_for_multimodal`
 
-See the [Week 1 log](weekly/week-01/index.md) and
-[Week 2 log](weekly/week-02/index.md) for daily notes.
+See the [Week 1 log](weekly/week-01/index.md),
+[Week 2 log](weekly/week-02/index.md), and
+[Week 3 log](weekly/week-03/index.md) for daily notes.
 
 ## How this site is organised
 

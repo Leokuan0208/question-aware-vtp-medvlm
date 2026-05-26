@@ -52,6 +52,93 @@ Updated as I go.
   forwarded to subsequent pruning stages for re-evaluation rather than
   committed-pruned at shallow layers. Directly addresses our open
   question of *where* in the LLaMA stack to prune. **Read May 20, 2026.**
+
+### Added Day 17 — May 26, 2026 (from the cosine-similarity literature survey)
+
+- **ZSPAPrune: Zero-Shot Prompt-Aware Visual Token Pruning for VLMs**
+  — Zhang et al., arXiv October 2025.
+  Uses **the same mean-pooled question / cosine-similarity scoring
+  as our QSim** as its "relevance" phase, then adds a diversity
+  selection phase that picks tokens maximizing dissimilarity to the
+  current selection. **Our QSim is the simpler "relevance only" half
+  of ZSPAPrune.** Tier-1 candidate (add diversity term to QSim) is
+  motivated directly by this paper.
+- **ResPrune: Relevance-and-Smoothness Token Pruning**
+  — Li et al., 2026.
+  Evaluates exactly our scoring formula as their *Setting-3*
+  ablation and reports it as the **weakest of three** formulations
+  (Setting-1: max-similarity-per-visual-token across text tokens →
+  98.4%; Setting-2: averaged-similarity → 98.1%; Setting-3:
+  pooled-text cosine → 95.4%). The Tier-1 max-similarity follow-up
+  is motivated by this paper directly.
+- **FasterVLM: CLS-Attention-Based Visual Token Pruning for VLMs**
+  — He et al., 2025.
+  Text-agnostic; uses CLIP CLS attention as the scoring signal,
+  prunes between vision encoder and LLM. Critiques in-LLM text-visual
+  attention as inaccurate; relevant negative comparison for our
+  text-aware angle.
+- **VisionZip: Token Selection for Vision-Language Models**
+  — Yang et al., 2025.
+  Post-projector, pre-LLM pruning using CLS-attention. **v2 of our
+  patcher operates at the same insertion point as VisionZip.**
+- **ReDiPrune: Text-Relevance and Diversity Pruning**
+  — 2025/2026 preprint.
+  Closest architectural neighbor to v2: text-relevance + diversity,
+  post-projector, pre-LLM. Combines what ZSPAPrune does (relevance
+  + diversity) with the v2 insertion point.
+- **HoloV: Holistic Visual Token Pruning**
+  — October 2025.
+  Identifies that attention-based pruning concentrates kept tokens
+  in a few salient regions and **loses global context**. Direct
+  critique of formulations like ours; motivates Tier-2 E
+  (spatial-coherence-aware QSim) and Tier-1 A/C (diversity terms).
+- **"When Token Pruning is Worse than Random"**
+  — December 2025.
+  Strong null result: in deep LLM layers, existing token pruning
+  methods perform similarly or worse than random pruning. Doesn't
+  say all pruning is useless — says the chosen *metric* often
+  isn't doing useful work; speedup comes from "any 50% of tokens"
+  rather than "the right 50%". **Our random comparison floor at
+  every keep_ratio is the experimental control that catches this
+  regime.**
+- **PDrop: Progressive Visual Token Drop in MLLMs** — 2025.
+  In-LLM pruning at multiple progressive layer depths.
+- **PuMer: Prune-and-Merge Token Reduction for Efficient VL Models**
+  — Cao et al., ACL 2023.
+  Text-informed pruning of irrelevant tokens + similarity-based
+  merging of redundant ones, combined into a single end-to-end
+  framework. The canonical "hybrid prune+merge" reference for our
+  Tier-1 C experiment.
+- **AIM: Adaptive Inference Merging for Multimodal LLMs**
+  — 2024-2025.
+  Per-sample decides how much to prune vs merge based on image
+  information density. Homogeneous radiograph → aggressive
+  pruning; busy histology slide → more merging.
+
+### Added Day 17 (from the medical-VQA-properties survey)
+
+- **ViTAS: Visual Token Adaptive Selection for Medical VLMs**
+  — Ahmed et al., 2026.
+  MIMIC-CXR summarization: *"selectively focusing on pathology-
+  relevant visual patches rather than full images yields
+  substantially better performance — less but more relevant
+  visual input is not only sufficient but superior."* Direct
+  evidence for the high-background-to-signal property of medical
+  imaging.
+- **HEAL-MedVQA: Diagnosing Shortcut Learning in Medical VQA**
+  — 2025.
+  Diagnostic study showing current medical VLMs rely heavily on
+  text-shortcut features, with visual grounding much weaker than
+  accuracy numbers suggest. Motivates the Tier-3 G ablation
+  (visual aphasia test).
+- **A Comprehensive Survey on Medical Visual Question Answering**
+  — Lin et al., 2023.
+  Establishes the question-type taxonomy (modality / plane /
+  anatomy / abnormality) and the localization property:
+  *"the task needs to focus on a fine-grained scale because a
+  lesion is microscopic."* The conceptual backbone of the Methods
+  Roadmap's medical-VQA-property arguments.
+
 - _Add as you read them. A one-line note on why each paper is useful is
   more helpful than a long summary._
 

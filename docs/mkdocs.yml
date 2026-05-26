@@ -1,0 +1,146 @@
+# =============================================================================
+# MkDocs configuration for "Question-Aware Visual Token Pruning for
+# Medical VLMs" — a 12-week research project documentation site.
+# =============================================================================
+
+site_name: Question-Aware Visual Token Pruning for Medical VLMs
+site_description: A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.
+site_author: Li-Wen Kuan (關力文) — Leo Kuan
+
+site_url: https://leokuan0208.github.io/question-aware-vtp-medvlm/
+
+repo_name: Leokuan0208/question-aware-vtp-medvlm
+repo_url: https://github.com/Leokuan0208/question-aware-vtp-medvlm
+edit_uri: edit/main/docs/
+
+nav:
+  - Home: index.md
+  - Project Overview: project.md
+  - Baseline:
+      - baseline/index.md
+      - HuatuoGPT-Vision: baseline/huatuo-vision.md
+      - Qwen2.5-VL: baseline/qwen25-vl.md
+      - LLaVA-Med: baseline/llava-med.md
+  - Experiments: experiments.md
+  - Weekly Log:
+      - weekly/index.md
+      - Week 1:
+          - weekly/week-01/index.md
+          - weekly/week-01/day-01.md
+          - weekly/week-01/day-02.md
+          - weekly/week-01/day-03.md
+          - weekly/week-01/day-04.md
+          - weekly/week-01/day-05.md
+          - weekly/week-01/day-06.md
+          - weekly/week-01/day-07.md
+      - Week 2:
+          - weekly/week-02/index.md
+          - weekly/week-02/day-01.md
+          - weekly/week-02/day-02.md
+          - weekly/week-02/day-03.md
+          - weekly/week-02/day-04.md
+          - weekly/week-02/day-05.md
+      - Week 3:
+          - weekly/week-03/index.md
+          - weekly/week-03/day-01.md
+          - weekly/week-03/day-02.md
+          - weekly/week-03/day-03.md
+  - Bugs & Issues: bugs.md
+  - Resources: resources.md
+
+theme:
+  name: material
+  language: en
+
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+  font:
+    text: IBM Plex Sans
+    code: JetBrains Mono
+
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.indexes        # section headers (e.g. "Week 1") are clickable pages
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - search.suggest
+    - content.code.copy           # one-click copy button on every code block
+    - content.code.annotate
+    - content.action.edit
+    - toc.follow
+
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  # ---------------------------------------------------------------------------
+  # Code-block highlighting and presentation.
+  #   auto_title         -> shows the language name (e.g. "Bash", "Python")
+  #                         in a labelled bar at the top-left of every block.
+  #   anchor_linenums    -> line numbers can be linked to.
+  #   pygments_lang_class-> emits `language-xxx` CSS class for theming.
+  # ---------------------------------------------------------------------------
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+      auto_title: true
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Leokuan0208
+      name: GitHub
+  generator: false
