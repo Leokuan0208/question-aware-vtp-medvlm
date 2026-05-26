@@ -15,6 +15,10 @@
         <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-03/day-03/">
       
       
+        <link rel="prev" href="../day-02/">
+      
+      
+        <link rel="next" href="../../../bugs/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -288,10 +292,12 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../../" class="md-tabs__link">
           
   
@@ -578,6 +584,8 @@
       
   
   
+    
+  
   
   
     
@@ -596,14 +604,17 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           
@@ -619,13 +630,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Weekly Log
@@ -1038,6 +1049,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1051,17 +1064,19 @@
       
         
       
+        
+      
     
     
       
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" checked>
         
           
           
@@ -1083,7 +1098,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_4">
             <span class="md-nav__icon md-icon"></span>
             Week 3
@@ -1129,6 +1144,295 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 26, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 26, 2026
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-morning-the-smell-test-that-found-the-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Morning: the smell test that found the bug
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1 — Morning: the smell test that found the bug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-yesterdays-smoke-test-couldnt-have-caught-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why yesterday's smoke test couldn't have caught this
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnosis-what-could-make-all-8-runs-identical" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagnosis — what could make all 8 runs identical?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-adding-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — Adding observability
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-finding-the-wrong-patch-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — Finding the wrong patch target
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-the-v1-fix-cascade-bugs-2-and-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — The v1 fix cascade (bugs 2 and 3)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4 — The v1 fix cascade (bugs 2 and 3)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-2-attention-mask-frame-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bug #2 — Attention-mask frame mismatch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-3-position-ids-rope-index-out-of-bounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bug #3 — Position-IDs RoPE index-out-of-bounds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-cascade-as-a-single-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      The cascade as a single pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-the-pre-llm-rewrite-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — The pre-LLM rewrite (v2)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 5 — The pre-LLM rewrite (v2)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-v2-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What v2 does
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v2-smoke-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      v2 smoke verification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-repo-cleanup-first-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — Repo cleanup &amp; first push
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-v2-sweep-launched-and-the-tee-race" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — v2 sweep launched (and the tee race)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-two-literature-surveys-during-the-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — Two literature surveys (during the sweep)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 8 — Two literature surveys (during the sweep)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#survey-1-has-cosine-similarity-scoring-been-done-before" class="md-nav__link">
+    <span class="md-ellipsis">
+      Survey 1 — Has cosine-similarity scoring been done before?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#survey-2-can-we-use-pruning-and-merging-together-does-medical-vqa-benefit-from-a-specific-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Survey 2 — Can we use pruning and merging together? Does medical VQA benefit from a specific approach?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-qsim-weakness-worth-flagging-up-front" class="md-nav__link">
+    <span class="md-ellipsis">
+      A QSim weakness worth flagging up front
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-9-v2-sweep-completes-results-pushed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 9 — v2 sweep completes; results pushed
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow-may-27-day-18-week-3-day-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow (May 27, Day 18 / Week 3 Day 4)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2205,6 +2509,44 @@ no-op). Per-run <code>__scores.json</code> / <code>__latency_summary.json</code>
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../day-02/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 2 — Sunday, May 25, 2026">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Day 2 — Sunday, May 25, 2026
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../bugs/" class="md-footer__link md-footer__link--next" aria-label="Next: Bugs &amp; Issues">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Bugs & Issues
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
