@@ -42,7 +42,7 @@ flat `scripts/ pruning/ eval/` layout. First artifact committed:
 `scripts/mcq_compliance_smoke.py`, polished to silence both transformer
 warnings and write durable per-run JSON.
 
-### [Day 2 — Sunday, May 25, 2026](day-02.md)
+### [Day 2 — Monday, May 25, 2026](day-02.md)
 
 A "decision day" that became a four-milestone execution day. Came
 in planning the VLMEvalKit setup, ended with a **second pivot** —
