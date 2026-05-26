@@ -2,7 +2,7 @@
 
 [← Back to Week 1 overview](index.md)
 
-**Phase 1 of 7** (Baseline & Literature) · Week 1, Day 5
+**Phase 1 of 7** (Baseline & Literature) · Week 1, Day 5 · **Day 5 of the project**
 
 ---
 

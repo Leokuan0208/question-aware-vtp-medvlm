@@ -22,7 +22,7 @@ improving answer quality?
 |                  |                                                              |
 | ---------------- | ------------------------------------------------------------ |
 | **Duration**     | 12 weeks                                                     |
-| **Start date**   | May 11, 2026                                                 |
+| **Start date**   | May 10, 2026                                                 |
 | **Baseline**     | [LLaVA-Med v1.5 (Mistral-7B)](https://github.com/microsoft/LLaVA-Med) |
 | **Stack**        | Python, PyTorch, Hugging Face Transformers, CUDA             |
 | **Research Q**   | _Can question-conditioned visual token pruning preserve (or improve) medical VQA accuracy while reducing inference cost?_ |

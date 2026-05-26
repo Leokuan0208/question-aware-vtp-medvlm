@@ -1,4 +1,4 @@
-# Day 2 — Sunday, May 25, 2026
+# Day 2 — Monday, May 25, 2026
 
 [← Back to Week 3 overview](index.md)
 
