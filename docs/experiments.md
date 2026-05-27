@@ -27,22 +27,28 @@ Design decisions:
   pruning strategies without reloading the 15 GB model.
 - **Datasets handled** — VQA-RAD, SLAKE (English-only), PathVQA.
 
-Status (May 26, 2026): **The May 25 (`c216bbe`) pruning framework
-was retroactively diagnosed as a no-op** on May 26 morning — all 8
-overnight runs produced bit-identical scores
-([full writeup](weekly/week-03/day-03.md#phase-1-morning-the-smell-test-that-found-the-bug);
-[Bug #7](bugs.md#7-monkey-patching-vendor-forked-method-renames)).
-Day 17 spent fixing the v1 patcher (three real bugs;
-[#7](bugs.md#7-monkey-patching-vendor-forked-method-renames) and
-[#8](bugs.md#8-frame-mismatches-between-hf-generate-and-the-pruned-state)),
-then rewriting it as **v2 — pre-LLM pruning** instead of
-post-layer-0
-([Day 17, Phase 5](weekly/week-03/day-03.md#phase-5-the-pre-llm-rewrite-v2)).
-The v2 sweep ran cleanly in ~4-5h and the result files are committed
-at
-[`24ef568`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568);
-**numerical analysis (E2) is Day 18's first task** so it's done
-with a fresh head rather than at 11pm.
+Status (May 27, 2026): **E2 analysis complete; result is a
+negative one.** The v2 sweep (May 26) and a same-day qsim_max
+ablation (May 27) both confirm that **mean-pooled and max-similarity
+QSim are uniformly worse than Random pruning** at every keep-ratio
+on HuatuoGPT-Vision-7B. The total-score gap (Random − QSim_mean)
+grows monotonically with pruning aggressiveness: +0.84 at kr=0.75
+→ +3.11 at kr=0.10. Diagnosis: **diversity collapse + scoring-space
+brittleness**. The cosine-similarity-on-pre-LLM-embeddings signal
+doesn't track what the LLM actually needs; the LLM cares which
+visual tokens it would have *attended to*, not which ones *look like*
+question words. Full writeup:
+[Day 18 Phase 2](weekly/week-03/day-04.md#phase-2-reading-the-result)
++ [Phase 4](weekly/week-03/day-04.md#phase-4-the-qsim_max-ablation).
+
+Tonight's response: a 12-run overnight sweep of three methods —
+**Random** (re-run for phase-decomposed latency + drift check),
+**GridPrune** (Wang et al. 2025; coverage-aware zonal selection),
+and **FASP+GridPrune** (our composed method: FASP anatomy filter +
+GridPrune coverage + capped per-zone budget by fused
+text-relevance + saliency). Design:
+[Day 18 Phase 6](weekly/week-03/day-04.md#phase-6-fasp-gridprune-design).
+Results land Day 19; E3 entry to follow.
 
 The earlier v1.5 baseline row is banked, the v1.0 stage-2 zero-shot
 baseline is verified (and cross-validated against Baron-GG's
@@ -71,7 +77,12 @@ and full per-experiment writeups live in the sections below.
 | **E1_qsim_kr0p75**   | May 17 | v1.0 stage-2 · question-similarity | 75% | **60.29** closed / 28.53 open | — | — | **+2.57 over baseline, +3.30 over random** |
 | E0_huatuo | May 25 | HuatuoGPT-Vision-7B · baseline | 100% | 0.6135 | 0.7644 | 0.5767 | Paper Table 4 reproduction — total 0.6787 across 6 benchmarks ([details](baseline/huatuo-vision.md#baseline-metrics)) |
 | ~~E1_huatuo_sweep_c216bbe~~ | May 25 | HuatuoGPT-Vision-7B · v1 patcher | various | _**no-op (bug)**_ | _no-op_ | _no-op_ | **Retroactively diagnosed as a no-op May 26** ([Bug #7](bugs.md#7-monkey-patching-vendor-forked-method-renames)) |
-| E2_v2_huatuo_sweep | May 26 | HuatuoGPT-Vision-7B · v2 patcher | 75/50/25/10% | _analysis pending_ | _analysis pending_ | _analysis pending_ | First successfully-pruned sweep on HuatuoGPT; 8 runs committed at [`24ef568`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568). Writeup & Pareto curves Day 18. |
+| **E2_qsim_mean** | May 26 | HuatuoGPT-Vision-7B · v2 patcher · QSim_mean | 75 / 50 / 25 / 10% | 61.75 / 56.97 / 56.57 / 54.98 | 75.72 / 77.64 / 75.72 / 72.12 | 57.20 / 55.95 / 55.09 / 54.52 | **Loses to Random at every kr.** Gap grows from +0.84 (kr=0.75) to +3.11 (kr=0.10) pts on total. [Day 18 analysis](weekly/week-03/day-04.md#phase-2-reading-the-result) · commit [`24ef568`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568) |
+| **E2_random** | May 26 | HuatuoGPT-Vision-7B · v2 patcher · Random | 75 / 50 / 25 / 10% | 60.96 / 58.96 / 56.97 / 55.38 | 77.16 / 75.72 / 72.12 / 74.04 | 56.96 / 58.12 / 57.64 / 56.99 | Sanity floor — Pareto-dominates QSim_mean on both accuracy and (3/4 kr) latency. |
+| **E2_qsim_max** | May 27 | HuatuoGPT-Vision-7B · v2 patcher · QSim_max | 75 / 50 / 25 / 10% | _(see day-04)_ | _(see day-04)_ | _(see day-04)_ | qsim_max **worse than** qsim_mean at every kr; total 0.6504 / 0.6348 / 0.6113 / 0.5844. Removing the mean-pool's weak diversity regularization made things *worse*. [Phase 4](weekly/week-03/day-04.md#phase-4-the-qsim_max-ablation) · commit [`54121f2`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/54121f2) |
+| E3_random | _May 28 (overnight)_ | HuatuoGPT-Vision-7B · v2 patcher · Random | 75 / 50 / 25 / 10% | _pending_ | _pending_ | _pending_ | Re-run with phase-decomposed latency; doubles as drift check against E2_random |
+| E3_gridprune | _May 28 (overnight)_ | HuatuoGPT-Vision-7B · v2 patcher · GridPrune | 75 / 50 / 25 / 10% | _pending_ | _pending_ | _pending_ | Faithful Wang et al. 2025; zonal-budget coverage-aware selection |
+| E3_fasp_gridprune | _May 28 (overnight)_ | HuatuoGPT-Vision-7B · v2 patcher · FASP+GridPrune | 75 / 50 / 25 / 10% | _pending_ | _pending_ | _pending_ | Our composed method: anatomy filter + zonal budget + local top-K. [Design](weekly/week-03/day-04.md#phase-6-fasp-gridprune-design) |
 
 The decisive comparison is **at each keep-ratio K, does qsim beat
 random?** That's the project's central research thesis in numerical

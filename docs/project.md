@@ -242,28 +242,43 @@ that should shape method choice:
 ### Tier 1 — Cheap, defensible, probably-useful
 
 Small code changes; expected to give the strongest results-per-hour
-return. Add these to the sweep design before scaling to other
-benchmarks.
+return. Status updated end of Day 18 (May 27, 2026) after the
+[QSim_max ablation](weekly/week-03/day-04.md#phase-4-the-qsim_max-ablation)
+ruled out reduction-operator fixes:
 
-- **A. Max-similarity-across-text-tokens scoring** (ResPrune
-  Setting-1). Replace QSim's mean-pool-then-cosine with
-  per-visual-token max-similarity across all question text tokens.
-  ResPrune's published ablation: Setting-1 → 98.4% vs Setting-3
-  (our current formula) → 95.4%. Same data structures, same hooks,
-  one-line scoring change.
-- **B. Token merging at the same insertion point** (ToMe-style).
+- **A. ~~Max-similarity-across-text-tokens scoring~~** (ResPrune
+  Setting-1). ~~Replace QSim's mean-pool-then-cosine with
+  per-visual-token max-similarity across all question text tokens.~~
+  **Tested May 27 — failed.** Max-sim is uniformly *worse* than
+  mean-pool QSim at every kr, which is itself uniformly worse than
+  Random. The mean-pool was acting as a weak diversity regularizer;
+  removing it made things worse. Diagnosis: the failure mode isn't
+  the reduction operator, it's the **scoring space** —
+  cosine-similarity on pre-LLM embeddings doesn't track what the
+  LLM actually attends to. ResPrune's published Setting-1 > Setting-3
+  result doesn't transfer to our setting (different base model,
+  different benchmarks, different pruning location).
+- **B. Coverage-aware selection** (newly promoted to top of Tier 1
+  after Day 18's diagnosis). **GridPrune** (Wang et al. 2025)
+  is the strongest published instance — divides visual tokens into
+  spatial zones, allocates per-zone budget proportional to a fused
+  text-relevance + saliency score, does local top-K within each
+  zone. Coverage-by-construction makes diversity collapse
+  impossible. **Tested May 28 in tonight's E3 sweep.**
+- **C. Token merging at the same insertion point** (ToMe-style).
   Replace the "drop the bottom (1-kr)" step with "merge each
   discarded token into its nearest kept neighbor in embedding
   space." Same hook architecture; same target keep count for clean
   comparison against pruning. Tests whether the high-redundancy
   property of medical imaging is being underused by pure pruning.
-- **C. Hybrid prune+merge baseline** (PruMerge-style). Score by
-  QSim, keep top-K, merge each discarded token into its nearest
-  kept neighbor. Target the same final count as pure pruning so
-  the comparison is clean.
+  *Pending Day 19+.*
 
-Adding A, B, C grows the sweep to ~5 methods × 4 keep-ratios = 20
-runs, roughly 10-12 hours of compute. Manageable.
+The negative result on Tier 1-A reshapes the experimental
+priorities. The two open questions that matter now are: **(i) does
+coverage-aware selection (GridPrune) recover from QSim's diversity
+collapse on medical benchmarks?** and **(ii) does adding a
+medical-anatomy filter (FASP+GridPrune) yield further gains over
+vanilla GridPrune?** Both are tested in tonight's E3 sweep.
 
 ### Tier 2 — Medical-specific extensions (the paper's novel angle)
 

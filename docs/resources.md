@@ -53,6 +53,39 @@ Updated as I go.
   committed-pruned at shallow layers. Directly addresses our open
   question of *where* in the LLaMA stack to prune. **Read May 20, 2026.**
 
+### Added Day 18 — May 27, 2026 (from the GridPrune + FASP design work)
+
+- **GridPrune: Grid-Aware Visual Token Pruning for Efficient
+  Vision-Language Models** — Wang et al., 2025/ICCV.
+  General-VLM method for spatial-coverage-aware pruning. Divides
+  visual tokens into a grid of zones, allocates a per-zone budget
+  proportional to a fused (text-relevance + saliency) score, does
+  local top-K within each zone. **Tonight's E3 sweep tests this as
+  a standalone baseline.** Coverage-by-construction is the key
+  contribution; the fused score is a small but reasonable signal
+  enhancement over either component alone. Their reported gains
+  on LLaVA-1.5 hold up across 5 general benchmarks at 50-90% pruning.
+- **FASP: Foreground-Aware Soft Pruning for Medical
+  Vision-Language Models** — Liu et al., 2024.
+  Medical-imaging-specific token-scoring primitive. Score every
+  token by the L2-norm of its post-projector embedding; lowest
+  ~30% are reliably background (black borders, uniform tissue).
+  Cheap (single tensor op) and medical-tested. **Used as the
+  foreground filter in tonight's FASP+GridPrune composed method.**
+  Original work used it as a soft-weighting; we use it as a hard
+  pre-filter before the GridPrune zoning stage.
+- **MedPruner re-read** (already cited above; arXiv 2603.11625).
+  Spent an hour today on a careful re-read after the Day 4
+  analysis. **Verified orthogonal to our project**: their
+  inter-slice anchor-based filtering targets 3D-volume temporal
+  redundancy along the slice axis, which our 2D-single-image
+  HuatuoGPT-Vision setup doesn't have. Their dynamic-nucleus
+  within-slice scoring is closer to general-VLM prior art
+  (cumulative attention from early LLM layers, similar to FastV /
+  SparseVLM). Clean complementary framing for the writeup: 3D
+  medical = MedPruner's inter-slice stage; 2D medical =
+  GridPrune-family / our FASP+GridPrune.
+
 ### Added Day 17 — May 26, 2026 (from the cosine-similarity literature survey)
 
 - **ZSPAPrune: Zero-Shot Prompt-Aware Visual Token Pruning for VLMs**

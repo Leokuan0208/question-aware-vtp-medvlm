@@ -108,6 +108,46 @@ merging vs pruning and three medical-VQA properties
 that shape a new **Methods Roadmap (Tier 1/2/3)** added to the
 project page.
 
+### [Day 4 — Wednesday, May 27, 2026](day-04.md)
+
+An analysis-and-pivot day. Crunched yesterday's v2 sweep into
+proper tables and Pareto plots — and got a result that's the
+*opposite* of what the central thesis predicted: **Random pruning
+beats mean-pooled QSim at every keep-ratio**, and the gap *grows*
+as pruning becomes more aggressive (+0.84 → +1.92 → +2.77 → +3.11
+pts on the total score as kr drops from 0.75 to 0.10). The
+afternoon's same-day **qsim_max ablation** (max-reduction instead
+of mean-pool, motivated by ResPrune's Setting-1 ≈ 98.4% vs
+Setting-3 ≈ 95.4% published gap) returned the *third* outcome —
+qsim_max is uniformly *worse* than qsim_mean, which is itself
+uniformly worse than Random. No exceptions, no crossovers. The
+mean-pool was acting as a weak diversity regularizer; removing it
+made things worse. Diagnosis: **the failure mode is structural to
+text-only scoring on pre-LLM embeddings**, not specific to the
+reduction operator. The LLM doesn't care which visual tokens
+*look like* question words — it cares which it would have
+*attended to*. Random beats both because it doesn't try to be
+clever in a space that doesn't reward cleverness. The fix points
+at two directions, both implemented and queued for tonight's
+overnight: **GridPrune** (zonal-budget coverage-aware selection,
+faithful to Wang et al. 2025) and **FASP+GridPrune** (composed
+method: FASP anatomy filter → zone budget by fused
+text-relevance + saliency → local top-K within each zone). The
+patcher also got a latency-decomposition rewrite tonight — prune
+/ prefill / decode brackets land automatically for any method.
+Re-running Random alongside tonight's two new methods provides
+both a phase-decomposed baseline and a drift check on yesterday's
+accuracy numbers. Three commits pushed:
+[`43fca4d`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/43fca4d)
+(gitignore tighten),
+[`54121f2`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/54121f2)
+(qsim_max sweep results),
+[`cd1ef3c`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/cd1ef3c)
+(analysis script + tables + 3 Pareto plots). Plus an hour spent
+reading MedPruner (Liu et al., March 2026) — confirmed orthogonal
+(3D volumes vs our 2D single-image), good positioning for the
+future writeup.
+
 ---
 
 ## Plan for the rest of the week (May 26 – May 30)
@@ -155,13 +195,46 @@ project page.
 - [x] Token-merging literature surveyed; hybrid prune+merge frameworks
       (PuMer, LLaVA-PruMerge, AIM) characterized; medical-VQA
       properties → Methods Roadmap Tier 1/2/3 written (Day 3)
-- [ ] **Numerical analysis of the v2 sweep** — Pareto curves
-      (accuracy vs keep-ratio, accuracy vs latency); decide on the
-      headline number (Day 4 priority)
-- [ ] Write up E2 (the v2 sweep) on the Experiments page
-- [ ] Tier-1 follow-up: **max-similarity scoring** (ResPrune
-      Setting-1) — small code change, likely upgrade over QSim's
-      mean-pooled formulation
+- [x] **Numerical analysis of the v2 sweep** — Pareto curves
+      (accuracy vs keep-ratio, accuracy vs latency), 12-row
+      comparison table with deltas, headline finding: **Random
+      beats QSim at every kr; gap grows monotonically with
+      aggressiveness** (Day 4)
+- [x] **Tier-1 follow-up: max-similarity scoring** — qsim_max
+      sweep ran the same afternoon. Result: qsim_max is uniformly
+      *worse* than qsim_mean, which is uniformly worse than
+      Random. Diversity-collapse hypothesis strengthened (Day 4;
+      commit
+      [`54121f2`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/54121f2))
+- [x] **`results/` gitignore tightening** — narrow the blanket
+      rule to large per-run files only, so future sweep commits
+      pick up scores/latency/eval.log without `git add -f` (Day 4;
+      commit
+      [`43fca4d`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/43fca4d))
+- [x] **Analysis pipeline landed** — `analyze_v2_sweep.py` with
+      schema-discovery dump, 12-row table, 3 Pareto plots (Day 4;
+      commit
+      [`cd1ef3c`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/cd1ef3c))
+- [x] **Latency decomposition added to the patcher** —
+      `prune_time_s` / `prefill_time_s` / `decode_time_s` fields
+      bracketed automatically for any method; instrumentation
+      lands in tonight's sweep (Day 4)
+- [x] **GridPrune implemented** as a standalone baseline (Wang
+      et al. 2025; zonal budget + fused text-relevance + saliency)
+      (Day 4)
+- [x] **FASP+GridPrune implemented** — our composed method:
+      anatomy filter → zone budget by fused score → local top-K
+      within each zone (Day 4)
+- [x] **MedPruner read** (Liu et al., March 2026) — confirmed
+      orthogonal (3D volumes vs our 2D single-image); clean
+      complementary positioning for the writeup (Day 4)
+- [ ] **Tonight's overnight sweep results land Day 5** — 12 runs
+      = {random, gridprune, fasp_gridprune} × {kr=0.75, 0.5, 0.25,
+      0.1}, ~15 hours total
+- [ ] Write up E2 (qsim_mean / qsim_max sweep) on the
+      [Experiments page](../../experiments.md)
+- [ ] Begin E3 entry (GridPrune / FASP+GridPrune sweep) once Day
+      5's analysis lands
 - [ ] Fold `hf_transfer` and `datasets==2.16.1` into the Dockerfile
       so the next image rebuild doesn't need runtime patching
 - [ ] Read **ToMe** end-to-end (still pending from Week 2)
