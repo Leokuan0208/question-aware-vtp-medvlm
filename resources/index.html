@@ -1350,15 +1350,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#datasets" class="md-nav__link">
-    <span class="md-ellipsis">
-      Datasets
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#tools" class="md-nav__link">
     <span class="md-ellipsis">
       Tools
@@ -1489,15 +1480,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#datasets" class="md-nav__link">
-    <span class="md-ellipsis">
-      Datasets
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#tools" class="md-nav__link">
     <span class="md-ellipsis">
       Tools
@@ -1544,16 +1526,27 @@ Updated as I go.</p>
 <h2 id="core-papers">Core papers<a class="headerlink" href="#core-papers" title="Permanent link">&para;</a></h2>
 <h3 id="the-baseline">The baseline<a class="headerlink" href="#the-baseline" title="Permanent link">&para;</a></h3>
 <ul>
+<li><strong>HuatuoGPT-Vision: Injecting Medical Visual Knowledge into Multimodal
+  LLMs at Scale</strong> — Chen et al., 2024.
+  <a href="https://arxiv.org/abs/2406.19280">arXiv:2406.19280</a> —
+  <strong>the current baseline.</strong> LLaVA-v1.5 architecture, Qwen2-7B backbone;
+  authors publish merged weights, bundled eval data, and a one-command
+  reproduction pipeline across six benchmarks.</li>
 <li><strong>LLaVA-Med: Training a Large Language-and-Vision Assistant for
   Biomedicine in One Day</strong> — Li et al., NeurIPS 2023.
-  <a href="https://arxiv.org/abs/2306.00890">arXiv:2306.00890</a></li>
+  <a href="https://arxiv.org/abs/2306.00890">arXiv:2306.00890</a> —
+  the original Week-1/Week-2 baseline; pivoted away from on May 21,
+  but the harness and reproduction findings are preserved.</li>
 <li><strong>LLaVA: Visual Instruction Tuning</strong> — Liu et al., NeurIPS 2023.
-  <a href="https://arxiv.org/abs/2304.08485">arXiv:2304.08485</a></li>
+  <a href="https://arxiv.org/abs/2304.08485">arXiv:2304.08485</a> —
+  upstream architecture that LLaVA-Med and HuatuoGPT-Vision (v1.5)
+  are both built on.</li>
 </ul>
 <h3 id="visual-token-pruning-the-actual-core-of-this-project">Visual token pruning (the actual core of this project)<a class="headerlink" href="#visual-token-pruning-the-actual-core-of-this-project" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Token Merging: Your ViT But Faster (ToMe)</strong> — Bolya et al.,
-  ICLR 2023 (notable top-5%). <a href="https://openreview.net/forum?id=JroZRaRw7Eu">OpenReview</a> —
+  ICLR 2023 (notable top-5%).
+  <a href="https://openreview.net/forum?id=JroZRaRw7Eu">OpenReview</a> —
   classic ViT-side token reduction; question-agnostic. <em>On reading list.</em></li>
 <li><strong>An Image is Worth 1/2 Tokens After Layer 2 (FastV)</strong> — Chen et al.,
   ECCV 2024 (Oral, top-2%).
@@ -1592,8 +1585,9 @@ Updated as I go.</p>
 </ul>
 <h3 id="added-day-18-may-27-2026-from-the-gridprune-fasp-design-work">Added Day 18 — May 27, 2026 (from the GridPrune + FASP design work)<a class="headerlink" href="#added-day-18-may-27-2026-from-the-gridprune-fasp-design-work" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>GridPrune: Grid-Aware Visual Token Pruning for Efficient
-  Vision-Language Models</strong> — Wang et al., 2025/ICCV.
+<li><strong>GridPrune: From "Where to Look" to "What to Select" in Visual
+  Token Pruning for MLLMs</strong> — Duan et al., arXiv November 2025.
+  <a href="https://arxiv.org/abs/2511.10081">arXiv:2511.10081</a> —
   General-VLM method for spatial-coverage-aware pruning. Divides
   visual tokens into a grid of zones, allocates a per-zone budget
   proportional to a fused (text-relevance + saliency) score, does
@@ -1604,6 +1598,7 @@ Updated as I go.</p>
   on LLaVA-1.5 hold up across 5 general benchmarks at 50-90% pruning.</li>
 <li><strong>FASP: Foreground-Aware Soft Pruning for Medical
   Vision-Language Models</strong> — Liu et al., 2024.
+  <em>Source link pending — locate published / arXiv version.</em>
   Medical-imaging-specific token-scoring primitive. Score every
   token by the L2-norm of its post-projector embedding; lowest
   ~30% are reliably background (black borders, uniform tissue).
@@ -1625,8 +1620,9 @@ Updated as I go.</p>
 </ul>
 <h3 id="added-day-17-may-26-2026-from-the-cosine-similarity-literature-survey">Added Day 17 — May 26, 2026 (from the cosine-similarity literature survey)<a class="headerlink" href="#added-day-17-may-26-2026-from-the-cosine-similarity-literature-survey" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>ZSPAPrune: Zero-Shot Prompt-Aware Visual Token Pruning for VLMs</strong>
-  — Zhang et al., arXiv October 2025.
+<li><strong>ZSPAPrune: Zero-Shot Prompt-Aware Token Pruning for Vision-Language
+  Models</strong> — Zhang et al., arXiv October 2025.
+  <a href="https://arxiv.org/abs/2510.17197">arXiv:2510.17197</a> —
   Uses <strong>the same mean-pooled question / cosine-similarity scoring
   as our QSim</strong> as its "relevance" phase, then adds a diversity
   selection phase that picks tokens maximizing dissimilarity to the
@@ -1635,35 +1631,41 @@ Updated as I go.</p>
   motivated directly by this paper.</li>
 <li><strong>ResPrune: Relevance-and-Smoothness Token Pruning</strong>
   — Li et al., 2026.
+  <em>Source link pending — locate published / arXiv version.</em>
   Evaluates exactly our scoring formula as their <em>Setting-3</em>
   ablation and reports it as the <strong>weakest of three</strong> formulations
   (Setting-1: max-similarity-per-visual-token across text tokens →
   98.4%; Setting-2: averaged-similarity → 98.1%; Setting-3:
   pooled-text cosine → 95.4%). The Tier-1 max-similarity follow-up
   is motivated by this paper directly.</li>
-<li><strong>FasterVLM: CLS-Attention-Based Visual Token Pruning for VLMs</strong>
-  — He et al., 2025.
+<li><strong>FasterVLM: [CLS] Attention is All You Need for Training-Free
+  Visual Token Pruning</strong> — Zhang et al., arXiv December 2024.
+  <a href="https://arxiv.org/abs/2412.01818">arXiv:2412.01818</a> —
   Text-agnostic; uses CLIP CLS attention as the scoring signal,
   prunes between vision encoder and LLM. Critiques in-LLM text-visual
   attention as inaccurate; relevant negative comparison for our
   text-aware angle.</li>
-<li><strong>VisionZip: Token Selection for Vision-Language Models</strong>
-  — Yang et al., 2025.
+<li><strong>VisionZip: Longer is Better but Not Necessary in Vision
+  Language Models</strong> — Yang et al., CVPR 2025.
+  <a href="https://arxiv.org/abs/2412.04467">arXiv:2412.04467</a> —
   Post-projector, pre-LLM pruning using CLS-attention. <strong>v2 of our
   patcher operates at the same insertion point as VisionZip.</strong></li>
 <li><strong>ReDiPrune: Text-Relevance and Diversity Pruning</strong>
   — 2025/2026 preprint.
+  <em>Source link pending — locate published / arXiv version.</em>
   Closest architectural neighbor to v2: text-relevance + diversity,
   post-projector, pre-LLM. Combines what ZSPAPrune does (relevance</li>
 <li>diversity) with the v2 insertion point.</li>
-<li><strong>HoloV: Holistic Visual Token Pruning</strong>
-  — October 2025.
+<li><strong>HoloV: Don't Just Chase "Highlighted Tokens" in MLLMs —
+  Revisiting Visual Holistic Context Retention</strong> — arXiv October 2025.
+  <a href="https://arxiv.org/abs/2510.02912">arXiv:2510.02912</a> —
   Identifies that attention-based pruning concentrates kept tokens
   in a few salient regions and <strong>loses global context</strong>. Direct
   critique of formulations like ours; motivates Tier-2 E
   (spatial-coherence-aware QSim) and Tier-1 A/C (diversity terms).</li>
-<li><strong>"When Token Pruning is Worse than Random"</strong>
-  — December 2025.
+<li><strong>When Token Pruning is Worse than Random: Understanding Visual
+  Token Information in VLLMs</strong> — arXiv December 2025.
+  <a href="https://arxiv.org/abs/2512.07580">arXiv:2512.07580</a> —
   Strong null result: in deep LLM layers, existing token pruning
   methods perform similarly or worse than random pruning. Doesn't
   say all pruning is useless — says the chosen <em>metric</em> often
@@ -1671,16 +1673,20 @@ Updated as I go.</p>
   rather than "the right 50%". <strong>Our random comparison floor at
   every keep_ratio is the experimental control that catches this
   regime.</strong></li>
-<li><strong>PDrop: Progressive Visual Token Drop in MLLMs</strong> — 2025.
+<li><strong>PyramidDrop (PDrop): Accelerating Your Large Vision-Language
+  Models via Pyramid Visual Redundancy Reduction</strong> — Xing et al.,
+  CVPR 2025. <a href="https://arxiv.org/abs/2410.17247">arXiv:2410.17247</a> —
   In-LLM pruning at multiple progressive layer depths.</li>
-<li><strong>PuMer: Prune-and-Merge Token Reduction for Efficient VL Models</strong>
-  — Cao et al., ACL 2023.
+<li><strong>PuMer: Pruning and Merging Tokens for Efficient Vision Language
+  Models</strong> — Cao et al., ACL 2023.
+  <a href="https://aclanthology.org/2023.acl-long.721/">ACL Anthology</a> —
   Text-informed pruning of irrelevant tokens + similarity-based
   merging of redundant ones, combined into a single end-to-end
   framework. The canonical "hybrid prune+merge" reference for our
   Tier-1 C experiment.</li>
 <li><strong>AIM: Adaptive Inference Merging for Multimodal LLMs</strong>
   — 2024-2025.
+  <em>Source link pending — locate published / arXiv version.</em>
   Per-sample decides how much to prune vs merge based on image
   information density. Homogeneous radiograph → aggressive
   pruning; busy histology slide → more merging.</li>
@@ -1689,6 +1695,7 @@ Updated as I go.</p>
 <ul>
 <li><strong>ViTAS: Visual Token Adaptive Selection for Medical VLMs</strong>
   — Ahmed et al., 2026.
+  <em>Source link pending — locate published / arXiv version.</em>
   MIMIC-CXR summarization: <em>"selectively focusing on pathology-
   relevant visual patches rather than full images yields
   substantially better performance — less but more relevant
@@ -1697,13 +1704,16 @@ Updated as I go.</p>
   imaging.</li>
 <li><strong>HEAL-MedVQA: Diagnosing Shortcut Learning in Medical VQA</strong>
   — 2025.
+  <em>Source link pending — locate published / arXiv version.</em>
   Diagnostic study showing current medical VLMs rely heavily on
   text-shortcut features, with visual grounding much weaker than
   accuracy numbers suggest. Motivates the Tier-3 G ablation
   (visual aphasia test).</li>
 <li>
-<p><strong>A Comprehensive Survey on Medical Visual Question Answering</strong>
-  — Lin et al., 2023.
+<p><strong>Medical Visual Question Answering: A Survey</strong>
+  — Lin et al., <em>Artificial Intelligence in Medicine</em> 143:102611, 2023.
+  <a href="https://doi.org/10.1016/j.artmed.2023.102611">doi.org/10.1016/j.artmed.2023.102611</a>
+  · <a href="https://arxiv.org/abs/2111.10056">arXiv:2111.10056</a> —
   Establishes the question-type taxonomy (modality / plane /
   anatomy / abnormality) and the localization property:
   <em>"the task needs to focus on a fine-grained scale because a
@@ -1716,63 +1726,87 @@ Updated as I go.</p>
 </li>
 </ul>
 <h3 id="medical-vqa-benchmarks">Medical VQA benchmarks<a class="headerlink" href="#medical-vqa-benchmarks" title="Permanent link">&para;</a></h3>
+<p>The six benchmarks bundled with HuatuoGPT-Vision's
+<a href="https://huggingface.co/datasets/FreedomIntelligence/Medical_Multimodal_Evaluation_Data"><code>Medical_Multimodal_Evaluation_Data</code></a>
+release — used as a unified evaluation suite for every pruning
+experiment on the HuatuoGPT-Vision-7B baseline.</p>
 <ul>
-<li><strong>VQA-RAD</strong> — Lau et al., 2018. Radiology question-answering dataset.</li>
-<li><strong>SLAKE</strong> — Liu et al., 2021. Bilingual medical VQA with semantic
-  labels.</li>
+<li><strong>VQA-RAD</strong> — Lau et al., 2018. Radiology question-answering
+  dataset.
+  <a href="https://www.nature.com/articles/sdata2018251">Nature Scientific Data</a> ·
+  <a href="https://huggingface.co/datasets/flaviagiammarino/vqa-rad">HuggingFace</a>.</li>
+<li><strong>SLAKE</strong> — Liu et al., ISBI 2021. Bilingual (English/Chinese)
+  medical VQA with semantic labels across multiple imaging modalities.
+  <a href="https://arxiv.org/abs/2102.09542">arXiv:2102.09542</a>.</li>
 <li><strong>PathVQA</strong> — He et al., 2020. Pathology visual question answering;
   adds a third imaging domain alongside radiology (VQA-RAD) and
-  general medical (SLAKE).</li>
+  general medical (SLAKE).
+  <a href="https://arxiv.org/abs/2003.10286">arXiv:2003.10286</a>.</li>
+<li><strong>PMC-VQA</strong> — Zhang et al., 2023. Large-scale medical VQA dataset
+  (227k QA pairs / 149k images) drawn from PubMed Central; covers
+  many modalities and diseases.
+  <a href="https://arxiv.org/abs/2305.10415">arXiv:2305.10415</a>.</li>
+<li><strong>OmniMedVQA</strong> — Hu et al., CVPR 2024. Large-scale comprehensive
+  evaluation benchmark assembled from 73 medical classification
+  datasets covering 12 imaging modalities and 20+ anatomical regions.
+  <a href="https://arxiv.org/abs/2402.09181">arXiv:2402.09181</a>.</li>
+<li><strong>MMMU (Health &amp; Medicine track)</strong> — Yue et al., CVPR 2024.
+  The medicine subset of MMMU's six-discipline benchmark; college-level
+  multimodal questions requiring expert knowledge.
+  <a href="https://arxiv.org/abs/2311.16502">arXiv:2311.16502</a>.</li>
 </ul>
 <h2 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h2>
 <ul>
+<li><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning">Leokuan0208/huatuo-llava-v15-med-pruning</a>
+  — <strong>this project's active evaluation harness and pruning code
+  on the HuatuoGPT-Vision-7B baseline.</strong> Houses the v2 patcher
+  (pre-LLM pruning), the {Random, QSim_mean, QSim_max, GridPrune,
+  FASP+GridPrune} method implementations, and the analysis pipeline.</li>
+<li><a href="https://github.com/FreedomIntelligence/HuatuoGPT-Vision">FreedomIntelligence/HuatuoGPT-Vision</a>
+  — upstream <strong>HuatuoGPT-Vision</strong> repo. Provides the merged 7B
+  weights via HuggingFace and the one-command <code>accelerate launch
+  eval.py</code> pipeline that reproduces paper Table 4 across six
+  benchmarks.</li>
+<li><a href="https://github.com/Leokuan0208/llava-med-pruning-v1">Leokuan0208/llava-med-pruning-v1</a>
+  — historical LLaVA-Med v1.0 evaluation harness (Week 1-2). Frozen
+  after the May 21 pivot; kept for the v1.0 reproduction numbers
+  and the kr=0.75 ablation result that motivated the early version
+  of the project's thesis.</li>
 <li><a href="https://github.com/Leokuan0208/llava-med-pruning">Leokuan0208/llava-med-pruning</a>
-  — <strong>this project's evaluation harness and pruning code.</strong> Separate
-  repo from the documentation site; the daily push of this repo is
-  linked from each <a href="../weekly/">weekly log</a> day page.</li>
-<li><a href="https://github.com/microsoft/LLaVA-Med">microsoft/LLaVA-Med</a> — the
-  baseline.</li>
-<li><a href="https://github.com/haotian-liu/LLaVA">haotian-liu/LLaVA</a> — upstream
-  LLaVA repo that LLaVA-Med is built on.</li>
+  — original LLaVA-Med v1.5 evaluation harness (Week 1). Houses the
+  E00 baseline row.</li>
+<li><a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning">Leokuan0208/Qwen-v25-vl-med-pruning</a>
+  — Qwen2.5-VL-7B sandbox repo (Week 3 Day 1). Frozen at
+  <code>c5ce256</code> after the May 25 pivot to HuatuoGPT-Vision; the
+  20/20 MCQ-letter compliance smoke test is preserved as an
+  artifact.</li>
+<li><a href="https://github.com/microsoft/LLaVA-Med">microsoft/LLaVA-Med</a> —
+  upstream LLaVA-Med (the Week 1-2 baseline).</li>
+<li><a href="https://github.com/haotian-liu/LLaVA">haotian-liu/LLaVA</a> —
+  upstream LLaVA (v1.5) — the architecture HuatuoGPT-Vision-7B
+  and LLaVA-Med v1.0 are both built on.</li>
 <li><a href="https://github.com/facebookresearch/ToMe">facebookresearch/ToMe</a> —
   reference implementation of token merging.</li>
 <li><a href="https://github.com/pkunlp-icler/FastV">pkunlp-icler/FastV</a> — FastV
   reference code; useful for seeing where in the LM to intervene.</li>
 </ul>
-<h2 id="datasets">Datasets<a class="headerlink" href="#datasets" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Dataset</th>
-<th>Domain</th>
-<th>Purpose in this project</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>VQA-RAD</td>
-<td>Radiology Q&amp;A</td>
-<td>Primary evaluation benchmark</td>
-</tr>
-<tr>
-<td>SLAKE</td>
-<td>Medical VQA</td>
-<td>Secondary evaluation benchmark</td>
-</tr>
-<tr>
-<td>PathVQA</td>
-<td>Pathology Q&amp;A</td>
-<td>Third evaluation benchmark — tests cross-domain generalisation</td>
-</tr>
-</tbody>
-</table>
 <h2 id="tools">Tools<a class="headerlink" href="#tools" title="Permanent link">&para;</a></h2>
 <ul>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.14 7.5A2.86 2.86 0 0 1 22 10.36v3.78A2.86 2.86 0 0 1 19.14 17H12c0 .39.32.96.71.96H17v1.68a2.86 2.86 0 0 1-2.86 2.86H9.86A2.86 2.86 0 0 1 7 19.64v-3.75a2.85 2.85 0 0 1 2.86-2.85h5.25a2.85 2.85 0 0 0 2.85-2.86V7.5zm-4.28 11.79c-.4 0-.72.3-.72.89s.32.71.72.71a.71.71 0 0 0 .71-.71c0-.59-.32-.89-.71-.89m-10-1.79A2.86 2.86 0 0 1 2 14.64v-3.78A2.86 2.86 0 0 1 4.86 8H12c0-.39-.32-.96-.71-.96H7V5.36A2.86 2.86 0 0 1 9.86 2.5h4.28A2.86 2.86 0 0 1 17 5.36v3.75a2.85 2.85 0 0 1-2.86 2.85H8.89a2.85 2.85 0 0 0-2.85 2.86v2.68zM9.14 5.71c.4 0 .72-.3.72-.89s-.32-.71-.72-.71c-.39 0-.71.12-.71.71s.32.89.71.89"/></svg></span> <strong>Python 3.10</strong> + <strong>Conda</strong> environments</li>
+<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.14 7.5A2.86 2.86 0 0 1 22 10.36v3.78A2.86 2.86 0 0 1 19.14 17H12c0 .39.32.96.71.96H17v1.68a2.86 2.86 0 0 1-2.86 2.86H9.86A2.86 2.86 0 0 1 7 19.64v-3.75a2.85 2.85 0 0 1 2.86-2.85h5.25a2.85 2.85 0 0 0 2.85-2.86V7.5zm-4.28 11.79c-.4 0-.72.3-.72.89s.32.71.72.71a.71.71 0 0 0 .71-.71c0-.59-.32-.89-.71-.89m-10-1.79A2.86 2.86 0 0 1 2 14.64v-3.78A2.86 2.86 0 0 1 4.86 8H12c0-.39-.32-.96-.71-.96H7V5.36A2.86 2.86 0 0 1 9.86 2.5h4.28A2.86 2.86 0 0 1 17 5.36v3.75a2.85 2.85 0 0 1-2.86 2.85H8.89a2.85 2.85 0 0 0-2.85 2.86v2.68zM9.14 5.71c.4 0 .72-.3.72-.89s-.32-.71-.72-.71c-.39 0-.71.12-.71.71s.32.89.71.89"/></svg></span> <strong>Python 3.10</strong> — bundled with the
+  NGC PyTorch 23.10 base image; all packages installed via <strong><code>pip3</code></strong>
+  directly into the container's system Python. No virtual environments,
+  no Conda. (Container isolation is enough; the throwaway-image-per-
+  rebuild workflow makes a second isolation layer unnecessary.)</li>
+<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.81 10.25c-.06-.04-.56-.43-1.64-.43-.28 0-.56.03-.84.08-.21-1.4-1.38-2.11-1.43-2.14l-.29-.17-.18.27c-.24.36-.43.77-.51 1.19-.2.8-.08 1.56.33 2.21-.49.28-1.29.35-1.46.35H2.62c-.34 0-.62.28-.62.63 0 1.15.18 2.3.58 3.38.45 1.19 1.13 2.07 2 2.61.98.6 2.59.94 4.42.94.79 0 1.61-.07 2.42-.22 1.12-.2 2.2-.59 3.19-1.16A8.3 8.3 0 0 0 16.78 16c1.05-1.17 1.67-2.5 2.12-3.65h.19c1.14 0 1.85-.46 2.24-.85.26-.24.45-.53.59-.87l.08-.24zm-17.96.99h1.76c.08 0 .16-.07.16-.16V9.5c0-.08-.07-.16-.16-.16H3.85c-.09 0-.16.07-.16.16v1.58c.01.09.07.16.16.16m2.43 0h1.76c.08 0 .16-.07.16-.16V9.5c0-.08-.07-.16-.16-.16H6.28c-.09 0-.16.07-.16.16v1.58c.01.09.07.16.16.16m2.47 0h1.75c.1 0 .17-.07.17-.16V9.5c0-.08-.06-.16-.17-.16H8.75c-.08 0-.15.07-.15.16v1.58c0 .09.06.16.15.16m2.44 0h1.77c.08 0 .15-.07.15-.16V9.5c0-.08-.06-.16-.15-.16h-1.77c-.08 0-.15.07-.15.16v1.58c0 .09.07.16.15.16M6.28 9h1.76c.08 0 .16-.09.16-.18V7.25c0-.09-.07-.16-.16-.16H6.28c-.09 0-.16.06-.16.16v1.57c.01.09.07.18.16.18m2.47 0h1.75c.1 0 .17-.09.17-.18V7.25c0-.09-.06-.16-.17-.16H8.75c-.08 0-.15.06-.15.16v1.57c0 .09.06.18.15.18m2.44 0h1.77c.08 0 .15-.09.15-.18V7.25c0-.09-.07-.16-.15-.16h-1.77c-.08 0-.15.06-.15.16v1.57c0 .09.07.18.15.18m0-2.28h1.77c.08 0 .15-.07.15-.16V5c0-.1-.07-.17-.15-.17h-1.77c-.08 0-.15.06-.15.17v1.56c0 .08.07.16.15.16m2.46 4.52h1.76c.09 0 .16-.07.16-.16V9.5c0-.08-.07-.16-.16-.16h-1.76c-.08 0-.15.07-.15.16v1.58c0 .09.07.16.15.16"/></svg></span> <strong>Docker</strong> (via HONGHU KUBERUN) — every dependency
+  pinned in the Dockerfile, rebuilt on KUBERUN when packages change.
+  See the <a href="../baseline/huatuo-vision/#the-dockerfile">HuatuoGPT-Vision baseline page</a>
+  for the active Dockerfile.</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 16.47V7.39l-6 4.54M2.22 9.19a.86.86 0 0 1-.02-1.15l1.2-1.11c.2-.18.69-.26 1.05 0l3.42 2.61 7.93-7.25c.32-.32.87-.45 1.5-.12l4 1.91c.36.21.7.54.7 1.15v13.5c0 .4-.29.83-.6 1l-4.4 2.1c-.32.13-.92.01-1.13-.2l-8.02-7.3-3.4 2.6c-.38.26-.85.19-1.05 0l-1.2-1.1c-.32-.33-.28-.87.05-1.2l3-2.7"/></svg></span> <strong>VS Code</strong> with the Python
   and Pylance extensions</li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> <strong>Git</strong> for version control (LLaVA-Med fork +
-  pruning project + this documentation repo)</li>
+<li>:material-jupyter: <strong>JupyterLab</strong> — the KUBERUN VM's launch interface;
+  used as an in-container terminal and file browser</li>
+<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> <strong>Git</strong> for version control (HuatuoGPT-Vision
+  pruning repo + frozen v1.0 harness + this documentation repo)</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6h16v10H4m16 2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4c-1.11 0-2 .89-2 2v10a2 2 0 0 0 2 2H0v2h24v-2z"/></svg></span> <strong>tmux</strong> for keeping long-running training and
   inference sessions alive over SSH</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m16 11.78 4.24-7.33 1.73 1-5.23 9.05-6.51-3.75L5.46 19H22v2H2V3h2v14.54L9.5 8z"/></svg></span> <strong>Weights &amp; Biases</strong> <em>(optional, decide in
