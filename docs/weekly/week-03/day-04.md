@@ -256,13 +256,18 @@ overnight:
   formalism is *zonal* pruning: divide the 576 patches into a 12×12
   grid of 2×2 zones (or 24×24 of 1×1, etc.), and select a
   zone-proportional budget within each zone. Published as
-  **GridPrune** (Wang et al., 2025) for general VLMs.
+  **GridPrune** (Duan et al., arXiv November 2025;
+  [arXiv:2511.10081](https://arxiv.org/abs/2511.10081)) for
+  general VLMs.
 - **Medical anatomy filtering** — exploit the high
   background-to-signal ratio of medical images. Score every token
   by L2-norm of its post-projector embedding; the lowest ~30% are
   almost always background (black borders, uniform soft tissue);
-  filter those out *before* any further scoring. Inspired by
-  **FASP** (Foreground-Aware Soft Pruning, Liu et al., 2024).
+  filter those out *before* any further scoring. We refer to this
+  as the **FASP** filter inside the codebase. Earlier notes here
+  cited "Foreground-Aware Soft Pruning, Liu et al. 2024" as the
+  source; the May 28 audit found no matching paper exists. Treat
+  FASP here as an in-project acronym.
 
 Combining both gives **FASP + GridPrune** — filter to anatomy
 tokens, partition the remaining set into spatial zones, allocate
@@ -318,13 +323,16 @@ needed `git add -f`. Three commits today:
 
 ## Phase 6 — FASP + GridPrune: design
 
-The literature scan during the morning surfaced two related general-VLM
-methods and one medical-imaging primitive. **GridPrune** (Wang et al.,
-2025; ICCV) is the strongest published general-VLM method for
-spatial-coverage pruning. **FASP** (Foreground-Aware Soft Pruning,
-Liu et al., 2024) is the medical-imaging primitive for anatomy
-filtering. Composing them yields a new method that addresses both
-of QSim's failure modes (diversity collapse + scoring-space brittleness)
+The literature scan during the morning surfaced one related
+general-VLM method and one medical-imaging primitive. **GridPrune**
+(Duan et al., arXiv November 2025; arXiv:2511.10081) is the
+strongest published general-VLM method for spatial-coverage pruning.
+**FASP** is our in-project name for the L2-norm anatomy filter
+(earlier notes attributed this to a "Foreground-Aware Soft Pruning,
+Liu et al. 2024" paper which the May 28 audit found does not exist
+— the technique itself is a single tensor op and stands on its own).
+Composing them yields a new method that addresses both of QSim's
+failure modes (diversity collapse + scoring-space brittleness)
 at once.
 
 The five-stage selection pipeline:
@@ -364,10 +372,11 @@ Why this design, in three parts:
 **Why FASP first.** Background tokens dominate medical images
 (black margins, uniform tissue) and dilute every downstream
 ranking. The L2-norm signal is cheap (no extra compute) and
-medical-imaging-tested (Liu et al. 2024 on similar single-image
-medical VQA). Filtering the bottom 30% by norm typically removes
-~170 background tokens before any of the more expensive scoring
-happens.
+defensible as a foreground signal on medical imagery (high-norm
+post-projector embeddings track structured tissue rather than
+uniform background). Filtering the bottom 30% by norm typically
+removes ~170 background tokens before any of the more expensive
+scoring happens.
 
 **Why zoning second.** The diversity-collapse failure mode is
 *structural*: a global top-K on any individual-token score will
@@ -419,7 +428,7 @@ total. Will finish by tomorrow morning.
 | Method | What it adds |
 |---|---|
 | **Random** | Re-run from May 26 with the new patcher infrastructure that decomposes latency into prune/prefill/decode. Yesterday's random and qsim runs only have *total* latency. Tonight's random run produces phase-decomposed numbers for fair latency comparison with GridPrune + FASP+GridPrune. |
-| **GridPrune** | Vanilla zonal-budget + fused score selection. Faithful to Wang et al. 2025. Baseline for what "coverage-aware general-VLM pruning" delivers on medical benchmarks. |
+| **GridPrune** | Vanilla zonal-budget + fused score selection. Faithful to Duan et al., arXiv:2511.10081. Baseline for what "coverage-aware general-VLM pruning" delivers on medical benchmarks. |
 | **FASP+GridPrune** | Our composed method. Anatomy filter → zonal budget → local top-K. The first medical-domain-specific entry. |
 
 The random re-run also serves as a **drift check**: the random

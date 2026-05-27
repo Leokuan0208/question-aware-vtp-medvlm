@@ -512,14 +512,15 @@ in two recent papers as a baseline.** The taxonomy:
 **Where pruning happens.** The field has converged on three insertion
 points:
 
-1. **Inside the vision encoder.** ToMe, LLaVA-PruMerge, EvoPrune —
-   merge/drop tokens before they leave the ViT. Intra-visual signal
-   only.
-2. **Between vision encoder and LLM (post-projector, pre-LLM).**
+1. **Inside the vision encoder, or between encoder and projector.**
+   ToMe, LLaVA-PruMerge, EvoPrune (inside the encoder); ReDiPrune
+   (An Yu et al., arXiv:2603.24680) inserts between encoder output
+   and projector. Operates on rich pre-projection features; ReDiPrune
+   is the recent close-in-spirit neighbor to v2 (same scoring
+   signals — text-relevance + diversity — at a different stage).
+2. **Between projector and LLM (post-projector, pre-LLM).**
    FasterVLM, VisionZip (CLS attention), LLaMA-VID (Q-Former), 
-   LLaVA-Mini (fuse-into-text). **Our v2 lives here.** ReDiPrune is
-   the closest recent architectural neighbor: text-relevance +
-   diversity, post-projector, pre-LLM.
+   LLaVA-Mini (fuse-into-text). **Our v2 lives here.**
 3. **Inside the LLM trunk.** FastV (after layer 2), SparseVLM
    (text-aware via decoder attention), PDrop (progressive), HoloV
    (later layers). **Our v1 lived here.**
@@ -632,11 +633,13 @@ method choice. The three most important:
 
 - **High background-to-signal ratio.** Chest X-rays are mostly
   black borders + uniform soft tissue; pathology slides have vast
-  stretches of stroma punctuated by clusters of interest. ViTAS
-  (Ahmed et al., 2026) on MIMIC-CXR: *"less but more relevant visual
-  input is not only sufficient but superior."* **Implication: the
-  redundancy ceiling is higher than general VQA — aggressive
-  compression should work better here.**
+  stretches of stroma punctuated by clusters of interest. This is
+  widely-observed in medical-imaging analysis. Earlier notes here
+  attributed a specific quote on MIMIC-CXR to "ViTAS (Ahmed et al.,
+  2026)"; the May 28 paper audit found no such paper exists, and
+  the attribution has been removed. **Implication: the redundancy
+  ceiling is higher than general VQA — aggressive compression
+  should work better here.**
 - **Lesions are small and localized.** Medical-VQA survey (Lin et
   al., 2023): *"the task needs to focus on a fine-grained scale
   because a lesion is microscopic."* **Implication: drop the 3

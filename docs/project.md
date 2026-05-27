@@ -72,6 +72,7 @@ whether the shape of the trade-off actually looks like this.
 | [Grounding-Aware Token Pruning (GAP)](https://arxiv.org/abs/2506.21873) | Chien et al. | arXiv 2025 (preprint) | National Tsing Hua University | Position-ID re-alignment fix after token drop — critical correction for RoPE-based VLMs |
 | [MedPruner: Training-Free Hierarchical Token Pruning for Efficient 3D Medical Image Understanding in VLMs](https://arxiv.org/abs/2603.11625) | Liu et al. | arXiv 2026 (preprint) | CUHK, Westlake University (+ collaborators) | Closest medical-domain prior art; 3D-focused but uses attention-based selection in a Medical VLM |
 | [SwiftVLM: Efficient Vision-Language Model Inference via Cross-Layer Token Bypass](https://arxiv.org/abs/2602.03134) | Qian et al. | arXiv 2026 (preprint, Feb 2026) | Tsinghua University | Training-free pruning with a **bypass** paradigm — unselected tokens forwarded to later layers for re-evaluation rather than committed-pruned at shallow layers. Directly relevant to our open question of "where in the LLaMA stack to prune" |
+| [GridPrune: From "Where to Look" to "What to Select" in Visual Token Pruning for MLLMs](https://arxiv.org/abs/2511.10081) | Duan et al. | arXiv November 2025 (preprint) | — | Spatial-coverage-aware pruning: divide tokens into zones, allocate per-zone budget by fused (text-relevance + saliency) score, do local top-K. Tested in our E3 sweep as a coverage-aware response to Phase 4's diversity-collapse diagnosis |
 | _Add as you read._ |  |  |  |  |
 
 The key gap: most prior work prunes tokens **without** reference to
@@ -220,10 +221,12 @@ that should shape method choice:
 - **High background-to-signal ratio.** Chest X-rays are mostly
   black borders + uniform soft tissue; pathology slides have
   vast stretches of stroma punctuated by clusters of interest.
-  ViTAS (Ahmed et al., 2026) on MIMIC-CXR: *"less but more relevant
-  visual input is not only sufficient but superior."* **Implication:
-  the redundancy ceiling is higher than general VQA — aggressive
-  compression should work better here.**
+  This is widely-observed in medical-imaging analysis, though
+  earlier notes here attributed a specific quote to a
+  "ViTAS (Ahmed et al., 2026)" paper that was found on May 28
+  audit not to exist. **Implication: the redundancy ceiling is
+  higher than general VQA — aggressive compression should work
+  better here.**
 - **Lesions are small and localized.** Medical-VQA survey (Lin et
   al., 2023): *"the task needs to focus on a fine-grained scale
   because a lesion is microscopic."* **Implication: drop the 3
@@ -259,7 +262,8 @@ ruled out reduction-operator fixes:
   result doesn't transfer to our setting (different base model,
   different benchmarks, different pruning location).
 - **B. Coverage-aware selection** (newly promoted to top of Tier 1
-  after Day 18's diagnosis). **GridPrune** (Wang et al. 2025)
+  after Day 18's diagnosis). **GridPrune** (Duan et al., arXiv
+  November 2025; [arXiv:2511.10081](https://arxiv.org/abs/2511.10081))
   is the strongest published instance — divides visual tokens into
   spatial zones, allocates per-zone budget proportional to a fused
   text-relevance + saliency score, does local top-K within each
