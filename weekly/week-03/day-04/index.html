@@ -1,0 +1,2645 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.">
+      
+      
+        <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
+      
+      
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-03/day-04/">
+      
+      
+        <link rel="prev" href="../day-03/">
+      
+      
+        <link rel="next" href="../../../bugs/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Day 4 — Wednesday, May 27, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-4-wednesday-may-27-2026" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Question-Aware Visual Token Pruning for Medical VLMs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 4 — Wednesday, May 27, 2026
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../project/" class="md-tabs__link">
+        
+  
+    
+  
+  Project Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../baseline/" class="md-tabs__link">
+          
+  
+    
+  
+  Baseline
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../experiments/" class="md-tabs__link">
+        
+  
+    
+  
+  Experiments
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+    
+  
+  Weekly Log
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../bugs/" class="md-tabs__link">
+        
+  
+    
+  
+  Bugs & Issues
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../resources/" class="md-tabs__link">
+        
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Question-Aware Visual Token Pruning for Medical VLMs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../baseline/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Baseline
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Baseline
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/huatuo-vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HuatuoGPT-Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/qwen25-vl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Qwen2.5-VL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/llava-med/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LLaVA-Med
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../experiments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Experiments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Weekly Log
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Weekly Log
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-01/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Week 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 10, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 11, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 12, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 13, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 14, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-06/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-07/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-02/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 18, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 19, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 20, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 21, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 3
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Week 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 24, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 25, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 26, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 27, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 27, 2026
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-morning-analysis-of-the-v2-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Morning analysis of the v2 sweep
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1 — Morning analysis of the v2 sweep">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      The numbers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-reading-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — Reading the result
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2 — Reading the result">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#random-beats-qsim-at-every-keep-ratio-and-the-gap-grows-as-kr-drops" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random beats QSim at every keep-ratio, and the gap grows as kr drops
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-cells-where-qsim-does-beat-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two cells where QSim does beat baseline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-benchmark-with-the-worst-qsim-collapse-is-mmmu" class="md-nav__link">
+    <span class="md-ellipsis">
+      The benchmark with the worst QSim collapse is MMMU
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-latency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — Latency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-the-qsim_max-ablation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — The qsim_max ablation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4 — The qsim_max ablation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-diversity-collapse-hypothesis-got-stronger-not-weaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      The diversity-collapse hypothesis got stronger, not weaker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-isnt-mean-vs-max-the-problem-is-the-scoring-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      The problem isn't mean-vs-max. The problem is the scoring space.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointing-the-next-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pointing the next experiment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-sweep-results-pushed-three-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — Sweep results pushed (three commits)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-fasp-gridprune-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — FASP + GridPrune: design
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-tonights-overnight-12-runs-3-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Tonight's overnight: 12 runs, 3 methods
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-medpruner-the-other-paper" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — MedPruner: the other paper
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow-may-28-day-19-week-3-day-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow (May 28, Day 19 / Week 3 Day 5)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bugs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bugs & Issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-morning-analysis-of-the-v2-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Morning analysis of the v2 sweep
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1 — Morning analysis of the v2 sweep">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      The numbers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-reading-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — Reading the result
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2 — Reading the result">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#random-beats-qsim-at-every-keep-ratio-and-the-gap-grows-as-kr-drops" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random beats QSim at every keep-ratio, and the gap grows as kr drops
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-cells-where-qsim-does-beat-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two cells where QSim does beat baseline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-benchmark-with-the-worst-qsim-collapse-is-mmmu" class="md-nav__link">
+    <span class="md-ellipsis">
+      The benchmark with the worst QSim collapse is MMMU
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-latency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — Latency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-the-qsim_max-ablation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — The qsim_max ablation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4 — The qsim_max ablation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-diversity-collapse-hypothesis-got-stronger-not-weaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      The diversity-collapse hypothesis got stronger, not weaker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-isnt-mean-vs-max-the-problem-is-the-scoring-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      The problem isn't mean-vs-max. The problem is the scoring space.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointing-the-next-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pointing the next experiment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-sweep-results-pushed-three-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — Sweep results pushed (three commits)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-fasp-gridprune-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — FASP + GridPrune: design
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-tonights-overnight-12-runs-3-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Tonight's overnight: 12 runs, 3 methods
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-medpruner-the-other-paper" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — MedPruner: the other paper
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow-may-28-day-19-week-3-day-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow (May 28, Day 19 / Week 3 Day 5)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-03/day-04.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="day-4-wednesday-may-27-2026">Day 4 — Wednesday, May 27, 2026<a class="headerlink" href="#day-4-wednesday-may-27-2026" title="Permanent link">&para;</a></h1>
+<p><a href="../">← Back to Week 3 overview</a></p>
+<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature) → closing out · Week 3,
+Day 4 · <strong>Day 18 of the project</strong></p>
+<hr />
+<p>An analysis-and-pivot day. Came in to crunch yesterday's
+<a href="../day-03/#phase-9-v2-sweep-completes-results-pushed">v2 sweep</a>
+into a proper table + Pareto plots, found a result that's the
+<em>opposite</em> of what the central thesis predicted, ran a same-day
+follow-up ablation that ruled out the obvious cause, and ended the
+day with a concrete design and code for two new methods queued for
+the overnight sweep. The headline finding: <strong>mean-pooled QSim is
+uniformly worse than Random pruning at every keep-ratio on
+HuatuoGPT-Vision-7B</strong>, and the gap <em>grows</em> as pruning becomes more
+aggressive. The follow-up ablation that ran today (max-reduction
+QSim) confirmed the failure mode is structural to text-only scoring,
+not a quirk of the reduction operator. The lesson: cosine-similarity
+on pre-LLM embeddings doesn't track what the LLM actually needs.</p>
+<p>Three commits pushed today to <code>huatuo-llava-v15-med-pruning</code>. A
+<code>.gitignore</code> tightening so future sweep commits don't need <code>-f</code>,
+the May 27 qsim_max sweep results (4 runs), and the full analysis
+pipeline (script + tables + 3 Pareto plots).</p>
+<hr />
+<h2 id="phase-1-morning-analysis-of-the-v2-sweep">Phase 1 — Morning analysis of the v2 sweep<a class="headerlink" href="#phase-1-morning-analysis-of-the-v2-sweep" title="Permanent link">&para;</a></h2>
+<p>Plan coming in (set in
+<a href="../day-03/#plan-for-tomorrow-may-27-day-18-week-3-day-4">Day 3's "Plan for tomorrow"</a>):
+pull the 8 score files into a proper table with deltas vs the
+0.6787 baseline, plot per-benchmark Pareto curves, write up E2 on
+the <a href="../../../experiments/">Experiments page</a>.</p>
+<p>The first task was reconciling the JSON schema. Each run produces
+<code>__scores.json</code> (per-benchmark accuracy) and <code>__latency_summary.json</code>
+(p50/p95/mean latency, GPU peak memory, post-prune token count).
+The scores file uses slightly-different keys than display labels —
+<code>"VQA-RAD_test"</code>, <code>"MMMU_Medical_Validation"</code>, <code>"OmniMedVQA"</code>, and
+the total under the cheerfully verbose key
+<code>"The total score for multiple-choice questions"</code>. So the analysis
+script needed an alias table to resolve display labels.</p>
+<details class="note">
+<summary>Why this took three iterations to get right</summary>
+<p>First pass: hardcoded the keys based on what I'd seen in the
+May 25 paper-reproduction output. Second pass: discovered the
+keys had been renamed in the v2 sweep output (the eval pipeline
+sets the total key dynamically based on a config string).
+Third pass: extended the alias dict to handle both. The analysis
+script now prints the discovered keys at the top of stdout so
+any future schema drift gets surfaced loudly rather than
+silently. Lesson: schema discipline isn't optional for tools
+that have to be re-run weeks later.</p>
+</details>
+<h3 id="the-numbers">The numbers<a class="headerlink" href="#the-numbers" title="Permanent link">&para;</a></h3>
+<p>The sweep laid out against the paper-reproduction baseline
+(kr=1.0, total 0.6787), with deltas in pts vs baseline:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">K</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: right;">total</th>
+<th style="text-align: right;">VQA-RAD</th>
+<th style="text-align: right;">SLAKE</th>
+<th style="text-align: right;">PathVQA</th>
+<th style="text-align: right;">PMC-VQA</th>
+<th style="text-align: right;">OmniMed</th>
+<th style="text-align: right;">MMMU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: left;">baseline</td>
+<td style="text-align: right;"><strong>0.6787</strong></td>
+<td style="text-align: right;">0.6135</td>
+<td style="text-align: right;">0.7644</td>
+<td style="text-align: right;">0.5767</td>
+<td style="text-align: right;">0.5420</td>
+<td style="text-align: right;">0.7346</td>
+<td style="text-align: right;">0.5034</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: left;">qsim</td>
+<td style="text-align: right;">0.6662 (−1.25)</td>
+<td style="text-align: right;"><strong>0.6175 (+0.40)</strong></td>
+<td style="text-align: right;">0.7572 (−0.72)</td>
+<td style="text-align: right;">0.5720 (−0.47)</td>
+<td style="text-align: right;">0.4970 (−4.50)</td>
+<td style="text-align: right;">0.7253 (−0.93)</td>
+<td style="text-align: right;">0.4759 (−2.75)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: left;">random</td>
+<td style="text-align: right;">0.6746 (−0.41)</td>
+<td style="text-align: right;">0.6096 (−0.39)</td>
+<td style="text-align: right;">0.7716 (+0.72)</td>
+<td style="text-align: right;">0.5696 (−0.71)</td>
+<td style="text-align: right;">0.5330 (−0.90)</td>
+<td style="text-align: right;">0.7318 (−0.28)</td>
+<td style="text-align: right;">0.5034 (±0)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: left;">qsim</td>
+<td style="text-align: right;">0.6538 (−2.49)</td>
+<td style="text-align: right;">0.5697 (−4.38)</td>
+<td style="text-align: right;"><strong>0.7764 (+1.20)</strong></td>
+<td style="text-align: right;">0.5595 (−1.72)</td>
+<td style="text-align: right;">0.4880 (−5.40)</td>
+<td style="text-align: right;">0.7118 (−2.28)</td>
+<td style="text-align: right;">0.4759 (−2.75)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: left;">random</td>
+<td style="text-align: right;">0.6730 (−0.57)</td>
+<td style="text-align: right;">0.5896 (−2.39)</td>
+<td style="text-align: right;">0.7572 (−0.72)</td>
+<td style="text-align: right;">0.5812 (+0.45)</td>
+<td style="text-align: right;">0.5235 (−1.85)</td>
+<td style="text-align: right;">0.7284 (−0.62)</td>
+<td style="text-align: right;">0.5103 (+0.69)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: left;">qsim</td>
+<td style="text-align: right;">0.6293 (−4.94)</td>
+<td style="text-align: right;">0.5657 (−4.78)</td>
+<td style="text-align: right;">0.7572 (−0.72)</td>
+<td style="text-align: right;">0.5509 (−2.58)</td>
+<td style="text-align: right;">0.4685 (−7.35)</td>
+<td style="text-align: right;">0.6807 (−5.39)</td>
+<td style="text-align: right;">0.4621 (−4.13)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: left;">random</td>
+<td style="text-align: right;">0.6570 (−2.17)</td>
+<td style="text-align: right;">0.5697 (−4.38)</td>
+<td style="text-align: right;">0.7212 (−4.32)</td>
+<td style="text-align: right;">0.5764 (−0.03)</td>
+<td style="text-align: right;">0.4925 (−4.95)</td>
+<td style="text-align: right;">0.7122 (−2.24)</td>
+<td style="text-align: right;">0.5241 (+2.07)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: left;">qsim</td>
+<td style="text-align: right;">0.6046 (−7.41)</td>
+<td style="text-align: right;">0.5498 (−6.37)</td>
+<td style="text-align: right;">0.7212 (−4.32)</td>
+<td style="text-align: right;">0.5452 (−3.15)</td>
+<td style="text-align: right;">0.4525 (−8.95)</td>
+<td style="text-align: right;">0.6485 (−8.61)</td>
+<td style="text-align: right;">0.4690 (−3.44)</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: left;">random</td>
+<td style="text-align: right;">0.6357 (−4.30)</td>
+<td style="text-align: right;">0.5538 (−5.97)</td>
+<td style="text-align: right;">0.7404 (−2.40)</td>
+<td style="text-align: right;">0.5699 (−0.68)</td>
+<td style="text-align: right;">0.4595 (−8.25)</td>
+<td style="text-align: right;">0.6870 (−4.76)</td>
+<td style="text-align: right;">0.4966 (−0.68)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="phase-2-reading-the-result">Phase 2 — Reading the result<a class="headerlink" href="#phase-2-reading-the-result" title="Permanent link">&para;</a></h2>
+<p>Three observations, ordered by importance.</p>
+<h3 id="random-beats-qsim-at-every-keep-ratio-and-the-gap-grows-as-kr-drops">Random beats QSim at every keep-ratio, and the gap grows as kr drops<a class="headerlink" href="#random-beats-qsim-at-every-keep-ratio-and-the-gap-grows-as-kr-drops" title="Permanent link">&para;</a></h3>
+<p>The total-score gap, Random − QSim:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">K</th>
+<th style="text-align: right;">Random − QSim</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">+0.84 pts</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">+1.92 pts</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">+2.77 pts</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">+3.11 pts</td>
+</tr>
+</tbody>
+</table>
+<p>This is the <em>opposite</em> of what the central thesis predicted. The
+project's hypothesis was that question-awareness would matter
+<em>more</em> as you prune more aggressively — because at high pruning
+you can only afford to keep the question-relevant tokens, so a
+smart selector should pull away from random. What we see instead
+is QSim's <em>disadvantage</em> growing monotonically with pruning
+aggressiveness. At kr=0.10, naive mean-pooled question-similarity
+is 3.1 points worse than picking tokens uniformly at random. That's
+a real signal, not noise.</p>
+<p>Two plausible mechanisms, both flagged in
+<a href="../day-03/#phase-8-two-literature-surveys-during-the-sweep">yesterday's literature survey</a>:</p>
+<p>The first is <strong>diversity collapse</strong>. Random pruning preserves
+spatial coverage of the image — at kr=0.10 you keep ~10% of tokens
+uniformly scattered, so every region of the image is represented
+somewhere. QSim with mean-pooled cosine ranks all tokens by
+similarity to <em>one</em> summary vector of the question; the top-K
+clusters in whatever sub-region happens to be most semantically
+aligned with that vector. As K shrinks, the kept tokens become an
+increasingly narrow patch. If the answer requires comparing two
+regions of the image (which medical VQA frequently does — <em>"is
+there abnormality in </em><em>both</em><em> lungs"</em>), QSim is structurally
+incapable of doing that.</p>
+<p>The second is <strong>mean-pool coarseness</strong>. Mean-pooling question
+tokens throws away which words are doing the load-bearing work for
+retrieval. <em>"Is the heart enlarged?"</em> mean-pooled is roughly an
+embedding of <em>"heart-ish anatomy stuff"</em> — but the answer-
+determining word is <em>"enlarged"</em>. A max-similarity scorer (per-token
+cosine, take the max over question tokens) preserves which question
+token did the matching for each visual token; that's much more
+discriminative in principle.</p>
+<p>The random-baseline experimental control is exactly what surfaced
+this. Without it, the result <em>"QSim drops only 7.4 pts at kr=0.10"</em>
+might have read as <em>"pruning works."</em> With Random as the floor, the
+result is <em>"QSim doesn't help — it actively hurts."</em></p>
+<h3 id="two-cells-where-qsim-does-beat-baseline">Two cells where QSim does beat baseline<a class="headerlink" href="#two-cells-where-qsim-does-beat-baseline" title="Permanent link">&para;</a></h3>
+<p>VQA-RAD at kr=0.75 (61.75 vs 61.35 baseline = <strong>+0.40</strong>) and
+SLAKE at kr=0.50 (77.64 vs 76.44 = <strong>+1.20</strong>). The SLAKE one is
+the more interesting datapoint: keeping only half the visual
+tokens, QSim does +1.2 better than the unpruned model. Both are
+small (close to decoding noise on stochastic generation), and
+neither survives at lower keep-ratios. The right reading is that
+mean-pooled QSim has <em>some</em> signal on low-pruning, anatomy-heavy
+benchmarks (SLAKE is mostly clean radiology with well-localized
+targets), but it can't be sustained as kr drops.</p>
+<h3 id="the-benchmark-with-the-worst-qsim-collapse-is-mmmu">The benchmark with the worst QSim collapse is MMMU<a class="headerlink" href="#the-benchmark-with-the-worst-qsim-collapse-is-mmmu" title="Permanent link">&para;</a></h3>
+<p>QSim drops MMMU more than Random at every kr. At kr=0.25, the gap
+is 6.20 points (QSim 46.21 vs Random 52.41 — Random actually
+<em>beats baseline</em> by 2.07 there). MMMU is the
+most-diverse-image-content benchmark in the suite (general medical
+images, not radiology-focused); diversity collapse should hurt
+most where the image content is most heterogeneous, and that's
+what we see.</p>
+<h2 id="phase-3-latency">Phase 3 — Latency<a class="headerlink" href="#phase-3-latency" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">K</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: right;">Mean (ms)</th>
+<th style="text-align: right;">p50 (ms)</th>
+<th style="text-align: right;">p95 (ms)</th>
+<th style="text-align: right;">GPU peak (MB)</th>
+<th style="text-align: right;">Tokens kept</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: left;">qsim</td>
+<td style="text-align: right;">150.2</td>
+<td style="text-align: right;">116.8</td>
+<td style="text-align: right;">348.5</td>
+<td style="text-align: right;">17,446</td>
+<td style="text-align: right;">432</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: left;">random</td>
+<td style="text-align: right;">150.1</td>
+<td style="text-align: right;">116.8</td>
+<td style="text-align: right;">346.6</td>
+<td style="text-align: right;">17,446</td>
+<td style="text-align: right;">432</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: left;">qsim</td>
+<td style="text-align: right;">135.6</td>
+<td style="text-align: right;">105.7</td>
+<td style="text-align: right;">309.7</td>
+<td style="text-align: right;">17,312</td>
+<td style="text-align: right;">288</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: left;">random</td>
+<td style="text-align: right;">143.7</td>
+<td style="text-align: right;">109.3</td>
+<td style="text-align: right;">327.8</td>
+<td style="text-align: right;">17,312</td>
+<td style="text-align: right;">288</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: left;">qsim</td>
+<td style="text-align: right;">132.0</td>
+<td style="text-align: right;">96.7</td>
+<td style="text-align: right;">310.9</td>
+<td style="text-align: right;">17,178</td>
+<td style="text-align: right;">144</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: left;">random</td>
+<td style="text-align: right;">122.5</td>
+<td style="text-align: right;">93.2</td>
+<td style="text-align: right;">280.0</td>
+<td style="text-align: right;">17,178</td>
+<td style="text-align: right;">144</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: left;">qsim</td>
+<td style="text-align: right;">129.5</td>
+<td style="text-align: right;">96.9</td>
+<td style="text-align: right;">298.2</td>
+<td style="text-align: right;">17,097</td>
+<td style="text-align: right;">58</td>
+</tr>
+<tr>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: left;">random</td>
+<td style="text-align: right;">125.7</td>
+<td style="text-align: right;">94.8</td>
+<td style="text-align: right;">282.9</td>
+<td style="text-align: right;">17,097</td>
+<td style="text-align: right;">58</td>
+</tr>
+</tbody>
+</table>
+<p>Three things worth pulling out.</p>
+<p>The <code>visual_post_prune</code> column confirms the patcher does what it
+says — 58 / 144 / 288 / 432 tokens kept maps exactly to
+<code>floor(kr × 576)</code> for the LLaVA-v1.5 vision tower's 576-token
+output. So unlike the May 25 no-op sweep, this is real pruning.</p>
+<p>Mean latency drops from 150ms at kr=0.75 to ~127ms at kr=0.10
+(about <strong>15% faster</strong> end-to-end). That's the speedup envelope.
+It's smaller than you'd hope for <em>"prune 90% of visual tokens"</em> —
+because the visual sequence is only ~576 of a much longer total
+context that also includes the question, system prompt, and the
+generated answer tokens; the LLM forward cost over those non-visual
+tokens isn't affected by pruning. Real speedup would scale better
+on tasks with shorter text inputs.</p>
+<p>QSim is a few ms slower than Random at most kr (the cosine-similarity
+compute overhead) — at kr=0.50 the inequality flips (Random 143.7 vs
+QSim 135.6), but that's almost certainly KUBERUN single-seed noise
+on a shared host. <strong>The headline: Random is Pareto-dominant.</strong> It
+already beat QSim on accuracy at every kr; it also beats QSim on
+mean latency at 3 of 4 kr (and ties at kr=0.75). Naive mean-pooled
+QSim is worse than random on both axes.</p>
+<h2 id="phase-4-the-qsim_max-ablation">Phase 4 — The qsim_max ablation<a class="headerlink" href="#phase-4-the-qsim_max-ablation" title="Permanent link">&para;</a></h2>
+<p>The diversity-collapse hypothesis from yesterday's literature
+survey predicted that <strong>max-similarity scoring</strong> (per-token cosine,
+max over question tokens) would beat mean-pooled QSim by preserving
+which question token did the matching for each visual token.
+ResPrune's published ablation found their <em>Setting-1</em> (max) winning
+by ~3 pts over <em>Setting-3</em> (our mean-pool formulation).</p>
+<p>We had compute available — the morning's analysis ran in 30
+minutes; the GPU sat idle the rest of the morning. Same-day
+follow-up: launched a 4-run qsim_max sweep at the same keep-ratios.
+This took about 5 hours and landed in the early afternoon. <strong>The
+result:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">K</th>
+<th style="text-align: right;">Random</th>
+<th style="text-align: right;">QSim mean (yesterday)</th>
+<th style="text-align: right;"><strong>QSim max (today)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0.6746 (−0.41)</td>
+<td style="text-align: right;">0.6662 (−1.25)</td>
+<td style="text-align: right;"><strong>0.6504 (−2.83)</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.6730 (−0.57)</td>
+<td style="text-align: right;">0.6538 (−2.49)</td>
+<td style="text-align: right;"><strong>0.6348 (−4.39)</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.6570 (−2.17)</td>
+<td style="text-align: right;">0.6293 (−4.94)</td>
+<td style="text-align: right;"><strong>0.6113 (−6.74)</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.6357 (−4.30)</td>
+<td style="text-align: right;">0.6046 (−7.41)</td>
+<td style="text-align: right;"><strong>0.5844 (−9.43)</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The third outcome.</strong> Max-sim is uniformly worse than mean-sim,
+which is uniformly worse than Random. No exceptions, no crossovers
+— the ranking holds at every keep-ratio on the total score.
+Max-sim is now 2.0–2.5 pts below mean-sim at every kr, and
+2.4–5.1 pts below Random.</p>
+<p>This is genuinely informative — more informative than either of
+the other two possible outcomes (max ≈ mean → noise-dominated;
+max &gt; mean → diversity matters but mean-pool was the problem). The
+outcome we actually got says something stronger:</p>
+<h3 id="the-diversity-collapse-hypothesis-got-stronger-not-weaker">The diversity-collapse hypothesis got <em>stronger</em>, not weaker<a class="headerlink" href="#the-diversity-collapse-hypothesis-got-stronger-not-weaker" title="Permanent link">&para;</a></h3>
+<p>I'd floated yesterday that max-sim might <em>help</em> by preserving
+which question token did the matching for each visual token. The
+opposite happened: by removing the mean-pool smoothing, every
+visual token is now ranked by its single best match against <em>one</em>
+question token. That makes selection even more concentrated —
+every kept token "won" against the same most-discriminative
+question word, so they pile up around the same image region. The
+mean-pool was acting as a weak diversity regularizer. Removing
+it made things worse.</p>
+<h3 id="the-problem-isnt-mean-vs-max-the-problem-is-the-scoring-space">The problem isn't mean-vs-max. The problem is the scoring space.<a class="headerlink" href="#the-problem-isnt-mean-vs-max-the-problem-is-the-scoring-space" title="Permanent link">&para;</a></h3>
+<p>Both reductions are doing the same thing in spirit — ranking
+visual tokens by lexical-semantic similarity to question tokens in
+the projected embedding space, before the LLM has seen anything.
+But the LLM doesn't care which visual tokens <em>look like</em> question
+words. It cares which visual tokens it would have <em>attended to</em>
+when generating the answer. Those aren't the same thing — the
+encoder embeddings don't know about the model's downstream
+reasoning patterns, and they're brittle to question phrasing
+(<em>"lung"</em> and <em>"pulmonary"</em> would project to different vectors
+even though the model treats them identically). <strong>Random selection
+beats both because it doesn't try to be clever in a space that
+doesn't reward cleverness.</strong></p>
+<h3 id="pointing-the-next-experiment">Pointing the next experiment<a class="headerlink" href="#pointing-the-next-experiment" title="Permanent link">&para;</a></h3>
+<p>This points hard at <strong>two complementary directions</strong> for tonight's
+overnight:</p>
+<ul>
+<li><strong>Coverage-aware selection</strong> — enforce spatial diversity in
+  what we keep, instead of trusting a global ranking. The natural
+  formalism is <em>zonal</em> pruning: divide the 576 patches into a 12×12
+  grid of 2×2 zones (or 24×24 of 1×1, etc.), and select a
+  zone-proportional budget within each zone. Published as
+  <strong>GridPrune</strong> (Wang et al., 2025) for general VLMs.</li>
+<li><strong>Medical anatomy filtering</strong> — exploit the high
+  background-to-signal ratio of medical images. Score every token
+  by L2-norm of its post-projector embedding; the lowest ~30% are
+  almost always background (black borders, uniform soft tissue);
+  filter those out <em>before</em> any further scoring. Inspired by
+  <strong>FASP</strong> (Foreground-Aware Soft Pruning, Liu et al., 2024).</li>
+</ul>
+<p>Combining both gives <strong>FASP + GridPrune</strong> — filter to anatomy
+tokens, partition the remaining set into spatial zones, allocate
+budget per zone by a fused (text-relevance + saliency) score, do
+local top-K within each zone. The design is in
+<a href="#phase-6-fasp-gridprune-design">Phase 6</a> below.</p>
+<h2 id="phase-5-sweep-results-pushed-three-commits">Phase 5 — Sweep results pushed (three commits)<a class="headerlink" href="#phase-5-sweep-results-pushed-three-commits" title="Permanent link">&para;</a></h2>
+<p>The analysis artifacts and today's qsim_max sweep needed to land
+on GitHub before any code work, so any later mistakes have a clean
+restore point. Yesterday's <code>c216bbe</code>-era <code>.gitignore</code> blanket-ignored
+<code>results/*</code>, which is why the May 26 sweep commit (<code>24ef568</code>)
+needed <code>git add -f</code>. Three commits today:</p>
+<ul>
+<li><strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/43fca4d"><code>43fca4d</code></a></strong> —
+  Tighten <code>results/</code> gitignore: ignore only large per-run files.
+  Replaces the blanket <code>results/*</code> rule with two narrow patterns
+  (<code>results/**/*__predictions.json</code>,
+  <code>results/**/*__checkpoint_partial.json</code>) so future sweep commits
+  pick up scores/latency/eval.log without <code>-f</code>.</li>
+<li><strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/54121f2"><code>54121f2</code></a></strong> —
+  Add v2 pre-LLM qsim_max sweep results (2026-05-27). 4 runs:
+  qsim with reduction=max × {kr=0.75, 0.5, 0.25, 0.1} across the
+  same 6 benchmarks. Pruning verified via the sentinel and the
+  <code>n_visual_post</code> counts in the latency summary
+  (58/144/288/432 = <code>floor(kr × 576)</code>).</li>
+<li><strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/cd1ef3c"><code>cd1ef3c</code></a></strong> —
+  Add v2 sweep analysis script + tables/plots. <code>analyze_v2_sweep.py</code>
+  produces the 12-row comparison table (4 random + 4 qsim_mean +
+  4 qsim_max + baseline), the total-accuracy Pareto, the
+  6-benchmark grid Pareto, and the accuracy-vs-latency Pareto.</li>
+</ul>
+<details class="note">
+<summary>Analysis script wrinkles I won't make again</summary>
+<p>Two issues needed three iterations to get right. The first was
+schema drift — the scores JSON uses keys like <code>"VQA-RAD_test"</code>
+and the full-sentence
+<code>"The total score for multiple-choice questions"</code>, not the
+display labels I'd hardcoded. Fix: an explicit <code>KEY_ALIASES</code>
+dict mapping display labels to a list of candidate JSON keys,
+plus a startup dump of the discovered keys so future drift is
+surfaced loudly.</p>
+<p>The second was a <strong>discovery glob mismatch</strong>. The script's
+<code>RESULTS_DIR.glob("2026-05-26_*")</code> line filtered out the new
+<code>2026-05-27_*</code> folders <em>before</em> the regex ever saw them.
+Symptom: the qsim_max legend entry appeared in plots, but the
+line wasn't drawn (matplotlib silently no-ops on all-None
+series, then still adds the legend label). Fix: extend the
+glob to <code>"2026-05-2[67]_*"</code> — explicit dates baked in for
+reproducibility, so re-running the analysis next week won't
+pick up a sweep we didn't intend to fold in.</p>
+</details>
+<h2 id="phase-6-fasp-gridprune-design">Phase 6 — FASP + GridPrune: design<a class="headerlink" href="#phase-6-fasp-gridprune-design" title="Permanent link">&para;</a></h2>
+<p>The literature scan during the morning surfaced two related general-VLM
+methods and one medical-imaging primitive. <strong>GridPrune</strong> (Wang et al.,
+2025; ICCV) is the strongest published general-VLM method for
+spatial-coverage pruning. <strong>FASP</strong> (Foreground-Aware Soft Pruning,
+Liu et al., 2024) is the medical-imaging primitive for anatomy
+filtering. Composing them yields a new method that addresses both
+of QSim's failure modes (diversity collapse + scoring-space brittleness)
+at once.</p>
+<p>The five-stage selection pipeline:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>576 visual tokens (post-projector)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    │ Stage 1 — FASP anatomy filter
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    │   score = L2-norm of each token&#39;s projected embedding
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    │   keep top (1 − bg_fraction) by norm   (bg_fraction=0.30 → ~400 anatomy tokens)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    ▼
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    n_anatomy tokens
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    │
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    │ Stage 2a — text-conditional relevance
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    │   text_rel = mean over question tokens of cos(visual, text)
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    │   normalize to [0, 1] via min-max
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    │
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    │ Stage 2b — saliency
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    │   saliency = anatomy-only L2-norm,  normalized to [0, 1]
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    │
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    │ Stage 2c — fused score
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    │   fused = α · text_rel + (1 − α) · saliency      (α=0.5)
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    │
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    │ Stage 3 — zoning
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    │   12×12 patches → 6×6 spatial grid of 2×2 zones (36 zones, 16 patches each)
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    │   per-zone budget ∝ (anatomy density) × (zone text-relevance)
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    │
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    │ Stage 4 — local top-K within each zone, anatomy only
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    │
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    ▼
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    n_keep tokens (matches floor(kr × 576))
+</span></code></pre></div>
+<p>Why this design, in three parts:</p>
+<p><strong>Why FASP first.</strong> Background tokens dominate medical images
+(black margins, uniform tissue) and dilute every downstream
+ranking. The L2-norm signal is cheap (no extra compute) and
+medical-imaging-tested (Liu et al. 2024 on similar single-image
+medical VQA). Filtering the bottom 30% by norm typically removes
+~170 background tokens before any of the more expensive scoring
+happens.</p>
+<p><strong>Why zoning second.</strong> The diversity-collapse failure mode is
+<em>structural</em>: a global top-K on any individual-token score will
+cluster the keepers spatially if the score is even weakly correlated
+within image regions (which it is, because adjacent visual tokens
+encode adjacent image patches). Zone-stratified selection makes
+clustering impossible by construction. The 6×6 grid of 2×2 zones
+gives 36 zones × 16 patches = 576 = the full token count; the per-
+zone budget is computed once and respected absolutely.</p>
+<p><strong>Why the budget allocator combines anatomy density and zone
+text-relevance.</strong> The motivation comes directly from the medical-VQA
+property survey on Day 17: <strong>questions encode strong spatial
+priors</strong>. <em>"Is there a nodule in the lower left lung?"</em> should
+allocate more budget to lower-left zones; <em>"is this CT or MRI?"</em>
+should spread budget more uniformly. The fused score
+<code>α · text_rel + (1 − α) · saliency</code> keeps QSim's question-awareness
+as a <em>spatial guide</em> rather than a global selector — it influences
+<em>where</em> to spend budget, not which individual tokens to keep within
+a zone. Within each zone, the same fused score acts as a local
+tiebreaker, but its damage is bounded — it can only pick the wrong
+<em>K</em> tokens out of 16, not the wrong <em>region</em> of the image.</p>
+<p>The composition matters because it puts each technique in the role
+it's good at: FASP picks the foreground (a 1D anatomy signal), zoning
+enforces coverage (a 2D structural constraint), QSim guides budget
+(spatial relevance), and intra-zone fused scoring selects locally
+(fine-grained, bounded risk).</p>
+<details class="note">
+<summary>GridPrune as a standalone baseline first</summary>
+<p>The cleanest version of the experiment is to first run
+<em>vanilla GridPrune</em> (faithful to the paper — zoning + fused
+score, no anatomy filter) on the same kr sweep, <em>then</em> add the
+FASP anatomy filter on top as a paired ablation. This lets the
+Day 19 writeup attribute any gain to the right component:
+"GridPrune − Random = the contribution of coverage"; "FASP +
+GridPrune − GridPrune = the contribution of medical-anatomy
+filtering".</p>
+<p>Tonight's launch is therefore <em>two</em> full 4-kr sweeps in series:
+GridPrune first, then FASP+GridPrune. Plus a third sweep —
+Random again — for reasons in the next phase.</p>
+</details>
+<h2 id="phase-7-tonights-overnight-12-runs-3-methods">Phase 7 — Tonight's overnight: 12 runs, 3 methods<a class="headerlink" href="#phase-7-tonights-overnight-12-runs-3-methods" title="Permanent link">&para;</a></h2>
+<p>Three methods × 4 keep-ratios = 12 runs, ~75 min/run = ~15 hours
+total. Will finish by tomorrow morning.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it adds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Random</strong></td>
+<td>Re-run from May 26 with the new patcher infrastructure that decomposes latency into prune/prefill/decode. Yesterday's random and qsim runs only have <em>total</em> latency. Tonight's random run produces phase-decomposed numbers for fair latency comparison with GridPrune + FASP+GridPrune.</td>
+</tr>
+<tr>
+<td><strong>GridPrune</strong></td>
+<td>Vanilla zonal-budget + fused score selection. Faithful to Wang et al. 2025. Baseline for what "coverage-aware general-VLM pruning" delivers on medical benchmarks.</td>
+</tr>
+<tr>
+<td><strong>FASP+GridPrune</strong></td>
+<td>Our composed method. Anatomy filter → zonal budget → local top-K. The first medical-domain-specific entry.</td>
+</tr>
+</tbody>
+</table>
+<p>The random re-run also serves as a <strong>drift check</strong>: the random
+<em>accuracy</em> numbers tonight should match May 26 within decoding
+noise. If they diverge, that's a red flag for some other change in
+the pipeline that we'd need to track down before trusting the new
+methods' numbers.</p>
+<p>The launch loop puts random first in the method loop. Reasoning:
+random is the simplest method, lowest risk of bug, fastest signal
+that the new patcher/latency code is firing correctly. If random's
+first run produces sane numbers, the rest of the overnight can run
+without babysitting.</p>
+<p>Implementation work this afternoon — six edits across three files
+and two new files (see the
+<a href="../../../bugs/#7-monkey-patching-vendor-forked-method-renames">bugs page entry on shell-pipeline guards</a>
+for the still-active discipline of pre-creating output directories
+before tee):</p>
+<ol>
+<li><code>pruning/latency.py</code> — adds three new fields to <code>SampleLatency</code>:
+   <code>prune_time_s</code>, <code>prefill_time_s</code>, <code>decode_time_s</code>.</li>
+<li><code>pruning/patcher.py</code> — brackets prune, prefill, and decode
+   timing automatically for <em>any</em> method that runs through this
+   patcher infrastructure (no method-specific instrumentation).</li>
+<li><code>scripts/patch_and_eval.py</code> — argparse <code>--pruner</code> choices
+   extended with <code>gridprune</code> and <code>fasp_gridprune</code>; three new flags
+   (<code>--block_size</code>, <code>--alpha</code>, <code>--bg_fraction</code>); <code>build_pruner</code>
+   dispatches to the new pruner classes.</li>
+<li><code>pruning/gridprune_pruner.py</code> — new. Implements the zonal
+   budget + fused score selection.</li>
+<li><code>pruning/fasp_gridprune_pruner.py</code> — new. Adds the FASP anatomy
+   pre-filter and capped per-zone budget allocation.</li>
+</ol>
+<p>Each new method has a once-per-run sentinel in the same style as
+v2's <code>[PATCHER v2] first prune confirmed: ...</code> line, so silent-
+attachment-success remains distinguishable from silent-execution-
+failure. The lesson from
+<a href="../../../bugs/#9-verification-at-no-op-smoke-test-antipattern">Bug #9</a>
+is still active discipline.</p>
+<details class="note">
+<summary>FASP + GridPrune Stage 2c — capped per-zone budget allocator</summary>
+<p>The naive allocator (just proportional to <code>zone_joint</code>) can
+request more tokens than a zone has anatomy in it (after FASP
+filtering removes background, low-density zones may only
+contain 3-4 anatomy tokens, but the proportion would allocate
+8). The capped allocator clips each zone's budget to its
+anatomy count, then redistributes the shortfall to zones with
+remaining capacity. Code lives in <code>_allocate_budget_capped</code>.</p>
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">_allocate_budget_capped</span><span class="p">(</span><span class="n">zone_scores</span><span class="p">,</span> <span class="n">target_K</span><span class="p">,</span> <span class="n">zone_capacity</span><span class="p">):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Allocate target_K tokens across zones, weighted by zone_scores</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="sd">    but capped at zone_capacity. Returns long tensor [n_zones]</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="sd">    summing to exactly target_K (or as close as possible given caps).&quot;&quot;&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">proportions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">zone_scores</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">proportions</span> <span class="o">=</span> <span class="n">proportions</span> <span class="o">/</span> <span class="n">proportions</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">raw</span> <span class="o">=</span> <span class="n">proportions</span> <span class="o">*</span> <span class="n">target_K</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">budgets</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="c1"># Distribute shortfall by largest remainder, respecting caps</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">remainders</span> <span class="o">=</span> <span class="n">raw</span> <span class="o">-</span> <span class="n">budgets</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">shortfall</span> <span class="o">=</span> <span class="n">target_K</span> <span class="o">-</span> <span class="n">budgets</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="k">if</span> <span class="n">shortfall</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">shortfall</span><span class="p">):</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>            <span class="n">eligible</span> <span class="o">=</span> <span class="p">(</span><span class="n">budgets</span> <span class="o">&lt;</span> <span class="n">zone_capacity</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">as_tuple</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>            <span class="k">if</span> <span class="n">eligible</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>                <span class="k">break</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>            <span class="n">idx</span> <span class="o">=</span> <span class="n">eligible</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">remainders</span><span class="p">[</span><span class="n">eligible</span><span class="p">])]</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>            <span class="n">budgets</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>            <span class="n">remainders</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>  <span class="c1"># exclude from next pick</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="k">return</span> <span class="n">budgets</span>
+</span></code></pre></div>
+</details>
+<h2 id="phase-8-medpruner-the-other-paper">Phase 8 — MedPruner: the other paper<a class="headerlink" href="#phase-8-medpruner-the-other-paper" title="Permanent link">&para;</a></h2>
+<p>While the implementation work was going, took an hour to read
+<strong>MedPruner</strong> (Liu et al., March 2026 — the same paper banked
+during Week 2 Day 4 reading). The question worth answering:
+<em>is this paper competing with our project?</em></p>
+<p>Short answer: <strong>no, they're orthogonal</strong>. MedPruner targets <strong>3D
+medical volumes</strong> (CT series, MRI series — a stack of 2D slices)
+through a two-stage hierarchical pipeline:</p>
+<ol>
+<li><strong>Inter-slice Anchor-based Filtering.</strong> Their 3D-specific
+   primitive. Picks "anchor" slices through clustering, filters
+   slices whose similarity to anchors exceeds a threshold (the
+   slice-axis redundancy of CT/MRI volumes is extreme — adjacent
+   slices are 95% identical). The output is a smaller set of
+   informative slices.</li>
+<li><strong>Dynamic Information Nucleus Selection.</strong> Within retained
+   slices, selects tokens via cumulative attention weights from an
+   early LLM layer. Conceptually similar to FastV/SparseVLM in the
+   general-VLM literature, adapted to operate per-slice.</li>
+</ol>
+<p>The novelty argument they make is the inter-slice filtering — no
+prior medical work explicitly addresses temporal redundancy along
+the slice axis. The within-slice nucleus selection is closer to
+prior art (attention-based scoring is a well-trodden pattern in
+the general-VLM token-pruning literature; they've cited FastV and
+SparseVLM in related work). Their twist is applying it <em>per-slice</em>
+and using <em>cumulative attention</em> across layers as the budget driver.</p>
+<p><strong>Relation to our project — the useful framing:</strong></p>
+<p>MedPruner is <em>not competing with us</em>. We're 2D medical VQA
+(single-image input through HuatuoGPT-Vision). They're 3D medical
+(volumetric input through MedGemma-style models). Their inter-slice
+filtering primitive doesn't apply to our setup at all — we have no
+slice axis to filter. Their dynamic-nucleus piece <em>would</em> translate
+but only as a within-image scoring method (which is what GridPrune
+and our FASP+GridPrune already address differently).</p>
+<p>This gives us a clean positioning argument for the writeup:</p>
+<blockquote>
+<p><em>"For 3D medical volumes, MedPruner (Liu et al. 2026) addresses
+inter-slice temporal redundancy through anchor-based filtering.
+Our work focuses on within-slice 2D spatial heterogeneity in
+single-image medical VQA. The two approaches are complementary:
+a future 3D medical VLM could compose MedPruner's inter-slice
+stage with our FASP+GridPrune within-slice stage."</em></p>
+</blockquote>
+<p>Their code says <em>"will be released"</em> but as of today (May 27),
+nothing is available. If we need to compare quantitatively later,
+we'd need to implement from the paper or wait for the release.</p>
+<h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>The central thesis took a hit.</strong> Question-aware pruning, in
+   its naive cosine-similarity form, doesn't beat random pruning
+   on HuatuoGPT-Vision-7B. The gap is monotonic in pruning
+   aggressiveness — opposite of what the thesis predicted.</li>
+<li><strong>The qsim_max ablation ruled out a reduction-operator quirk.</strong>
+   Max-sim is uniformly <em>worse</em> than mean-sim. The failure mode is
+   structural to text-only scoring on pre-LLM embeddings, not
+   specific to how question tokens get aggregated.</li>
+<li><strong>The diagnosis points at coverage + scoring space.</strong> Diversity
+   collapse + brittle scoring space, both fixable with techniques
+   from the published literature.</li>
+<li><strong>GridPrune + FASP+GridPrune designed and coded.</strong> Two new
+   methods that address both failure modes; queued for tonight's
+   overnight.</li>
+<li><strong>Latency now decomposed.</strong> Prune / prefill / decode timing
+   brackets land in tonight's runs. The accuracy-vs-latency Pareto
+   plot will be 3-method × 4-kr (random, gridprune, fasp_gridprune)
+   with phase-decomposed bars per kr.</li>
+<li><strong>MedPruner is orthogonal.</strong> Their 3D-volume target doesn't
+   overlap with our 2D-single-image target. Two complementary
+   approaches; clean positioning for the writeup.</li>
+<li><strong>Three commits captured the day's analysis state</strong> before any
+   code work. Clean restore point if anything goes sideways
+   tonight.</li>
+</ol>
+<hr />
+<h3 id="plan-for-tomorrow-may-28-day-19-week-3-day-5">Plan for tomorrow (May 28, Day 19 / Week 3 Day 5)<a class="headerlink" href="#plan-for-tomorrow-may-28-day-19-week-3-day-5" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Smell-test the overnight sweep results.</strong> 12 score files,
+      12 latency summaries. The discipline from Day 17 still
+      applies: confirm pruning actually fires before celebrating
+      any numbers.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Extend <code>analyze_v2_sweep.py</code> to include gridprune +
+      fasp_gridprune.</strong> The regex for run-name parsing needs two
+      more alternatives; the methods-in-plot-order needs two more
+      entries.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Pareto plots for the 5-method comparison.</strong> Random,
+      QSim_mean, QSim_max, GridPrune, FASP+GridPrune × 4 kr × 6
+      benchmarks. The interesting question is whether FASP+GridPrune
+      is the first method to actually beat Random consistently.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Latency decomposition figure.</strong> Stacked-bar of prune /
+      prefill / decode time per kr for each method. Sanity check
+      that FASP's L2-norm filter cost is negligible (should be a
+      single tensor op per sample).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Update the <a href="../../../experiments/">Experiments page</a> E2
+      writeup with the qsim_max results.</strong> The "analysis pending"
+      placeholder finally gets numbers.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Begin drafting an E3 entry</strong> for tonight's sweep
+      (GridPrune + FASP+GridPrune) — table + Pareto plots +
+      headline.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Read ToMe end-to-end.</strong> Still pending; the literature
+      reading slot was eaten by today's analysis.</li>
+</ul>
+<hr />
+<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
+<p>Three commits to
+<strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>huatuo-llava-v15-med-pruning</code></a></strong>:</p>
+<p><strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/43fca4d"><code>43fca4d</code></a></strong>
+— <em>Tighten <code>results/</code> gitignore: ignore only large per-run files.</em>
+Replaces the blanket <code>results/*</code> rule with two narrow patterns
+(<code>results/**/*__predictions.json</code>,
+<code>results/**/*__checkpoint_partial.json</code>) so future sweep commits
+pick up scores/latency/eval.log files automatically without <code>git
+add -f</code>. Keeps the 10+ MB predictions and partial-checkpoint files
+out of git history; everything small enough to be useful for
+reproducibility gets included.</p>
+<p><strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/54121f2"><code>54121f2</code></a></strong>
+— <em>Add v2 pre-LLM qsim_max sweep results (2026-05-27).</em> 4 runs:
+qsim with reduction=max × {kr=0.75, 0.5, 0.25, 0.1} on
+HuatuoGPT-Vision-7B across VQA-RAD, SLAKE, PathVQA, PMC-VQA,
+OmniMedVQA, MMMU-Medical. Paired ablation against the May 26
+qsim_mean sweep. Pruning verified via the once-per-run sentinel
+and the <code>n_visual_post</code> counts in the latency summary
+(58/144/288/432 tokens for kr=0.10/0.25/0.50/0.75). Headline
+finding: max-reduction QSim is uniformly worse than mean-reduction
+QSim, which is itself uniformly worse than random pruning. The
+diversity-collapse hypothesis strengthened — the failure mode is
+structural to text-only scoring on pre-LLM embeddings, not specific
+to the reduction operator.</p>
+<p><strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/cd1ef3c"><code>cd1ef3c</code></a></strong>
+— <em>Add v2 sweep analysis script + tables/plots (Day 18,
+2026-05-27).</em> <code>analysis/analyze_v2_sweep.py</code> does discovery +
+table + 3 Pareto plots. Reads scores.json and latency_summary.json
+from each run, computes deltas vs the kr=1.0 baseline (0.6787),
+and generates <code>2026-05-26_v2_sweep_table.md</code> / <code>.csv</code> (12 rows × 7
+columns), <code>pareto_total.png</code> (3-method total-accuracy Pareto),
+<code>pareto_panels.png</code> (6-benchmark grid), and <code>latency.png</code>
+(accuracy vs latency, kr-annotated). The script took three
+iterations to land cleanly — schema-discovery dump at the top
+surfaces future drift loudly.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../day-03/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 3 — Tuesday, May 26, 2026">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Day 3 — Tuesday, May 26, 2026
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../bugs/" class="md-footer__link md-footer__link--next" aria-label="Next: Bugs &amp; Issues">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Bugs & Issues
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Leokuan0208" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

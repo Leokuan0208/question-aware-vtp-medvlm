@@ -1240,6 +1240,8 @@
       
         
       
+        
+      
     
     
       
@@ -1335,6 +1337,27 @@
   
   <span class="md-ellipsis">
     Day 3 — Tuesday, May 26, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-03/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 27, 2026
   </span>
   
 
@@ -1895,28 +1918,43 @@ that should shape method choice:</p>
 </ul>
 <h3 id="tier-1-cheap-defensible-probably-useful">Tier 1 — Cheap, defensible, probably-useful<a class="headerlink" href="#tier-1-cheap-defensible-probably-useful" title="Permanent link">&para;</a></h3>
 <p>Small code changes; expected to give the strongest results-per-hour
-return. Add these to the sweep design before scaling to other
-benchmarks.</p>
+return. Status updated end of Day 18 (May 27, 2026) after the
+<a href="../weekly/week-03/day-04/#phase-4-the-qsim_max-ablation">QSim_max ablation</a>
+ruled out reduction-operator fixes:</p>
 <ul>
-<li><strong>A. Max-similarity-across-text-tokens scoring</strong> (ResPrune
-  Setting-1). Replace QSim's mean-pool-then-cosine with
-  per-visual-token max-similarity across all question text tokens.
-  ResPrune's published ablation: Setting-1 → 98.4% vs Setting-3
-  (our current formula) → 95.4%. Same data structures, same hooks,
-  one-line scoring change.</li>
-<li><strong>B. Token merging at the same insertion point</strong> (ToMe-style).
+<li><strong>A. ~~Max-similarity-across-text-tokens scoring~~</strong> (ResPrune
+  Setting-1). ~~Replace QSim's mean-pool-then-cosine with
+  per-visual-token max-similarity across all question text tokens.~~
+  <strong>Tested May 27 — failed.</strong> Max-sim is uniformly <em>worse</em> than
+  mean-pool QSim at every kr, which is itself uniformly worse than
+  Random. The mean-pool was acting as a weak diversity regularizer;
+  removing it made things worse. Diagnosis: the failure mode isn't
+  the reduction operator, it's the <strong>scoring space</strong> —
+  cosine-similarity on pre-LLM embeddings doesn't track what the
+  LLM actually attends to. ResPrune's published Setting-1 &gt; Setting-3
+  result doesn't transfer to our setting (different base model,
+  different benchmarks, different pruning location).</li>
+<li><strong>B. Coverage-aware selection</strong> (newly promoted to top of Tier 1
+  after Day 18's diagnosis). <strong>GridPrune</strong> (Wang et al. 2025)
+  is the strongest published instance — divides visual tokens into
+  spatial zones, allocates per-zone budget proportional to a fused
+  text-relevance + saliency score, does local top-K within each
+  zone. Coverage-by-construction makes diversity collapse
+  impossible. <strong>Tested May 28 in tonight's E3 sweep.</strong></li>
+<li><strong>C. Token merging at the same insertion point</strong> (ToMe-style).
   Replace the "drop the bottom (1-kr)" step with "merge each
   discarded token into its nearest kept neighbor in embedding
   space." Same hook architecture; same target keep count for clean
   comparison against pruning. Tests whether the high-redundancy
-  property of medical imaging is being underused by pure pruning.</li>
-<li><strong>C. Hybrid prune+merge baseline</strong> (PruMerge-style). Score by
-  QSim, keep top-K, merge each discarded token into its nearest
-  kept neighbor. Target the same final count as pure pruning so
-  the comparison is clean.</li>
+  property of medical imaging is being underused by pure pruning.
+  <em>Pending Day 19+.</em></li>
 </ul>
-<p>Adding A, B, C grows the sweep to ~5 methods × 4 keep-ratios = 20
-runs, roughly 10-12 hours of compute. Manageable.</p>
+<p>The negative result on Tier 1-A reshapes the experimental
+priorities. The two open questions that matter now are: <strong>(i) does
+coverage-aware selection (GridPrune) recover from QSim's diversity
+collapse on medical benchmarks?</strong> and <strong>(ii) does adding a
+medical-anatomy filter (FASP+GridPrune) yield further gains over
+vanilla GridPrune?</strong> Both are tested in tonight's E3 sweep.</p>
 <h3 id="tier-2-medical-specific-extensions-the-papers-novel-angle">Tier 2 — Medical-specific extensions (the paper's novel angle)<a class="headerlink" href="#tier-2-medical-specific-extensions-the-papers-novel-angle" title="Permanent link">&para;</a></h3>
 <p>Where the paper's contribution gets distinctive. Each item leverages
 one of the medical-VQA properties above.</p>

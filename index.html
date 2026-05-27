@@ -1133,6 +1133,8 @@
       
         
       
+        
+      
     
     
       
@@ -1228,6 +1230,27 @@
   
   <span class="md-ellipsis">
     Day 3 — Tuesday, May 26, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-03/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 27, 2026
   </span>
   
 
@@ -1440,40 +1463,41 @@ each page.</p>
 and 12-week plan.</p>
 <h2 id="where-i-am-right-now">Where I am right now<a class="headerlink" href="#where-i-am-right-now" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--wip">In progress</span> &nbsp;
-<strong>Phase 1, Week 3 — HuatuoGPT-Vision baseline reproduced + first
-successfully-pruned sweep complete.</strong> Week 1 closed out May 16
+<strong>Phase 1, Week 3 — Negative result on QSim, coverage-aware
+methods queued for tonight.</strong> Week 1 closed out May 16
 (<a href="weekly/week-01/#end-of-week-status">overview</a>). Week 2
 closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
 (<a href="weekly/week-02/#reflections-end-of-week">overview</a>). The
-Qwen2.5-VL pivot was <strong>validated May 24</strong> with 20/20 strict MCQ-letter
-compliance
-(<a href="weekly/week-03/day-01/#phase-3-mcq-letter-compliance-smoke-test-step-3">details</a>);
-a second pivot followed on <strong>May 25</strong> to
+Qwen2.5-VL pivot was validated May 24 with 20/20 strict MCQ-letter
+compliance, then a second pivot followed on May 25 to
 <a href="baseline/huatuo-vision/">HuatuoGPT-Vision-7B (LLaVA-v1.5 architecture)</a>
-for reproducibility, and the
-<a href="baseline/huatuo-vision/#baseline-metrics">paper Table 4 reproduced same-day</a>
-with 5/6 benchmarks within 0.55 pts of published numbers
-(<a href="weekly/week-03/day-02/">details</a>). The pruning framework's
-first incarnation
-(<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/c216bbe"><code>c216bbe</code></a>)
-turned out to be a no-op — diagnosed Day 17 from a smell-test
-showing <strong>bit-identical scores across all 8 overnight runs</strong>.
-<a href="weekly/week-03/day-03/">Day 17</a> was a four-act day: morning
-diagnosis, <strong>v1 fix cascade</strong> (three real bugs:
-<code>prepare_inputs_labels_for_multimodal_new</code> method rename,
-attention-mask frame reconciliation, position_ids RoPE OOB),
-<strong>v1 → v2 architectural rewrite</strong> (prune <em>before</em> the LLM trunk
-instead of after layer 0; 130 lines vs 280, ~30% speedup at
-kr=0.5), and the <strong>first successfully-pruned 8-run sweep</strong>
-(<code>{qsim, random} × {0.75, 0.5, 0.25, 0.1}</code> across 6 benchmarks).
+for reproducibility, with
+<a href="baseline/huatuo-vision/#baseline-metrics">paper Table 4 reproduced same-day</a>.
+<a href="weekly/week-03/day-03/">Day 17</a> found and fixed a no-op bug in
+the May 25 patcher (Bug #7), rewrote it as <strong>v2 pre-LLM</strong> (130
+lines vs 280, ~30% speedup at kr=0.5), and produced the first
+successfully-pruned sweep on HuatuoGPT-Vision-7B.
+<a href="weekly/week-03/day-04/">Day 18</a> analyzed those numbers and got
+the <em>opposite</em> of the central thesis's prediction: <strong>mean-pooled
+QSim is uniformly worse than Random at every keep-ratio</strong>, with
+the gap growing monotonically (+0.84 → +3.11 pts as kr drops from
+0.75 to 0.10). A same-day qsim_max ablation (motivated by
+ResPrune's published Setting-1 &gt; Setting-3 result) confirmed the
+failure mode is structural to cosine-similarity-on-pre-LLM-
+embeddings, not a reduction-operator quirk — qsim_max is even
+worse than qsim_mean. The diagnosis: <strong>diversity collapse +
+scoring-space brittleness</strong>. Tonight's overnight runs
+<strong>{random, GridPrune, FASP+GridPrune} × {0.75, 0.5, 0.25, 0.1}</strong> —
+12 runs with phase-decomposed latency (prune / prefill / decode),
+testing whether coverage-aware selection (GridPrune) and
+medical-anatomy filtering (FASP) recover from the QSim collapse.
 Three commits pushed today:
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/72bdd28"><code>72bdd28</code></a>
-(archive v1),
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/85cb249"><code>85cb249</code></a>
-(install v2),
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568"><code>24ef568</code></a>
-(sweep results). Numerical analysis deferred to Day 18. Three repos
-now:
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/43fca4d"><code>43fca4d</code></a>
+(gitignore),
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/54121f2"><code>54121f2</code></a>
+(qsim_max sweep),
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/cd1ef3c"><code>cd1ef3c</code></a>
+(analysis). Three repos now:
 <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
 (frozen, LLaVA-Med v1.0 phase),
 <a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning"><code>Qwen-v25-vl-med-pruning</code></a>
@@ -1590,11 +1614,34 @@ now:
       ResPrune's Setting-3 baseline; not novel as a formula.
       (2) Token merging vs pruning; medical-VQA properties →
       <a href="project/#methods-roadmap-tiers-1-3">Methods Roadmap (Tier 1/2/3)</a>.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Numerical analysis of the v2 sweep</strong> (Day 18 priority) —
-      Pareto curves, headline number, E2 writeup on the
-      Experiments page</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Tier-1 follow-up: max-similarity scoring</strong> (ResPrune
-      Setting-1) once the v2 sweep is analyzed</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Negative result on QSim, analyzed.</strong> Random beats
+      mean-pooled QSim at every keep-ratio (gap +0.84 → +3.11 pts
+      as kr drops 0.75 → 0.10). Cause: diversity collapse +
+      scoring-space brittleness.
+      → <a href="weekly/week-03/day-04/#phase-2-reading-the-result">Week 3, Day 4, Phase 2</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>qsim_max ablation ruled out reduction-operator cause.</strong>
+      Same-day follow-up sweep: max-similarity is uniformly <em>worse</em>
+      than mean-pooled QSim, which is uniformly worse than Random.
+      Failure mode is structural to text-only scoring on pre-LLM
+      embeddings.
+      → <a href="weekly/week-03/day-04/#phase-4-the-qsim_max-ablation">Week 3, Day 4, Phase 4</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Two new methods designed and implemented for tonight.</strong>
+      <a href="weekly/week-03/day-04/#phase-6-fasp-gridprune-design">GridPrune</a>
+      (zonal-budget coverage-aware selection) +
+      <a href="weekly/week-03/day-04/#phase-6-fasp-gridprune-design">FASP+GridPrune</a>
+      (medical anatomy filter → zone budget by fused score →
+      local top-K). Targets both QSim failure modes.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Patcher latency decomposed.</strong> <code>prune_time_s</code> /
+      <code>prefill_time_s</code> / <code>decode_time_s</code> fields land automatically
+      for any method via the v2 patcher's bracket rewrite. Tonight's
+      sweep produces phase-resolved latency for the first time.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Tonight's overnight: 12 runs.</strong> {random, gridprune,
+      fasp_gridprune} × {kr=0.75, 0.5, 0.25, 0.1}, ~15h total.
+      Random re-run is both the phase-decomposed baseline and a
+      drift check.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Day 19 analysis</strong> — extend <code>analyze_v2_sweep.py</code> to 5
+      methods; the question is whether FASP+GridPrune is the first
+      to consistently beat Random.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push Day 8's accumulated changes to
       <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
       (split into coherent commits)</li>
@@ -1602,7 +1649,7 @@ now:
       with the revised "VQA-RAD catastrophic, PathVQA degraded, SLAKE
       missing" narrative</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Finish reading visual-token-pruning literature (ToMe, FastV,
-      SparseVLM, GAP) — slipped five days</li>
+      SparseVLM, GAP) — slipped six days</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Begin Phase 2 of the project plan: codebase deep-dive with
       print-statement instrumentation on
       <code>prepare_inputs_labels_for_multimodal</code></li>

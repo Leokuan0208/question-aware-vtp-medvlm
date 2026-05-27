@@ -1057,6 +1057,8 @@
       
         
       
+        
+      
     
     
       
@@ -1152,6 +1154,27 @@
   
   <span class="md-ellipsis">
     Day 3 — Tuesday, May 26, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-03/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 27, 2026
   </span>
   
 
@@ -1271,6 +1294,15 @@
   <a href="#visual-token-pruning-the-actual-core-of-this-project" class="md-nav__link">
     <span class="md-ellipsis">
       Visual token pruning (the actual core of this project)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added-day-18-may-27-2026-from-the-gridprune-fasp-design-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added Day 18 — May 27, 2026 (from the GridPrune + FASP design work)
     </span>
   </a>
   
@@ -1401,6 +1433,15 @@
   <a href="#visual-token-pruning-the-actual-core-of-this-project" class="md-nav__link">
     <span class="md-ellipsis">
       Visual token pruning (the actual core of this project)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added-day-18-may-27-2026-from-the-gridprune-fasp-design-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added Day 18 — May 27, 2026 (from the GridPrune + FASP design work)
     </span>
   </a>
   
@@ -1548,6 +1589,39 @@ Updated as I go.</p>
   forwarded to subsequent pruning stages for re-evaluation rather than
   committed-pruned at shallow layers. Directly addresses our open
   question of <em>where</em> in the LLaMA stack to prune. <strong>Read May 20, 2026.</strong></li>
+</ul>
+<h3 id="added-day-18-may-27-2026-from-the-gridprune-fasp-design-work">Added Day 18 — May 27, 2026 (from the GridPrune + FASP design work)<a class="headerlink" href="#added-day-18-may-27-2026-from-the-gridprune-fasp-design-work" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>GridPrune: Grid-Aware Visual Token Pruning for Efficient
+  Vision-Language Models</strong> — Wang et al., 2025/ICCV.
+  General-VLM method for spatial-coverage-aware pruning. Divides
+  visual tokens into a grid of zones, allocates a per-zone budget
+  proportional to a fused (text-relevance + saliency) score, does
+  local top-K within each zone. <strong>Tonight's E3 sweep tests this as
+  a standalone baseline.</strong> Coverage-by-construction is the key
+  contribution; the fused score is a small but reasonable signal
+  enhancement over either component alone. Their reported gains
+  on LLaVA-1.5 hold up across 5 general benchmarks at 50-90% pruning.</li>
+<li><strong>FASP: Foreground-Aware Soft Pruning for Medical
+  Vision-Language Models</strong> — Liu et al., 2024.
+  Medical-imaging-specific token-scoring primitive. Score every
+  token by the L2-norm of its post-projector embedding; lowest
+  ~30% are reliably background (black borders, uniform tissue).
+  Cheap (single tensor op) and medical-tested. <strong>Used as the
+  foreground filter in tonight's FASP+GridPrune composed method.</strong>
+  Original work used it as a soft-weighting; we use it as a hard
+  pre-filter before the GridPrune zoning stage.</li>
+<li><strong>MedPruner re-read</strong> (already cited above; arXiv 2603.11625).
+  Spent an hour today on a careful re-read after the Day 4
+  analysis. <strong>Verified orthogonal to our project</strong>: their
+  inter-slice anchor-based filtering targets 3D-volume temporal
+  redundancy along the slice axis, which our 2D-single-image
+  HuatuoGPT-Vision setup doesn't have. Their dynamic-nucleus
+  within-slice scoring is closer to general-VLM prior art
+  (cumulative attention from early LLM layers, similar to FastV /
+  SparseVLM). Clean complementary framing for the writeup: 3D
+  medical = MedPruner's inter-slice stage; 2D medical =
+  GridPrune-family / our FASP+GridPrune.</li>
 </ul>
 <h3 id="added-day-17-may-26-2026-from-the-cosine-similarity-literature-survey">Added Day 17 — May 26, 2026 (from the cosine-similarity literature survey)<a class="headerlink" href="#added-day-17-may-26-2026-from-the-cosine-similarity-literature-survey" title="Permanent link">&para;</a></h3>
 <ul>
