@@ -77,16 +77,15 @@ Updated as I go.
   contribution; the fused score is a small but reasonable signal
   enhancement over either component alone. Their reported gains
   on LLaVA-1.5 hold up across 5 general benchmarks at 50-90% pruning.
-- **FASP: Foreground-Aware Soft Pruning for Medical
-  Vision-Language Models** — Liu et al., 2024.
-  _Source link pending — locate published / arXiv version._
-  Medical-imaging-specific token-scoring primitive. Score every
-  token by the L2-norm of its post-projector embedding; lowest
-  ~30% are reliably background (black borders, uniform tissue).
-  Cheap (single tensor op) and medical-tested. **Used as the
-  foreground filter in tonight's FASP+GridPrune composed method.**
-  Original work used it as a soft-weighting; we use it as a hard
-  pre-filter before the GridPrune zoning stage.
+- **FASP (in-project method name, no external paper)** — The
+  L2-norm foreground filter used as the first stage of our
+  `FASP+GridPrune` composed method. The technique is generic:
+  score every token by the L2-norm of its post-projector embedding;
+  drop the lowest ~30% (reliably background — black borders, uniform
+  tissue). Searches for a published "FASP: Foreground-Aware Soft
+  Pruning for Medical Vision-Language Models, Liu et al. 2024"
+  paper return no matching results; treat `FASP` here as a
+  project-internal acronym for this filter, not a citation.
 - **MedPruner re-read** (already cited above; arXiv 2603.11625).
   Spent an hour today on a careful re-read after the Day 4
   analysis. **Verified orthogonal to our project**: their
@@ -110,9 +109,10 @@ Updated as I go.
   current selection. **Our QSim is the simpler "relevance only" half
   of ZSPAPrune.** Tier-1 candidate (add diversity term to QSim) is
   motivated directly by this paper.
-- **ResPrune: Relevance-and-Smoothness Token Pruning**
-  — Li et al., 2026.
-  _Source link pending — locate published / arXiv version._
+- **ResPrune: Text-Conditioned Subspace Reconstruction for Visual
+  Token Pruning in Large Vision-Language Models**
+  — Li et al., arXiv March 2026.
+  [arXiv:2603.21105](https://arxiv.org/abs/2603.21105) —
   Evaluates exactly our scoring formula as their *Setting-3*
   ablation and reports it as the **weakest of three** formulations
   (Setting-1: max-similarity-per-visual-token across text tokens →
@@ -131,12 +131,13 @@ Updated as I go.
   [arXiv:2412.04467](https://arxiv.org/abs/2412.04467) —
   Post-projector, pre-LLM pruning using CLS-attention. **v2 of our
   patcher operates at the same insertion point as VisionZip.**
-- **ReDiPrune: Text-Relevance and Diversity Pruning**
-  — 2025/2026 preprint.
-  _Source link pending — locate published / arXiv version._
+- **ReDiPrune: Relevance-Diversity Pre-Projection Token Pruning
+  for Efficient Multimodal LLMs**
+  — Cai et al., arXiv March 2026.
+  [arXiv:2603.24680](https://arxiv.org/abs/2603.24680) —
   Closest architectural neighbor to v2: text-relevance + diversity,
-  post-projector, pre-LLM. Combines what ZSPAPrune does (relevance
-  + diversity) with the v2 insertion point.
+  pre-projector. Combines what ZSPAPrune does (relevance
+  + diversity) at the early-pruning insertion point of our v2 patcher.
 - **HoloV: Don't Just Chase "Highlighted Tokens" in MLLMs —
   Revisiting Visual Holistic Context Retention** — arXiv October 2025.
   [arXiv:2510.02912](https://arxiv.org/abs/2510.02912) —
@@ -165,31 +166,24 @@ Updated as I go.
   merging of redundant ones, combined into a single end-to-end
   framework. The canonical "hybrid prune+merge" reference for our
   Tier-1 C experiment.
-- **AIM: Adaptive Inference Merging for Multimodal LLMs**
-  — 2024-2025.
-  _Source link pending — locate published / arXiv version._
+- **AIM: Adaptive Inference of Multi-Modal LLMs via Token Merging
+  and Pruning** — Zhong et al., ICCV 2025.
+  [arXiv:2412.03248](https://arxiv.org/abs/2412.03248) —
   Per-sample decides how much to prune vs merge based on image
   information density. Homogeneous radiograph → aggressive
   pruning; busy histology slide → more merging.
 
 ### Added Day 17 (from the medical-VQA-properties survey)
 
-- **ViTAS: Visual Token Adaptive Selection for Medical VLMs**
-  — Ahmed et al., 2026.
-  _Source link pending — locate published / arXiv version._
-  MIMIC-CXR summarization: *"selectively focusing on pathology-
-  relevant visual patches rather than full images yields
-  substantially better performance — less but more relevant
-  visual input is not only sufficient but superior."* Direct
-  evidence for the high-background-to-signal property of medical
-  imaging.
-- **HEAL-MedVQA: Diagnosing Shortcut Learning in Medical VQA**
-  — 2025.
-  _Source link pending — locate published / arXiv version._
-  Diagnostic study showing current medical VLMs rely heavily on
+- **HEAL-MedVQA: Localizing Before Answering — A Benchmark for
+  Grounded Medical Visual Question Answering** — Pham et al., IJCAI 2025.
+  [arXiv:2505.00744](https://arxiv.org/abs/2505.00744) —
+  Diagnostic benchmark showing current medical VLMs rely heavily on
   text-shortcut features, with visual grounding much weaker than
-  accuracy numbers suggest. Motivates the Tier-3 G ablation
-  (visual aphasia test).
+  accuracy numbers suggest. Two evaluation protocols (Textual /
+  Visual Perturbation Tests) plus a 67K-pair dataset with
+  doctor-annotated anatomical masks. Motivates the Tier-3 G
+  ablation (visual aphasia test).
 - **Medical Visual Question Answering: A Survey**
   — Lin et al., *Artificial Intelligence in Medicine* 143:102611, 2023.
   [doi.org/10.1016/j.artmed.2023.102611](https://doi.org/10.1016/j.artmed.2023.102611)

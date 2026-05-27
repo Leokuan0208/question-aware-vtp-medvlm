@@ -618,7 +618,9 @@ and queued for Phase 5:
 - **Medical anatomy filtering** — exploit the high background-to-
   signal ratio of medical images. Score every token by L2-norm of
   its post-projector embedding; the lowest ~30% are almost always
-  background. Inspired by **FASP**.
+  background. We call this filter **FASP** (foreground-aware soft
+  pruning) inside our codebase; no external paper is cited because
+  searches for a matching one returned no results.
 
 Full Phase 4 writeup:
 [Week 3, Day 4](weekly/week-03/day-04.md#phase-2-reading-the-result)
