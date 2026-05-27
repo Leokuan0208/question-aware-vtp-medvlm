@@ -2156,13 +2156,18 @@ overnight:</p>
   formalism is <em>zonal</em> pruning: divide the 576 patches into a 12×12
   grid of 2×2 zones (or 24×24 of 1×1, etc.), and select a
   zone-proportional budget within each zone. Published as
-  <strong>GridPrune</strong> (Wang et al., 2025) for general VLMs.</li>
+  <strong>GridPrune</strong> (Duan et al., arXiv November 2025;
+  <a href="https://arxiv.org/abs/2511.10081">arXiv:2511.10081</a>) for
+  general VLMs.</li>
 <li><strong>Medical anatomy filtering</strong> — exploit the high
   background-to-signal ratio of medical images. Score every token
   by L2-norm of its post-projector embedding; the lowest ~30% are
   almost always background (black borders, uniform soft tissue);
-  filter those out <em>before</em> any further scoring. Inspired by
-  <strong>FASP</strong> (Foreground-Aware Soft Pruning, Liu et al., 2024).</li>
+  filter those out <em>before</em> any further scoring. We refer to this
+  as the <strong>FASP</strong> filter inside the codebase. Earlier notes here
+  cited "Foreground-Aware Soft Pruning, Liu et al. 2024" as the
+  source; the May 28 audit found no matching paper exists. Treat
+  FASP here as an in-project acronym.</li>
 </ul>
 <p>Combining both gives <strong>FASP + GridPrune</strong> — filter to anatomy
 tokens, partition the remaining set into spatial zones, allocate
@@ -2215,13 +2220,16 @@ reproducibility, so re-running the analysis next week won't
 pick up a sweep we didn't intend to fold in.</p>
 </details>
 <h2 id="phase-6-fasp-gridprune-design">Phase 6 — FASP + GridPrune: design<a class="headerlink" href="#phase-6-fasp-gridprune-design" title="Permanent link">&para;</a></h2>
-<p>The literature scan during the morning surfaced two related general-VLM
-methods and one medical-imaging primitive. <strong>GridPrune</strong> (Wang et al.,
-2025; ICCV) is the strongest published general-VLM method for
-spatial-coverage pruning. <strong>FASP</strong> (Foreground-Aware Soft Pruning,
-Liu et al., 2024) is the medical-imaging primitive for anatomy
-filtering. Composing them yields a new method that addresses both
-of QSim's failure modes (diversity collapse + scoring-space brittleness)
+<p>The literature scan during the morning surfaced one related
+general-VLM method and one medical-imaging primitive. <strong>GridPrune</strong>
+(Duan et al., arXiv November 2025; arXiv:2511.10081) is the
+strongest published general-VLM method for spatial-coverage pruning.
+<strong>FASP</strong> is our in-project name for the L2-norm anatomy filter
+(earlier notes attributed this to a "Foreground-Aware Soft Pruning,
+Liu et al. 2024" paper which the May 28 audit found does not exist
+— the technique itself is a single tensor op and stands on its own).
+Composing them yields a new method that addresses both of QSim's
+failure modes (diversity collapse + scoring-space brittleness)
 at once.</p>
 <p>The five-stage selection pipeline:</p>
 <div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>576 visual tokens (post-projector)
@@ -2256,10 +2264,11 @@ at once.</p>
 <p><strong>Why FASP first.</strong> Background tokens dominate medical images
 (black margins, uniform tissue) and dilute every downstream
 ranking. The L2-norm signal is cheap (no extra compute) and
-medical-imaging-tested (Liu et al. 2024 on similar single-image
-medical VQA). Filtering the bottom 30% by norm typically removes
-~170 background tokens before any of the more expensive scoring
-happens.</p>
+defensible as a foreground signal on medical imagery (high-norm
+post-projector embeddings track structured tissue rather than
+uniform background). Filtering the bottom 30% by norm typically
+removes ~170 background tokens before any of the more expensive
+scoring happens.</p>
 <p><strong>Why zoning second.</strong> The diversity-collapse failure mode is
 <em>structural</em>: a global top-K on any individual-token score will
 cluster the keepers spatially if the score is even weakly correlated
@@ -2316,7 +2325,7 @@ total. Will finish by tomorrow morning.</p>
 </tr>
 <tr>
 <td><strong>GridPrune</strong></td>
-<td>Vanilla zonal-budget + fused score selection. Faithful to Wang et al. 2025. Baseline for what "coverage-aware general-VLM pruning" delivers on medical benchmarks.</td>
+<td>Vanilla zonal-budget + fused score selection. Faithful to Duan et al., arXiv:2511.10081. Baseline for what "coverage-aware general-VLM pruning" delivers on medical benchmarks.</td>
 </tr>
 <tr>
 <td><strong>FASP+GridPrune</strong></td>

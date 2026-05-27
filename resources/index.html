@@ -1596,15 +1596,16 @@ Updated as I go.</p>
   contribution; the fused score is a small but reasonable signal
   enhancement over either component alone. Their reported gains
   on LLaVA-1.5 hold up across 5 general benchmarks at 50-90% pruning.</li>
-<li><strong>FASP (in-project method name, no external paper)</strong> — The
-  L2-norm foreground filter used as the first stage of our
-  <code>FASP+GridPrune</code> composed method. The technique is generic:
-  score every token by the L2-norm of its post-projector embedding;
-  drop the lowest ~30% (reliably background — black borders, uniform
-  tissue). Searches for a published "FASP: Foreground-Aware Soft
-  Pruning for Medical Vision-Language Models, Liu et al. 2024"
-  paper return no matching results; treat <code>FASP</code> here as a
-  project-internal acronym for this filter, not a citation.</li>
+<li><strong>FASP — in-project method name (no external paper).</strong>
+  The L2-norm foreground filter used as the first stage of our
+  <code>FASP+GridPrune</code> composed method. Score every token by the L2-norm
+  of its post-projector embedding; drop the lowest ~30% (reliably
+  background — black borders, uniform tissue). Cheap (single tensor
+  op). Audited May 28 — earlier notes cited "Foreground-Aware Soft
+  Pruning, Liu et al. 2024" but no matching paper exists in the
+  visual-token-pruning literature; treat <strong>FASP</strong> here as an in-project
+  acronym, not a citation. The technique itself is generic (L2-norm
+  on post-projector embeddings).</li>
 <li><strong>MedPruner re-read</strong> (already cited above; arXiv 2603.11625).
   Spent an hour today on a careful re-read after the Day 4
   analysis. <strong>Verified orthogonal to our project</strong>: their
@@ -1629,15 +1630,22 @@ Updated as I go.</p>
   of ZSPAPrune.</strong> Tier-1 candidate (add diversity term to QSim) is
   motivated directly by this paper.</li>
 <li><strong>ResPrune: Text-Conditioned Subspace Reconstruction for Visual
-  Token Pruning in Large Vision-Language Models</strong>
-  — Li et al., arXiv March 2026.
+  Token Pruning in Large Vision-Language Models</strong> — Li et al.,
+  arXiv March 2026 (Fudan).
   <a href="https://arxiv.org/abs/2603.21105">arXiv:2603.21105</a> —
-  Evaluates exactly our scoring formula as their <em>Setting-3</em>
-  ablation and reports it as the <strong>weakest of three</strong> formulations
-  (Setting-1: max-similarity-per-visual-token across text tokens →
-  98.4%; Setting-2: averaged-similarity → 98.1%; Setting-3:
-  pooled-text cosine → 95.4%). The Tier-1 max-similarity follow-up
-  is motivated by this paper directly.</li>
+  The paper's <em>main</em> contribution is a subspace-reconstruction
+  framework (greedy selection by residual energy) that's unrelated
+  to our QSim formulation. The relevant piece for us is the
+  <em>Section IV-C3 ablation</em> ("Formulation of Textual Guidance"),
+  which compares three text-relevance formulations: per-visual-token
+  max-similarity-across-text-tokens (Setting-1), averaged-similarity
+  (Setting-2), and pooled-text cosine (Setting-3). The paper adopts
+  Setting-1 (max-similarity, their Eq. 13) and reports Setting-3 —
+  the formulation our QSim uses — as the weakest of the three.
+  Earlier notes here recorded specific numbers (98.4 / 98.1 / 95.4%)
+  for that ablation; verify against the published table before
+  quoting elsewhere. The Tier-1A max-similarity follow-up was
+  motivated by this paper.</li>
 <li><strong>FasterVLM: [CLS] Attention is All You Need for Training-Free
   Visual Token Pruning</strong> — Zhang et al., arXiv December 2024.
   <a href="https://arxiv.org/abs/2412.01818">arXiv:2412.01818</a> —
@@ -1651,12 +1659,15 @@ Updated as I go.</p>
   Post-projector, pre-LLM pruning using CLS-attention. <strong>v2 of our
   patcher operates at the same insertion point as VisionZip.</strong></li>
 <li><strong>ReDiPrune: Relevance-Diversity Pre-Projection Token Pruning
-  for Efficient Multimodal LLMs</strong>
-  — Cai et al., arXiv March 2026.
+  for Efficient Multimodal LLMs</strong> — An Yu et al., arXiv March 2026
+  (University at Albany, SUNY + Peking).
   <a href="https://arxiv.org/abs/2603.24680">arXiv:2603.24680</a> —
-  Closest architectural neighbor to v2: text-relevance + diversity,
-  pre-projector. Combines what ZSPAPrune does (relevance</li>
-<li>diversity) at the early-pruning insertion point of our v2 patcher.</li>
+  Combines text-conditioned relevance and max-min diversity in a
+  single training-free score. Same scoring signals as our QSim plus
+  ZSPAPrune's diversity term, but inserted <strong>pre-projector</strong> (between
+  the vision encoder and the projector), not at v2's post-projector
+  insertion point. Architecturally close in spirit but at a
+  different stage of the pipeline.</li>
 <li><strong>HoloV: Don't Just Chase "Highlighted Tokens" in MLLMs —
   Revisiting Visual Holistic Context Retention</strong> — arXiv October 2025.
   <a href="https://arxiv.org/abs/2510.02912">arXiv:2510.02912</a> —
@@ -1686,7 +1697,8 @@ Updated as I go.</p>
   framework. The canonical "hybrid prune+merge" reference for our
   Tier-1 C experiment.</li>
 <li><strong>AIM: Adaptive Inference of Multi-Modal LLMs via Token Merging
-  and Pruning</strong> — Zhong et al., ICCV 2025.
+  and Pruning</strong> — Zhong et al., ICCV 2025
+  (CUHK + UW-Madison).
   <a href="https://arxiv.org/abs/2412.03248">arXiv:2412.03248</a> —
   Per-sample decides how much to prune vs merge based on image
   information density. Homogeneous radiograph → aggressive
@@ -1695,7 +1707,8 @@ Updated as I go.</p>
 <h3 id="added-day-17-from-the-medical-vqa-properties-survey">Added Day 17 (from the medical-VQA-properties survey)<a class="headerlink" href="#added-day-17-from-the-medical-vqa-properties-survey" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>HEAL-MedVQA: Localizing Before Answering — A Benchmark for
-  Grounded Medical Visual Question Answering</strong> — Pham et al., IJCAI 2025.
+  Grounded Medical Visual Question Answering</strong> — Pham et al.,
+  IJCAI 2025.
   <a href="https://arxiv.org/abs/2505.00744">arXiv:2505.00744</a> —
   Diagnostic benchmark showing current medical VLMs rely heavily on
   text-shortcut features, with visual grounding much weaker than

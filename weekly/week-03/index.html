@@ -1469,8 +1469,8 @@ reduction operator. The LLM doesn't care which visual tokens
 clever in a space that doesn't reward cleverness. The fix points
 at two directions, both implemented and queued for tonight's
 overnight: <strong>GridPrune</strong> (zonal-budget coverage-aware selection,
-faithful to Wang et al. 2025) and <strong>FASP+GridPrune</strong> (composed
-method: FASP anatomy filter → zone budget by fused
+faithful to Duan et al., arXiv:2511.10081) and <strong>FASP+GridPrune</strong>
+(composed method: FASP anatomy filter → zone budget by fused
 text-relevance + saliency → local top-K within each zone). The
 patcher also got a latency-decomposition rewrite tonight — prune
 / prefill / decode brackets land automatically for any method.

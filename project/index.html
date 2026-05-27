@@ -1752,6 +1752,13 @@ whether the shape of the trade-off actually looks like this.</p>
 <td>Training-free pruning with a <strong>bypass</strong> paradigm — unselected tokens forwarded to later layers for re-evaluation rather than committed-pruned at shallow layers. Directly relevant to our open question of "where in the LLaMA stack to prune"</td>
 </tr>
 <tr>
+<td><a href="https://arxiv.org/abs/2511.10081">GridPrune: From "Where to Look" to "What to Select" in Visual Token Pruning for MLLMs</a></td>
+<td>Duan et al.</td>
+<td>arXiv November 2025 (preprint)</td>
+<td>—</td>
+<td>Spatial-coverage-aware pruning: divide tokens into zones, allocate per-zone budget by fused (text-relevance + saliency) score, do local top-K. Tested in our E3 sweep as a coverage-aware response to Phase 4's diversity-collapse diagnosis</td>
+</tr>
+<tr>
 <td><em>Add as you read.</em></td>
 <td></td>
 <td></td>
@@ -1897,10 +1904,12 @@ that should shape method choice:</p>
 <li><strong>High background-to-signal ratio.</strong> Chest X-rays are mostly
   black borders + uniform soft tissue; pathology slides have
   vast stretches of stroma punctuated by clusters of interest.
-  ViTAS (Ahmed et al., 2026) on MIMIC-CXR: <em>"less but more relevant
-  visual input is not only sufficient but superior."</em> <strong>Implication:
-  the redundancy ceiling is higher than general VQA — aggressive
-  compression should work better here.</strong></li>
+  This is widely-observed in medical-imaging analysis, though
+  earlier notes here attributed a specific quote to a
+  "ViTAS (Ahmed et al., 2026)" paper that was found on May 28
+  audit not to exist. <strong>Implication: the redundancy ceiling is
+  higher than general VQA — aggressive compression should work
+  better here.</strong></li>
 <li><strong>Lesions are small and localized.</strong> Medical-VQA survey (Lin et
   al., 2023): <em>"the task needs to focus on a fine-grained scale
   because a lesion is microscopic."</em> <strong>Implication: drop the 3
@@ -1935,7 +1944,8 @@ ruled out reduction-operator fixes:</p>
   result doesn't transfer to our setting (different base model,
   different benchmarks, different pruning location).</li>
 <li><strong>B. Coverage-aware selection</strong> (newly promoted to top of Tier 1
-  after Day 18's diagnosis). <strong>GridPrune</strong> (Wang et al. 2025)
+  after Day 18's diagnosis). <strong>GridPrune</strong> (Duan et al., arXiv
+  November 2025; <a href="https://arxiv.org/abs/2511.10081">arXiv:2511.10081</a>)
   is the strongest published instance — divides visual tokens into
   spatial zones, allocates per-zone budget proportional to a fused
   text-relevance + saliency score, does local top-K within each

@@ -2817,13 +2817,14 @@ and queued for Phase 5:</p>
 <ul>
 <li><strong>Coverage-aware selection</strong> — enforce spatial diversity in what
   we keep instead of trusting a global ranking. Published as
-  <strong>GridPrune</strong> for general VLMs.</li>
+  <strong>GridPrune</strong> (Duan et al., arXiv:2511.10081) for general VLMs.</li>
 <li><strong>Medical anatomy filtering</strong> — exploit the high background-to-
   signal ratio of medical images. Score every token by L2-norm of
   its post-projector embedding; the lowest ~30% are almost always
   background. We call this filter <strong>FASP</strong> (foreground-aware soft
   pruning) inside our codebase; no external paper is cited because
-  searches for a matching one returned no results.</li>
+  the "FASP / Liu et al. 2024" entry earlier referenced here was
+  found on May 28 audit not to exist.</li>
 </ul>
 <p>Full Phase 4 writeup:
 <a href="../weekly/week-03/day-04/#phase-2-reading-the-result">Week 3, Day 4</a>
@@ -2862,7 +2863,7 @@ phase-by-phase cost for the first time.</p>
 <td><em>May 28 (overnight)</em></td>
 <td>v2 · GridPrune</td>
 <td>75 / 50 / 25 / 10%</td>
-<td>Faithful Duan et al. 2025 / Wang et al.; zonal-budget coverage-aware selection</td>
+<td>Faithful Duan et al. arXiv:2511.10081; zonal-budget coverage-aware selection</td>
 </tr>
 <tr>
 <td>E3_fasp_gridprune</td>
