@@ -792,11 +792,11 @@
         <li class="md-nav__item">
   <a href="#phase-5-gridprune-family-may-28" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 5 — GridPrune family (May 28+)
+      Phase 5 — GridPrune family (May 28)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Phase 5 — GridPrune family (May 28+)">
+    <nav class="md-nav" aria-label="Phase 5 — GridPrune family (May 28)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -809,9 +809,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#e3-random-gridprune-faspgridprune-planned-overnight-may-28" class="md-nav__link">
+  <a href="#e3-random-gridprune-faspgridprune" class="md-nav__link">
     <span class="md-ellipsis">
-      E3 — Random + GridPrune + FASP+GridPrune (planned, overnight May 28)
+      E3 — Random + GridPrune + FASP+GridPrune
     </span>
   </a>
   
@@ -1320,6 +1320,8 @@
       
         
       
+        
+      
     
     
       
@@ -1436,6 +1438,27 @@
   
   <span class="md-ellipsis">
     Day 4 — Wednesday, May 27, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-03/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 28, 2026
   </span>
   
 
@@ -1706,11 +1729,11 @@
         <li class="md-nav__item">
   <a href="#phase-5-gridprune-family-may-28" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 5 — GridPrune family (May 28+)
+      Phase 5 — GridPrune family (May 28)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Phase 5 — GridPrune family (May 28+)">
+    <nav class="md-nav" aria-label="Phase 5 — GridPrune family (May 28)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1723,9 +1746,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#e3-random-gridprune-faspgridprune-planned-overnight-may-28" class="md-nav__link">
+  <a href="#e3-random-gridprune-faspgridprune" class="md-nav__link">
     <span class="md-ellipsis">
-      E3 — Random + GridPrune + FASP+GridPrune (planned, overnight May 28)
+      E3 — Random + GridPrune + FASP+GridPrune
     </span>
   </a>
   
@@ -1822,10 +1845,10 @@ you'd documented is the one you didn't.</p>
 </tr>
 <tr>
 <td style="text-align: center;"><a href="#phase-5-gridprune-family-may-28">5</a></td>
-<td>May 28+</td>
+<td>May 28</td>
 <td>HuatuoGPT-Vision-7B · v2 patcher</td>
-<td>E3 = Random + GridPrune + FASP+GridPrune — coverage-aware response to Phase 4's diversity-collapse diagnosis</td>
-<td><span class="pill pill--wip">In progress</span></td>
+<td><strong>Random Pareto-dominates GridPrune and FASP+GridPrune on accuracy <em>and</em> latency at every kr.</strong> Third sweep where structured pruning loses to random. Pruning-as-method closed; project pivots to visual-grounding.</td>
+<td><span class="pill pill--done">Complete (negative result)</span></td>
 </tr>
 </tbody>
 </table>
@@ -2832,13 +2855,20 @@ and queued for Phase 5:</p>
 <a href="../weekly/week-03/day-04/#phase-4-the-qsim_max-ablation">Phase 4</a>
 (qsim_max ablation).</p>
 <hr />
-<h2 id="phase-5-gridprune-family-may-28">Phase 5 — GridPrune family (May 28+)<a class="headerlink" href="#phase-5-gridprune-family-may-28" title="Permanent link">&para;</a></h2>
-<p><span class="pill pill--wip">In progress — results land Day 19</span></p>
-<p>The direct response to Phase 4's diversity-collapse diagnosis. Three
-methods on the same v2 patcher, full four-kr Pareto curve, with the
-patcher's new latency-decomposition instrumentation (<code>prune_time_s</code> /
-<code>prefill_time_s</code> / <code>decode_time_s</code> bracketed automatically) recording
-phase-by-phase cost for the first time.</p>
+<h2 id="phase-5-gridprune-family-may-28">Phase 5 — GridPrune family (May 28)<a class="headerlink" href="#phase-5-gridprune-family-may-28" title="Permanent link">&para;</a></h2>
+<p><span class="pill pill--done">Complete (negative result)</span></p>
+<p>The direct response to Phase 4's diversity-collapse diagnosis: if
+"look like the question text" is the wrong scoring space, does
+"spread the budget evenly across the image" (GridPrune) or "across
+<em>anatomy</em> tokens only" (FASP+GridPrune) do better? Three methods on
+the same v2 patcher, full four-kr Pareto curve, with the patcher's
+new latency-decomposition instrumentation recording phase-by-phase
+cost for the first time. <strong>Answer: no.</strong> Random Pareto-dominates
+both structured methods on accuracy <em>and</em> latency at every
+keep-ratio. This is the third consecutive sweep (after qsim_mean and
+qsim_max) where structured pre-LLM pruning loses to random selection
+on HuatuoGPT-Vision-7B, and it closes training-free visual-token
+pruning as a <em>method</em> for this model.</p>
 <h3 id="summary-table-phase-5">Summary table — Phase 5<a class="headerlink" href="#summary-table-phase-5" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2847,40 +2877,44 @@ phase-by-phase cost for the first time.</p>
 <th>Date</th>
 <th>Strategy</th>
 <th>K (kept)</th>
+<th>Total score</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>E3_random</td>
-<td><em>May 28 (overnight)</em></td>
+<td>May 28</td>
 <td>v2 · Random</td>
 <td>75 / 50 / 25 / 10%</td>
-<td>Re-run with phase-decomposed latency; doubles as drift check against E2_random</td>
+<td>0.6746 / 0.6730 / 0.6570 / 0.6357</td>
+<td>Best at every kr; doubles as drift check vs E2_random</td>
 </tr>
 <tr>
 <td>E3_gridprune</td>
-<td><em>May 28 (overnight)</em></td>
+<td>May 28</td>
 <td>v2 · GridPrune</td>
 <td>75 / 50 / 25 / 10%</td>
-<td>Faithful Duan et al. arXiv:2511.10081; zonal-budget coverage-aware selection</td>
+<td>0.6680 / 0.6573 / 0.6409 / 0.6102</td>
+<td>Faithful Duan et al. arXiv:2511.10081; loses to Random everywhere</td>
 </tr>
 <tr>
 <td>E3_fasp_gridprune</td>
-<td><em>May 28 (overnight)</em></td>
+<td>May 28</td>
 <td>v2 · FASP+GridPrune</td>
 <td>75 / 50 / 25 / 10%</td>
-<td>Our composed method: anatomy filter + zonal budget + local top-K</td>
+<td>0.6759 † / 0.6625 / 0.6430 / 0.6119</td>
+<td>Edges GridPrune at every real kr; still loses to Random</td>
 </tr>
 </tbody>
 </table>
-<h3 id="e3-random-gridprune-faspgridprune-planned-overnight-may-28">E3 — Random + GridPrune + FASP+GridPrune (planned, overnight May 28)<a class="headerlink" href="#e3-random-gridprune-faspgridprune-planned-overnight-may-28" title="Permanent link">&para;</a></h3>
-<p><strong>Goal</strong> — test whether <strong>coverage-aware</strong> (GridPrune) and
-<strong>coverage + anatomy</strong> (FASP+GridPrune) selection clear Phase 4's
-Random floor. Phase 4 told us that "look like the question text" is
-the wrong scoring space; Phase 5 tests whether "evenly distribute the
-budget across the image" and "evenly distribute the budget across
-<em>anatomy</em> tokens only" do better.</p>
+<p>Baseline (kr=1.0, no pruning) = <strong>0.6787</strong>. † The kr=0.75
+FASP+GridPrune cell is a degenerate artifact — see
+<a href="../bugs/#10-degenerate-faspgridprune-branch-at-kr075-inflated-the-e3-table">Bug #10</a>.</p>
+<h3 id="e3-random-gridprune-faspgridprune">E3 — Random + GridPrune + FASP+GridPrune<a class="headerlink" href="#e3-random-gridprune-faspgridprune" title="Permanent link">&para;</a></h3>
+<p><strong>Goal</strong> — test whether coverage-aware (GridPrune) and
+coverage + anatomy (FASP+GridPrune) selection clear Phase 4's Random
+floor.</p>
 <p><strong>Setup</strong></p>
 <ul>
 <li>Model: HuatuoGPT-Vision-7B (unchanged from Phase 3-4)</li>
@@ -2891,29 +2925,95 @@ budget across the image" and "evenly distribute the budget across
 <li>Methods:<ul>
 <li><code>random</code> — re-run with phase-decomposed latency; doubles as a
   drift check against E2_random's accuracy numbers</li>
-<li><code>gridprune</code> — faithful Wang/Duan et al. 2025. Divide visual
-  tokens into a grid of zones; per-zone budget proportional to
-  a fused (text-relevance + saliency) score; local top-K within
+<li><code>gridprune</code> — faithful Duan et al., arXiv:2511.10081. Divide
+  visual tokens into a grid of zones; per-zone budget proportional
+  to a fused (text-relevance + saliency) score; local top-K within
   each zone.</li>
-<li><code>fasp_gridprune</code> — composed method. First, FASP filter:
-  drop the lowest ~30% by L2-norm of post-projector embedding
-  (these are reliably background). Then GridPrune on the
-  survivors: zonal budget by fused score + local top-K.</li>
+<li><code>fasp_gridprune</code> — composed method. First, FASP filter: drop the
+  lowest ~30% by L2-norm of post-projector embedding (reliably
+  background). Then GridPrune on the survivors.</li>
 </ul>
 </li>
 <li>Keep ratios: K ∈ {0.75, 0.50, 0.25, 0.10}</li>
-<li>Decoding: per HuatuoGPT eval default</li>
+<li>Decoding: per HuatuoGPT eval default (greedy)</li>
 </ul>
-<p><strong>What this design tests</strong></p>
-<p>If <code>gridprune</code> clears Random by ≥2 pts at any kr, the diversity-
-collapse hypothesis is supported and coverage is the right axis. If
-<code>fasp_gridprune</code> does the same <em>and</em> beats <code>gridprune</code> by ≥1 pt, the
-medical-anatomy-filter prior adds signal <em>on top of</em> coverage —
-that's the project's central claim in numerical form, in a form the
-substring bug can't invalidate. If neither beats Random, the project
-needs to abandon training-free pruning and move to learned scoring
-(Phase 6 of the <a href="../project/#12-week-plan">12-week plan</a>).</p>
-<p>Full Phase 5 design writeup:
+<p><strong>Results — accuracy</strong></p>
+<p>Gap to Random (positive = beats Random):</p>
+<table>
+<thead>
+<tr>
+<th>kr</th>
+<th>GridPrune</th>
+<th>FASP+GridPrune</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.75</td>
+<td>−0.66</td>
+<td>+0.13 †</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>−1.57</td>
+<td>−1.05</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>−1.61</td>
+<td>−1.40</td>
+</tr>
+<tr>
+<td>0.10</td>
+<td>−2.55</td>
+<td>−2.38</td>
+</tr>
+</tbody>
+</table>
+<p>Three readings:</p>
+<ol>
+<li><strong>Random wins at every keep-ratio</strong>, with the same monotone
+   gap-growth signature as the QSim sweeps — smallest at kr=0.75,
+   largest at kr=0.10. The penalty for being clever grows as pruning
+   gets aggressive.</li>
+<li><strong>FASP+GridPrune &gt; GridPrune at every real kr</strong> (+0.52, +0.21,
+   +0.17 pts through kr=0.5 / 0.25 / 0.1). FASP's anatomy filter adds
+   a sliver of real signal on top of coverage — just not enough to
+   reach Random. After removing the degenerate kr=0.75 cell,
+   FASP+GridPrune beats Random in <strong>1 of 18</strong> benchmark×kr
+   comparisons (VQA-RAD kr=0.25, likely noise).</li>
+<li><strong>Random is extraordinarily strong</strong> — only −0.57 pts vs baseline
+   at kr=0.5, −2.17 at kr=0.25. The model is far more robust to
+   random token dropping than expected for a medical VLM. This is the
+   finding that reframes the project: not "how do we prune well" but
+   "why doesn't the model need the visual tokens."</li>
+</ol>
+<p><strong>Results — latency</strong> (mean per-sample ms; prune / prefill / decode)</p>
+<p>At a fixed keep-ratio prefill and decode are determined by token
+count, so they're identical across methods. The only lever is prune
+overhead: Random ~0.22 ms, structured methods 9–31 ms. So Random is
+both more accurate <em>and</em> faster — e.g. GridPrune at kr=0.5 is 157.95
+ms vs Random's 139.88 ms, 18 ms slower for worse accuracy. <strong>Random
+Pareto-dominates on both axes simultaneously.</strong> One useful byproduct:
+decode time barely moves with token count (~46 → ~40 ms) while
+prefill nearly halves (50 → 26 ms), so almost all pruning savings
+live in prefill — modest on short-answer medical VQA.</p>
+<p><strong>Conclusion</strong></p>
+<p>Neither coverage-aware nor anatomy-filtered selection beats Random.
+Combined with E2 (qsim_mean, qsim_max), that's three sweeps and five
+methods all losing to random selection — the failure is structural,
+not method-specific. <strong>Training-free visual-token pruning is closed
+as a method for HuatuoGPT-Vision.</strong> But the <em>reason</em> — the model
+barely needs the fine-grained visual evidence — is a visual-grounding
+finding, and the project pivots there
+(<a href="../weekly/week-03/day-05/#phase-5-the-strategic-pivot-four-directions">Week 3, Day 5</a>).
+The pruning infrastructure is repurposed into an evidence-dial probe;
+a zero-GPU feasibility probe established that answer-stability under
+visual-evidence removal tracks correctness (81.7% stable when correct
+vs 64.3% when wrong), green-lighting a training-free
+evidence-router direction.</p>
+<p>Full analysis:
+<a href="../weekly/week-03/day-05/">Week 3, Day 5</a>. Design background:
 <a href="../weekly/week-03/day-04/#phase-6-fasp-gridprune-design">Week 3, Day 4, Phase 6</a>.</p>
 <hr />
 <h2 id="template-for-new-experiments">Template for new experiments<a class="headerlink" href="#template-for-new-experiments" title="Permanent link">&para;</a></h2>

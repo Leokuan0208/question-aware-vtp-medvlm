@@ -1135,6 +1135,8 @@
       
         
       
+        
+      
     
     
       
@@ -1251,6 +1253,27 @@
   
   <span class="md-ellipsis">
     Day 4 — Wednesday, May 27, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-03/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 28, 2026
   </span>
   
 
@@ -1463,8 +1486,8 @@ each page.</p>
 and 12-week plan.</p>
 <h2 id="where-i-am-right-now">Where I am right now<a class="headerlink" href="#where-i-am-right-now" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--wip">In progress</span> &nbsp;
-<strong>Phase 1, Week 3 — Negative result on QSim, coverage-aware
-methods queued for tonight.</strong> Week 1 closed out May 16
+<strong>Phase 1, Week 3 — Pruning closed as a dead end; pivoting to
+training-free visual grounding.</strong> Week 1 closed out May 16
 (<a href="weekly/week-01/#end-of-week-status">overview</a>). Week 2
 closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
 (<a href="weekly/week-02/#reflections-end-of-week">overview</a>). The
@@ -1479,31 +1502,46 @@ lines vs 280, ~30% speedup at kr=0.5), and produced the first
 successfully-pruned sweep on HuatuoGPT-Vision-7B.
 <a href="weekly/week-03/day-04/">Day 18</a> analyzed those numbers and got
 the <em>opposite</em> of the central thesis's prediction: <strong>mean-pooled
-QSim is uniformly worse than Random at every keep-ratio</strong>, with
-the gap growing monotonically (+0.84 → +3.11 pts as kr drops from
-0.75 to 0.10). A same-day qsim_max ablation (motivated by
-ResPrune's published Setting-1 &gt; Setting-3 result) confirmed the
-failure mode is structural to cosine-similarity-on-pre-LLM-
-embeddings, not a reduction-operator quirk — qsim_max is even
-worse than qsim_mean. The diagnosis: <strong>diversity collapse +
-scoring-space brittleness</strong>. Tonight's overnight runs
-<strong>{random, GridPrune, FASP+GridPrune} × {0.75, 0.5, 0.25, 0.1}</strong> —
-12 runs with phase-decomposed latency (prune / prefill / decode),
-testing whether coverage-aware selection (GridPrune) and
-medical-anatomy filtering (FASP) recover from the QSim collapse.
-Three commits pushed today:
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/43fca4d"><code>43fca4d</code></a>
-(gitignore),
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/54121f2"><code>54121f2</code></a>
-(qsim_max sweep),
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/cd1ef3c"><code>cd1ef3c</code></a>
-(analysis). Three repos now:
+QSim is uniformly worse than Random at every keep-ratio</strong>, the
+qsim_max ablation made it worse not better, and the failure was
+diagnosed as structural to cosine-similarity-on-pre-LLM-embeddings
+(diversity collapse + scoring-space brittleness).
+<a href="weekly/week-03/day-05/">Day 19</a> is the hinge. The overnight E3
+sweep tested the coverage-aware fixes (GridPrune, FASP+GridPrune) —
+and <strong>Random Pareto-dominates both on accuracy <em>and</em> latency at
+every keep-ratio.</strong> Three sweeps, five methods, all losing to
+random selection: training-free visual-token pruning is <strong>closed as
+a method</strong> for this model. But the <em>reason</em> Random does so well —
+HuatuoGPT-Vision barely needs the fine-grained visual evidence,
+losing only 0.57 pts at kr=0.5 — is a <strong>visual-grounding</strong> finding,
+not a pruning one. A zero-GPU feasibility probe on existing data
+confirmed it: <strong>answer-stability under visual-evidence removal
+tracks correctness (81.7% stable when correct vs 64.3% when wrong)</strong>,
+with a 20.7% locked-in-wrong population concentrated in PathVQA
+(30.0%). That green-lit a pivot to <strong>training-free visual grounding /
+selective prediction</strong> — an evidence-sensitivity router over proven
+components (Direction D), with conformal risk control (A) and
+per-question compute allocation (C) as live alternatives. Today's
+push
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/dbe8daa"><code>dbe8daa</code></a>
+landed the scored-sweep instrumentation (logprob capture +
+self-consistency + nested-budget pruning); an 18-run scored sweep is
+running overnight to produce the data the router needs. Three repos:
 <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
-(frozen, LLaVA-Med v1.0 phase),
+(frozen),
 <a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning"><code>Qwen-v25-vl-med-pruning</code></a>
-(frozen, Qwen2.5-VL smoke-test artifact preserved), and
+(frozen), and
 <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>huatuo-llava-v15-med-pruning</code></a>
 (active).</p>
+<div class="admonition note">
+<p class="admonition-title">The project is mid-pivot</p>
+<p>The site and project name still say <em>question-aware visual token
+pruning</em>. As of Day 19 the work has pivoted toward training-free
+<strong>visual-grounding / selective-prediction</strong> for medical VLMs —
+the pruning infrastructure repurposed as the probe. The rebrand
+is deliberately deferred until the new direction is committed to
+and producing results.</p>
+</div>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Stack sanity check (PyTorch, transformers, accelerate, flash-attn)</li>
@@ -1635,13 +1673,35 @@ Three commits pushed today:
       <code>prefill_time_s</code> / <code>decode_time_s</code> fields land automatically
       for any method via the v2 patcher's bracket rewrite. Tonight's
       sweep produces phase-resolved latency for the first time.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Tonight's overnight: 12 runs.</strong> {random, gridprune,
-      fasp_gridprune} × {kr=0.75, 0.5, 0.25, 0.1}, ~15h total.
-      Random re-run is both the phase-decomposed baseline and a
-      drift check.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Day 19 analysis</strong> — extend <code>analyze_v2_sweep.py</code> to 5
-      methods; the question is whether FASP+GridPrune is the first
-      to consistently beat Random.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>E3 sweep analyzed (Day 19).</strong> {random, gridprune,
+      fasp_gridprune} × {0.75, 0.5, 0.25, 0.1}. <strong>Random
+      Pareto-dominates both structured methods on accuracy <em>and</em>
+      latency at every kr.</strong> FASP+GridPrune edges GridPrune
+      everywhere but neither reaches Random. Pruning-as-method
+      closed.
+      → <a href="weekly/week-03/day-05/#phase-2-e3-results-random-wins-again">Week 3, Day 5, Phase 2</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>kr=0.75 anomaly diagnosed and logged as Bug #10</strong> — a
+      degenerate FASP+GridPrune backfill branch (<code>kr &gt; 1 −
+      bg_fraction</code>) inflated that cell; removing the artifact made
+      the negative result cleaner.
+      → <a href="bugs/#10-degenerate-faspgridprune-branch-at-kr075-inflated-the-e3-table">Bugs &amp; Issues #10</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Strategic pivot to training-free visual grounding.</strong> Four
+      directions scoped against a literature scan; Direction D
+      (evidence-sensitivity router) the lead, A (conformal risk
+      control) and C (per-question compute) live alternatives.
+      → <a href="weekly/week-03/day-05/#phase-5-the-strategic-pivot-four-directions">Week 3, Day 5, Phase 5</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Feasibility probe green-lit the pivot (zero GPU).</strong>
+      Answer-stability tracks correctness (81.7% vs 64.3% stable);
+      20.7% locked-in-wrong, concentrated in PathVQA. Specified the
+      router's needed second feature (option-token logprob).
+      → <a href="weekly/week-03/day-05/#phase-6-the-feasibility-probe-zero-gpu-decisive">Week 3, Day 5, Phase 6</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Scored-sweep instrumentation built and pushed</strong> at
+      <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/dbe8daa"><code>dbe8daa</code></a>
+      — logprob capture + self-consistency + nested-budget pruning;
+      18-run overnight scored sweep launched.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Day 20</strong> — check the scored sweep, build the two-feature
+      router probe (stability + logprob), verify proven components
+      don't degrade on medical VQA before composing.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push Day 8's accumulated changes to
       <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
       (split into coherent commits)</li>

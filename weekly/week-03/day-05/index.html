@@ -1,0 +1,2278 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.">
+      
+      
+        <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
+      
+      
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-03/day-05/">
+      
+      
+        <link rel="prev" href="../day-04/">
+      
+      
+        <link rel="next" href="../../../bugs/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Day 5 — Thursday, May 28, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-5-thursday-may-28-2026" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Question-Aware Visual Token Pruning for Medical VLMs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 5 — Thursday, May 28, 2026
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../project/" class="md-tabs__link">
+        
+  
+    
+  
+  Project Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../baseline/" class="md-tabs__link">
+          
+  
+    
+  
+  Baseline
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../experiments/" class="md-tabs__link">
+        
+  
+    
+  
+  Experiments
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+    
+  
+  Weekly Log
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../bugs/" class="md-tabs__link">
+        
+  
+    
+  
+  Bugs & Issues
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../resources/" class="md-tabs__link">
+        
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Question-Aware Visual Token Pruning for Medical VLMs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../baseline/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Baseline
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Baseline
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/huatuo-vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HuatuoGPT-Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/qwen25-vl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Qwen2.5-VL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/llava-med/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LLaVA-Med
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../experiments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Experiments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Weekly Log
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Weekly Log
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-01/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Week 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 10, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 11, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 12, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 13, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 14, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-06/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-07/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-02/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 18, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 19, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 20, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 21, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 3
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Week 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 24, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 25, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 26, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 27, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 28, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 28, 2026
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-smell-test-the-e3-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Smell-test the E3 sweep
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-e3-results-random-wins-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — E3 results: Random wins again
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-kr075-anomaly-bug-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The kr=0.75 anomaly (Bug #10)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-the-latency-verdict-efficiency-story-dies-too" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — The latency verdict: efficiency story dies too
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-the-strategic-pivot-four-directions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — The strategic pivot: four directions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-the-feasibility-probe-zero-gpu-decisive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — The feasibility probe (zero GPU, decisive)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-instrumentation-built-overnight-sweep-launched" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Instrumentation built, overnight sweep launched
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow-may-29-day-20-week-3-day-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow (May 29, Day 20 / Week 3 Day 6)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bugs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bugs & Issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-smell-test-the-e3-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Smell-test the E3 sweep
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-e3-results-random-wins-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — E3 results: Random wins again
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-kr075-anomaly-bug-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The kr=0.75 anomaly (Bug #10)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-the-latency-verdict-efficiency-story-dies-too" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — The latency verdict: efficiency story dies too
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-the-strategic-pivot-four-directions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — The strategic pivot: four directions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-the-feasibility-probe-zero-gpu-decisive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — The feasibility probe (zero GPU, decisive)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-instrumentation-built-overnight-sweep-launched" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Instrumentation built, overnight sweep launched
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow-may-29-day-20-week-3-day-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow (May 29, Day 20 / Week 3 Day 6)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-03/day-05.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="day-5-thursday-may-28-2026">Day 5 — Thursday, May 28, 2026<a class="headerlink" href="#day-5-thursday-may-28-2026" title="Permanent link">&para;</a></h1>
+<p><a href="../">← Back to Week 3 overview</a></p>
+<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature) → closing out · Week 3,
+Day 5 · <strong>Day 19 of the project</strong></p>
+<hr />
+<p>The day the pruning thesis closed and a new direction opened. Came
+in to analyze last night's
+<a href="../day-04/#phase-6-fasp-gridprune-design">E3 sweep</a> — the
+coverage-aware methods (GridPrune, FASP+GridPrune) that were
+supposed to clear Phase 4's Random floor. They didn't. <strong>Random
+Pareto-dominates every structured method on both accuracy and
+latency, at every keep-ratio</strong> — the third consecutive sweep where
+being clever about <em>which</em> visual tokens to keep loses to picking
+at random. That closes training-free visual-token pruning as a
+<em>method</em> for this model.</p>
+<p>But the same negative result pointed at something live. The reason
+Random does so well is that <strong>HuatuoGPT-Vision barely needs the
+fine-grained visual evidence</strong> — it answers most questions the same
+way whether it sees 100% or 10% of the image tokens. That's not a
+pruning story; it's a <em>visual-grounding</em> story. The afternoon was
+spent mining the literature for a defensible, training-free novel
+direction built on that observation, scoping four candidates, and
+running a zero-GPU feasibility probe on data already on disk that
+<strong>green-lit an evidence-router direction</strong> and specified the next
+feature to build. The day ended with the instrumentation for that
+direction committed and an 18-run scored sweep launched overnight.</p>
+<hr />
+<h2 id="phase-1-smell-test-the-e3-sweep">Phase 1 — Smell-test the E3 sweep<a class="headerlink" href="#phase-1-smell-test-the-e3-sweep" title="Permanent link">&para;</a></h2>
+<p>Same discipline as Day 3: <strong>confirm pruning actually fired before
+trusting any number.</strong> Twelve runs (3 methods × 4 keep-ratios),
+each checked for token count hitting its target, the patcher
+sentinel (<code>config.pruner</code>) correctly populated, and the latency
+fields present.</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>=== Smell test: token count + method sentinel from config + total score ===
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  pruner              kr   n_post  target  ok    total
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ----------------------------------------------------------------
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  fasp_gridprune     0.1     58.0      58   ✓   0.6119
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  fasp_gridprune    0.25    144.0     144   ✓   0.6430
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  fasp_gridprune     0.5    288.0     288   ✓   0.6625
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  fasp_gridprune    0.75    432.0     432   ✓   0.6759
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  gridprune          0.1     58.0      58   ✓   0.6102
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  gridprune         0.25    144.0     144   ✓   0.6409
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  gridprune          0.5    288.0     288   ✓   0.6573
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  gridprune         0.75   431.58     432   ✓   0.6680
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  random             0.1     58.0      58   ✓   0.6357
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  random            0.25    144.0     144   ✓   0.6570
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  random             0.5    288.0     288   ✓   0.6730
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>  random            0.75    432.0     432   ✓   0.6746
+</span></code></pre></div>
+<p>12/12 clean. The one non-integer (<code>gridprune kr=0.75 → 431.58</code>) is
+per-sample averaging: GridPrune allocates an integer budget per
+zone, and at kr=0.75 with the zone count in play the arithmetic
+occasionally rounds down by one token. 431 vs 432 across the sample
+set is rounding noise, not a bug.</p>
+<hr />
+<h2 id="phase-2-e3-results-random-wins-again">Phase 2 — E3 results: Random wins again<a class="headerlink" href="#phase-2-e3-results-random-wins-again" title="Permanent link">&para;</a></h2>
+<p>Baseline (kr=1.0, no pruning) = <strong>0.6787</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>kr</th>
+<th>Random</th>
+<th>GridPrune</th>
+<th>FASP+GridPrune</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.75</td>
+<td><strong>0.6746</strong></td>
+<td>0.6680</td>
+<td>0.6759 †</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td><strong>0.6730</strong></td>
+<td>0.6573</td>
+<td>0.6625</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td><strong>0.6570</strong></td>
+<td>0.6409</td>
+<td>0.6430</td>
+</tr>
+<tr>
+<td>0.10</td>
+<td><strong>0.6357</strong></td>
+<td>0.6102</td>
+<td>0.6119</td>
+</tr>
+</tbody>
+</table>
+<p>Bold = best at that keep-ratio. <strong>Random is best at every one.</strong>
+† The FASP+GridPrune kr=0.75 cell is a degenerate artifact — see
+<a href="#phase-3-the-kr075-anomaly-bug-10">Phase 3</a>.</p>
+<p>Gap to Random (positive = beats Random):</p>
+<table>
+<thead>
+<tr>
+<th>kr</th>
+<th>GridPrune</th>
+<th>FASP+GridPrune</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.75</td>
+<td>−0.66</td>
+<td>+0.13 †</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>−1.57</td>
+<td>−1.05</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>−1.61</td>
+<td>−1.40</td>
+</tr>
+<tr>
+<td>0.10</td>
+<td>−2.55</td>
+<td>−2.38</td>
+</tr>
+</tbody>
+</table>
+<p>Three readings, in decreasing order of confidence:</p>
+<ol>
+<li><strong>Random wins at every keep-ratio — third sweep running.</strong> Same
+   monotone gap-growth signature as the QSim sweeps: the gap is
+   smallest at kr=0.75 and largest at kr=0.10. Every method we test
+   makes pruning <em>hurt more</em> than random does, and the penalty for
+   being clever grows as pruning gets aggressive.</li>
+<li><strong>FASP+GridPrune &gt; GridPrune at every real kr, consistently.</strong>
+   The deltas are small but they don't flip: +0.52, +0.21, +0.17
+   pts as kr drops through 0.5 / 0.25 / 0.1. So FASP's anatomy
+   filter <em>does</em> add a sliver of real signal on top of GridPrune's
+   coverage logic — it's just nowhere near enough to reach Random.</li>
+<li><strong>Random itself is extraordinarily strong.</strong> At kr=0.50 (half
+   the visual tokens dropped) Random loses only <strong>0.57 pts</strong> vs the
+   unpruned baseline; at kr=0.25 (75% dropped), only 2.17 pts. The
+   model is far more robust to random token dropping than you'd
+   expect for a medical VLM. <strong>This is the most important number in
+   the table</strong> — it reframes the whole problem from "how do we prune
+   well" to "why doesn't the model need the visual tokens."</li>
+</ol>
+<hr />
+<h2 id="phase-3-the-kr075-anomaly-bug-10">Phase 3 — The kr=0.75 anomaly (Bug #10)<a class="headerlink" href="#phase-3-the-kr075-anomaly-bug-10" title="Permanent link">&para;</a></h2>
+<p>The latency table (Phase 4) showed FASP+GridPrune costing <strong>0.58 ms</strong>
+of prune time at kr=0.75 — essentially Random's "do-nothing" cost,
+and <em>cheaper</em> than GridPrune, when it should always cost more (it
+runs FASP's filter on top of GridPrune's logic). At the other three
+keep-ratios it does cost more. Only kr=0.75 inverts.</p>
+<p>The cause is a code branch, diagnosable from the config. The run
+used <code>bg_fraction = 0.3</code>: FASP designates 30% of tokens as
+background and filters them, leaving ~404 of 576 as foreground
+candidates. But <strong>at kr=0.75 the keep target is 432 tokens — more
+than the 404 the filter leaves.</strong> When the keep target exceeds the
+foreground budget, the zonal GridPrune stage has nothing to select
+among (you're forced to keep all foreground), so the method
+short-circuits to a cheap "keep all foreground, backfill the rest
+from background" branch that skips the expensive zonal allocation.
+That bypass is the 0.58 ms.</p>
+<p>The trigger is exactly <code>keep_ratio &gt; 1 − bg_fraction = 0.70</code>. Of the
+four swept values only kr=0.75 sits above 0.70, which is exactly
+where the anomaly appears.</p>
+<p><strong>Why it matters beyond latency:</strong> the kr=0.75 FASP+GridPrune
+<em>accuracy</em> cell (0.6759, the one "+0.13 win" over Random) was not
+produced by the real algorithm — it came from the degenerate
+backfill branch. Removing it makes the negative result <em>cleaner</em>:</p>
+<ul>
+<li>The total-level kr=0.75 "win" → <strong>artifact, dropped.</strong></li>
+<li>3 of the 4 per-benchmark cells where FASP+GridPrune beat Random
+  were at kr=0.75 (all degenerate, all dropped).</li>
+<li>That leaves <strong>exactly one</strong> real-path win: VQA-RAD at kr=0.25
+  (+3.59 pts), a single cell already flagged as likely
+  high-variance noise.</li>
+</ul>
+<p>So on the valid (non-degenerate) cells, FASP+GridPrune beats Random
+in <strong>1 of 18</strong> benchmark×kr comparisons and loses on the total at
+every real keep-ratio. Logged as
+<a href="../../../bugs/#10-degenerate-faspgridprune-branch-at-kr075-inflated-the-e3-table">Bug #10</a>
+— a data-integrity note, not a crash. The kr=0.75 cell stays in the
+table with the † footnote rather than being silently deleted;
+transparency, and a tidy illustration of why the smell-test reflex
+keeps paying off.</p>
+<hr />
+<h2 id="phase-4-the-latency-verdict-efficiency-story-dies-too">Phase 4 — The latency verdict: efficiency story dies too<a class="headerlink" href="#phase-4-the-latency-verdict-efficiency-story-dies-too" title="Permanent link">&para;</a></h2>
+<p>The new patcher instrumentation produced phase-decomposed latency
+(prune / prefill / decode) for the first time. Mean per-sample
+milliseconds:</p>
+<table>
+<thead>
+<tr>
+<th>method</th>
+<th>kr</th>
+<th>prune</th>
+<th>prefill</th>
+<th>decode</th>
+<th>total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>random</td>
+<td>0.75</td>
+<td>0.22</td>
+<td>49.98</td>
+<td>46.11</td>
+<td>154.96</td>
+</tr>
+<tr>
+<td>gridprune</td>
+<td>0.75</td>
+<td>20.47</td>
+<td>49.64</td>
+<td>45.10</td>
+<td>172.28</td>
+</tr>
+<tr>
+<td>fasp_gridprune</td>
+<td>0.75</td>
+<td>0.58 †</td>
+<td>49.84</td>
+<td>44.19</td>
+<td>151.88</td>
+</tr>
+<tr>
+<td>random</td>
+<td>0.50</td>
+<td>0.22</td>
+<td>40.03</td>
+<td>42.19</td>
+<td><strong>139.88</strong></td>
+</tr>
+<tr>
+<td>gridprune</td>
+<td>0.50</td>
+<td>20.52</td>
+<td>40.03</td>
+<td>41.71</td>
+<td>157.95</td>
+</tr>
+<tr>
+<td>fasp_gridprune</td>
+<td>0.50</td>
+<td>31.55</td>
+<td>40.04</td>
+<td>41.21</td>
+<td>169.56</td>
+</tr>
+<tr>
+<td>random</td>
+<td>0.25</td>
+<td>0.22</td>
+<td>29.20</td>
+<td>41.84</td>
+<td>127.87</td>
+</tr>
+<tr>
+<td>gridprune</td>
+<td>0.25</td>
+<td>18.58</td>
+<td>28.91</td>
+<td>40.18</td>
+<td>142.46</td>
+</tr>
+<tr>
+<td>fasp_gridprune</td>
+<td>0.25</td>
+<td>27.46</td>
+<td>28.87</td>
+<td>39.26</td>
+<td>150.40</td>
+</tr>
+<tr>
+<td>random</td>
+<td>0.10</td>
+<td>0.22</td>
+<td>26.06</td>
+<td>40.47</td>
+<td>122.29</td>
+</tr>
+<tr>
+<td>gridprune</td>
+<td>0.10</td>
+<td>9.58</td>
+<td>26.11</td>
+<td>40.56</td>
+<td>131.88</td>
+</tr>
+<tr>
+<td>fasp_gridprune</td>
+<td>0.10</td>
+<td>20.57</td>
+<td>26.23</td>
+<td>39.78</td>
+<td>142.05</td>
+</tr>
+</tbody>
+</table>
+<p>† degenerate branch — see <a href="#phase-3-the-kr075-anomaly-bug-10">Phase 3</a>.</p>
+<p>At a <em>fixed</em> keep-ratio, prefill and decode are determined by token
+count, so they're effectively identical across methods. <strong>The only
+latency lever between methods is prune overhead</strong> — and Random's is
+~0.22 ms while the structured methods add 9–31 ms. So Random is both
+more accurate <em>and</em> faster at every keep-ratio. GridPrune at kr=0.5
+is 157.95 ms vs Random's 139.88 ms — 18 ms slower for worse
+accuracy. There is no latency angle that rescues structured pre-LLM
+pruning here; <strong>Random Pareto-dominates on both axes simultaneously.</strong></p>
+<p>One genuinely useful number falls out of the decomposition: <strong>decode
+time barely moves with token count</strong> (~46 ms at kr=0.75 down to ~40
+ms at kr=0.1) while prefill nearly halves (50 → 26 ms). So almost all
+the compute savings from pruning live in <em>prefill</em>, and on
+short-answer medical VQA where decode is brief, the realizable
+savings are modest. Worth keeping in the back pocket.</p>
+<hr />
+<h2 id="phase-5-the-strategic-pivot-four-directions">Phase 5 — The strategic pivot: four directions<a class="headerlink" href="#phase-5-the-strategic-pivot-four-directions" title="Permanent link">&para;</a></h2>
+<p>The pruning thesis is a confirmed dead end, but the <em>infrastructure</em>
+— the pre-LLM patcher that can arbitrarily manipulate visual tokens,
+the 6-benchmark harness, the latency instrumentation — is exactly
+what a visual-grounding study needs. A literature scan first ruled
+out the obvious moves: the visual-substitution / contrastive-decoding
+space for medical VLMs got crowded in late 2025–early 2026
+(VGS-Decoding, Med-VCD, and others already do training-free
+grounding-score and contrastive-decoding work), and a pure
+"medical VLMs lean on language priors" <em>analysis</em> paper would not
+clear the bar for genuine novelty.</p>
+<p>Four training-free directions were scoped, all reusing the existing
+assets:</p>
+<details class="note">
+<summary>Direction A — Evidence-graded risk control (selective prediction)</summary>
+<p>Use the pruning hook as an <em>evidence dial</em>: feed the model
+controlled amounts of visual evidence (token budget 1.0 → 0.1)
+and characterize each prediction by its <em>evidence curve</em> — how
+the answer and its probability behave as evidence shrinks. Turn
+that into a non-conformity score, wrap it in conformal risk
+control, and produce a guarantee like "≤5% error among the cases
+the model chooses to answer"; abstain on the rest.
+<strong>Novelty:</strong> high (graded evidence curve vs existing binary
+original-vs-distorted contrast; first conformal risk control for
+medical image VQA). <strong>Risk:</strong> abstention reads as less flashy to
+some venues.</p>
+</details>
+<details class="note">
+<summary>Direction B — Visual-evidence-adaptive contrastive decoding</summary>
+<p>Contrast a full-evidence forward pass against a reduced-evidence
+one (using the <em>pruned</em> forward pass as the contrast branch) to
+amplify the image-dependent part of the answer and suppress the
+language prior. <strong>Novelty:</strong> weakest — the surrounding space is
+crowded and already has a "why contrastive decoding fails"
+critique. <strong>Risk:</strong> can <em>hurt</em> when the language prior is
+actually helpful.</p>
+</details>
+<details class="note">
+<summary>Direction C — Per-question test-time compute allocation</summary>
+<p>Decide per question how much visual evidence and how many
+self-consistency samples to spend; easy questions get few
+tokens and one pass, hard ones get full tokens and a majority
+vote. <strong>Novelty:</strong> modest but clean (efficiency-under-a-
+reliability-constraint). <strong>Risk:</strong> the accuracy ceiling is just
+the baseline — the contribution is compute saved, not points
+gained.</p>
+</details>
+<details class="note">
+<summary>Direction D — Combination with an evidence-router (the lead)</summary>
+<p>A test-time pipeline combining <em>proven</em> training-free components
+— self-consistency voting + a medical-adapted grounding reweight
+— glued by a <strong>visual-evidence-sensitivity router</strong> that decides,
+per question, whether the model is genuinely reading the image
+(trust the answer), guessing from language priors (apply
+grounding correction), or truly uncertain (escalate samples or
+abstain). <strong>Novelty:</strong> the components are off-the-shelf; the
+<em>router</em> is the contribution — a medical-evidence signal nobody
+has wired into the "adaptively combine by confidence" pattern.
+<strong>Build speed:</strong> fastest — only the router is new. D is partly an
+umbrella: its "correct" branch is a slice of B, its "escalate"
+branch a slice of C, its "abstain" branch a slice of A.</p>
+</details>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Core signal</th>
+<th>Novelty</th>
+<th>Build speed</th>
+<th>Main risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>Evidence-curve → conformal guarantee</td>
+<td>High</td>
+<td>Medium</td>
+<td>"Abstention" less flashy</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>Full vs pruned forward-pass contrast</td>
+<td>Low (crowded)</td>
+<td>Medium</td>
+<td>Can hurt; crowded field</td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td>Per-question compute routing</td>
+<td>Modest</td>
+<td>Medium-fast</td>
+<td>Ceiling = baseline accuracy</td>
+</tr>
+<tr>
+<td><strong>D</strong></td>
+<td>Evidence-router over proven components</td>
+<td>Med-High</td>
+<td>Fastest</td>
+<td>Components may degrade on medical</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="phase-6-the-feasibility-probe-zero-gpu-decisive">Phase 6 — The feasibility probe (zero GPU, decisive)<a class="headerlink" href="#phase-6-the-feasibility-probe-zero-gpu-decisive" title="Permanent link">&para;</a></h2>
+<p>Before committing to any direction, one capability audit and one
+free probe. The capability audit on <code>cli.py</code> / <code>eval.py</code> /
+<code>scorer.py</code> found:</p>
+<ul>
+<li><strong>Multi-budget predictions already on disk</strong> — the Random sweep's
+  per-sample <code>predictions.json</code> exist at every keep-ratio, so the
+  core hypothesis is testable <em>today</em> with zero new inference.</li>
+<li><strong>Sampling supported but not wired into eval</strong> — <code>cli.py</code> calls
+  <code>generate()</code> with <code>do_sample=True, temperature=0.2</code>, but <code>eval.py</code>
+  runs greedy. So C/D need a modest plumbing edit, not a new build.</li>
+<li><strong>MCQ logprob absent but cheap</strong> — one option-token logprob is
+  easy to add.</li>
+</ul>
+<p>The probe joins the Random predictions across all five budgets
+(kr=1.0 baseline + 0.75 / 0.5 / 0.25 / 0.1) by composite key
+(<code>dataset</code>, <code>subset</code>, <code>test_id</code>) — a clean <strong>17,303 / 17,303</strong>
+overlap — and asks: <strong>does answer-stability under visual-evidence
+removal predict correctness?</strong> (The baseline per-sample file lives
+under a non-standard name in <code>results/archive/</code> — noted so future-me
+doesn't lose it.)</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>common samples across all 5 budgets: 17303
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Flip-count distribution (0 = answer identical across all budgets)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  0 flips:  13165  (76.1%)
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  1 flips:   2033  (11.7%)
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  2 flips:   1390  ( 8.0%)
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  3 flips:    581  ( 3.4%)
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  4 flips:    134  ( 0.8%)
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>Correctness vs stability
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  baseline CORRECT: n=11739 | 81.7% perfectly stable (0 flips)
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  baseline WRONG  : n= 5564 | 64.3% perfectly stable (0 flips)
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>Stable-but-wrong (answer never moved through 90% token removal, yet wrong)
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  stable (0-flip) samples: 13165
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>  of those WRONG:          3579  (27.2% of stable)
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>  stable-wrong as % of ALL: 20.7%
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>  per-dataset stable-wrong rate:
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    MMMU_Medical_Validation     36 /   150  (24.0%)
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    OmniMedVQA                1934 / 11124  (17.4%)
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    PMC-VQA_test               480 /  2000  (24.0%)
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    PathVQA_test              1010 /  3362  (30.0%)
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>    SLAKE_test                  56 /   416  (13.5%)
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    VQA-RAD_test                63 /   251  (25.1%)
+</span></code></pre></div>
+<p>How to read it:</p>
+<ul>
+<li><strong>Stability tracks correctness, in the favorable direction.</strong>
+  Correct answers are 81.7% stable; wrong answers only 64.3% — a
+  17.4-point separation. Wrong answers flip <em>more</em> as you starve the
+  visual budget, so being correct coincides with being robust. A
+  router watching flip behavior has a genuine signal.</li>
+<li><strong>One floated hypothesis was partly contradicted, usefully.</strong> We'd
+  guessed "stable-but-wrong" would be the <em>dominant</em> language-prior
+  signature. Instead wrong answers are on average <em>wobblier</em>, not
+  more stable — a wrong answer at full evidence is often one the
+  model was already shaky on, so perturbing the budget pushes it
+  around. The clean split: wrong answers are ~64% locked-in-wrong
+  (prior-driven candidates) and ~36% evidence-sensitive-wrong.</li>
+<li><strong>The stable-but-wrong bucket is still large and meaningful:</strong>
+  3,579 samples (20.7% of everything) answered identically through
+  90% visual-token removal yet wrong — locked-in regardless of
+  evidence. <strong>Concentrated by modality:</strong> PathVQA worst at 30.0%
+  (pathology/microscopy, where the model most often locks onto an
+  unsupported answer), SLAKE lowest at 13.5%. That spread is itself
+  a finding — the language-prior failure mode is modality-dependent.</li>
+</ul>
+<p><strong>Go / no-go: Go</strong>, with the thesis sharpened. The naive "stable =
+prior, detect and abstain" is too simple — flips alone are a
+weak-to-moderate correctness signal, not a clean prior-detector
+(plenty of correct answers are also stable). The defensible version:</p>
+<blockquote>
+<p>Answer-stability under graded visual-evidence removal is a
+training-free signal that (a) correlates with correctness and
+(b) isolates a large locked-in-wrong population concentrated in
+specific modalities. A per-question policy can exploit <em>both</em>
+directions — escalate/abstain on the evidence-sensitive-wrong,
+flag the locked-in-wrong as prior-driven.</p>
+</blockquote>
+<p>The probe did its job twice over: it green-lit Direction D's router
+<em>and</em> told us the single flip-trajectory feature isn't sufficient
+alone — the router needs a second feature, the option-token logprob
+that was already flagged as cheap to add. Stability + confidence
+together should separate the regimes far better than stability alone.
+That's a concrete, evidence-based spec for what to build, not a guess.</p>
+<hr />
+<h2 id="phase-7-instrumentation-built-overnight-sweep-launched">Phase 7 — Instrumentation built, overnight sweep launched<a class="headerlink" href="#phase-7-instrumentation-built-overnight-sweep-launched" title="Permanent link">&para;</a></h2>
+<p>With the direction green-lit, the evening built and smoke-tested the
+machinery the scored sweep needs, then launched it. Six files, all
+committed in one push:</p>
+<ul>
+<li><code>pruning/scored_chatbot.py</code> — <code>ScoredHuatuoChatbot</code> subclass:
+  first-token logprob distribution, option entropy, k-sample
+  self-consistency. Modular so a non-Huatuo backend (e.g. MedGemma)
+  can slot in later.</li>
+<li><code>pruning/nested_random_pruner.py</code> — nested-budget random pruning,
+  where a lower keep-ratio is a strict <em>subset</em> of a higher one, for
+  clean evidence-quantity curves (the same token set shrinks
+  monotonically rather than re-sampling at each budget).</li>
+<li><code>scripts/scored_sweep.py</code> — eval driver with scored / sampled
+  modes (latency tracked only in scored mode, since
+  <code>num_return_sequences</code> inflates per-forward timing).</li>
+<li><code>scripts/run_sweep_vmA.sh</code>, <code>run_sweep_vmB.sh</code> — the 18-run,
+  two-GPU split: greedy+logprobs and k=5 self-consistency (T=0.7),
+  at 5 budgets, in both independent and nested pruning variants.</li>
+<li><code>analysis/probe_answer_stability.py</code> — today's probe, saved next
+  to <code>analyze_v2_sweep.py</code>.</li>
+<li><code>.gitignore</code> — finally stops tracking <code>results/</code> and Python cruft.</li>
+</ul>
+<p><strong>Tonight's sweep:</strong> 18 runs across 2 A100s — greedy+logprobs and
+k=5 self-consistency, at 5 budgets, independent and nested pruning
+variants. ~12.5 hr ETA. This produces the per-sample logprob /
+entropy / self-consistency data that Direction D's router needs as
+its second feature, so tomorrow's work can start on real numbers
+rather than a re-run.</p>
+<hr />
+<h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>E3 fully analyzed; pruning-as-method closed.</strong> Random
+   Pareto-dominates structured pruning on accuracy <em>and</em> latency at
+   every keep-ratio — three sweeps running. Confirmed dead end.</li>
+<li><strong>Random's robustness is the real finding.</strong> Only −0.57 pts at
+   kr=0.5; the model barely needs the fine-grained visual evidence.
+   That reframes the project.</li>
+<li><strong>kr=0.75 anomaly diagnosed to its exact branch</strong> (<code>kr &gt; 1 −
+   bg_fraction</code>); the negative result came out cleaner once the
+   artifact was removed. Logged as Bug #10.</li>
+<li><strong>Pivot scoped, not flailed.</strong> Four training-free directions
+   compared against a real literature scan; D (evidence-router) the
+   lead, A and C live fallbacks, B the riskiest.</li>
+<li><strong>Feasibility probe green-lit D on existing data, no GPU</strong> —
+   stability tracks correctness (81.7 vs 64.3%), with a 20.7%
+   locked-in-wrong population concentrated in PathVQA. <em>And</em> it
+   specified the missing second feature (logprob).</li>
+<li><strong>Instrumentation built and pushed; 18-run scored sweep
+   launched.</strong> Tomorrow starts on real logprob/self-consistency
+   data.</li>
+</ol>
+<p>The dead end turned out to be the doorway. The infrastructure built
+for an efficiency method became the probe for a grounding study —
+and the negative result is now Figure 1 of a different paper, not a
+failure.</p>
+<div class="admonition note">
+<p class="admonition-title">On the project's direction</p>
+<p>The site name and framing still say <em>question-aware visual token
+pruning</em>. The work has pivoted toward training-free
+visual-grounding / selective-prediction for medical VLMs, but
+the rebrand is deliberately deferred until the new direction is
+committed to and producing results. Today's page is the hinge;
+expect the headline framing to shift over the coming days.</p>
+</div>
+<hr />
+<h3 id="plan-for-tomorrow-may-29-day-20-week-3-day-6">Plan for tomorrow (May 29, Day 20 / Week 3 Day 6)<a class="headerlink" href="#plan-for-tomorrow-may-29-day-20-week-3-day-6" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Check the overnight scored sweep landed cleanly</strong> — 18 runs,
+      both VMs; confirm START (not all-SKIP) and smell-test the
+      logprob / self-consistency fields before trusting anything.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Build the two-feature router probe</strong> — join answer-stability
+      (today) with the new option-token logprob; test whether
+      stability + confidence separates the regimes better than
+      stability alone (the spec the probe handed us).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Verify the proven components don't degrade on medical VQA</strong>
+      <em>before</em> composing — plain self-consistency, no router, on the
+      6 benchmarks. Same smell-test reflex that caught Bug #7.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Draft a week-by-week plan for Direction D once the router
+      probe confirms the second feature helps.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (still pending from Week 2).</li>
+</ul>
+<hr />
+<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
+<p>One commit to
+<strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>huatuo-llava-v15-med-pruning</code></a></strong>:</p>
+<p><strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/dbe8daa"><code>dbe8daa</code></a></strong>
+— <em>Add scored-sweep instrumentation: logprob capture +
+self-consistency + nested-budget pruning.</em> 7 files, +622 lines.
+<code>scored_chatbot.py</code> (first-token logprob distribution, option
+entropy, k-sample self-consistency; modular for future non-Huatuo
+backends), <code>nested_random_pruner.py</code> (nested-budget random pruning —
+lower kr is a strict subset of higher kr, for clean evidence-quantity
+curves), <code>scored_sweep.py</code> (eval driver with scored/sampled modes;
+latency tracked only in scored mode since <code>num_return_sequences</code>
+inflates per-forward timing), <code>run_sweep_vmA.sh</code> / <code>run_sweep_vmB.sh</code>
+(18-run two-GPU split: independent + nested × 5 kr), and
+<code>probe_answer_stability.py</code> (today's answer-stability-vs-correctness
+probe). The <code>.gitignore</code> finally stops tracking <code>results/</code> and Python
+cruft, so future sweep commits no longer need <code>git add -f</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../day-04/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 4 — Wednesday, May 27, 2026">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Day 4 — Wednesday, May 27, 2026
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../bugs/" class="md-footer__link md-footer__link--next" aria-label="Next: Bugs &amp; Issues">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Bugs & Issues
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Leokuan0208" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
