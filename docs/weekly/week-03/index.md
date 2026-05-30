@@ -148,6 +148,42 @@ reading MedPruner (Liu et al., March 2026) — confirmed orthogonal
 (3D volumes vs our 2D single-image), good positioning for the
 future writeup.
 
+### [Day 5 — Thursday, May 28, 2026](day-05.md)
+
+The day the pruning thesis closed and a new direction opened.
+Analyzed last night's E3 sweep (the coverage-aware methods meant to
+clear Phase 4's Random floor) and got the now-familiar answer:
+**Random Pareto-dominates GridPrune and FASP+GridPrune on both
+accuracy and latency, at every keep-ratio** — the third consecutive
+sweep where being clever loses to picking at random. FASP+GridPrune
+edges plain GridPrune at every real kr (the anatomy filter adds a
+sliver of signal) but neither comes near Random. The latency
+decomposition confirmed the efficiency angle is dead too: structured
+methods add 9–31 ms of prune overhead while Random's is ~0.22 ms, so
+Random is faster *and* more accurate. A **kr=0.75 FASP+GridPrune
+anomaly** was diagnosed to an exact code branch (`kr > 1 −
+bg_fraction`, the zonal stage bypassed when the keep target exceeds
+the foreground budget) — logged as Bug #10; removing the artifact
+made the negative result cleaner. **That closes training-free
+pruning as a method.** But the reason Random does so well — the
+model barely needs the fine-grained visual evidence — is a
+*visual-grounding* finding, and the afternoon pivoted to it: four
+training-free directions scoped against a real literature scan
+(crowded contrastive-decoding space ruled out a pure analysis
+paper), with **Direction D (an evidence-sensitivity router over
+proven components)** the lead. A zero-GPU feasibility probe on the
+17,303-sample Random predictions already on disk **green-lit the
+direction**: answer-stability under visual-evidence removal tracks
+correctness (**81.7% stable when correct vs 64.3% when wrong**),
+with a 20.7% locked-in-wrong population concentrated in PathVQA
+(30.0%) and lowest in SLAKE (13.5%). The probe also showed flips
+alone aren't enough — the router needs a second feature (option-token
+logprob), a concrete spec rather than a guess. The day ended with
+that instrumentation built, smoke-tested, and pushed
+([`dbe8daa`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/dbe8daa),
+7 files), and an 18-run scored sweep launched overnight to produce
+the logprob / self-consistency data the router needs.
+
 ---
 
 ## Plan for the rest of the week (May 26 – May 30)
@@ -228,13 +264,37 @@ future writeup.
 - [x] **MedPruner read** (Liu et al., March 2026) — confirmed
       orthogonal (3D volumes vs our 2D single-image); clean
       complementary positioning for the writeup (Day 4)
-- [ ] **Tonight's overnight sweep results land Day 5** — 12 runs
-      = {random, gridprune, fasp_gridprune} × {kr=0.75, 0.5, 0.25,
-      0.1}, ~15 hours total
-- [ ] Write up E2 (qsim_mean / qsim_max sweep) on the
+- [x] **Overnight E3 sweep landed and analyzed (Day 5)** — 12 runs
+      = {random, gridprune, fasp_gridprune} × {0.75, 0.5, 0.25,
+      0.1}. **Random Pareto-dominates on accuracy and latency at
+      every kr.** FASP+GridPrune edges GridPrune everywhere but
+      neither reaches Random. Pruning-as-method closed.
+- [x] **kr=0.75 FASP+GridPrune anomaly diagnosed** — degenerate
+      backfill branch (`kr > 1 − bg_fraction`); logged as Bug #10,
+      artifact cell footnoted (Day 5)
+- [x] **Latency decomposition read** — structured methods add 9–31
+      ms prune overhead vs Random's ~0.22 ms; almost all pruning
+      savings live in prefill, not decode (Day 5)
+- [x] **Strategic pivot scoped** — four training-free directions
+      compared against a literature scan; Direction D
+      (evidence-router) the lead, A/C fallbacks (Day 5)
+- [x] **Feasibility probe (zero GPU) green-lit Direction D** —
+      answer-stability tracks correctness (81.7% vs 64.3% stable),
+      20.7% locked-in-wrong concentrated in PathVQA; specified the
+      missing second feature (option-token logprob) (Day 5)
+- [x] **Scored-sweep instrumentation built and pushed** —
+      `scored_chatbot.py` + `nested_random_pruner.py` +
+      `scored_sweep.py` + probe; 18-run overnight sweep launched
+      (Day 5; commit
+      [`dbe8daa`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/dbe8daa))
+- [x] Write up E2 (qsim_mean / qsim_max sweep) on the
       [Experiments page](../../experiments.md)
-- [ ] Begin E3 entry (GridPrune / FASP+GridPrune sweep) once Day
-      5's analysis lands
+- [x] E3 entry (GridPrune / FASP+GridPrune sweep) written up on the
+      [Experiments page](../../experiments.md#phase-5-gridprune-family-may-28) (Day 5)
+- [ ] Check the 18-run scored sweep landed cleanly (Day 6)
+- [ ] Build the two-feature router probe (stability + logprob) (Day 6)
+- [ ] Verify proven components don't degrade on medical VQA before
+      composing (Day 6)
 - [ ] Fold `hf_transfer` and `datasets==2.16.1` into the Dockerfile
       so the next image rebuild doesn't need runtime patching
 - [ ] Read **ToMe** end-to-end (still pending from Week 2)

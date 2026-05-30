@@ -8,6 +8,89 @@ what hypotheses were eliminated, not just the answer.
 
 ---
 
+## #10 — Degenerate FASP+GridPrune branch at kr=0.75 inflated the E3 table
+
+<span class="pill pill--done">Resolved (data-integrity note)</span>
+
+**Found** May 28, 2026 · **Severity** Medium (no crash; produced a
+misleading "win" in the E3 results table) · **Upstream status**
+_n/a — our composed method's own logic_
+
+### What I observed
+
+In the E3 sweep, the FASP+GridPrune kr=0.75 cell did two suspicious
+things at once. Its **prune time was 0.58 ms** — essentially
+Random's "do-nothing" cost (0.22 ms) and *cheaper* than plain
+GridPrune (20.47 ms), when FASP+GridPrune should always cost *more*
+than GridPrune (it runs FASP's anatomy filter on top of GridPrune's
+zonal logic). At the other three keep-ratios it does cost more
+(31.55 / 27.46 / 20.57 ms vs GridPrune's 20.52 / 18.58 / 9.58).
+Only kr=0.75 inverted. And its **accuracy cell (0.6759) was the one
+result that "beat" Random** (+0.13 pts) — out of step with every
+other cell, where FASP+GridPrune loses to Random.
+
+### Root cause
+
+A short-circuit code branch, diagnosable entirely from the config.
+The run used `bg_fraction = 0.3`: FASP designates 30% of tokens as
+background and filters them out, leaving ~404 of 576 tokens as
+foreground candidates. But at kr=0.75 the keep target is 432 tokens
+— **more than the 404 the filter leaves.** When the keep target
+exceeds the foreground budget, the zonal GridPrune stage has nothing
+to select among (you're forced to keep all foreground), so the
+method falls into a degenerate branch: keep all foreground, backfill
+the remaining ~28 tokens from the discarded background, skip the
+expensive zonal allocation entirely. That bypass is the 0.58 ms, and
+the cell's accuracy was produced by that backfill branch — **not by
+the real FASP+GridPrune algorithm.**
+
+The trigger is exactly `keep_ratio > 1 − bg_fraction = 0.70`. Of the
+four swept values only kr=0.75 sits above 0.70, which is precisely
+where the anomaly appears. The arithmetic predicts it exactly.
+
+### Fix
+
+This is a data-integrity correction, not a code patch (the project
+is pivoting away from pruning, so the branch itself isn't worth
+re-engineering). The corrections to the analysis:
+
+1. **The kr=0.75 FASP+GridPrune cell is flagged degenerate**
+   wherever it appears (Experiments E3 table, Day 5 page) with an
+   explicit footnote rather than silently dropped — transparency,
+   and a clean illustration of the smell-test discipline.
+2. **Of the 4 per-benchmark cells where FASP+GridPrune beat Random,
+   3 were at kr=0.75** — all degenerate, all dropped. The one
+   surviving real-path win is VQA-RAD at kr=0.25 (+3.59), a single
+   cell already flagged as likely high-variance noise.
+3. So on valid (non-degenerate) cells, FASP+GridPrune beats Random
+   in **1 of 18** benchmark×kr comparisons. Removing the artifact
+   makes the negative result *cleaner and stronger*.
+
+If a true kr=0.75 point were needed for completeness, it's a cheap
+re-run with `bg_fraction ≤ 0.20` (foreground ≥ 461 > 432, so the
+real path fires) — but given the pivot, that's low priority.
+
+### Notes / lessons
+
+- **A smell-test on the latency table caught what the accuracy
+  table hid.** The "win" looked like signal until the prune-time
+  inversion flagged it as an artifact. Cross-checking two
+  independent measurements (accuracy and timing) is what surfaced
+  the degenerate branch.
+- **Composed methods need guard-rail awareness.** Any time a method
+  has a stage whose budget depends on a config fraction
+  (`bg_fraction`), a keep-ratio above the complementary threshold
+  silently changes which algorithm actually runs. Worth a logged
+  warning at the branch in future implementations.
+
+### Upstream
+
+- [ ] Issue filed — _n/a, our own method_
+- [ ] PR opened — _n/a_
+- [ ] Merged — _n/a_
+
+---
+
 ## #9 — "Verification-at-no-op" smoke-test antipattern
 
 <span class="pill pill--done">Resolved</span>
