@@ -12,10 +12,10 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
-        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-02/">
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-04/">
       
       
-        <link rel="prev" href="../week-01/day-07/">
+        <link rel="prev" href="../week-03/day-05/">
       
       
         <link rel="next" href="day-01/">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Week 2 — Pruning method first implementation - Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Week 4 — Direction-D feasibility (visual-grounding pivot) - Question-Aware Visual Token Pruning for Medical VLMs</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#week-2-pruning-method-first-implementation" class="md-skip">
+        <a href="#week-4-direction-d-feasibility-visual-grounding-pivot" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Week 2 — Pruning method first implementation
+              Week 4 — Direction-D feasibility (visual-grounding pivot)
             
           </span>
         </div>
@@ -874,8 +874,6 @@
                 
   
   
-    
-  
   
   
     
@@ -901,16 +899,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../week-02/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -921,13 +919,13 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_3">
             <span class="md-nav__icon md-icon"></span>
             Week 2
@@ -943,7 +941,7 @@
   
   
     <li class="md-nav__item">
-      <a href="day-01/" class="md-nav__link">
+      <a href="../week-02/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -964,7 +962,7 @@
   
   
     <li class="md-nav__item">
-      <a href="day-02/" class="md-nav__link">
+      <a href="../week-02/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -985,7 +983,7 @@
   
   
     <li class="md-nav__item">
-      <a href="day-03/" class="md-nav__link">
+      <a href="../week-02/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1006,7 +1004,7 @@
   
   
     <li class="md-nav__item">
-      <a href="day-04/" class="md-nav__link">
+      <a href="../week-02/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1027,7 +1025,7 @@
   
   
     <li class="md-nav__item">
-      <a href="day-05/" class="md-nav__link">
+      <a href="../week-02/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1230,6 +1228,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1247,16 +1247,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../week-04/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   <span class="md-ellipsis">
@@ -1267,13 +1267,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_5">
             <span class="md-nav__icon md-icon"></span>
             Week 4
@@ -1289,7 +1289,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../week-04/day-01/" class="md-nav__link">
+      <a href="day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1385,54 +1385,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#day-1-sunday-may-17-2026" class="md-nav__link">
+  <a href="#day-1-sunday-may-31-2026" class="md-nav__link">
     <span class="md-ellipsis">
-      Day 1 — Sunday, May 17, 2026
+      Day 1 — Sunday, May 31, 2026
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#day-2-monday-may-18-2026" class="md-nav__link">
+  <a href="#plan-for-the-week-may-31-jun-6" class="md-nav__link">
     <span class="md-ellipsis">
-      Day 2 — Monday, May 18, 2026
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#day-3-tuesday-may-19-2026" class="md-nav__link">
-    <span class="md-ellipsis">
-      Day 3 — Tuesday, May 19, 2026
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#day-4-wednesday-may-20-2026" class="md-nav__link">
-    <span class="md-ellipsis">
-      Day 4 — Wednesday, May 20, 2026
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#day-5-thursday-may-21-2026" class="md-nav__link">
-    <span class="md-ellipsis">
-      Day 5 — Thursday, May 21, 2026
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#plan-for-the-rest-of-the-week-may-18-may-23" class="md-nav__link">
-    <span class="md-ellipsis">
-      Plan for the rest of the week (May 18 – May 23)
+      Plan for the week (May 31 – Jun 6)
     </span>
   </a>
   
@@ -1462,7 +1426,7 @@
                   
 
   
-    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-02/index.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-04/index.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1470,172 +1434,94 @@
   
 
 
-<h1 id="week-2-pruning-method-first-implementation">Week 2 — Pruning method first implementation<a class="headerlink" href="#week-2-pruning-method-first-implementation" title="Permanent link">&para;</a></h1>
-<p><span class="pill pill--done">Complete</span></p>
-<p><strong>Phase 1 of 7</strong> (Baseline &amp; Literature, closing out) → <strong>Phase 3
-beginning</strong> (Scoring-head v1) · <strong>Week 2 of 12</strong></p>
-<p><strong>Goal of the week</strong> — close out the baseline phase (canonical
-zero-shot numbers on all three datasets), then start the actual
-research contribution: a question-aware visual-token pruning method
-with random pruning as the comparison floor, run on VQA-RAD first.
-Read at least ToMe and FastV end-to-end.</p>
-<p>This page is the <strong>overview</strong> — a short summary of each day. Click
-any day's heading for the full detail page.</p>
+<h1 id="week-4-direction-d-feasibility-visual-grounding-pivot">Week 4 — Direction-D feasibility (visual-grounding pivot)<a class="headerlink" href="#week-4-direction-d-feasibility-visual-grounding-pivot" title="Permanent link">&para;</a></h1>
+<p><span class="pill pill--wip">In progress</span></p>
+<p><strong>Pivot phase</strong> (visual-grounding / selective prediction) ·
+<strong>Week 4 of 12</strong></p>
+<p><strong>Goal of the week</strong> — pressure-test the
+<a href="../week-03/day-05/">Day 19 pivot</a>: now that training-free visual-token
+<em>pruning</em> is closed as a method, does the repurposed direction —
+a training-free <strong>evidence-sensitivity router</strong> for medical VQA
+(Direction D) — have a real, measurable signal to build on? Establish
+the per-dataset evidence-dependence gradient, the confidence→correctness
+signal, and the budget-router headroom <em>before</em> committing to building
+the router.</p>
+<div class="admonition note">
+<p class="admonition-title">The 12-week plan and the pivot</p>
+<p>The original plan had Week 4 as "Phase 2 — identify pruning
+insertion points." The Day 19 negative result closed pruning as a
+method, so Week 4's actual focus is the visual-grounding
+feasibility work instead. The site name and the 7-phase plan are
+left as-is for now; the rebrand is deferred until the new
+direction produces a headline result.</p>
+</div>
+<p>This page is the <strong>overview</strong> — a short summary of each day. Click any
+day's heading for the full detail page.</p>
 <hr />
-<h3 id="day-1-sunday-may-17-2026"><a href="day-01/">Day 1 — Sunday, May 17, 2026</a><a class="headerlink" href="#day-1-sunday-may-17-2026" title="Permanent link">&para;</a></h3>
-<p>The biggest day of the project so far. Morning evaluated the overnight
-5-epoch full-FT: closed accuracy 0.57 vs stage-2 zero-shot 0.58 —
-<strong>memorization without generalization</strong>, confirmed by prediction
-inspection. Closed out the baseline phase with cross-validation
-against Baron-GG's independently-merged stage-2 weights
-(VQA-RAD 0.5772 vs our 0.58, within 0.5 pts), revised the
-broken-deltas claim (VQA-RAD catastrophic, PathVQA
-degraded-but-functional, SLAKE missing), wired up SLAKE end-to-end.
-Afternoon shifted to the actual research contribution: built and
-verified the <strong>first working visual-token pruning method</strong>
-(in-LLM, pre-forward hooks on all 32 decoder layers, monkey-patched
-<code>prepare_inputs_for_generation</code> for decode-step mask coordination,
-five-iteration debugging saga). <strong>First kr=0.75 ablation result in</strong>:
-question-similarity pruning scored 60.29 closed on VQA-RAD vs random
-pruning's 56.99 (+3.30 pts) and the unpruned baseline's 57.72
-(+2.57 pts) — a positive first datapoint on the project's thesis,
-pending the rest of the Pareto curve.</p>
-<h3 id="day-2-monday-may-18-2026"><a href="day-02/">Day 2 — Monday, May 18, 2026</a><a class="headerlink" href="#day-2-monday-may-18-2026" title="Permanent link">&para;</a></h3>
-<p>No research; full-day site cleanup pass. Rewrote <code>docs/project.md</code>
-(restyled title block via a new <code>.project-title</code> CSS class, expanded
-the Related Work table from 3 to 5 columns with proper venues and
-links to official sources, added <strong>MedPruner</strong> as closest
-medical-domain prior art, corrected PruMerge → ICCV 2025 and
-SparseVLM → ICML 2025, restructured the Approach Mermaid diagram
-into three named subgraphs). Widened the site's content area from
-61rem to 80rem so wide tables and diagrams stop bleeding off-screen.
-Cloned the repo to the laptop for two days of travel.</p>
-<h3 id="day-3-tuesday-may-19-2026"><a href="day-03/">Day 3 — Tuesday, May 19, 2026</a><a class="headerlink" href="#day-3-tuesday-may-19-2026" title="Permanent link">&para;</a></h3>
-<p>Travel day. Read <strong>FastV</strong> (Chen et al., ECCV 2024) end-to-end. Two
-takeaways for the project: (1) pruning at layer 2-3 is the
-literature-supported sweet spot, not layer 0 — our current
-single-layer-0 choice is likely suboptimal; (2) the <code>generate()</code>
-integration via overriding <code>LlamaModel._prepare_decoder_attention_mask</code>
-is cleaner than our hook + monkey-patch architecture and worth a
-refactor on a quiet day. Also bookmarked that FastV's
-attention-based scoring is the established baseline; our cosine-sim
-to question is simpler but not what the field has converged on, so
-an attention-based variant should be the next comparison method.</p>
-<h3 id="day-4-wednesday-may-20-2026"><a href="day-04/">Day 4 — Wednesday, May 20, 2026</a><a class="headerlink" href="#day-4-wednesday-may-20-2026" title="Permanent link">&para;</a></h3>
-<p>Second travel day. Read <strong>MedPruner</strong> (Liu et al., 2026; CUHK +
-Westlake) — closest medical-domain prior art, but 3D + attention +
-hierarchical, so methodologically complementary rather than
-competing. Then <strong>SwiftVLM</strong> (Qian et al., Tsinghua, Feb 2026) — the
-most interesting paper for the project so far. Their <strong>bypass</strong>
-paradigm holds pruned tokens in a buffer and re-evaluates them at
-later layers rather than committing to early pruning decisions;
-directly addresses our open "where to prune" question. Earmarked as
-a Phase 3+ extension once the single-layer Pareto curve is filled
-in.</p>
-<h3 id="day-5-thursday-may-21-2026"><a href="day-05/">Day 5 — Thursday, May 21, 2026</a><a class="headerlink" href="#day-5-thursday-may-21-2026" title="Permanent link">&para;</a></h3>
-<p>The most consequential day of the project. Came back from travel to
-compile the kr ∈ {0.50, 0.25, 0.10} Pareto curve and instead found
-the curve's shape was anomalous — closed accuracy rising monotonically
-with pruning aggressiveness up to +7.35 pts at kr=0.10 qsim, while
-open recall stayed flat. Read <code>eval/metrics.py</code> carefully and found
-a real <strong>substring bug in the LLaVA-Med v1.0 closed-set scorer</strong>
-that inflates every published v1.0 closed-accuracy number by 9-12 pts
-uniformly. Word-boundary scoring closes most of the gap but a residual
-+6.37 pt rise remains — partly explained as verbosity-inflation on
-lenient scorers. Under the strictest possible scorer (lead with
-yes/no), pruning does <em>not</em> improve closed accuracy at all. Then ran
-an MCQ-letter compliance smoke test against v1.0: <strong>0/11 responses
-started with a letter</strong>, confirming v1.0's instruction-following is
-fundamentally incompatible with the field's standardized eval format.
-<strong>Decision: pivot the project's base model to Qwen2.5-VL-7B-Instruct
-with VLMEvalKit + lmms-eval as the evaluation backbone.</strong> Drafted a
-new Dockerfile on NGC PyTorch 25.06; first KUBERUN build failed on
-a dangling <code>/etc/pip/constraint.txt</code> reference (emptied vs deleted
-fix); second build's Step 1 import check surfaced a NumPy 2.x
-binary-incompatibility warning that required pinning <code>numpy&lt;2.0</code> in
-the Dockerfile and a third rebuild via KUBERUN. After that, Step 1
-and Step 2 verifications run clean. Step 3 (model load + 16 GB
-HuggingFace weight download) started; the 4th of N safetensor shards
-stopped updating its progress bar — could be a real stall, a
-reporting artifact, or already-into-the-loading phase. Day ended
-with the download in progress. The headline pages stay on the May 17
-numbers — the research story is too in-flux to update them yet.</p>
+<h3 id="day-1-sunday-may-31-2026"><a href="day-01/">Day 1 — Sunday, May 31, 2026</a><a class="headerlink" href="#day-1-sunday-may-31-2026" title="Permanent link">&para;</a></h3>
+<p>The first full day on the new direction. Days 20–21 (May 29–30) were
+off while the
+<a href="../week-03/day-05/#phase-7-instrumentation-built-overnight-sweep-launched">18-run scored sweep</a>
+ran. The nested arm had failed overnight on an argparse bug; fixed it,
+rebalanced a 4+4 two-VM relaunch, and the 18/18 gate passed (nesting
+verified offline). The afternoon was a four-way Direction-D feasibility
+study, and the verdict is <strong>go, with the thesis sharpened</strong>:</p>
+<ul>
+<li><strong>Robustness curve</strong> reproduces Day 19 on clean instrumentation —
+  halving visual tokens costs ~0.6–0.8 pts, 90% removal ~4 pts.</li>
+<li><strong>Per-dataset evidence-dependence gradient</strong> (the gold), triangulated
+  across accuracy drop <em>and</em> flip rate: PMC-VQA most evidence-dependent
+  (−7.0 pt, 30.5% flips), <strong>PathVQA least</strong> (−0.3 pt, 11.0% flips) —
+  confirming Day 19's locked-in-wrong observation.</li>
+<li><strong>Flip direction</strong> (GT recovered exactly): evidence-loss rate per
+  dataset is the router target — PMC-VQA 10.7% → PathVQA 4.4%.</li>
+<li><strong>Router signal real</strong> — confidence predicts correctness at
+  <strong>AUROC ≈ 0.74</strong>; offline budget-router headroom positive at every
+  budget pair (peak ~1.6 pt).</li>
+<li><strong>Approach 2 (width router) is a clean negative on compute</strong> —
+  double-pass overhead exceeds fixed-high; documented, not hidden.</li>
+<li><strong>Grid probe launched</strong> (budget×layer logit-lens, 5 budgets × 28
+  layers × 17.3k samples) to locate the cheapest early signal; results
+  land next session.</li>
+</ul>
+<p>Two methodology traps logged: the aggregate nested-vs-independent
+agreement is a consistency check not a result, and the identical
+flip-direction counts are a shared-seed artifact
+(<a href="../../bugs/#11-nested-vs-independent-random-pruning-cannot-be-an-independent-check">Bug #11</a>).
+Committed the fix and the whole feasibility suite at
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4"><code>df0a3c4</code></a>.</p>
 <hr />
-<h2 id="plan-for-the-rest-of-the-week-may-18-may-23">Plan for the rest of the week (May 18 – May 23)<a class="headerlink" href="#plan-for-the-rest-of-the-week-may-18-may-23" title="Permanent link">&para;</a></h2>
+<h2 id="plan-for-the-week-may-31-jun-6">Plan for the week (May 31 – Jun 6)<a class="headerlink" href="#plan-for-the-week-may-31-jun-6" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> kr=0.75 ablation result landed Day 1 (qsim +3.30 over random)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Site cleanup (Day 2): project.md rewrite + CSS additions</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> FastV read end-to-end (Day 3)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MedPruner read (Day 4)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> SwiftVLM read (Day 4); added to Related Work + Resources</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> kr ∈ {0.50, 0.25, 0.10} sweep compiled (Day 5) — anomalous
-      curve shape, substring bug found in v1.0 scorer, pivot
-      decision made</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Substring bug in v1.0 closed-set scorer documented (Day 5)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Pivot to Qwen2.5-VL-7B-Instruct (Day 5)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Qwen2.5-VL Dockerfile drafted and image built on KUBERUN
-      (Day 5) — three submissions total: original, fix for the
-      constraint-file deletion error, fix for the NumPy 2.x conflict</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Container running, Step 1 + Step 2 import / library
-      verifications clean (Day 5)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Confirm Step 3's HuggingFace weight download finished —
-      stopped updating progress bar on safetensor 4 at end of Day 5</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run Step 4 — MCQ-letter compliance test against Qwen2.5-VL
-      (the test LLaVA-Med v1.0 failed at 0/11)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run zero-shot Qwen2.5-VL on VQA-RAD via VLMEvalKit — first
-      reproducible baseline on the new stack</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Port <code>random</code> and <code>qsim</code> pruning to Qwen2.5-VL's decoder
-      layers — the hook target changes, scoring math same</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Re-run kr ∈ {0.75, 0.50, 0.25, 0.10} ablation on the new
-      stack with the correct scorer; this is the cleanest answer
-      to the project's central question</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (slipped 7+ days)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Skim <strong>SparseVLM</strong> and <strong>GAP</strong></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Rewrite <a href="../../bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>
-      with consolidated open-recall + substring-bug findings, once
-      the new baseline is stable</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Fix the failed nested arm and re-run; pass the 18/18 gate
+      (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Robustness curve on the scored harness (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Per-dataset evidence-dependence gradient — accuracy + flip
+      rate (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Flip-direction (evidence-loss) split with recovered ground
+      truth (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Router feasibility probe — confidence AUROC ≈ 0.74 (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Budget-router headroom (offline upper bound) (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Approach 2 realized-cost width router — negative on compute
+      (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Launch budget×layer grid probe (Day 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Gather <code>grid_kr*.json</code>, run <code>grid_analysis.py</code> — budget×layer
+      AUROC table + cheapest-usable-cell</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> The parked ~12% entropy/margin two-feature check</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Recreate <code>confidence_router.py</code> if the grid says it's worth
+      building</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verify self-consistency doesn't degrade on medical VQA before
+      composing</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (still pending from Week 2)</li>
 </ul>
 <hr />
 <h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
-<p>Week 2 was supposed to be "fill in the Pareto curve and ship a clean
-research result on LLaVA-Med v1.0." It became something quite
-different: a week that started with an apparent +2.57 pt accuracy
-improvement at kr=0.75 and ended with the project changing base
-models entirely.</p>
-<p><strong>What worked.</strong> The investigative discipline of Day 5 — noticing
-the anomalous curve shape, reading <code>eval/metrics.py</code> carefully,
-running the three-way strict/medium/lenient diagnostic, and then
-the MCQ-letter compliance smoke test — produced findings that are
-substantive enough to be the project's eventual related-work
-section. The substring bug in the v1.0 closed-set scorer inflates
-every published v1.0 number by 9-12 pts uniformly; the verbosity-
-inflation effect compounds it under pruning; the
-instruction-following profile is incompatible with the field's
-standardized evaluation methodology. None of that was obvious going
-in.</p>
-<p><strong>What was harder than expected.</strong> Trusting the original kr=0.75
-result for four days (May 17 → May 21) before the curve shape
-forced a closer look at the scorer. The +2.57 / +3.30 framing was
-attractive enough to celebrate and not interrogate; the rest of the
-Pareto curve was what made it un-celebratable. Lesson: rising
-accuracy under aggressive pruning is a red flag, not a positive
-signal. <em>Any</em> time more pruning helps, the metric is the suspect
-before the method.</p>
-<p><strong>Self-correction worth flagging.</strong> Two analytical mistakes on
-Day 5 made it into the day-page record on purpose — the "open
-recall is falling" framing that turned out to be noise, and the
-"GT yes-bias" hypothesis that was decisively refuted by the actual
-distribution. Both belong on a research log; the hypotheses that
-don't survive contact with data are as informative as the ones
-that do.</p>
-<p><strong>What to do differently in Week 3.</strong> Bake the strict scorer in
-from the start on Qwen2.5-VL. The site's headline pages still show
-the May 17 +2.57 / +3.30 framing per the editorial decision to
-keep them stable until Qwen2.5-VL produces clean numbers; that
-narrative gets rewritten in Week 3 once VLMEvalKit's MCQ-letter
-scoring produces a real baseline. The site's day pages tell the
-in-flux story honestly; the headline pages get the consolidated
-canonical numbers when they exist.</p>
+<p><em>Write this at the end of the week. The question: does the
+Direction-D router clear its own bar — a routable signal that beats
+fixed budgets on realized cost, not just on an offline upper bound?
+Day 1 says the signal exists (AUROC 0.74, positive headroom) and
+Approach 2 says the naive width-router doesn't pay for itself; the
+week decides whether routing down (cheap-when-confident) does.</em></p>
 
 
 
@@ -1671,7 +1557,7 @@ canonical numbers when they exist.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../week-01/day-07/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 7 — Saturday, May 16, 2026">
+          <a href="../week-03/day-05/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 5 — Thursday, May 28, 2026">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1681,20 +1567,20 @@ canonical numbers when they exist.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Day 7 — Saturday, May 16, 2026
+                Day 5 — Thursday, May 28, 2026
               </div>
             </div>
           </a>
         
         
           
-          <a href="day-01/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 1 — Sunday, May 17, 2026">
+          <a href="day-01/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 1 — Sunday, May 31, 2026">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Day 1 — Sunday, May 17, 2026
+                Day 1 — Sunday, May 31, 2026
               </div>
             </div>
             <div class="md-footer__button md-icon">
