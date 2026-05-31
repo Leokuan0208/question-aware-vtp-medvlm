@@ -1,6 +1,6 @@
 # Week 3 — Baseline selection & paper reproduction setup
 
-<span class="pill pill--wip">In progress</span>
+<span class="pill pill--done">Done</span>
 
 **Phase 1 of 7** (Baseline & Literature, closing out) · **Week 3 of
 12**
@@ -304,9 +304,24 @@ the logprob / self-consistency data the router needs.
 
 ## Reflections (end-of-week)
 
-_Write this at the end of the week. Two pivots in two days felt like
-flailing on Day 2; whether it was actually flailing or whether it
-was the right call gets decided by whether the HuatuoGPT-Vision
-reproduction lands cleanly. If Table 4 reproduces within ~2 pts, the
-pivot chain was navigation; if it doesn't, the pivot chain was
-churn._
+The week opened as planned — validate the Qwen2.5-VL pivot, then a
+*second* pivot to HuatuoGPT-Vision-7B for a paper-reproducible
+baseline — and the reproduction landed cleanly (5/6 within 0.55 pts),
+so the two-pivots-in-two-days that felt like flailing on Day 2 was
+navigation, not churn. But the week's real story was the one nobody
+planned: three consecutive pruning sweeps (qsim_mean, qsim_max, then
+GridPrune / FASP+GridPrune) all losing to **random** selection, on
+both accuracy and latency. By Day 5 (May 28) that closed training-free
+visual-token *pruning* as a method for this model — and reframed the
+project. The reason random does so well, that HuatuoGPT-Vision barely
+needs the fine-grained visual evidence, is a *visual-grounding*
+finding, and a zero-GPU feasibility probe green-lit a pivot to a
+training-free evidence-sensitivity router (Direction D).
+
+Days 6–7 of the week (May 29–30) were off-days while the 18-run scored
+sweep launched on Day 5 ran on the VMs; the analysis of that sweep
+opens Week 4 (May 31). The honest assessment: the original "Phase 1 —
+baseline & literature" goal is complete, but the project exits Week 3
+pointed somewhere the 12-week plan didn't anticipate. The pruning
+infrastructure became the probe; the negative result became Figure 1
+of a different paper.

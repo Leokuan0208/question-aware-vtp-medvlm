@@ -8,6 +8,85 @@ what hypotheses were eliminated, not just the answer.
 
 ---
 
+## #11 — Nested vs. independent random pruning cannot be an independent check
+
+<span class="pill pill--done">Resolved (methodology lesson)</span>
+
+**Found** May 31, 2026 · **Severity** Medium (a misread would have
+overclaimed the evidence-quantity result) · **Upstream status**
+_n/a — analysis-methodology lesson_
+
+### What I observed
+
+The scored sweep ran two random-pruning arms: **independent** (a
+fresh random token subset at each keep-ratio) and **nested** (each
+lower-kr subset a strict subset of the higher-kr one). Two
+observations looked like clean results at first and were not:
+
+1. **The aggregate accuracy curves of the two arms agreed at every
+   keep-ratio** (diffs +0.0016, −0.0026, +0.0031, +0.0045 — all under
+   half a point, no sign pattern). It was tempting to read this as
+   "removing tokens hurts the same as swapping them → quantity, not
+   content, is what matters."
+2. **The flip-*direction* split reported identical counts across the
+   two arms** — 1208 evidence-loss and 560 distractor-removal flips,
+   to the integer, on every dataset.
+
+### Root cause
+
+Both are structural, not data.
+
+For **(1)**: with *random* pruning, the two arms must agree on any
+per-kr aggregate. At a fixed keep-ratio both keep a uniformly random
+subset of the same size, so they share an identical marginal
+distribution and therefore identical expected accuracy. The only
+thing nesting changes is the *coupling across keep-ratios within a
+sample*, which is invisible to a per-kr aggregate. The ±0.004 wobble
+is seed noise between two draws of the same distribution. Random
+selection has **no content signal**, so the comparison cannot
+distinguish "quantity vs. content" — there's no content axis to vary.
+
+For **(2)**: the direction split inspects only the two endpoints
+(kr=0.75 and kr=0.10), and both `RandomPruner` and
+`NestedRandomPruner` seed per-sample from the same base seed (42).
+At those two specific budgets they therefore draw *identical* token
+subsets, so the endpoint-based direction counts are shared by
+construction — not an independent replication.
+
+### Fix
+
+No code change — a reinterpretation, logged so the numbers aren't
+oversold:
+
+1. **The aggregate nested≈independent agreement is reframed as a
+   passed consistency check**, not a result. (Had the arms diverged,
+   that would have signalled the seeding accidentally correlating
+   with token content — a real bug. They didn't. Good.)
+2. **The identical direction counts are flagged as a shared-seed
+   artifact**, not a second confirmation of the evidence-loss split.
+3. **The real result lives in the per-sample, per-dataset gradient**
+   (evidence-loss rate PMC-VQA 10.7% → PathVQA 4.4%), which *is*
+   meaningful because it varies across datasets regardless of the
+   pruning scheme — it's a property of the data, not the pruner.
+
+### Notes / lessons
+
+- **Ask what axis a comparison actually varies.** Two arms that
+  differ only in a dimension your metric integrates over cannot
+  produce an independent result on that dimension. The nested arm
+  earns its keep at the *per-sample flip* level, not the aggregate.
+- **Shared RNG seeds make "independent" runs identical at matched
+  budgets.** Useful for reproducibility, but it means cross-arm
+  agreement at those budgets is guaranteed, not evidence.
+
+### Upstream
+
+- [ ] Issue filed — _n/a, methodology lesson_
+- [ ] PR opened — _n/a_
+- [ ] Merged — _n/a_
+
+---
+
 ## #10 — Degenerate FASP+GridPrune branch at kr=0.75 inflated the E3 table
 
 <span class="pill pill--done">Resolved (data-integrity note)</span>

@@ -20,6 +20,7 @@ codebase and base model. The phases below are organized chronologically.
 | [3](#phase-3-huatuogpt-vision-7b-baseline-may-25) | May 25 | HuatuoGPT-Vision-7B · [`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning) | E0_huatuo — paper Table 4 reproduced, 5/6 benchmarks within 0.55 pts | <span class="pill pill--done">Complete</span> |
 | [4](#phase-4-huatuogpt-pruning-v1-v2-patcher-may-25-27) | May 25-27 | HuatuoGPT-Vision-7B · v2 patcher (pre-LLM) | **Random beats QSim at every keep-ratio.** Gap grows from +0.84 (kr=0.75) to +3.11 (kr=0.10) pts on total. qsim_max ablation made it worse, not better. | <span class="pill pill--done">Complete (negative result)</span> |
 | [5](#phase-5-gridprune-family-may-28) | May 28 | HuatuoGPT-Vision-7B · v2 patcher | **Random Pareto-dominates GridPrune and FASP+GridPrune on accuracy *and* latency at every kr.** Third sweep where structured pruning loses to random. Pruning-as-method closed; project pivots to visual-grounding. | <span class="pill pill--done">Complete (negative result)</span> |
+| [6](#phase-6-direction-d-feasibility-scored-sweep-may-31) | May 31 | HuatuoGPT-Vision-7B · scored harness | **Direction-D feasibility.** Per-dataset evidence-dependence gradient (PMC-VQA −7.0 pt / PathVQA −0.3 pt at kr=0.10); confidence→correctness AUROC ≈ 0.74; budget-router headroom +1.6 pt peak; width-router negative on compute. | <span class="pill pill--wip">In progress</span> |
 
 **Active codebase as of May 27, 2026:**
 [`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning).
@@ -746,6 +747,93 @@ evidence-router direction.
 Full analysis:
 [Week 3, Day 5](weekly/week-03/day-05.md). Design background:
 [Week 3, Day 4, Phase 6](weekly/week-03/day-04.md#phase-6-fasp-gridprune-design).
+
+---
+
+## Phase 6 — Direction-D feasibility (scored sweep, May 31)
+
+<span class="pill pill--wip">In progress</span>
+
+The first experiment of the visual-grounding pivot. The pruning
+infrastructure is repurposed as an **evidence dial**: instead of "how
+do we prune well," the question is "how does the model's behavior
+change as visual evidence is dialed down, and is that change a
+routable signal." The 18-run scored sweep (greedy + first-token
+logprobs and k=5 self-consistency, at 5 budgets, in independent and
+nested random-pruning arms) drives a four-way feasibility study.
+
+### E4 — scored robustness + evidence-dependence
+
+**Goal** — establish whether Direction D (a training-free
+evidence-sensitivity router) has a real signal: does visual-evidence
+dependence vary by question, and does a cheap confidence feature
+predict correctness?
+
+**Setup**
+
+- Model: HuatuoGPT-Vision-7B (unchanged)
+- Datasets: the bundled six-benchmark suite (17,303 common samples)
+- Harness: scored (`ScoredHuatuoChatbot` — option-logprob distribution,
+  option entropy, k=5 self-consistency), commit `df0a3c4`
+- Pruning arms: independent random + nested random (lower-kr a strict
+  subset of higher-kr), keep ratios K ∈ {1.0, 0.75, 0.50, 0.25, 0.10}
+
+**Results — robustness (total, scored)**
+
+Baseline (kr=1.0) = **0.6807**. Halving the visual tokens costs
+~0.6–0.8 pts; dropping 90% costs ~4 pts — monotone, and a clean
+reproduction of the Phase 5 (E3) finding on the scored harness. (The
+nested-vs-independent aggregate agreement is a passed consistency
+check, **not** an evidence-quantity result — for random pruning the
+two arms share a marginal distribution at each kr by construction;
+see [Bug #11](bugs.md#11-nested-vs-independent-random-pruning-cannot-be-an-independent-check).)
+
+**Results — per-dataset evidence dependence** (baseline → kr=0.10,
+nested), the headline:
+
+| dataset | baseline | kr=0.10 | drop | flip rate |
+|---|---|---|---|---|
+| PMC-VQA | 0.5480 | 0.4785 | **−7.0 pt** | 30.5% |
+| VQA-RAD | 0.6255 | 0.5697 | −5.6 pt | 15.9% |
+| OmniMedVQA | 0.7357 | 0.6889 | −4.7 pt | 14.1% |
+| SLAKE | 0.7644 | 0.7284 | −3.6 pt | 17.8% |
+| MMMU | 0.5310 | 0.5034 | −2.8 pt | 25.3% *(small-n)* |
+| PathVQA | 0.5776 | 0.5744 | **−0.3 pt** | 11.0% |
+
+Accuracy drop and answer-flip rate agree on the ordering (MMMU aside,
+small-n). **PathVQA is visual-independent; PMC-VQA needs the pixels.**
+The spread is what gives a router something to route on.
+
+**Results — flip direction** (GT recovered from answer-text position
+in `options`): of all flips along the ladder, the per-dataset
+**evidence-loss** rate (correct→wrong as evidence shrinks) ranks
+PMC-VQA 10.7% → PathVQA 4.4% — the router's target signal.
+
+**Results — router feasibility**
+
+- Confidence (from the option-logprob distribution) predicts
+  correctness at **AUROC ≈ 0.74**.
+- Offline budget-router headroom (oracle upper bound) is **positive at
+  every budget pair, peaking ~1.6 pts** at wide gaps.
+- A realized-cost **width** router (Approach 2) is **negative on
+  compute** — the double-pass overhead (cheap pass on every question +
+  full pass on the escalated fraction) exceeds just running at the
+  fixed-high budget.
+- A budget×layer logit-lens grid probe (5 budgets × 28 layers ×
+  17.3k) was launched to locate the cheapest early signal; results
+  land next session.
+
+**Conclusion**
+
+The pivot has a measured foundation: a routable per-question signal
+exists (AUROC 0.74), evidence-dependence varies sharply by dataset,
+and an oracle budget router has positive (if modest) headroom. The
+naive width-router doesn't pay for itself; whether routing *down*
+(cheap-when-confident) beats fixed budgets on realized cost is the
+open question, pending the grid result.
+
+Full analysis:
+[Week 4, Day 1](weekly/week-04/day-01.md).
 
 ---
 

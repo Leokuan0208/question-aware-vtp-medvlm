@@ -36,8 +36,8 @@ and 12-week plan.
 ## Where I am right now
 
 <span class="pill pill--wip">In progress</span> &nbsp;
-**Phase 1, Week 3 — Pruning closed as a dead end; pivoting to
-training-free visual grounding.** Week 1 closed out May 16
+**Week 4 — Visual-grounding pivot has a measured foundation.** Week 1
+closed out May 16
 ([overview](weekly/week-01/index.md#end-of-week-status)). Week 2
 closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
 ([overview](weekly/week-02/index.md#reflections-end-of-week)). The
@@ -83,6 +83,23 @@ running overnight to produce the data the router needs. Three repos:
 (frozen), and
 [`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning)
 (active).
+[Day 22](weekly/week-04/day-01.md) (May 31, opening Week 4) put a
+measured foundation under the pivot. After fixing the nested arm that
+had failed overnight and passing the 18/18 gate, a four-way
+feasibility study established: (1) a **per-dataset evidence-dependence
+gradient**, triangulated across accuracy drop *and* answer-flip rate —
+PMC-VQA needs the pixels (−7.0 pts at kr=0.10, 30.5% flips), PathVQA
+essentially doesn't (−0.3 pts, 11.0% flips), confirming Day 19's
+locked-in-wrong observation; (2) a **flip-direction evidence-loss
+rate** per dataset (PMC-VQA 10.7% → PathVQA 4.4%) as the router
+target; (3) a real router signal — **confidence predicts correctness
+at AUROC ≈ 0.74**, with offline budget-router headroom positive at
+every budget pair (peak ~1.6 pts); and (4) an honest negative — a
+realized-cost *width* router loses on compute (double-pass overhead
+exceeds fixed-high). A heavier budget×layer grid probe was launched to
+locate the cheapest early signal; results land next session. Pushed at
+[`df0a3c4`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4)
+(nested-run fix + the Direction-D feasibility suite).
 
 !!! note "The project is mid-pivot"
     The site and project name still say *question-aware visual token
@@ -248,9 +265,32 @@ running overnight to produce the data the router needs. Three repos:
       [`dbe8daa`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/dbe8daa)
       — logprob capture + self-consistency + nested-budget pruning;
       18-run overnight scored sweep launched.
-- [ ] **Day 20** — check the scored sweep, build the two-feature
-      router probe (stability + logprob), verify proven components
-      don't degrade on medical VQA before composing.
+- [x] **Nested arm fixed and 18/18 gate passed (Day 22).** The
+      nested scored-sweep arm had failed overnight on an argparse
+      bug; fixed, relaunched 4+4 across two VMs, nesting verified
+      offline.
+      → [Week 4, Day 1, Phase 1](weekly/week-04/day-01.md#phase-1-the-nested-arm-failed-overnight-fix-and-relaunch)
+- [x] **Per-dataset evidence-dependence gradient established
+      (Day 22)** — triangulated across accuracy drop *and* flip rate.
+      PMC-VQA most evidence-dependent (−7.0 pt, 30.5% flips), PathVQA
+      least (−0.3 pt, 11.0% flips).
+      → [Week 4, Day 1, Phase 3](weekly/week-04/day-01.md#phase-3-per-dataset-evidence-dependence-the-gold)
+- [x] **Flip-direction evidence-loss split (Day 22)** — GT recovered
+      exactly from answer-text position in options; per-dataset
+      evidence-loss rate (PMC-VQA 10.7% → PathVQA 4.4%) is the router
+      target.
+- [x] **Router signal confirmed (Day 22)** — confidence predicts
+      correctness at **AUROC ≈ 0.74**; offline budget-router headroom
+      positive at every budget pair (peak ~1.6 pt).
+- [x] **Approach 2 width-router — clean negative on compute
+      (Day 22)** — double-pass overhead exceeds fixed-high latency.
+- [x] **Direction-D feasibility suite pushed** at
+      [`df0a3c4`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4);
+      budget×layer grid probe launched (results land next session).
+- [ ] **Day 23** — run `grid_analysis.py` on the grid outputs
+      (budget×layer AUROC + cheapest-usable-cell); the parked ~12%
+      entropy/margin two-feature check; recreate `confidence_router.py`
+      if the grid says the router is worth building.
 - [ ] Push Day 8's accumulated changes to
       [`llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1)
       (split into coherent commits)
@@ -259,13 +299,11 @@ running overnight to produce the data the router needs. Three repos:
       missing" narrative
 - [ ] Finish reading visual-token-pruning literature (ToMe, FastV,
       SparseVLM, GAP) — slipped six days
-- [ ] Begin Phase 2 of the project plan: codebase deep-dive with
-      print-statement instrumentation on
-      `prepare_inputs_labels_for_multimodal`
 
 See the [Week 1 log](weekly/week-01/index.md),
-[Week 2 log](weekly/week-02/index.md), and
-[Week 3 log](weekly/week-03/index.md) for daily notes.
+[Week 2 log](weekly/week-02/index.md),
+[Week 3 log](weekly/week-03/index.md), and
+[Week 4 log](weekly/week-04/index.md) for daily notes.
 
 ## How this site is organised
 
