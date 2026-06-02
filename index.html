@@ -1308,6 +1308,8 @@
       
         
       
+        
+      
     
     
       
@@ -1361,6 +1363,27 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, May 31, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-04/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, June 1, 2026
   </span>
   
 
@@ -1573,7 +1596,7 @@ each page.</p>
 and 12-week plan.</p>
 <h2 id="where-i-am-right-now">Where I am right now<a class="headerlink" href="#where-i-am-right-now" title="Permanent link">&para;</a></h2>
 <p><span class="pill pill--wip">In progress</span> &nbsp;
-<strong>Week 4 — Visual-grounding pivot has a measured foundation.</strong> Week 1
+<strong>Week 4 — Direction-D narrowed to its one untested axis.</strong> Week 1
 closed out May 16
 (<a href="weekly/week-01/#end-of-week-status">overview</a>). Week 2
 closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
@@ -1636,7 +1659,28 @@ realized-cost <em>width</em> router loses on compute (double-pass overhead
 exceeds fixed-high). A heavier budget×layer grid probe was launched to
 locate the cheapest early signal; results land next session. Pushed at
 <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4"><code>df0a3c4</code></a>
-(nested-run fix + the Direction-D feasibility suite).</p>
+(nested-run fix + the Direction-D feasibility suite).
+<a href="weekly/week-04/day-02/">Day 23</a> (June 1) ran the two decisive
+offline analyses, and the confidence path to the router came back
+<strong>negative</strong>. The budget×layer grid probe (lens gate passed) showed
+the routable signal is <strong>real but late and modest</strong> — <code>lens_entropy</code>
+peaks at AUROC 0.756 at the final layer, near-chance through layers
+1–20, so there's <strong>no cheap early-layer signal</strong> to exploit (the one
+lever is the budget axis, 0.748 at kr=0.5). The parked two-feature
+check then found <strong>no lift</strong> from combining confidence features
+(best single 0.762, best combo 0.758), overturning the hypothesis
+that the option-token logprob was Direction D's missing second
+feature — the confidence features are mutually redundant. A
+single-point confidence router at ~0.76 doesn't close Day 22's
+realized-cost math, so building it isn't justified. The verdict is
+<strong>partial, not final</strong>: Direction D's defining axis,
+<strong>evidence-stability</strong> (does the answer flip when evidence is pruned),
+is orthogonal to confidence and hasn't been tested as a router feature
+yet — that's the decisive next experiment, with the A/C fallbacks
+queued behind it. One bright spot: the signal is materially stronger
+on <strong>multi-option questions</strong> (AUROC 0.814 vs 0.756). Pushed at
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c"><code>04ef73c</code></a>
+(the two-feature probe).</p>
 <div class="admonition note">
 <p class="admonition-title">The project is mid-pivot</p>
 <p>The site and project name still say <em>question-aware visual token
@@ -1825,10 +1869,23 @@ and producing results.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Direction-D feasibility suite pushed</strong> at
       <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4"><code>df0a3c4</code></a>;
       budget×layer grid probe launched (results land next session).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Day 23</strong> — run <code>grid_analysis.py</code> on the grid outputs
-      (budget×layer AUROC + cheapest-usable-cell); the parked ~12%
-      entropy/margin two-feature check; recreate <code>confidence_router.py</code>
-      if the grid says the router is worth building.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Grid probe analyzed (Day 23)</strong> — lens gate passed; routable
+      signal is <strong>late and modest</strong> (<code>lens_entropy</code> AUROC 0.756 @
+      L28, near-chance through L1–20, no cheap early-layer cell;
+      robust on the budget axis at 0.748 for kr=0.5).
+      → <a href="weekly/week-04/day-02/#phase-2-the-grid-result-the-signal-is-real-modest-and-late">Week 4, Day 2, Phase 2</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Two-feature probe — no lift (Day 23)</strong> — best single 0.762,
+      best combo 0.758; option-logprob is redundant with entropy,
+      overturning the missing-second-feature hypothesis. Multi-option
+      subset stronger at 0.814. Confidence path to the router is a
+      clean negative.
+      → <a href="weekly/week-04/day-02/#phase-4-the-two-feature-probe-no-lift-the-gono-go">Week 4, Day 2, Phase 4</a></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Two-feature probe pushed</strong> at
+      <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c"><code>04ef73c</code></a>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Day 24</strong> — the decisive <strong>evidence-stability</strong> test (does
+      answer-flip-under-pruning carry signal confidence doesn't); this
+      is the one axis orthogonal to what Day 23 ruled out, and it
+      decides Direction D. A/C fallbacks scoped if it's also flat.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Push Day 8's accumulated changes to
       <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
       (split into coherent commits)</li>

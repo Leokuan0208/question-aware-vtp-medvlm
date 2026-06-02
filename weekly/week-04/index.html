@@ -1241,6 +1241,8 @@
       
         
       
+        
+      
     
     
       
@@ -1294,6 +1296,27 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, May 31, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, June 1, 2026
   </span>
   
 
@@ -1388,6 +1411,15 @@
   <a href="#day-1-sunday-may-31-2026" class="md-nav__link">
     <span class="md-ellipsis">
       Day 1 — Sunday, May 31, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-2-monday-june-1-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 2 — Monday, June 1, 2026
     </span>
   </a>
   
@@ -1490,6 +1522,34 @@ flip-direction counts are a shared-seed artifact
 (<a href="../../bugs/#11-nested-vs-independent-random-pruning-cannot-be-an-independent-check">Bug #11</a>).
 Committed the fix and the whole feasibility suite at
 <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4"><code>df0a3c4</code></a>.</p>
+<h3 id="day-2-monday-june-1-2026"><a href="day-02/">Day 2 — Monday, June 1, 2026</a><a class="headerlink" href="#day-2-monday-june-1-2026" title="Permanent link">&para;</a></h3>
+<p>The day Direction-D's router met its own bar — and, on the signals
+tested so far, doesn't clear it. Two offline analyses, no GPU:</p>
+<ul>
+<li><strong>Grid probe analyzed</strong> (lens gate passed, 0.2213 = 0.2213). The
+  routable signal is <strong>real but late and modest</strong> — <code>lens_entropy</code>
+  peaks at <strong>AUROC 0.756 at layer 28</strong>, confirming (not beating)
+  Day 22's ~0.74. AUROC is near-chance through layers 1–20 and only
+  ramps in the last few, so <strong>there is no cheap early-layer signal</strong>;
+  the one compute lever is the budget axis (0.748 at kr=0.5).</li>
+<li><strong><code>cos_final</code> early-layer cell is a trap</strong> — it needs all 28 layers
+  to compute, so it's a post-hoc convergence diagnostic, not an
+  early-exit router (logged as a methodology note).</li>
+<li><strong>Two-feature probe: no lift.</strong> Combining entropy + margin +
+  option-logprob (0.758) does <strong>not</strong> beat the best single feature
+  (0.762). This overturns Day 22's hypothesis that option-logprob was
+  the missing second feature — the confidence features are mutually
+  redundant. The <strong>multi-option subset</strong> (≥3 options) is the stronger
+  regime at <strong>0.814</strong>.</li>
+<li><strong>Verdict: partial.</strong> The confidence-only path to Direction D is a
+  clean negative (a single-point confidence router won't close
+  Approach 2's realized-cost math). But D's defining axis —
+  <strong>evidence-stability</strong>, orthogonal to confidence — hasn't been
+  tested as a router feature yet. That's tomorrow's decisive test;
+  A/C fallbacks queue behind it.</li>
+</ul>
+<p>Committed the probe at
+<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c"><code>04ef73c</code></a>.</p>
 <hr />
 <h2 id="plan-for-the-week-may-31-jun-6">Plan for the week (May 31 – Jun 6)<a class="headerlink" href="#plan-for-the-week-may-31-jun-6" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
@@ -1505,11 +1565,18 @@ Committed the fix and the whole feasibility suite at
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Approach 2 realized-cost width router — negative on compute
       (Day 1)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Launch budget×layer grid probe (Day 1)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Gather <code>grid_kr*.json</code>, run <code>grid_analysis.py</code> — budget×layer
-      AUROC table + cheapest-usable-cell</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> The parked ~12% entropy/margin two-feature check</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Recreate <code>confidence_router.py</code> if the grid says it's worth
-      building</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Run <code>grid_analysis.py</code> — budget×layer AUROC table +
+      cheapest-usable-cell; signal is late (L28) and modest (0.756),
+      no early-layer cell (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> The parked ~12% entropy/margin two-feature check — <strong>no lift</strong>
+      (best combo 0.758 vs best single 0.762); option-logprob is
+      redundant with entropy (Day 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Decisive evidence-stability test</strong> — does answer-flip-under-
+      pruning carry signal confidence doesn't? Decides Direction D</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Scope A/C fallbacks (conformal risk control; per-question
+      compute) if evidence-stability also comes back flat</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Recreate <code>confidence_router.py</code> only if a feature clears the bar
+      (intentionally still not committed)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verify self-consistency doesn't degrade on medical VQA before
       composing</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (still pending from Week 2)</li>
