@@ -36,7 +36,7 @@ and 12-week plan.
 ## Where I am right now
 
 <span class="pill pill--wip">In progress</span> &nbsp;
-**Week 4 — Visual-grounding pivot has a measured foundation.** Week 1
+**Week 4 — Direction-D narrowed to its one untested axis.** Week 1
 closed out May 16
 ([overview](weekly/week-01/index.md#end-of-week-status)). Week 2
 closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
@@ -100,6 +100,27 @@ exceeds fixed-high). A heavier budget×layer grid probe was launched to
 locate the cheapest early signal; results land next session. Pushed at
 [`df0a3c4`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4)
 (nested-run fix + the Direction-D feasibility suite).
+[Day 23](weekly/week-04/day-02.md) (June 1) ran the two decisive
+offline analyses, and the confidence path to the router came back
+**negative**. The budget×layer grid probe (lens gate passed) showed
+the routable signal is **real but late and modest** — `lens_entropy`
+peaks at AUROC 0.756 at the final layer, near-chance through layers
+1–20, so there's **no cheap early-layer signal** to exploit (the one
+lever is the budget axis, 0.748 at kr=0.5). The parked two-feature
+check then found **no lift** from combining confidence features
+(best single 0.762, best combo 0.758), overturning the hypothesis
+that the option-token logprob was Direction D's missing second
+feature — the confidence features are mutually redundant. A
+single-point confidence router at ~0.76 doesn't close Day 22's
+realized-cost math, so building it isn't justified. The verdict is
+**partial, not final**: Direction D's defining axis,
+**evidence-stability** (does the answer flip when evidence is pruned),
+is orthogonal to confidence and hasn't been tested as a router feature
+yet — that's the decisive next experiment, with the A/C fallbacks
+queued behind it. One bright spot: the signal is materially stronger
+on **multi-option questions** (AUROC 0.814 vs 0.756). Pushed at
+[`04ef73c`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c)
+(the two-feature probe).
 
 !!! note "The project is mid-pivot"
     The site and project name still say *question-aware visual token
@@ -287,10 +308,23 @@ locate the cheapest early signal; results land next session. Pushed at
 - [x] **Direction-D feasibility suite pushed** at
       [`df0a3c4`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4);
       budget×layer grid probe launched (results land next session).
-- [ ] **Day 23** — run `grid_analysis.py` on the grid outputs
-      (budget×layer AUROC + cheapest-usable-cell); the parked ~12%
-      entropy/margin two-feature check; recreate `confidence_router.py`
-      if the grid says the router is worth building.
+- [x] **Grid probe analyzed (Day 23)** — lens gate passed; routable
+      signal is **late and modest** (`lens_entropy` AUROC 0.756 @
+      L28, near-chance through L1–20, no cheap early-layer cell;
+      robust on the budget axis at 0.748 for kr=0.5).
+      → [Week 4, Day 2, Phase 2](weekly/week-04/day-02.md#phase-2-the-grid-result-the-signal-is-real-modest-and-late)
+- [x] **Two-feature probe — no lift (Day 23)** — best single 0.762,
+      best combo 0.758; option-logprob is redundant with entropy,
+      overturning the missing-second-feature hypothesis. Multi-option
+      subset stronger at 0.814. Confidence path to the router is a
+      clean negative.
+      → [Week 4, Day 2, Phase 4](weekly/week-04/day-02.md#phase-4-the-two-feature-probe-no-lift-the-gono-go)
+- [x] **Two-feature probe pushed** at
+      [`04ef73c`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c).
+- [ ] **Day 24** — the decisive **evidence-stability** test (does
+      answer-flip-under-pruning carry signal confidence doesn't); this
+      is the one axis orthogonal to what Day 23 ruled out, and it
+      decides Direction D. A/C fallbacks scoped if it's also flat.
 - [ ] Push Day 8's accumulated changes to
       [`llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1)
       (split into coherent commits)

@@ -750,9 +750,9 @@ Full analysis:
 
 ---
 
-## Phase 6 — Direction-D feasibility (scored sweep, May 31)
+## Phase 6 — Direction-D feasibility (scored sweep, May 31 – Jun 1)
 
-<span class="pill pill--wip">In progress</span>
+<span class="pill pill--wip">In progress (confidence path negative; evidence-stability pending)</span>
 
 The first experiment of the visual-grounding pivot. The pruning
 infrastructure is repurposed as an **evidence dial**: instead of "how
@@ -820,20 +820,41 @@ PMC-VQA 10.7% → PathVQA 4.4% — the router's target signal.
   full pass on the escalated fraction) exceeds just running at the
   fixed-high budget.
 - A budget×layer logit-lens grid probe (5 budgets × 28 layers ×
-  17.3k) was launched to locate the cheapest early signal; results
-  land next session.
+  17.3k) located where the signal lives: **`lens_entropy` peaks at
+  AUROC 0.756 at the final layer (L28)**, near-chance through layers
+  1–20 — so there is **no cheap early-layer cell**. The signal is
+  robust on the budget axis (0.748 at kr=0.5), confirming (not
+  beating) the ~0.74 feasibility number. (`cos_final`'s
+  apparent early-layer strength is a non-deployable post-hoc
+  diagnostic — it requires the full forward pass to compute.)
+- A **two-feature probe** (Jun 1) tested whether combining
+  `lens_entropy` with margin and option-logprob beats entropy alone:
+  **no meaningful lift** (best single 0.762, best combo 0.758). The
+  confidence features are mutually redundant — overturning the
+  hypothesis that option-logprob was the missing second feature. The
+  **multi-option subset (≥3 options) is the stronger regime at AUROC
+  0.814**.
 
 **Conclusion**
 
 The pivot has a measured foundation: a routable per-question signal
-exists (AUROC 0.74), evidence-dependence varies sharply by dataset,
-and an oracle budget router has positive (if modest) headroom. The
-naive width-router doesn't pay for itself; whether routing *down*
-(cheap-when-confident) beats fixed budgets on realized cost is the
-open question, pending the grid result.
+exists (AUROC ~0.76, ~0.81 on multi-option questions), and
+evidence-dependence varies sharply by dataset. But the signal is
+modest, localized to the final layer, and — as the Jun 1 two-feature
+probe showed — gains nothing from combining the confidence features.
+A single-point, confidence-based router at that strength doesn't
+close Approach 2's realized-cost math, so **the confidence path to
+Direction D is a clean negative**. The verdict is *partial*, not
+final: Direction D's defining axis — **evidence-stability** (does the
+answer flip when evidence is pruned), orthogonal to confidence — has
+not been tested as a router feature yet. That is the decisive next
+experiment; the A/C fallbacks (conformal risk control; per-question
+compute allocation) queue behind it.
 
 Full analysis:
-[Week 4, Day 1](weekly/week-04/day-01.md).
+[Week 4, Day 1](weekly/week-04/day-01.md) (sweep + feasibility) and
+[Week 4, Day 2](weekly/week-04/day-02.md) (grid + two-feature
+go/no-go).
 
 ---
 

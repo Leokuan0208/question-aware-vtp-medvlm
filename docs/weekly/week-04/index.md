@@ -61,6 +61,36 @@ flip-direction counts are a shared-seed artifact
 Committed the fix and the whole feasibility suite at
 [`df0a3c4`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4).
 
+### [Day 2 — Monday, June 1, 2026](day-02.md)
+
+The day Direction-D's router met its own bar — and, on the signals
+tested so far, doesn't clear it. Two offline analyses, no GPU:
+
+- **Grid probe analyzed** (lens gate passed, 0.2213 = 0.2213). The
+  routable signal is **real but late and modest** — `lens_entropy`
+  peaks at **AUROC 0.756 at layer 28**, confirming (not beating)
+  Day 22's ~0.74. AUROC is near-chance through layers 1–20 and only
+  ramps in the last few, so **there is no cheap early-layer signal**;
+  the one compute lever is the budget axis (0.748 at kr=0.5).
+- **`cos_final` early-layer cell is a trap** — it needs all 28 layers
+  to compute, so it's a post-hoc convergence diagnostic, not an
+  early-exit router (logged as a methodology note).
+- **Two-feature probe: no lift.** Combining entropy + margin +
+  option-logprob (0.758) does **not** beat the best single feature
+  (0.762). This overturns Day 22's hypothesis that option-logprob was
+  the missing second feature — the confidence features are mutually
+  redundant. The **multi-option subset** (≥3 options) is the stronger
+  regime at **0.814**.
+- **Verdict: partial.** The confidence-only path to Direction D is a
+  clean negative (a single-point confidence router won't close
+  Approach 2's realized-cost math). But D's defining axis —
+  **evidence-stability**, orthogonal to confidence — hasn't been
+  tested as a router feature yet. That's tomorrow's decisive test;
+  A/C fallbacks queue behind it.
+
+Committed the probe at
+[`04ef73c`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c).
+
 ---
 
 ## Plan for the week (May 31 – Jun 6)
@@ -77,11 +107,18 @@ Committed the fix and the whole feasibility suite at
 - [x] Approach 2 realized-cost width router — negative on compute
       (Day 1)
 - [x] Launch budget×layer grid probe (Day 1)
-- [ ] Gather `grid_kr*.json`, run `grid_analysis.py` — budget×layer
-      AUROC table + cheapest-usable-cell
-- [ ] The parked ~12% entropy/margin two-feature check
-- [ ] Recreate `confidence_router.py` if the grid says it's worth
-      building
+- [x] Run `grid_analysis.py` — budget×layer AUROC table +
+      cheapest-usable-cell; signal is late (L28) and modest (0.756),
+      no early-layer cell (Day 2)
+- [x] The parked ~12% entropy/margin two-feature check — **no lift**
+      (best combo 0.758 vs best single 0.762); option-logprob is
+      redundant with entropy (Day 2)
+- [ ] **Decisive evidence-stability test** — does answer-flip-under-
+      pruning carry signal confidence doesn't? Decides Direction D
+- [ ] Scope A/C fallbacks (conformal risk control; per-question
+      compute) if evidence-stability also comes back flat
+- [ ] Recreate `confidence_router.py` only if a feature clears the bar
+      (intentionally still not committed)
 - [ ] Verify self-consistency doesn't degrade on medical VQA before
       composing
 - [ ] Read **ToMe** end-to-end (still pending from Week 2)
