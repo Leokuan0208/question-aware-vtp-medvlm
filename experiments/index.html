@@ -847,6 +847,30 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#phase-7-image-difficulty-falsification-gate-jun-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Image-difficulty falsification gate (Jun 2)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 7 — Image-difficulty falsification gate (Jun 2)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#e5-does-image-complexity-predict-difficulty-with-question-fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      E5 — does image complexity predict difficulty with question fixed?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#template-for-new-experiments" class="md-nav__link">
     <span class="md-ellipsis">
       Template for new experiments
@@ -1519,6 +1543,8 @@
       
         
       
+        
+      
     
     
       
@@ -1593,6 +1619,27 @@
   
   <span class="md-ellipsis">
     Day 2 — Monday, June 1, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-04/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, June 2, 2026
   </span>
   
 
@@ -1918,6 +1965,30 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#phase-7-image-difficulty-falsification-gate-jun-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Image-difficulty falsification gate (Jun 2)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 7 — Image-difficulty falsification gate (Jun 2)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#e5-does-image-complexity-predict-difficulty-with-question-fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      E5 — does image complexity predict difficulty with question fixed?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#template-for-new-experiments" class="md-nav__link">
     <span class="md-ellipsis">
       Template for new experiments
@@ -2009,10 +2080,17 @@ you'd documented is the one you didn't.</p>
 <td><span class="pill pill--done">Complete (negative result)</span></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="#phase-6-direction-d-feasibility-scored-sweep-may-31">6</a></td>
-<td>May 31</td>
+<td style="text-align: center;"><a href="#phase-6-direction-d-feasibility-scored-sweep-may-31--jun-1">6</a></td>
+<td>May 31 – Jun 1</td>
 <td>HuatuoGPT-Vision-7B · scored harness</td>
-<td><strong>Direction-D feasibility.</strong> Per-dataset evidence-dependence gradient (PMC-VQA −7.0 pt / PathVQA −0.3 pt at kr=0.10); confidence→correctness AUROC ≈ 0.74; budget-router headroom +1.6 pt peak; width-router negative on compute.</td>
+<td><strong>Direction-D feasibility — closed (negative).</strong> Evidence-dependence gradient is real, but neither confidence-feature combos nor the cross-budget evidence-stability signal (0.548 alone, +0.001 combined) clear the router's bar. Survives: confidence predicts correctness on multiple-choice only.</td>
+<td><span class="pill pill--done">Complete (negative result)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="#phase-7-image-difficulty-falsification-gate-jun-2">7</a></td>
+<td>Jun 2</td>
+<td>HuatuoGPT-Vision-7B (gate) → MedVLThinker</td>
+<td><strong>Clean-slate pivot: image-difficulty-driven adaptive compute.</strong> Falsification gate (does image complexity predict difficulty with question fixed) → <strong>REFINE</strong>: real, significant (p=3e-8), but weak (|ρ|≤0.11) and negative. Lesion-aware refinement + MedVLThinker gate pending.</td>
 <td><span class="pill pill--wip">In progress</span></td>
 </tr>
 </tbody>
@@ -3182,7 +3260,7 @@ evidence-router direction.</p>
 <a href="../weekly/week-03/day-04/#phase-6-fasp-gridprune-design">Week 3, Day 4, Phase 6</a>.</p>
 <hr />
 <h2 id="phase-6-direction-d-feasibility-scored-sweep-may-31-jun-1">Phase 6 — Direction-D feasibility (scored sweep, May 31 – Jun 1)<a class="headerlink" href="#phase-6-direction-d-feasibility-scored-sweep-may-31-jun-1" title="Permanent link">&para;</a></h2>
-<p><span class="pill pill--wip">In progress (confidence path negative; evidence-stability pending)</span></p>
+<p><span class="pill pill--done">Complete (negative result)</span></p>
 <p>The first experiment of the visual-grounding pivot. The pruning
 infrastructure is repurposed as an <strong>evidence dial</strong>: instead of "how
 do we prune well," the question is "how does the model's behavior
@@ -3303,47 +3381,102 @@ PMC-VQA 10.7% → PathVQA 4.4% — the router's target signal.</p>
   0.814</strong>.</li>
 </ul>
 <p><strong>Conclusion</strong></p>
-<p>The pivot has a measured foundation: a routable per-question signal
-exists (AUROC ~0.76, ~0.81 on multi-option questions), and
-evidence-dependence varies sharply by dataset. But the signal is
-modest, localized to the final layer, and — as the Jun 1 two-feature
-probe showed — gains nothing from combining the confidence features.
-A single-point, confidence-based router at that strength doesn't
-close Approach 2's realized-cost math, so <strong>the confidence path to
-Direction D is a clean negative</strong>. The verdict is <em>partial</em>, not
-final: Direction D's defining axis — <strong>evidence-stability</strong> (does the
-answer flip when evidence is pruned), orthogonal to confidence — has
-not been tested as a router feature yet. That is the decisive next
-experiment; the A/C fallbacks (conformal risk control; per-question
-compute allocation) queue behind it.</p>
+<p>Direction D is <strong>closed (negative)</strong>. The evidence-dependence
+<em>gradient</em> is real and varies sharply by dataset, but no feature built
+on it clears the router's bar. The confidence features (entropy,
+margin, option-logprob) are mutually redundant at a 0.762 ceiling (Jun
+1 two-feature probe), and the <strong>cross-budget evidence-stability
+signal</strong> — D's actually-novel feature — scores AUROC 0.548 alone,
+correlates +0.466 with confidence (not orthogonal), and adds +0.001
+combined (Jun 1 stability+confidence probe); on PathVQA, the regime it
+was theorized for, it adds −0.002. The May 31 green-light ("81.7 vs
+64.3") was the self-consistency flavor (0.675, folds into confidence),
+not the evidence dial. What survives: <strong>answer confidence predicts
+correctness, but only on multiple-choice</strong> (OmniMedVQA 0.809, MMMU
+0.783, SLAKE 0.765, PMC-VQA 0.723; open-ended ~0.568). All working
+features reduce to distribution peakedness; none need the pruning
+machinery.</p>
 <p>Full analysis:
 <a href="../weekly/week-04/day-01/">Week 4, Day 1</a> (sweep + feasibility) and
-<a href="../weekly/week-04/day-02/">Week 4, Day 2</a> (grid + two-feature
-go/no-go).</p>
+<a href="../weekly/week-04/day-02/">Week 4, Day 2</a> (grid, two-feature, and the
+deciding stability probe).</p>
+<hr />
+<h2 id="phase-7-image-difficulty-falsification-gate-jun-2">Phase 7 — Image-difficulty falsification gate (Jun 2)<a class="headerlink" href="#phase-7-image-difficulty-falsification-gate-jun-2" title="Permanent link">&para;</a></h2>
+<p><span class="pill pill--wip">In progress</span></p>
+<p>The clean-slate pivot's first experiment. New direction:
+<strong>image-difficulty-driven adaptive reasoning-compute allocation</strong> — a
+difficulty signal derived from the <em>visual content</em> (lesion subtlety /
+image complexity), computed <em>before generation</em>, used to <em>allocate
+reasoning compute</em> in medical VLMs. Before committing, the cheapest
+possible kill-or-confirm of the premise — on the existing
+HuatuoGPT-Vision-7B, no new model.</p>
+<h3 id="e5-does-image-complexity-predict-difficulty-with-question-fixed">E5 — does image complexity predict difficulty with question fixed?<a class="headerlink" href="#e5-does-image-complexity-predict-difficulty-with-question-fixed" title="Permanent link">&para;</a></h3>
+<p><strong>Goal</strong> — falsify (or confirm) that an image-only complexity measure
+predicts per-case difficulty <em>with question type held constant</em>. If it
+only correlates across question types, it's the question doing the
+work — already captured by every question-side method.</p>
+<p><strong>Setup</strong></p>
+<ul>
+<li>Model: HuatuoGPT-Vision-7B (gate only; the reasoning model matters
+  later, for allocation)</li>
+<li>Data: SLAKE + VQA-RAD closed-ended, stratified by question_type +
+  modality; 2,394 cases</li>
+<li>Difficulty: pass-count (fraction wrong over G temperature samples)</li>
+<li>Complexity (no question, pre-generation): grayscale entropy,
+  JPEG-compressibility, gradient energy, Laplacian variance;
+  vision-encoder attention entropy as the mechanistic confirmer
+  (requires <code>attn_implementation="eager"</code>/<code>"sdpa"</code>, never flash)</li>
+<li>Decision rule (fixed before looking): positive control
+  (Kruskal–Wallis) first; <strong>GO</strong> partial Spearman ρ ≥ 0.25, <strong>REFINE</strong>
+  0.10 ≤ |ρ| &lt; 0.25, <strong>NO-GO</strong> &lt; 0.10</li>
+</ul>
+<p><strong>Result — REFINE</strong></p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>2394 cases
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>[control] difficulty differs by question_type: H=215.70, p=8.6e-44  OK
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>comp_entropy  within rho=-0.123  partial rho=-0.113 p=3.3e-08  -&gt; REFINE
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>comp_jpeg     within rho=-0.092  partial rho=-0.083 p=5.3e-05   -&gt; weak
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>comp_grad     within rho=-0.085  partial rho=-0.082 p=6.4e-05   -&gt; weak
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>comp_lap      within rho=-0.019  partial rho=+0.008 p=0.69      -&gt; weak
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>==&gt; VERDICT: REFINE
+</span></code></pre></div>
+<p>Positive control clean (difficulty genuinely varies by question type),
+so the measure is valid. Image properties <em>do</em> predict per-case
+difficulty with the question fixed and highly significantly (entropy
+p=3e-8, three of four proxies), but the effect is <strong>weak</strong> (|partial
+ρ| ≈ 0.08–0.11) and <strong>negative</strong> — busier images are slightly easier.
+Reading: whole-image texture measures <em>evidence-richness</em>, not <em>lesion
+subtlety</em>. The premise isn't dead; the proxy is wrong.</p>
+<p><strong>Next</strong> — REFINE with lesion-aware complexity (region size/contrast
+from SLAKE organ masks, <code>complexity_lesion.py</code>), then re-run the gate
+on the new base model <strong>MedVLThinker</strong> (the definitive run + training
+labels in one pass). The gate is currently running sharded across both
+VMs; the lesion-augmented verdict is the GO / stop decision.</p>
+<p>Full analysis:
+<a href="../weekly/week-04/day-03/">Week 4, Day 3</a>.</p>
 <hr />
 <h2 id="template-for-new-experiments">Template for new experiments<a class="headerlink" href="#template-for-new-experiments" title="Permanent link">&para;</a></h2>
 <p>Copy this block, paste it into the active phase, and bump the ID.</p>
-<div class="language-markdown highlight"><span class="filename">Markdown</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gu">## EN — Short descriptive name</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>&lt;span class=&quot;pill pill--planned&quot;&gt;Planned&lt;/span&gt;
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gs">**Goal**</span> — one sentence.
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gs">**Setup**</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">-</span><span class="w"> </span>Model:
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">-</span><span class="w"> </span>Dataset:
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">-</span><span class="w"> </span>Pruning strategy:
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">-</span><span class="w"> </span>K:
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">-</span><span class="w"> </span>Training config (if applicable):
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="gs">**Results**</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="k">-</span><span class="w"> </span>Metric 1:
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="k">-</span><span class="w"> </span>Metric 2:
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="k">-</span><span class="w"> </span>Latency:
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="gs">**Conclusion**</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="k">-</span><span class="w"> </span>What did this tell us?
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="k">-</span><span class="w"> </span>What&#39;s the next experiment?
+<div class="language-markdown highlight"><span class="filename">Markdown</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gu">## EN — Short descriptive name</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>&lt;span class=&quot;pill pill--planned&quot;&gt;Planned&lt;/span&gt;
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="gs">**Goal**</span> — one sentence.
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="gs">**Setup**</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">-</span><span class="w"> </span>Model:
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="k">-</span><span class="w"> </span>Dataset:
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="k">-</span><span class="w"> </span>Pruning strategy:
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">-</span><span class="w"> </span>K:
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="k">-</span><span class="w"> </span>Training config (if applicable):
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="gs">**Results**</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="k">-</span><span class="w"> </span>Metric 1:
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="k">-</span><span class="w"> </span>Metric 2:
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="k">-</span><span class="w"> </span>Latency:
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="gs">**Conclusion**</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="k">-</span><span class="w"> </span>What did this tell us?
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="k">-</span><span class="w"> </span>What&#39;s the next experiment?
 </span></code></pre></div>
 
 

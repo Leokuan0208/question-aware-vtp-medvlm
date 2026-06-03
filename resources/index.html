@@ -1234,6 +1234,8 @@
       
         
       
+        
+      
     
     
       
@@ -1308,6 +1310,27 @@
   
   <span class="md-ellipsis">
     Day 2 — Monday, June 1, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-04/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, June 2, 2026
   </span>
   
 
@@ -1460,9 +1483,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#medical-vqa-benchmarks" class="md-nav__link">
+  <a href="#added-day-24-june-2-2026-clean-slate-adaptive-compute-hunt" class="md-nav__link">
     <span class="md-ellipsis">
-      Medical VQA benchmarks
+      Added Day 24 — June 2, 2026 (clean-slate adaptive-compute hunt)
     </span>
   </a>
   
@@ -1590,9 +1613,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#medical-vqa-benchmarks" class="md-nav__link">
+  <a href="#added-day-24-june-2-2026-clean-slate-adaptive-compute-hunt" class="md-nav__link">
     <span class="md-ellipsis">
-      Medical VQA benchmarks
+      Added Day 24 — June 2, 2026 (clean-slate adaptive-compute hunt)
     </span>
   </a>
   
@@ -1865,7 +1888,37 @@ Updated as I go.</p>
   more helpful than a long summary.</em></p>
 </li>
 </ul>
-<h3 id="medical-vqa-benchmarks">Medical VQA benchmarks<a class="headerlink" href="#medical-vqa-benchmarks" title="Permanent link">&para;</a></h3>
+<h3 id="added-day-24-june-2-2026-clean-slate-adaptive-compute-hunt">Added Day 24 — June 2, 2026 (clean-slate adaptive-compute hunt)<a class="headerlink" href="#added-day-24-june-2-2026-clean-slate-adaptive-compute-hunt" title="Permanent link">&para;</a></h3>
+<p>The literature scan behind the pivot to image-difficulty-driven
+adaptive reasoning-compute allocation. <em>(Links to be verified and
+filled in as each is read properly; titles/authors recorded from the
+scan.)</em></p>
+<ul>
+<li><strong>MedVLThinker</strong> — UCSC-VLAA, Qwen2.5-VL, Apache-2.0. The new base
+  model: open code + difficulty-filtered training data + eval harness;
+  checkpoints emit <code>&lt;think&gt;…&lt;/think&gt;&lt;answer&gt;…&lt;/answer&gt;</code>; difficulty
+  auto-filtered by pass-count. Difficulty estimation is <em>spent on
+  training a reasoner</em>, not on per-case allocation — which is the gap
+  this project targets.</li>
+<li><strong>AdaThink-Med</strong> — adaptive reasoning length from query/sampling
+  difficulty, <strong>medical text</strong> (not image-derived). Closest neighbor on
+  the "adaptive compute" axis; differs on the <em>signal</em> (text-side).</li>
+<li><strong>ARM / AdaCtrl</strong> — adaptive reasoning budget, <strong>general domain</strong>,
+  difficulty from query/rollouts.</li>
+<li><strong>LLRM</strong> — adaptive <em>visual tool</em> use (zoom) from rollout difficulty,
+  general domain (HR-Bench); allocates a tool, not a reasoning budget,
+  and the difficulty is rollout-derived, not image-content-derived.</li>
+<li><strong>MedCLM</strong> — easy/medium/hard <em>lesion</em> curricula for <em>training</em>
+  medical VLMs (training-time, not inference-time allocation).</li>
+<li><strong>MedPruner</strong> — IAF (question-blind adaptive slice filtering) + DINS
+  (vision-self-attention nucleus selection, question-blind), 3D
+  medical, M3D / 3D-RAD / AMOS-MM. The teardown that ruled out
+  Direction B's room to maneuver.</li>
+<li><strong>Visual-complexity / attention-entropy correlation (2025)</strong> — the
+  empirical support for the wedge: visual complexity ↑ vision-encoder
+  attention entropy ↑, attention entropy ↓ reasoning accuracy. The
+  evidence that an image-only difficulty signal exists.</li>
+</ul>
 <p>The six benchmarks bundled with HuatuoGPT-Vision's
 <a href="https://huggingface.co/datasets/FreedomIntelligence/Medical_Multimodal_Evaluation_Data"><code>Medical_Multimodal_Evaluation_Data</code></a>
 release — used as a unified evaluation suite for every pruning
@@ -1897,11 +1950,27 @@ experiment on the HuatuoGPT-Vision-7B baseline.</p>
 </ul>
 <h2 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h2>
 <ul>
+<li><a href="https://github.com/Leokuan0208/medvlthinker-imgdiff-compute">Leokuan0208/medvlthinker-imgdiff-compute</a>
+  — <strong>the active repo as of the June 2 clean-slate pivot.</strong>
+  Image-difficulty-driven adaptive reasoning-compute allocation on
+  MedVLThinker (Qwen2.5-VL). Houses the falsification-gate scripts
+  (<code>build_subset.py</code>, <code>difficulty_medvlthinker.py</code>, <code>complexity.py</code>,
+  <code>complexity_lesion.py</code>, <code>analyze.py</code>) and, later, the training +
+  eval harness. <em>(Repo created Jun 2; first push pending the
+  lesion-aware gate verdict.)</em></li>
+<li><a href="https://github.com/UCSC-VLAA/MedVLThinker">UCSC-VLAA/MedVLThinker</a>
+  — upstream <strong>MedVLThinker</strong> (Qwen2.5-VL, Apache-2.0): open code,
+  difficulty-filtered datasets, checkpoints, and eval scripts. The
+  new base model; checkpoints emit <code>&lt;think&gt;…&lt;/think&gt;&lt;answer&gt;…&lt;/answer&gt;</code>
+  and the training data is auto-filtered by pass-count difficulty.</li>
 <li><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning">Leokuan0208/huatuo-llava-v15-med-pruning</a>
-  — <strong>this project's active evaluation harness and pruning code
-  on the HuatuoGPT-Vision-7B baseline.</strong> Houses the v2 patcher
+  — the visual-token-pruning + Direction-D harness on the
+  HuatuoGPT-Vision-7B baseline. Houses the v2 patcher
   (pre-LLM pruning), the {Random, QSim_mean, QSim_max, GridPrune,
-  FASP+GridPrune} method implementations, and the analysis pipeline.</li>
+  FASP+GridPrune} implementations, the scored harness, and the
+  Direction-D feasibility suite. Frozen as a phase after the Jun 2
+  pivot, but still the source of the falsification gate (runs on this
+  model).</li>
 <li><a href="https://github.com/FreedomIntelligence/HuatuoGPT-Vision">FreedomIntelligence/HuatuoGPT-Vision</a>
   — upstream <strong>HuatuoGPT-Vision</strong> repo. Provides the merged 7B
   weights via HuggingFace and the one-command <code>accelerate launch
