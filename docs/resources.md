@@ -210,7 +210,37 @@ Updated as I go.
 - _Add as you read them. A one-line note on why each paper is useful is
   more helpful than a long summary._
 
-### Medical VQA benchmarks
+### Added Day 24 — June 2, 2026 (clean-slate adaptive-compute hunt)
+
+The literature scan behind the pivot to image-difficulty-driven
+adaptive reasoning-compute allocation. _(Links to be verified and
+filled in as each is read properly; titles/authors recorded from the
+scan.)_
+
+- **MedVLThinker** — UCSC-VLAA, Qwen2.5-VL, Apache-2.0. The new base
+  model: open code + difficulty-filtered training data + eval harness;
+  checkpoints emit `<think>…</think><answer>…</answer>`; difficulty
+  auto-filtered by pass-count. Difficulty estimation is *spent on
+  training a reasoner*, not on per-case allocation — which is the gap
+  this project targets.
+- **AdaThink-Med** — adaptive reasoning length from query/sampling
+  difficulty, **medical text** (not image-derived). Closest neighbor on
+  the "adaptive compute" axis; differs on the *signal* (text-side).
+- **ARM / AdaCtrl** — adaptive reasoning budget, **general domain**,
+  difficulty from query/rollouts.
+- **LLRM** — adaptive *visual tool* use (zoom) from rollout difficulty,
+  general domain (HR-Bench); allocates a tool, not a reasoning budget,
+  and the difficulty is rollout-derived, not image-content-derived.
+- **MedCLM** — easy/medium/hard *lesion* curricula for *training*
+  medical VLMs (training-time, not inference-time allocation).
+- **MedPruner** — IAF (question-blind adaptive slice filtering) + DINS
+  (vision-self-attention nucleus selection, question-blind), 3D
+  medical, M3D / 3D-RAD / AMOS-MM. The teardown that ruled out
+  Direction B's room to maneuver.
+- **Visual-complexity / attention-entropy correlation (2025)** — the
+  empirical support for the wedge: visual complexity ↑ vision-encoder
+  attention entropy ↑, attention entropy ↓ reasoning accuracy. The
+  evidence that an image-only difficulty signal exists.
 
 The six benchmarks bundled with HuatuoGPT-Vision's
 [`Medical_Multimodal_Evaluation_Data`](https://huggingface.co/datasets/FreedomIntelligence/Medical_Multimodal_Evaluation_Data)
@@ -243,11 +273,27 @@ experiment on the HuatuoGPT-Vision-7B baseline.
 
 ## Code
 
+- [Leokuan0208/medvlthinker-imgdiff-compute](https://github.com/Leokuan0208/medvlthinker-imgdiff-compute)
+  — **the active repo as of the June 2 clean-slate pivot.**
+  Image-difficulty-driven adaptive reasoning-compute allocation on
+  MedVLThinker (Qwen2.5-VL). Houses the falsification-gate scripts
+  (`build_subset.py`, `difficulty_medvlthinker.py`, `complexity.py`,
+  `complexity_lesion.py`, `analyze.py`) and, later, the training +
+  eval harness. _(Repo created Jun 2; first push pending the
+  lesion-aware gate verdict.)_
+- [UCSC-VLAA/MedVLThinker](https://github.com/UCSC-VLAA/MedVLThinker)
+  — upstream **MedVLThinker** (Qwen2.5-VL, Apache-2.0): open code,
+  difficulty-filtered datasets, checkpoints, and eval scripts. The
+  new base model; checkpoints emit `<think>…</think><answer>…</answer>`
+  and the training data is auto-filtered by pass-count difficulty.
 - [Leokuan0208/huatuo-llava-v15-med-pruning](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning)
-  — **this project's active evaluation harness and pruning code
-  on the HuatuoGPT-Vision-7B baseline.** Houses the v2 patcher
+  — the visual-token-pruning + Direction-D harness on the
+  HuatuoGPT-Vision-7B baseline. Houses the v2 patcher
   (pre-LLM pruning), the {Random, QSim_mean, QSim_max, GridPrune,
-  FASP+GridPrune} method implementations, and the analysis pipeline.
+  FASP+GridPrune} implementations, the scored harness, and the
+  Direction-D feasibility suite. Frozen as a phase after the Jun 2
+  pivot, but still the source of the falsification gate (runs on this
+  model).
 - [FreedomIntelligence/HuatuoGPT-Vision](https://github.com/FreedomIntelligence/HuatuoGPT-Vision)
   — upstream **HuatuoGPT-Vision** repo. Provides the merged 7B
   weights via HuggingFace and the one-command `accelerate launch

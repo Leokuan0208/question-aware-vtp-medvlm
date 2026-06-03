@@ -20,7 +20,8 @@ codebase and base model. The phases below are organized chronologically.
 | [3](#phase-3-huatuogpt-vision-7b-baseline-may-25) | May 25 | HuatuoGPT-Vision-7B · [`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning) | E0_huatuo — paper Table 4 reproduced, 5/6 benchmarks within 0.55 pts | <span class="pill pill--done">Complete</span> |
 | [4](#phase-4-huatuogpt-pruning-v1-v2-patcher-may-25-27) | May 25-27 | HuatuoGPT-Vision-7B · v2 patcher (pre-LLM) | **Random beats QSim at every keep-ratio.** Gap grows from +0.84 (kr=0.75) to +3.11 (kr=0.10) pts on total. qsim_max ablation made it worse, not better. | <span class="pill pill--done">Complete (negative result)</span> |
 | [5](#phase-5-gridprune-family-may-28) | May 28 | HuatuoGPT-Vision-7B · v2 patcher | **Random Pareto-dominates GridPrune and FASP+GridPrune on accuracy *and* latency at every kr.** Third sweep where structured pruning loses to random. Pruning-as-method closed; project pivots to visual-grounding. | <span class="pill pill--done">Complete (negative result)</span> |
-| [6](#phase-6-direction-d-feasibility-scored-sweep-may-31) | May 31 | HuatuoGPT-Vision-7B · scored harness | **Direction-D feasibility.** Per-dataset evidence-dependence gradient (PMC-VQA −7.0 pt / PathVQA −0.3 pt at kr=0.10); confidence→correctness AUROC ≈ 0.74; budget-router headroom +1.6 pt peak; width-router negative on compute. | <span class="pill pill--wip">In progress</span> |
+| [6](#phase-6-direction-d-feasibility-scored-sweep-may-31--jun-1) | May 31 – Jun 1 | HuatuoGPT-Vision-7B · scored harness | **Direction-D feasibility — closed (negative).** Evidence-dependence gradient is real, but neither confidence-feature combos nor the cross-budget evidence-stability signal (0.548 alone, +0.001 combined) clear the router's bar. Survives: confidence predicts correctness on multiple-choice only. | <span class="pill pill--done">Complete (negative result)</span> |
+| [7](#phase-7-image-difficulty-falsification-gate-jun-2) | Jun 2 | HuatuoGPT-Vision-7B (gate) → MedVLThinker | **Clean-slate pivot: image-difficulty-driven adaptive compute.** Falsification gate (does image complexity predict difficulty with question fixed) → **REFINE**: real, significant (p=3e-8), but weak (\|ρ\|≤0.11) and negative. Lesion-aware refinement + MedVLThinker gate pending. | <span class="pill pill--wip">In progress</span> |
 
 **Active codebase as of May 27, 2026:**
 [`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning).
@@ -752,7 +753,7 @@ Full analysis:
 
 ## Phase 6 — Direction-D feasibility (scored sweep, May 31 – Jun 1)
 
-<span class="pill pill--wip">In progress (confidence path negative; evidence-stability pending)</span>
+<span class="pill pill--done">Complete (negative result)</span>
 
 The first experiment of the visual-grounding pivot. The pruning
 infrastructure is repurposed as an **evidence dial**: instead of "how
@@ -837,24 +838,91 @@ PMC-VQA 10.7% → PathVQA 4.4% — the router's target signal.
 
 **Conclusion**
 
-The pivot has a measured foundation: a routable per-question signal
-exists (AUROC ~0.76, ~0.81 on multi-option questions), and
-evidence-dependence varies sharply by dataset. But the signal is
-modest, localized to the final layer, and — as the Jun 1 two-feature
-probe showed — gains nothing from combining the confidence features.
-A single-point, confidence-based router at that strength doesn't
-close Approach 2's realized-cost math, so **the confidence path to
-Direction D is a clean negative**. The verdict is *partial*, not
-final: Direction D's defining axis — **evidence-stability** (does the
-answer flip when evidence is pruned), orthogonal to confidence — has
-not been tested as a router feature yet. That is the decisive next
-experiment; the A/C fallbacks (conformal risk control; per-question
-compute allocation) queue behind it.
+Direction D is **closed (negative)**. The evidence-dependence
+*gradient* is real and varies sharply by dataset, but no feature built
+on it clears the router's bar. The confidence features (entropy,
+margin, option-logprob) are mutually redundant at a 0.762 ceiling (Jun
+1 two-feature probe), and the **cross-budget evidence-stability
+signal** — D's actually-novel feature — scores AUROC 0.548 alone,
+correlates +0.466 with confidence (not orthogonal), and adds +0.001
+combined (Jun 1 stability+confidence probe); on PathVQA, the regime it
+was theorized for, it adds −0.002. The May 31 green-light ("81.7 vs
+64.3") was the self-consistency flavor (0.675, folds into confidence),
+not the evidence dial. What survives: **answer confidence predicts
+correctness, but only on multiple-choice** (OmniMedVQA 0.809, MMMU
+0.783, SLAKE 0.765, PMC-VQA 0.723; open-ended ~0.568). All working
+features reduce to distribution peakedness; none need the pruning
+machinery.
 
 Full analysis:
 [Week 4, Day 1](weekly/week-04/day-01.md) (sweep + feasibility) and
-[Week 4, Day 2](weekly/week-04/day-02.md) (grid + two-feature
-go/no-go).
+[Week 4, Day 2](weekly/week-04/day-02.md) (grid, two-feature, and the
+deciding stability probe).
+
+---
+
+## Phase 7 — Image-difficulty falsification gate (Jun 2)
+
+<span class="pill pill--wip">In progress</span>
+
+The clean-slate pivot's first experiment. New direction:
+**image-difficulty-driven adaptive reasoning-compute allocation** — a
+difficulty signal derived from the *visual content* (lesion subtlety /
+image complexity), computed *before generation*, used to *allocate
+reasoning compute* in medical VLMs. Before committing, the cheapest
+possible kill-or-confirm of the premise — on the existing
+HuatuoGPT-Vision-7B, no new model.
+
+### E5 — does image complexity predict difficulty with question fixed?
+
+**Goal** — falsify (or confirm) that an image-only complexity measure
+predicts per-case difficulty *with question type held constant*. If it
+only correlates across question types, it's the question doing the
+work — already captured by every question-side method.
+
+**Setup**
+
+- Model: HuatuoGPT-Vision-7B (gate only; the reasoning model matters
+  later, for allocation)
+- Data: SLAKE + VQA-RAD closed-ended, stratified by question_type +
+  modality; 2,394 cases
+- Difficulty: pass-count (fraction wrong over G temperature samples)
+- Complexity (no question, pre-generation): grayscale entropy,
+  JPEG-compressibility, gradient energy, Laplacian variance;
+  vision-encoder attention entropy as the mechanistic confirmer
+  (requires `attn_implementation="eager"`/`"sdpa"`, never flash)
+- Decision rule (fixed before looking): positive control
+  (Kruskal–Wallis) first; **GO** partial Spearman ρ ≥ 0.25, **REFINE**
+  0.10 ≤ |ρ| < 0.25, **NO-GO** < 0.10
+
+**Result — REFINE**
+
+```text
+2394 cases
+[control] difficulty differs by question_type: H=215.70, p=8.6e-44  OK
+comp_entropy  within rho=-0.123  partial rho=-0.113 p=3.3e-08  -> REFINE
+comp_jpeg     within rho=-0.092  partial rho=-0.083 p=5.3e-05   -> weak
+comp_grad     within rho=-0.085  partial rho=-0.082 p=6.4e-05   -> weak
+comp_lap      within rho=-0.019  partial rho=+0.008 p=0.69      -> weak
+==> VERDICT: REFINE
+```
+
+Positive control clean (difficulty genuinely varies by question type),
+so the measure is valid. Image properties *do* predict per-case
+difficulty with the question fixed and highly significantly (entropy
+p=3e-8, three of four proxies), but the effect is **weak** (|partial
+ρ| ≈ 0.08–0.11) and **negative** — busier images are slightly easier.
+Reading: whole-image texture measures *evidence-richness*, not *lesion
+subtlety*. The premise isn't dead; the proxy is wrong.
+
+**Next** — REFINE with lesion-aware complexity (region size/contrast
+from SLAKE organ masks, `complexity_lesion.py`), then re-run the gate
+on the new base model **MedVLThinker** (the definitive run + training
+labels in one pass). The gate is currently running sharded across both
+VMs; the lesion-augmented verdict is the GO / stop decision.
+
+Full analysis:
+[Week 4, Day 3](weekly/week-04/day-03.md).
 
 ---
 

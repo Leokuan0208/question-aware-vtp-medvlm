@@ -22,10 +22,15 @@ that a single-point, confidence-based Direction-D router doesn't
 close the realized-cost math that
 [yesterday's Approach 2](day-01.md#phase-9-approach-2-width-router-an-honest-negative)
 already flagged. The decisive next test — whether *evidence-stability*
-(the axis genuinely orthogonal to confidence) adds signal — is teed
-up rather than run, so the verdict is honestly **partial**: the
-confidence half of Direction D is a clean negative; the
-evidence-stability half is the open question.
+(the axis genuinely orthogonal to confidence) adds signal — was then
+run that same evening, and it came back **no** (cross-budget flip
+AUROC 0.548 alone, +0.466 correlated with confidence, +0.001
+combined). So the verdict resolved from "partial" to a clean closure:
+the confidence half of Direction D is a clean negative, and the
+evidence-stability half — D's defining premise — adds nothing either.
+**Direction D is closed.** See
+[Phase 6](#phase-6-the-evidence-stability-probe-direction-d-closed)
+for the deciding numbers.
 
 ---
 
@@ -169,21 +174,66 @@ doesn't pay for its compute. So **a single-point, confidence-based
 Direction-D router does not clear its own bar**, and building the full
 `confidence_router.py` on this footing isn't justified.
 
-But the verdict is **partial, not final** — and the distinction
-matters. Everything tested so far is *confidence*. Direction D's
-*defining* signal was never confidence; it was **evidence-stability**
-— whether the answer flips when visual evidence is pruned — which is
-the one axis genuinely orthogonal to confidence. That test has not
-been run as a router feature yet. So the clean statement of today's
-result is: the confidence-only path to Direction D is a clean
-negative; the decisive evidence-stability test is the immediate next
-step, and the A/C fallbacks (conformal risk control; per-question
-compute allocation) move up the queue if it also comes back flat.
+And the verdict **resolved the same evening**, because the decisive
+test did get run (Phase 6). Direction D's *defining* signal was never
+confidence; it was **evidence-stability** — whether the answer flips
+when visual evidence is pruned — the one axis genuinely orthogonal to
+confidence. The stability+confidence probe tested exactly that, and it
+adds nothing: cross-budget evidence-flip scores AUROC 0.548 alone,
+correlates +0.466 with confidence (so isn't even orthogonal), and lifts
+the combination by +0.001. So both halves fail: **the confidence path
+is a clean negative, and the evidence-stability path — the premise of
+the whole pivot — is too. Direction D is closed**, and the A/C
+fallbacks (conformal risk control; per-question compute allocation)
+move up the queue.
 
-No GPU was spent today — both analyses were offline on existing
-dumps. That's the discipline paying off: the cheapest decisive
-experiment ran first, and it sharpened the question instead of
-burning a sweep.
+No GPU was spent today — every analysis was offline on existing dumps.
+That's the discipline paying off: the cheapest decisive experiments ran
+first, and closed the direction on the right test instead of a hunch.
+
+---
+
+## Phase 6 — The evidence-stability probe: Direction D closed
+
+The deciding experiment, run the same evening, fully offline on the
+18-run sweep data. The question: does **evidence-stability** — whether
+the greedy answer flips as the independent `RandomPruner` strips
+visual tokens across kr 0.75 → 0.10 — add correctness signal
+orthogonal to confidence? The probe reproduced both confidence anchors
+as join self-checks (option-logprob 0.762, entropy 0.756) on the full
+17,303 join, then reported the new features.
+
+Predicting WRONG@full-budget, single-feature AUROC:
+
+| feature | AUROC | reading |
+|---|---|---|
+| confidence (option-logprob) | **0.762** | the bar to beat |
+| entropy (anchor) | 0.756 | reproduces the confidence anchor |
+| self-consistency (k=5 votes) | 0.675 | real but modest |
+| stability (fraction-flip) | **0.548** | barely above chance |
+| flip@kr0.5 (binary) | 0.530 | essentially nothing |
+
+Orthogonality: **pearson(confidence, stability) = +0.466** — the
+evidence signal is positively correlated with confidence, not the
+orthogonal axis the router needed. Combinations (logistic, 5-fold CV):
+confidence alone 0.762; **confidence + stability 0.763** (+0.001);
+confidence + self-consistency 0.762; all three 0.763. **No orthogonal
+lift.** The clincher is **PathVQA** — the regime where
+evidence-independent errors concentrate, the one place the dial was
+theorized for — where stability adds **−0.002**.
+
+Reconciling with [May 31's green-light](../week-03/day-05.md#phase-6-the-feasibility-probe-zero-gpu-decisive)
+("81.7 vs 64.3 stable→correct"): that was the *self-consistency*
+flavor of stability (0.675 today, folds into confidence), not the
+cross-budget evidence dial (0.548). Confidence in a stability costume —
+but it bought a clean kill on the right experiment rather than a hunch.
+
+**Direction D is closed.** What survives is narrower but real: plain
+answer confidence predicts correctness, **but only on multiple-choice**
+(OmniMedVQA 0.809, MMMU 0.783, SLAKE 0.765, PMC-VQA 0.723; open-ended
+PathVQA & VQA-RAD ~0.568). All the working features reduce to one
+thing — how peaked the answer distribution is — and none need the
+pruning machinery.
 
 ---
 
@@ -201,40 +251,41 @@ burning a sweep.
    the confidence features are mutually redundant.
 5. **Multi-option subset is stronger** — AUROC 0.814 on ≥3-option
    questions; the binary questions dilute the aggregate.
-6. **Direction-D verdict is partial** — confidence-only path is a
-   clean negative; the decisive evidence-stability test is still
-   pending, with A/C fallbacks queued behind it.
+6. **Direction D closed** — the evidence-stability probe (run the same
+   evening) showed stability adds no orthogonal signal (0.548 alone,
+   +0.466 correlated, +0.001 combined, −0.002 on PathVQA). Both the
+   confidence path and the evidence-dial premise fail.
+7. **What survives** — confidence predicts correctness, but only on
+   multiple-choice (MC sets 0.72–0.81; open-ended ~0.57). A/C fallbacks
+   (conformal; per-question compute) move up the queue.
 
 The day's worth is in what it ruled out cheaply: the option-logprob
-second feature, and the hope of a cheap early-layer router. What
-survives is a sharp, single open question — does evidence-stability
-carry signal that confidence doesn't — and a stronger place to look
-for it (multi-option questions).
+second feature, the hope of a cheap early-layer router, and — with the
+evening's stability probe — the evidence dial that was the entire
+premise of the pivot. Direction D is closed on the right experiment.
 
 !!! note "On the project's direction"
     The site and project name still say *question-aware visual token
     pruning*. As of Day 19 the work pivoted to training-free
-    **visual-grounding / selective prediction**; Day 23 is the first
-    day that result has come back partly negative, narrowing
-    Direction D to its one untested axis. The rebrand stays deferred
-    until the direction produces a positive headline result.
+    **visual-grounding / selective prediction** (Direction D); Day 23
+    closed Direction D — both the confidence path and the
+    evidence-stability premise carry no usable orthogonal signal. What
+    survives is a confidence-and-format finding that doesn't need the
+    pruning machinery. The next session is a clean-slate reset
+    ([Day 24](day-03.md)). The rebrand stays deferred until the new
+    direction produces a positive headline result.
 
 ---
 
 ### Plan for tomorrow (June 2, Day 24 / Week 4 Day 3)
 
-- [ ] **The decisive evidence-stability test** — does per-sample
-      answer-flip-under-pruning carry correctness signal that
-      confidence (entropy/margin/logprob) does *not*? This is the one
-      axis orthogonal to what today ruled out, and it decides
-      Direction D.
-- [ ] If evidence-stability also comes back flat, **scope the A/C
-      fallbacks concretely** — conformal risk control (A) and
-      per-question compute allocation (C).
-- [ ] Consider restricting any router evaluation to the
-      **multi-option subset**, where the signal is materially stronger
-      (0.814 vs 0.756).
-- [ ] Read **ToMe** end-to-end (still pending from Week 2).
+With Direction D closed (Phase 6), the surviving confidence finding is
+a *known technique on a new model* (A) — defensible but not strongly
+novel — and every prior path has dead-ended. So tomorrow is a
+deliberate **clean-slate reset**: scan recent medical-VLM literature
+and future-work sections for an under-executed *method* that fits the
+3-month / 2×A100 constraints, rather than salvaging another pivot off
+the existing work. (That hunt → [Day 24](day-03.md).)
 
 ---
 
@@ -244,17 +295,17 @@ One commit to
 **[`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning)**:
 
 **[`04ef73c`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c)**
-— *Add confidence + stability probes (Direction-D go/no-go).*
-`analysis/two_feature_probe.py` — joins the grid kr=1.0 / layer-28
-dump with the scored run's option logprobs (defensive schema
+— *Add confidence + stability probes (Direction-D go/no-go).* Two
+scripts. `analysis/two_feature_probe.py` joins the grid kr=1.0 /
+layer-28 dump with the scored run's option logprobs (defensive schema
 inspection, reproduces the entropy AUROC as a join self-check), then
-fits margin and option-logprob on top of `lens_entropy` and reports
-whether the combination beats entropy alone. Verdict baked into the
-run: no meaningful lift (best single 0.762, best combo 0.758), with
-the multi-option subset (≥3 options) the stronger regime at 0.814.
-The commit also lands the evidence-stability probe scaffolding that
-sets up tomorrow's decisive test — whether answer-flip-under-pruning
-carries signal orthogonal to confidence. (The grid-analysis run
-itself produced the budget×layer AUROC table and
-`grid_analysis_<date>.log` under `results/grid_probe/`; the probe
-scripts are the day's tracked code artifacts.)
+fits margin and option-logprob on top of `lens_entropy`: no meaningful
+lift (best single 0.762, best combo 0.758), multi-option subset 0.814.
+`analysis/stability_confidence_probe.py` brings in the cross-budget
+evidence-flip and self-consistency stability features and reports
+their lift over confidence per dataset — the deciding run (Phase 6):
+stability 0.548 alone, +0.001 combined, −0.002 on PathVQA →
+**Direction-D confidence-router closed.** (The grid-analysis run
+produced the budget×layer AUROC table and `grid_analysis_<date>.log`
+under `results/grid_probe/`; the two probe scripts are the day's
+tracked code artifacts.)

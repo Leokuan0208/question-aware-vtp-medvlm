@@ -36,7 +36,7 @@ and 12-week plan.
 ## Where I am right now
 
 <span class="pill pill--wip">In progress</span> &nbsp;
-**Week 4 — Direction-D narrowed to its one untested axis.** Week 1
+**Week 4 — Direction D closed; clean-slate pivot to image-difficulty-driven adaptive compute.** Week 1
 closed out May 16
 ([overview](weekly/week-01/index.md#end-of-week-status)). Week 2
 closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
@@ -100,35 +100,53 @@ exceeds fixed-high). A heavier budget×layer grid probe was launched to
 locate the cheapest early signal; results land next session. Pushed at
 [`df0a3c4`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4)
 (nested-run fix + the Direction-D feasibility suite).
-[Day 23](weekly/week-04/day-02.md) (June 1) ran the two decisive
-offline analyses, and the confidence path to the router came back
-**negative**. The budget×layer grid probe (lens gate passed) showed
-the routable signal is **real but late and modest** — `lens_entropy`
-peaks at AUROC 0.756 at the final layer, near-chance through layers
-1–20, so there's **no cheap early-layer signal** to exploit (the one
-lever is the budget axis, 0.748 at kr=0.5). The parked two-feature
-check then found **no lift** from combining confidence features
-(best single 0.762, best combo 0.758), overturning the hypothesis
-that the option-token logprob was Direction D's missing second
-feature — the confidence features are mutually redundant. A
-single-point confidence router at ~0.76 doesn't close Day 22's
-realized-cost math, so building it isn't justified. The verdict is
-**partial, not final**: Direction D's defining axis,
-**evidence-stability** (does the answer flip when evidence is pruned),
-is orthogonal to confidence and hasn't been tested as a router feature
-yet — that's the decisive next experiment, with the A/C fallbacks
-queued behind it. One bright spot: the signal is materially stronger
-on **multi-option questions** (AUROC 0.814 vs 0.756). Pushed at
-[`04ef73c`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c)
-(the two-feature probe).
+[Day 23](weekly/week-04/day-02.md) (June 1) ran the decisive offline
+analyses and **closed Direction D**. The grid probe showed the
+routable confidence signal is real but late and modest (`lens_entropy`
+AUROC 0.756 at the final layer, no cheap early-layer cell); the
+two-feature check found no lift from combining confidence features
+(0.762 → 0.758); and the deciding **evidence-stability** probe that
+evening showed D's defining axis carries nothing orthogonal to
+confidence (cross-budget flip 0.548 alone, +0.001 combined, −0.002 on
+PathVQA). What survives is narrower but real: **answer confidence
+predicts correctness, but only on multiple-choice** (0.72–0.81;
+open-ended PathVQA & VQA-RAD ~0.57). All the working features reduce to
+distribution peakedness, and none need the pruning machinery. Both
+probes pushed at
+[`04ef73c`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c).
+[Day 24](weekly/week-04/day-03.md) (June 2) is the most decisive pivot
+of the project — a deliberate **clean-slate reset**. With every prior
+path dead-ended, a fresh literature hunt landed on an empty cell:
+**image-difficulty-driven adaptive reasoning-compute allocation** — a
+difficulty signal derived from the *visual content* (lesion subtlety /
+image complexity), computed *before generation*, used to *allocate
+reasoning compute* in medical VLMs (the mechanism is commoditized; the
+novelty is the signal). The method externalizes difficulty by sampling
+(pass-count) and routes each `(image, question)` to a reasoning-budget
+bucket via an input-side predictor — with the Direction-D "no readable
+internal signal" result *as* the motivation for externalizing. A same-day falsification test (zero new models,
+on HuatuoGPT, 2,394 cases) returned **REFINE**: image complexity does
+predict per-case difficulty with question type held fixed and highly
+significantly (entropy partial ρ=−0.113, p=3e-8), but weakly (|ρ|≤0.11)
+and *negatively* — busier images are slightly easier, so whole-image
+texture is measuring evidence-richness, not lesion subtlety. The refine
+path is lesion-aware complexity from SLAKE organ masks. A new base model
+was selected and stood up: **MedVLThinker** (UCSC-VLAA, Qwen2.5-VL,
+Apache-2.0 — open code + difficulty-filtered data + eval harness +
+`<think>`/`<answer>` checkpoints), in an isolated venv (transformers
+4.37 vs ≥4.49 conflict keeps the HuatuoGPT env untouched), new repo
+`medvlthinker-imgdiff-compute`, 3B downloaded. The definitive 3B gate —
+after a caught-and-fixed `--limit` sampling trap — was sharded
+(`--num_shards 2 --shard 0/1`) and left running inference across both
+VMs overnight; no code pushed today.
 
 !!! note "The project is mid-pivot"
     The site and project name still say *question-aware visual token
-    pruning*. As of Day 19 the work has pivoted toward training-free
-    **visual-grounding / selective-prediction** for medical VLMs —
-    the pruning infrastructure repurposed as the probe. The rebrand
-    is deliberately deferred until the new direction is committed to
-    and producing results.
+    pruning*. The work has moved through a visual-grounding pivot
+    (Direction D, now closed) to a clean-slate pivot:
+    **image-difficulty-driven adaptive reasoning-compute allocation**
+    on a new base model (MedVLThinker). The rebrand stays deferred
+    until the falsification gate fully clears and training is underway.
 
 - [x] Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)
 - [x] Stack sanity check (PyTorch, transformers, accelerate, flash-attn)
@@ -319,15 +337,35 @@ on **multi-option questions** (AUROC 0.814 vs 0.756). Pushed at
       subset stronger at 0.814. Confidence path to the router is a
       clean negative.
       → [Week 4, Day 2, Phase 4](weekly/week-04/day-02.md#phase-4-the-two-feature-probe-no-lift-the-gono-go)
-- [x] **Two-feature probe pushed** at
+- [x] **Direction D closed (Day 23 evening)** — the decisive
+      evidence-stability probe: cross-budget flip AUROC 0.548 alone,
+      +0.466 correlated with confidence, +0.001 combined, −0.002 on
+      PathVQA. Both probes pushed at
       [`04ef73c`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c).
-- [ ] **Day 24** — the decisive **evidence-stability** test (does
-      answer-flip-under-pruning carry signal confidence doesn't); this
-      is the one axis orthogonal to what Day 23 ruled out, and it
-      decides Direction D. A/C fallbacks scoped if it's also flat.
-- [ ] Push Day 8's accumulated changes to
-      [`llava-med-pruning-v1`](https://github.com/Leokuan0208/llava-med-pruning-v1)
-      (split into coherent commits)
+      What survives: confidence predicts correctness on MC only.
+      → [Week 4, Day 2, Phase 6](weekly/week-04/day-02.md#phase-6-the-evidence-stability-probe-direction-d-closed)
+- [x] **Clean-slate pivot (Day 24)** — new direction:
+      image-difficulty-driven adaptive reasoning-compute allocation.
+      Tore down Direction B (re-enters the saturated token-scoring
+      arena); the wedge is an image-derived, pre-generation difficulty
+      signal.
+      → [Week 4, Day 3, Phase 3](weekly/week-04/day-03.md#phase-3-the-wedge-image-derived-pre-generation-difficulty)
+- [x] **Falsification gate (Day 24) — REFINE** — image complexity
+      predicts difficulty with question fixed, highly significant but
+      weak (|ρ|≤0.11) and *negative* (busier = easier ⇒ whole-image
+      texture measures evidence-richness, not lesion subtlety). Refine
+      with lesion-aware complexity.
+      → [Week 4, Day 3, Phase 6](weekly/week-04/day-03.md#phase-6-the-result-refine-and-the-sign-is-the-story)
+- [x] **New base model + environment (Day 24)** — MedVLThinker
+      (Qwen2.5-VL, open stack, `<think>`/`<answer>`, pass-count
+      difficulty data); isolated venv (transformers 4.37 vs ≥4.49);
+      new repo `medvlthinker-imgdiff-compute`; 3B downloaded.
+- [ ] **Day 25** — merge the difficulty shards, run the lesion-aware
+      verdict (`complexity_lesion.py` → `analyze.py`): GO vs.
+      stop-and-reconsider; if GO, MedVLThinker 3B inference +
+      difficulty extraction as training labels.
+- [ ] Commit the `medvlthinker-imgdiff-compute` scaffold once the gate
+      verdict lands
 - [ ] Update [Bug #5](bugs.md#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible)
       with the revised "VQA-RAD catastrophic, PathVQA degraded, SLAKE
       missing" narrative
