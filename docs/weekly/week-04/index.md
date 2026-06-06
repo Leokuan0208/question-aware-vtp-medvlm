@@ -1,9 +1,9 @@
 # Week 4 — Direction-D feasibility (visual-grounding pivot)
 
-<span class="pill pill--wip">In progress</span>
+<span class="pill pill--done">Done</span>
 
-**Pivot phase** (visual-grounding / selective prediction) ·
-**Week 4 of 12**
+**Pivot phase** (visual-grounding / selective prediction → adaptive
+compute) · **Week 4 of 12**
 
 **Goal of the week** — pressure-test the
 [Day 19 pivot](../week-03/day-05.md): now that training-free visual-token
@@ -13,6 +13,16 @@ a training-free **evidence-sensitivity router** for medical VQA
 the per-dataset evidence-dependence gradient, the confidence→correctness
 signal, and the budget-router headroom *before* committing to building
 the router.
+
+!!! note "How the week's focus evolved past its own goal"
+    The goal above is where the week *started*. It didn't end there.
+    Direction D was **closed** on Day 2 (no usable orthogonal signal),
+    which forced a clean-slate hunt → an **image-difficulty** wedge
+    (Day 3) that was itself **killed** on Day 4 → a reframe into a
+    per-question **compute router** that, by Day 5, cleared its first gate
+    on the 7B (routable heterogeneity exists; predictability still to be
+    tested). Three direction changes in one week; the heading is kept as
+    the week's *premise* rather than its conclusion.
 
 !!! note "The 12-week plan and the pivot"
     The original plan had Week 4 as "Phase 2 — identify pruning
@@ -184,6 +194,49 @@ The joint perception+knowledge direction needs two live axes and has zero
 clean ones on the 3B — underwater pending the 7B. No code pushed today (gate
 scripts in `medvlthinker-imgdiff-compute`; 7B verdict mid-run).
 
+### [Day 5 — Saturday, June 6, 2026](day-05.md)
+
+The direction came off life support — not by better numbers, but by the
+right *lens*. June 5 (Day 27) was off; this session opened on the overnight
+7B verdict:
+
+- **7B verdict, reframed.** As fixed-policy aggregates it reads NO-GO (RAG
+  −5pp, think helps only 2/4 subsets). But that's the wrong lens for a
+  *router* — the per-question confusion on MedXpert-ALL shows **~25% of
+  questions flip** between policies, with a per-question **oracle ceiling
+  ~0.39–0.40 vs best fixed 0.30** (+9–10pp) on *both* the think/nothink and
+  rag/norag axes. The routable heterogeneity a router needs **exists** — the
+  project survives, reframed as the **evidence-&-compute router**.
+- **0.30 is on-spec, not a bug.** Published MedVLThinker-7B MedXpert-MM =
+  **24.43%**; our n=100 matches it. PMC-VQA **0.55** in the same run
+  confirms the harness is sane (easy ≈ 2× the deliberately-brutal MedXpert).
+- **Probes rebuilt** — old checkpoints stored only `idx/gold/pred/ok`; added
+  `raw_output`, `parse_ok`, `opt_logprobs`, `gen_tokens`, `latency_s`. Found
+  the **parse confound** (truncated `<think>…` → default `pred=A`) that can
+  fake both accuracy loss *and* flips — the precondition for trusting any
+  delta.
+- **`gate_router.py` unified** — visual arm dropped, shared `(think,norag)`
+  cell de-duplicated, `--cells`/`--full_grid` selectors, built-in
+  `--shard k/N`. Confirmation run stays on **7B** (the weaker 3B would
+  shrink the oracle band).
+- **Second corpus + RAG-lit verdict** — added **StatPearls** alongside
+  Textbooks for a corpus comparison (PubMed parked). Retriever/corpus is a
+  ~1–2pt lever at 7B; the bottleneck is evidence *use* — which is the
+  motivation for the router.
+- **Silent-empty-context bug caught** — the Textbooks MedCPT index was never
+  built in this `db_dir`; `retrieve.py` swallowed the error and wrote
+  0-line files, so the earlier `think_rag_Textbooks = 0.080` ran on empty
+  context and was **discarded**. Fixed by building the index over existing
+  chunks (~2–4 min) and verifying non-zero retrieval.
+- **n=500 sharded baseline launched** — 3 datasets × (3 cells + Textbooks
+  `think_rag`), row-stride across both VMs, ~10–11 hr/VM, foreground/live;
+  running clean through `MedXpert-Reasoning [nothink_norag]` at end of day.
+
+First time in the pivot a result *survived* the gate — by changing the lens
+(router heterogeneity, not fixed-policy average), not by lowering the bar.
+The decisive test (is the flip *predictable*?) is next session's merge +
+analysis. No code pushed today.
+
 ---
 
 ## Plan for the week (May 31 – Jun 6)
@@ -220,20 +273,57 @@ scripts in `medvlthinker-imgdiff-compute`; 7B verdict mid-run).
 - [x] **Pivot: joint perception + knowledge allocation** (Day 4) — gated
       reasoning / visual / retrieval axes on MedVLThinker-3B. Reasoning
       **NO-GO**, visual **live (+0.080)**, retrieval **flat (+0.010)**.
-- [ ] **Read the 7B confound-check verdict** (next session) — reasoning +
-      retrieval on the 7B at the +0.03 bar; both flat → joint direction
-      dead, full stop.
-- [ ] Commit the `medvlthinker-imgdiff-compute` gate scripts
-      (`gate_probe.py`, `gate_rag.py`, `retrieve.py`) once the verdict is in
+- [x] **Read the 7B confound-check verdict** (Day 5) — aggregates read
+      NO-GO, but the **per-question router lens** shows ~25% policy-flip and
+      a **+9–10pp oracle ceiling** on both axes. Direction survives, reframed
+      as the **evidence-&-compute router**.
+- [x] **Probe rebuild + unified `gate_router.py`** (Day 5) — capture
+      `raw_output`/`parse_ok`/`opt_logprobs`/`gen_tokens`/`latency_s`; found
+      the parse confound; added StatPearls corpus; caught the silent-empty
+      Textbooks-index bug; launched the **n=500 sharded baseline**.
+- [ ] **Merge shards + confusion/oracle/confidence-pilot analysis** (next
+      session) — recompute Δ/oracle after the parse fix and test whether the
+      flip is *predictable* from `opt_logprobs` confidence (the decisive
+      question).
+- [ ] Commit the `medvlthinker-imgdiff-compute` scripts (`gate_router.py`,
+      `retrieve.py`, index-build helper) once the analysis lands
 - [ ] Read **ToMe** end-to-end (still pending from Week 2)
 
 ---
 
 ## Reflections (end-of-week)
 
-_Write this at the end of the week. The question: does the
-Direction-D router clear its own bar — a routable signal that beats
-fixed budgets on realized cost, not just on an offline upper bound?
-Day 1 says the signal exists (AUROC 0.74, positive headroom) and
-Approach 2 says the naive width-router doesn't pay for itself; the
-week decides whether routing down (cheap-when-confident) does._
+Week 4 was the most turbulent of the project — and, by its end, the most
+clarifying. It opened still inside Direction D and **closed it cleanly**
+(Day 2): the evidence-stability premise carried no usable orthogonal signal,
+and confidence-as-router only works on multiple-choice. That forced a
+genuine clean-slate hunt (Day 3), which produced the
+image-difficulty-driven adaptive-compute wedge — alive for 48 hours until
+its lesion-aware falsification came back a clean **NO-GO** (Day 4). The same
+day named the pattern behind every death in the project (each dead method
+bet on a *natural correlation existing in the data*) and reframed into a
+**joint perception + knowledge allocation** idea whose value is meant to be
+robust by construction rather than contingent.
+
+The week's real lesson landed on the last day. The two contested axes
+(reasoning, retrieval) failed the pre-registered **+0.03 fixed-policy gate**
+on both the 3B (Day 4) and the 7B (Day 5) — and yet the direction *survived*,
+because the fixed-policy average was the wrong lens for a router. The
+per-question confusion showed the thing that actually matters: ~25% of
+questions flip between policies and a perfect router would gain ~9–10pp over
+any single fixed choice. The discipline that's governed every pivot here held
+— the gate wasn't lowered, the *question* was corrected (from "which policy
+is best" to "do different questions want different policies"). The honest
+caveat is equally clear: an oracle ceiling is necessary but not sufficient.
+The decisive test — whether the flip is *predictable* from a cheap signal —
+is exactly what next week's merge + confidence-pilot analysis on the n=500
+records will decide. If it is, the **evidence-&-compute router** becomes
+buildable; if not, the ceiling stays a ceiling and the reset discipline
+applies again.
+
+Two process wins worth banking: the probe rebuild (logging `raw_output` /
+`parse_ok` / `opt_logprobs` / `gen_tokens` / `latency_s`) finally makes the
+numbers trustworthy by separating reasoning from format failure, and the
+silent-empty-context bug was caught *before* it cost a night — both
+instances of the same principle that's saved compute all project: verify the
+instrument before trusting the measurement.
