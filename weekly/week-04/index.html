@@ -1245,6 +1245,8 @@
       
         
       
+        
+      
     
     
       
@@ -1340,6 +1342,27 @@
   
   <span class="md-ellipsis">
     Day 3 — Tuesday, June 2, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Thursday, June 4, 2026
   </span>
   
 
@@ -1452,6 +1475,15 @@
   <a href="#day-3-tuesday-june-2-2026" class="md-nav__link">
     <span class="md-ellipsis">
       Day 3 — Tuesday, June 2, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-4-thursday-june-4-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 4 — Thursday, June 4, 2026
     </span>
   </a>
   
@@ -1631,6 +1663,46 @@ paper. The day:</p>
 was sharded (<code>difficulty_medvlthinker.py --num_shards 2 --shard 0/1</code>)
 and left <strong>running inference across both VMs</strong> overnight; next session
 merges by qid and runs the lesion-aware verdict. No code pushed today.</p>
+<h3 id="day-4-thursday-june-4-2026"><a href="day-04/">Day 4 — Thursday, June 4, 2026</a><a class="headerlink" href="#day-4-thursday-june-4-2026" title="Permanent link">&para;</a></h3>
+<p>The all-red day — but a disciplined one. June 3 (Day 25) was off, so this
+session opened on Tuesday's overnight verdict and rebuilt from a clean
+kill:</p>
+<ul>
+<li><strong>Lesion-aware verdict: NO-GO.</strong> The image-difficulty wedge is dead —
+  lesion features were <em>weaker</em> than the crude proxies, wrong-signed, not
+  significant (lesion_area ρ=+0.043, lesion_contrast ρ=+0.012 p=0.56,
+  below the 0.1 floor across all 15 strata). The
+  <a href="day-03/#phase-6-the-result-refine-and-the-sign-is-the-story">Day 3 REFINE</a>
+  run to its honest end.</li>
+<li><strong>The failure pattern named</strong> — every dead method (QSim, GridPrune/FASP,
+  image-complexity) bet on a <em>natural correlation existing in the data</em>.
+  New rule: pick methods whose value is <strong>constructive/learned</strong>, not
+  contingent.</li>
+<li><strong>New direction: joint perception + knowledge allocation</strong> — per-question
+  allocation of a <em>visual budget</em> and a <em>retrieval budget</em>. Robust by
+  construction (both axes have net-positive always-on settings), which is
+  exactly what the dead directions lacked. The novelty is the joint; the
+  two literatures (visual-token pruning, medical-RAG) are separate
+  communities.</li>
+<li><strong>Reasoning axis (3B): NO-GO</strong> — think − nothink flat-to-negative across
+  three of four MedXpert/PMC slices, one noise-level +0.030 on the Reasoning
+  slice (multiple-comparisons trap). Corroborates <strong>m1</strong>.</li>
+<li><strong>Visual axis (3B): live</strong> — vis_full − vis_low = <strong>+0.080</strong> on PMC-VQA,
+  clears the bar.</li>
+<li><strong>Retrieval axis (3B): flat</strong> — always-on text RAG (MedCPT + MedRAG
+  Textbooks) net <strong>+0.010</strong>; flip analysis <strong>15% rescue vs 37% damage</strong>;
+  near-chance (27%) base masks any selective-gate signal — the same
+  no-confidence wall as the <a href="day-02/">June-1 router</a>.</li>
+<li><strong>7B confound-check launched, pre-registered as the final probe</strong> —
+  reasoning + retrieval at the +0.03 bar; <strong>both flat → direction dead,
+  full stop.</strong> Verdict pending the running 7B jobs.</li>
+<li><strong>June-8 presentation</strong> settled on <strong>m1</strong> ("Unleash the Potential of
+  Test-Time Scaling for Medical Reasoning", arXiv 2504.00869) — the paper
+  that predicted today's reasoning result.</li>
+</ul>
+<p>The joint perception+knowledge direction needs two live axes and has zero
+clean ones on the 3B — underwater pending the 7B. No code pushed today (gate
+scripts in <code>medvlthinker-imgdiff-compute</code>; 7B verdict mid-run).</p>
 <hr />
 <h2 id="plan-for-the-week-may-31-jun-6">Plan for the week (May 31 – Jun 6)<a class="headerlink" href="#plan-for-the-week-may-31-jun-6" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
@@ -1656,13 +1728,21 @@ merges by qid and runs the lesion-aware verdict. No code pushed today.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>New base model + environment</strong> — MedVLThinker (Qwen2.5-VL),
       isolated venv, repo <code>medvlthinker-imgdiff-compute</code>, 3B downloaded
       (Day 3)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Merge difficulty shards + lesion-aware verdict</strong> (Day 4) —
-      <code>complexity_lesion.py</code> (SLAKE masks) → <code>analyze.py</code>; GO vs.
-      stop-and-reconsider</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If GO: MedVLThinker 3B inference + reproduce SLAKE/VQA-RAD
-      accuracy; difficulty extraction on the 3B as training labels</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> scaffold once the gate
-      verdict is in</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Merge difficulty shards + lesion-aware verdict</strong> (Day 4) —
+      <code>complexity_lesion.py</code> (SLAKE masks) → <code>analyze.py</code>. <strong>Verdict:
+      NO-GO</strong> (lesion features wrong-signed, below the 0.1 floor) — the
+      image-difficulty wedge is dead.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> ~~If GO: MedVLThinker 3B inference + reproduce SLAKE/VQA-RAD
+      accuracy; difficulty extraction on the 3B as training labels~~ —
+      <em>did not fire (NO-GO).</em></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Pivot: joint perception + knowledge allocation</strong> (Day 4) — gated
+      reasoning / visual / retrieval axes on MedVLThinker-3B. Reasoning
+      <strong>NO-GO</strong>, visual <strong>live (+0.080)</strong>, retrieval <strong>flat (+0.010)</strong>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Read the 7B confound-check verdict</strong> (next session) — reasoning +
+      retrieval on the 7B at the +0.03 bar; both flat → joint direction
+      dead, full stop.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> gate scripts
+      (<code>gate_probe.py</code>, <code>gate_rag.py</code>, <code>retrieve.py</code>) once the verdict is in</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Read <strong>ToMe</strong> end-to-end (still pending from Week 2)</li>
 </ul>
 <hr />

@@ -1,0 +1,2390 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.">
+      
+      
+        <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
+      
+      
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-04/day-04/">
+      
+      
+        <link rel="prev" href="../day-03/">
+      
+      
+        <link rel="next" href="../../../bugs/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Day 4 — Thursday, June 4, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-4-thursday-june-4-2026" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Question-Aware Visual Token Pruning for Medical VLMs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 4 — Thursday, June 4, 2026
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../project/" class="md-tabs__link">
+        
+  
+    
+  
+  Project Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../baseline/" class="md-tabs__link">
+          
+  
+    
+  
+  Baseline
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../experiments/" class="md-tabs__link">
+        
+  
+    
+  
+  Experiments
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+    
+  
+  Weekly Log
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../bugs/" class="md-tabs__link">
+        
+  
+    
+  
+  Bugs & Issues
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../resources/" class="md-tabs__link">
+        
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Question-Aware Visual Token Pruning for Medical VLMs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../baseline/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Baseline
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Baseline
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/huatuo-vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HuatuoGPT-Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/qwen25-vl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Qwen2.5-VL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/llava-med/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LLaVA-Med
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../experiments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Experiments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Weekly Log
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Weekly Log
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-01/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Week 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 10, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 11, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 12, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 13, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 14, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-06/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-07/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-02/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 18, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 19, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 20, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 21, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-03/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 3
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Week 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 24, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 25, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 26, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 27, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 28, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 4
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Week 4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 31, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, June 1, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, June 2, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 4 — Thursday, June 4, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Thursday, June 4, 2026
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-the-lesion-aware-verdict-no-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — The lesion-aware verdict: NO-GO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-the-pattern-behind-every-death-and-the-design-rule-it-forces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — The pattern behind every death, and the design rule it forces
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-reframe-joint-perception-knowledge-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The reframe: joint perception + knowledge allocation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-the-two-axis-gate-on-medvlthinker-3b" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — The two-axis gate on MedVLThinker-3B
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-reasoning-no-go-visual-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — Reasoning: NO-GO. Visual: live.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-building-the-retrieval-axis-medcpt-medrag-textbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — Building the retrieval axis (MedCPT + MedRAG Textbooks)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-retrieval-axis-result-flat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Retrieval axis result: flat
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-the-fork-and-the-pre-registered-7b-confound-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — The fork, and the pre-registered 7B confound-check
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-9-side-decision-the-june-8-presentation-paper-m1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 9 — Side-decision: the June-8 presentation paper → m1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow-next-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow (next session)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bugs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bugs & Issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-the-lesion-aware-verdict-no-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — The lesion-aware verdict: NO-GO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-the-pattern-behind-every-death-and-the-design-rule-it-forces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — The pattern behind every death, and the design rule it forces
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-reframe-joint-perception-knowledge-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The reframe: joint perception + knowledge allocation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-the-two-axis-gate-on-medvlthinker-3b" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — The two-axis gate on MedVLThinker-3B
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-reasoning-no-go-visual-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — Reasoning: NO-GO. Visual: live.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-building-the-retrieval-axis-medcpt-medrag-textbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — Building the retrieval axis (MedCPT + MedRAG Textbooks)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-retrieval-axis-result-flat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Retrieval axis result: flat
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-the-fork-and-the-pre-registered-7b-confound-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — The fork, and the pre-registered 7B confound-check
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-9-side-decision-the-june-8-presentation-paper-m1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 9 — Side-decision: the June-8 presentation paper → m1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-tomorrow-next-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for tomorrow (next session)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-04/day-04.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="day-4-thursday-june-4-2026">Day 4 — Thursday, June 4, 2026<a class="headerlink" href="#day-4-thursday-june-4-2026" title="Permanent link">&para;</a></h1>
+<p><a href="../">← Back to Week 4 overview</a></p>
+<p><strong>Direction pivot</strong> (joint perception + knowledge allocation) ·
+Week 4, Day 4 · <strong>Day 26 of the project</strong></p>
+<hr />
+<p>The all-red day, and an honest one. It opened by reading the verdict on
+<a href="../day-03/">Tuesday's</a> overnight gate — the lesion-aware refinement of
+the image-difficulty wedge — and it came back a clean <strong>NO-GO</strong>, killing
+the direction that was alive 48 hours ago. Out of that the day rebuilt:
+named the <em>pattern</em> behind every death so far, reframed into a genuinely
+new direction (<strong>joint perception + knowledge allocation</strong>), and then
+held that new direction to the same one-day falsification discipline that
+just killed its predecessor. Two of its three candidate axes were gated
+on a new model and <strong>both came back flat</strong> — reasoning a NO-GO, retrieval
+flat at +0.01 — leaving the new direction underwater on its own bar. It
+ends not on a conclusion but on a single pre-registered tiebreaker
+(<strong>a 7B confound-check, launched and running</strong>) and a side-decision: the
+June-8 literature presentation, settled on <strong>m1</strong>, the paper that
+predicted today's reasoning result.</p>
+<p>No code was pushed today — the gate scripts live in the
+<code>medvlthinker-imgdiff-compute</code> repo and the 7B verdict is still mid-run;
+the push waits for the verdict, as it has all week.</p>
+<div class="admonition note">
+<p class="admonition-title">Why 'yesterday' was June 2, and the day count</p>
+<p>June 3 (Day 25) was off, so this session picked up directly from the
+<a href="../day-03/">June 2</a> gate. Global day numbers track the calendar
+(Day 1 = May 10), so an off-day still consumes a number — the same
+convention as <a href="../day-01/">Days 20–21</a> (May 29–30). Hence June 4 is
+<strong>Day 26</strong>, the <strong>4th working session</strong> of Week 4.</p>
+</div>
+<hr />
+<h2 id="phase-1-the-lesion-aware-verdict-no-go">Phase 1 — The lesion-aware verdict: NO-GO<a class="headerlink" href="#phase-1-the-lesion-aware-verdict-no-go" title="Permanent link">&para;</a></h2>
+<p>The <a href="../day-03/#phase-9-the-definitive-3b-gate-a-limit-trap-then-sharded-inference-across-two-vms">June-2 gate</a>
+left two difficulty shards running on MedVLThinker-3B across both VMs; the
+merge + lesion-aware refinement (<code>complexity_lesion.py</code> on SLAKE organ
+masks → <code>analyze.py</code>) was the real decision point. It returned a clean,
+<strong>pre-registered NO-GO</strong>:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>lesion_area      partial rho = +0.043                  -&gt; below 0.1 floor
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>lesion_contrast  partial rho = +0.012   p = 0.56        -&gt; below 0.1 floor, n.s.
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                 (both wrong-signed; consistent across all 15 strata)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>==&gt; VERDICT: NO-GO
+</span></code></pre></div>
+<p>This is the <a href="../day-03/#phase-6-the-result-refine-and-the-sign-is-the-story">REFINE path</a>
+run to its honest end. The June-2 whole-image proxies were weak
+(|ρ| ≤ 0.11) but real and significant; the working hypothesis was that
+they measured <em>evidence-richness</em>, not <em>lesion subtlety</em>, and that
+swapping to lesion-region features (size/contrast from SLAKE masks) would
+recover a stronger, correctly-signed correlation. It didn't — lesion
+features were even weaker than the crude proxies, wrong-signed, and not
+significant. The gate did exactly its job: it killed a bad idea in a day
+instead of a month.</p>
+<p><strong>What the NO-GO kills, stated precisely</strong> — and this scoping is what made
+the rest of the day possible. It kills <em>one specific thing</em>: that a
+<strong>static, pre-generation image statistic predicts per-case difficulty</strong>.
+It does <strong>not</strong> kill adaptive compute in general, the
+reliability/selective-prediction angle, or anything that uses a signal the
+model actually produces <em>while looking at the image</em>.</p>
+<hr />
+<h2 id="phase-2-the-pattern-behind-every-death-and-the-design-rule-it-forces">Phase 2 — The pattern behind every death, and the design rule it forces<a class="headerlink" href="#phase-2-the-pattern-behind-every-death-and-the-design-rule-it-forces" title="Permanent link">&para;</a></h2>
+<p>Before picking the next thing, the morning named the failure pattern that
+keeps recurring — because not naming it is how you walk into it again:</p>
+<blockquote>
+<p>Every method that has died here bet the entire contribution on a
+<strong>useful natural correlation existing in the data</strong>. QSim cosine scores,
+the GridPrune / FASP family, image-complexity → difficulty — each one
+needed nature to cooperate, and when it didn't, the method had nothing
+left.</p>
+</blockquote>
+<p>The directions still standing don't have that fragility. So the rule for
+the next pick, written down before searching: <strong>choose a method whose
+value is constructive or learned, not contingent on a correlation that may
+or may not exist.</strong> Under that lens the live menu was:</p>
+<ul>
+<li><strong>Direction A — evidence-graded conformal / selective prediction.</strong> Value
+  is <em>guaranteed by construction</em> (coverage holds regardless of any
+  correlation). Lowest re-NO-GO risk; open question is whether the
+  "evidence-graded" twist is novel enough.</li>
+<li><strong>Direction D's untested axis — an evidence-stability router.</strong> Higher
+  novelty, reuses the MedVLThinker infra already stood up, but still
+  somewhat contingent on stability being predictive.</li>
+</ul>
+<p>The reframe below grew out of A's "value by construction" property applied
+to a two-axis allocation problem.</p>
+<hr />
+<h2 id="phase-3-the-reframe-joint-perception-knowledge-allocation">Phase 3 — The reframe: joint perception + knowledge allocation<a class="headerlink" href="#phase-3-the-reframe-joint-perception-knowledge-allocation" title="Permanent link">&para;</a></h2>
+<p>The new direction, and the one the rest of the day tested:</p>
+<blockquote>
+<p><strong>Per-question allocation of a <em>perception budget</em> (visual tokens) and a
+<em>knowledge budget</em> (retrieval).</strong> Some medical questions are
+perception-bound (read the image carefully); some are knowledge-bound
+(fetch the fact). A controller decides, per question, where to spend.</p>
+</blockquote>
+<p><strong>The novelty is the joint.</strong> The visual-token-compression literature and
+the medical-RAG literature are entirely separate communities — nobody
+allocates "how much to see" and "how much to retrieve" together under one
+compute objective. The two axes are orthogonal and interpretable.</p>
+<p><strong>Why this is robust where pruning, image-difficulty, and reasoning all
+broke.</strong> Every one of those died because a <em>cheap signal had to predict
+where to spend</em>, and the signal carried no information. This joint doesn't
+have that fragility: both axes have net-positive or neutral <em>always-on</em>
+settings (always-retrieve helps factuality; full-visual is the accuracy
+ceiling). So the controller's job is to <strong>bank efficiency on easy cases</strong>,
+not to make accuracy-critical guesses. A <em>wrong prune hurt accuracy</em>; a
+<em>wrong "skip retrieval" just costs a little efficiency.</em> The thing that
+keeps killing this project doesn't apply by construction.</p>
+<p><strong>Honest risks, named up front:</strong></p>
+<ul>
+<li><em>Build cost is the real one.</em> RAG needs a retriever plus a medical
+  knowledge base — the heaviest infrastructure taken on yet. Mitigation:
+  MMed-RAG and RULE are open, so integrate rather than invent; Retina-RAG
+  shows the lightweight (LoRA + classifier-guided) path works on a stack
+  close to ours.</li>
+<li><em>Benchmark-fit, again.</em> RAG is proven on report-generation/factuality
+  sets; it must be confirmed to lift MedXpertQA-MM / PMC-VQA. That's the
+  gate — same discipline as the image-difficulty test.</li>
+<li><em>Adaptive-retrieval-alone is crowded</em> (Adaptive-RAG, ICA-RAG/FIND). So
+  the contribution leads with the <strong>joint allocation</strong>, not the retrieval
+  trigger.</li>
+</ul>
+<p><strong>Papers requested</strong> (and read this afternoon): <strong>TARG</strong> (arXiv 2511.09803)
+— a training-free, single-shot retrieve/skip decision from prefix logits,
+which fits the stack better than anything needing a trained control head;
+optionally <strong>Self-Routing RAG</strong> (2504.01018) and <strong>Patho-AgenticRAG</strong>
+(2508.02258, joint text–image retrieval of textbook pages). MMed-RAG and
+RULE were already in hand from an earlier zip and re-read for retriever/KB
+mechanics.</p>
+<hr />
+<h2 id="phase-4-the-two-axis-gate-on-medvlthinker-3b">Phase 4 — The two-axis gate on MedVLThinker-3B<a class="headerlink" href="#phase-4-the-two-axis-gate-on-medvlthinker-3b" title="Permanent link">&para;</a></h2>
+<p>The plan: gate the two <em>contingent</em> axes (reasoning and visual) on the new
+model before building anything. The instrument was a single script,
+<code>gate_probe.py</code>, with a <code>--axis</code> switch — reasoning runs <strong>think vs
+no-think</strong>; visual runs <strong>full-resolution vs low-resolution</strong> (a pixel-budget
+proxy for visual-token count). The decision rule was <strong>fixed before any
+number existed</strong> — the only thing keeping a marginal result from becoming
+motivated reasoning:</p>
+<ul>
+<li><strong>Reasoning axis live</strong> if <code>think − nothink ≥ +0.03</code> on MedXpert (ideally
+  concentrated on the <em>Reasoning</em> slice while Understanding / PMC-VQA stay
+  ~flat — that's the signature of a real effect).</li>
+<li><strong>Visual axis live</strong> if <code>vis_full − vis_low ≥ +0.03</code> on either subset.</li>
+<li><strong>GO</strong> for the joint controller only if <strong>both</strong> clear. Reasoning flat
+  everywhere → the joint collapses to visual-only (the known pruning
+  dead-end) and we stop and rethink rather than build.</li>
+</ul>
+<p>A few infrastructure fixes cleared the runway first:</p>
+<ul>
+<li><strong>Trace-fix (system-prompt gating).</strong> No-think mode is forced by
+  appending an empty thinking block after the template, so the model emits
+  a clean answer letter without a reasoning trace — and the audit lines
+  confirmed the parser still reads gold/pred correctly through it.</li>
+<li><strong>OOM / checkpoint hardening.</strong> <code>PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True</code>
+  on the 7B-sized vision encoder; per-sample checkpoint/resume keyed on
+  axis/subset/mode so a crash costs one sample, not a subset, and <code>--n 300</code>
+  reuses the first 100 for free if a delta lands marginal.</li>
+<li><strong>Weights consolidated</strong> under <code>/data/dan/weights</code> (load-by-explicit-path,
+  the lesson from earlier in the week).</li>
+</ul>
+<details class="note">
+<summary><code>gate_probe.py</code> — the two-axis gate (think/no-think · full/low-res)</summary>
+<p>The no-think arm forces an empty <code>&lt;think&gt;</code> block; the visual arm caps
+<code>max_pixels</code> to shrink the visual-token budget. Same parser, same
+seed-42 slice, both arms share the <em>think</em> baseline so deltas are
+clean single-variable contrasts.</p>
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">SYS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;You will solve a problem/request. You should provide your thoughts &quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>       <span class="s2">&quot;within &lt;think&gt; &lt;/think&gt; tags before providing the answer.&quot;</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">LOW_PX</span><span class="p">,</span> <span class="n">MIN_PX</span> <span class="o">=</span> <span class="mi">256</span><span class="o">*</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span>          <span class="c1"># visual-budget proxy</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">msgs</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="n">mp</span><span class="p">):</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">opts</span> <span class="o">=</span> <span class="n">ex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">opts</span><span class="p">,</span> <span class="s2">&quot;non-MCQ sample; gate is MCQ-only&quot;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">q</span> <span class="o">=</span> <span class="n">ex</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">opts</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">img</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">im</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>            <span class="o">**</span><span class="p">({</span><span class="s2">&quot;max_pixels&quot;</span><span class="p">:</span> <span class="n">mp</span><span class="p">,</span> <span class="s2">&quot;min_pixels&quot;</span><span class="p">:</span> <span class="n">MIN_PX</span><span class="p">}</span> <span class="k">if</span> <span class="n">mp</span> <span class="k">else</span> <span class="p">{})}</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>           <span class="k">for</span> <span class="n">im</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;images&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])]</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="k">return</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">SYS</span><span class="p">},</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>            <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">img</span> <span class="o">+</span> <span class="p">[{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}]}]</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">idxs</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">mp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span> <span class="n">sel</span> <span class="o">=</span> <span class="n">idxs</span><span class="p">[:];</span> <span class="n">rng</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">sel</span><span class="p">);</span> <span class="n">sel</span> <span class="o">=</span> <span class="n">sel</span><span class="p">[:</span><span class="n">A</span><span class="o">.</span><span class="n">n</span><span class="p">]</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="n">ok</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sel</span><span class="p">):</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        <span class="n">ex</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">m</span> <span class="o">=</span> <span class="n">msgs</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="n">mp</span><span class="p">)</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>        <span class="n">text</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">apply_chat_template</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_generation_prompt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;nothink&quot;</span><span class="p">:</span>                      <span class="c1"># trace-fix: gate the trace off</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>            <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&lt;think&gt;</span><span class="se">\n\n</span><span class="s2">&lt;/think&gt;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="n">imgs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">process_vision_info</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>        <span class="n">inp</span> <span class="o">=</span> <span class="n">proc</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">[</span><span class="n">text</span><span class="p">],</span> <span class="n">images</span><span class="o">=</span><span class="n">imgs</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>            <span class="n">o</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="o">**</span><span class="n">inp</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>                               <span class="n">max_new_tokens</span><span class="o">=</span><span class="p">(</span><span class="mi">512</span> <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;think&quot;</span> <span class="k">else</span> <span class="mi">32</span><span class="p">))</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        <span class="n">gen</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">batch_decode</span><span class="p">(</span><span class="n">o</span><span class="p">[:,</span> <span class="n">inp</span><span class="o">.</span><span class="n">input_ids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:],</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>                                <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        <span class="n">ok</span> <span class="o">+=</span> <span class="p">(</span><span class="n">gold</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span> <span class="o">==</span> <span class="n">pred</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>    <span class="k">return</span> <span class="n">ok</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sel</span><span class="p">)</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">idxs</span> <span class="ow">in</span> <span class="n">SUBSETS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    <span class="k">if</span> <span class="n">A</span><span class="o">.</span><span class="n">axis</span> <span class="o">==</span> <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>        <span class="n">t</span><span class="p">,</span> <span class="n">nt</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">idxs</span><span class="p">,</span> <span class="s2">&quot;think&quot;</span><span class="p">),</span> <span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">idxs</span><span class="p">,</span> <span class="s2">&quot;nothink&quot;</span><span class="p">)</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;### </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: think=</span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> nothink=</span><span class="si">{</span><span class="n">nt</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> DELTA=</span><span class="si">{</span><span class="n">t</span><span class="o">-</span><span class="n">nt</span><span class="si">:</span><span class="s2">+.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        <span class="n">f</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">idxs</span><span class="p">,</span> <span class="s2">&quot;think&quot;</span><span class="p">),</span> <span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">idxs</span><span class="p">,</span> <span class="s2">&quot;think&quot;</span><span class="p">,</span> <span class="n">mp</span><span class="o">=</span><span class="n">LOW_PX</span><span class="p">)</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;### </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: vis_full=</span><span class="si">{</span><span class="n">f</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> vis_low=</span><span class="si">{</span><span class="n">l</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> DELTA=</span><span class="si">{</span><span class="n">f</span><span class="o">-</span><span class="n">l</span><span class="si">:</span><span class="s2">+.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+<p>An n=5 smoke run came first — pure plumbing (each "0.200" is one question
+flipping; no signal at that size), and it passed: the no-think arm emits a
+clean letter after the forced empty block. Then both axes ran at <strong>n=100</strong>,
+one per GPU/VM (~1 hr each).</p>
+<hr />
+<h2 id="phase-5-reasoning-no-go-visual-live">Phase 5 — Reasoning: NO-GO. Visual: live.<a class="headerlink" href="#phase-5-reasoning-no-go-visual-live" title="Permanent link">&para;</a></h2>
+<p>The six summary lines, read against the rule fixed <em>before</em> the run:</p>
+<table>
+<thead>
+<tr>
+<th>Axis</th>
+<th>Subset</th>
+<th style="text-align: center;">Arm A</th>
+<th style="text-align: center;">Arm B</th>
+<th style="text-align: center;">Δ</th>
+<th>Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reasoning</td>
+<td>MedXpert-ALL</td>
+<td style="text-align: center;">think 0.270</td>
+<td style="text-align: center;">nothink 0.280</td>
+<td style="text-align: center;"><span class="cell-bad">−0.010</span></td>
+<td>thinking hurts</td>
+</tr>
+<tr>
+<td>Reasoning</td>
+<td>MedXpert-Reasoning</td>
+<td style="text-align: center;">think 0.220</td>
+<td style="text-align: center;">nothink 0.190</td>
+<td style="text-align: center;"><span class="cell-warn">+0.030</span></td>
+<td>on the line, 1 slice</td>
+</tr>
+<tr>
+<td>Reasoning</td>
+<td>MedXpert-Understanding</td>
+<td style="text-align: center;">think 0.250</td>
+<td style="text-align: center;">nothink 0.260</td>
+<td style="text-align: center;"><span class="cell-bad">−0.010</span></td>
+<td>thinking hurts</td>
+</tr>
+<tr>
+<td>Reasoning</td>
+<td>PMC-VQA</td>
+<td style="text-align: center;">think 0.480</td>
+<td style="text-align: center;">nothink 0.490</td>
+<td style="text-align: center;"><span class="cell-bad">−0.010</span></td>
+<td>thinking hurts</td>
+</tr>
+<tr>
+<td>Visual</td>
+<td>MedXpert-MM</td>
+<td style="text-align: center;">vis_full 0.270</td>
+<td style="text-align: center;">vis_low 0.250</td>
+<td style="text-align: center;"><span class="cell-warn">+0.020</span></td>
+<td>same direction</td>
+</tr>
+<tr>
+<td>Visual</td>
+<td>PMC-VQA</td>
+<td style="text-align: center;">vis_full 0.480</td>
+<td style="text-align: center;">vis_low 0.400</td>
+<td style="text-align: center;"><span class="cell-good">+0.080</span></td>
+<td><strong>clears the bar</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Visual axis: live.</strong> PMC-VQA shows +0.080 cleanly, MedXpert moves +0.020
+the same way. Dropping from full resolution to a 256-token budget costs
+real accuracy on the recall set — consistent with the whole pruning
+history, now confirmed on MedVLThinker.</p>
+<p><strong>Reasoning axis: NO-GO.</strong> Three of four subsets show thinking <em>slightly
+hurts</em>; the only positive is MedXpert-Reasoning at exactly +0.030 — one
+slice of four, sitting right on the threshold, where at n=100 that's <strong>3
+questions out of 100</strong>. That's the textbook multiple-comparisons trap: run
+four contrasts, one grazes the line, and the temptation is to crown it the
+"real" one. The pre-registered rule asked for the delta to clear +0.03
+<em>and</em> concentrate on the Reasoning slice while the others stayed flat. What
+came back is the opposite shape — everything flat-to-negative, one slice
+marginally positive by chance-level margins. Not the signature of a real
+axis; noise around zero. (Parser misses were negligible — 3 and 2
+empty-ish out of 100 — so the deltas are real, not artifacts.)</p>
+<p>This is exactly what <strong>m1</strong> and MedLVR warned: on this model and data,
+thinking doesn't buy accuracy. The 3B either knows the answer or it
+doesn't; 512 tokens of reasoning changes nothing and on the easy sets
+slightly distracts.</p>
+<hr />
+<h2 id="phase-6-building-the-retrieval-axis-medcpt-medrag-textbooks">Phase 6 — Building the retrieval axis (MedCPT + MedRAG Textbooks)<a class="headerlink" href="#phase-6-building-the-retrieval-axis-medcpt-medrag-textbooks" title="Permanent link">&para;</a></h2>
+<p>With reasoning dead, <strong>retrieval replaced it as axis two</strong> — a knowledge
+budget instead of a thinking budget. This needed real retrieval
+infrastructure, the heaviest the project has stood up. The explicit
+inventory of what's new versus what stays put:</p>
+<p><strong>New:</strong> a <strong>retriever</strong> (MedCPT — <code>ncbi/MedCPT-Query-Encoder</code> +
+<code>-Article-Encoder</code>, small biomedical encoders, <em>not</em> a new generator); a
+<strong>knowledge corpus + embeddings</strong> (MedRAG <strong>Textbooks</strong>, clinical textbooks
+chunked into snippets with pre-computed MedCPT embeddings); and a
+<strong><code>retrieve.py</code></strong> that turns each question into top-k snippets and writes
+<code>retrieved_medxpert_n100.jsonl</code>.</p>
+<p><strong>Not new (deliberately):</strong> no new benchmark/eval data (same
+MedVLThinker-Eval slices — MedXpertQA-MM, PMC-VQA); no new eval harness
+(scoring runs back in the existing MedVLThinker env); no new generator, no
+flash-attn, no vLLM.</p>
+<p><strong>The environment decision — conflict diagnosed and avoided.</strong> The original
+plan was a separate, isolated retrieval Docker image. On reflection, that
+was over-engineering: dense retrieval only adds <code>faiss</code> +
+<code>sentence-transformers</code>, and those install cleanly into the existing
+MedVLThinker env <strong>as long as <code>numpy</code> is held <code>&lt;2</code></strong> (the same NGC binary
+constraint that's bitten before). So no new image, no new venv — the
+dependency conflict was sidestepped by pinning, keeping one environment.</p>
+<p><strong>Where the KB lives.</strong> <code>df -h /data</code> showed <strong>2.3 TB free at 35%</strong>, so the
+few-GB corpus went on the shared volume (both VMs read it) at a shell-safe
+path — <code>retrieval_kb</code>, not "retrieval knowledge base" (spaces in paths are
+a latent footgun). Final: <strong><code>/data/dan/retrieval_kb</code></strong>.</p>
+<details class="note">
+<summary><code>retrieve.py</code> — MedCPT dense retrieval over the Textbooks corpus (+ the ordering-bug fix)</summary>
+<p>The retriever is keyed on <strong>question text only</strong> and is fully
+independent of the generator, which matters later (the 7B reuses the
+same JSONL with no re-retrieval). The first run hit a <code>NameError</code>
+because <code>OUT</code> referenced <code>A.n</code> <em>before</em> argparse ran — the fix is just
+to define <code>OUT</code> after <code>A = ap.parse_args()</code>:</p>
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">rs</span> <span class="o">=</span> <span class="n">RetrievalSystem</span><span class="p">(</span><span class="n">retriever_name</span><span class="o">=</span><span class="s2">&quot;MedCPT&quot;</span><span class="p">,</span> <span class="n">corpus_name</span><span class="o">=</span><span class="s2">&quot;Textbooks&quot;</span><span class="p">,</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>                     <span class="n">db_dir</span><span class="o">=</span><span class="s2">&quot;/data/dan/retrieval_kb&quot;</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">ap</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--n&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--k&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">A</span> <span class="o">=</span> <span class="n">ap</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">OUT</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/data/dan/retrieval_kb/retrieved_medxpert_n</span><span class="si">{</span><span class="n">A</span><span class="o">.</span><span class="n">n</span><span class="si">}</span><span class="s2">.jsonl&quot;</span>   <span class="c1"># AFTER A exists</span>
+</span></code></pre></div>
+<p>First run pulls the corpus + embeddings into <code>db_dir</code>, then retrieves
+top-5 snippets per question. Audit lines confirmed real textbook prose
+(<code>InternalMed_Harrison: Clinical Presentation of Viral Myocarditis …</code>)
+and <code>wc -l</code> read <strong>100 rows</strong> — clean hand-off.</p>
+</details>
+<p>The scoring half, <code>gate_rag.py</code>, adds a retrieval contrast back in the
+untouched env: it reads the JSONL, prepends the 5 snippets to each
+question, and runs <strong>RAG (think) vs No-RAG (think)</strong> on the same seed-42
+slice — so the No-RAG arm is directly comparable to the <code>think</code> numbers
+already in hand. One honest design choice baked in: both arms use the
+<em>think</em> prompt, isolating <strong>one</strong> variable (knowledge injection) rather
+than confounding it with the think/no-think change.</p>
+<hr />
+<h2 id="phase-7-retrieval-axis-result-flat">Phase 7 — Retrieval axis result: flat<a class="headerlink" href="#phase-7-retrieval-axis-result-flat" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>n=100 | norag_acc=0.270 | rag_acc=0.280                          DELTA = +0.010
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>RAG fixed (wrong-&gt;right): 11   RAG broke (right-&gt;wrong): 10      net = +1
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>on the subset norag got WRONG (n=73): RAG rescued 11 = 0.151 (15% rescue)
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>on the subset norag got RIGHT (n=27): RAG broke 10    = 0.370 (37% damage)
+</span></code></pre></div>
+<p><strong>Verdict against the bar: +0.01 &lt; +0.03. Retrieval does not clear. Not
+live.</strong> And the win/loss split argues <em>against</em> the obvious "selective
+retrieval will rescue it" escape, not for it:</p>
+<ul>
+<li>RAG fixed 11 of the 73 it got wrong (<strong>15% rescue</strong>) but broke 10 of the
+  27 it had right (<strong>37% damage</strong>). Per case, retrieval disrupts what the
+  model knew more than twice as readily as it supplies what it didn't. The
+  net is ~0 only because there are more wrong cases than right ones — so
+  it's not "retrieval helps but gets diluted," it's "retrieval perturbs a
+  near-chance guesser roughly symmetrically."</li>
+</ul>
+<p>That's the crux, and it closes the escape. The model sits at <strong>27% on
+5-way MCQ</strong> — barely above the 20% chance floor. A near-chance model's
+correct answers aren't confident, they're <em>lucky</em>. A selective gate (the
+TARG margin) works by withholding retrieval from <em>confident</em> answers — but
+here the correct answers aren't confident, so the gate can't shield them
+from that 37% damage. <strong>Same wall — no exploitable confidence signal — that
+killed the <a href="../day-02/">June-1 router</a> and this morning's reasoning axis.</strong></p>
+<p>Two confounds named rather than buried:</p>
+<ol>
+<li><strong>The 3B is floored.</strong> A model at near-chance can't show whether <em>any</em>
+   help helps — the instrument may be too weak to detect either axis (which
+   arguably weakens the visual gate's reading too). The 7B flagship is the
+   model we'd build on anyway, so testing it isn't a detour.</li>
+<li><strong>Retrieved on question text only</strong>, but ~half of MedXpertQA-MM is
+   image-dependent — for those, a text snippet is noise by construction.
+   Image-aware retrieval is the heavier fix.</li>
+</ol>
+<hr />
+<h2 id="phase-8-the-fork-and-the-pre-registered-7b-confound-check">Phase 8 — The fork, and the pre-registered 7B confound-check<a class="headerlink" href="#phase-8-the-fork-and-the-pre-registered-7b-confound-check" title="Permanent link">&para;</a></h2>
+<p>The strategic read mattered more than either confound: this was the
+<strong>second flat axis today.</strong> Reasoning dead, retrieval flat, and the one
+live axis (visual) is the pruning dead-end where random wins. The joint
+perception+knowledge controller needs <strong>two</strong> live axes and right now has
+<strong>zero clean ones.</strong> The direction is mostly underwater.</p>
+<p>The fork, taken deliberately:</p>
+<ul>
+<li><strong>One bounded 7B check</strong> — rerun reasoning <em>and</em> retrieval on the 7B at
+  the same +0.03 bar, pre-committed; or</li>
+<li><strong>Stop here</strong> and reset next session.</li>
+</ul>
+<p>Chosen: the <strong>7B check, strictly as the last probe</strong> — kill this on the
+real model rather than on an instrument that may be too weak to show
+signal. The named risk in that choice: <em>"the model was too weak, try the
+bigger one"</em> is exactly the one-more-probe reflex that can run forever — so
+the rule is pre-registered hard, and there is no third probe.</p>
+<p><strong>Pre-registered rule for the 7B (fixed before any 7B number exists):</strong></p>
+<ul>
+<li><strong>Both flat (<code>&lt; +0.03</code>) → direction dead, full stop.</strong> No "try the next
+  bigger model." End of the line for the joint idea.</li>
+<li><strong>Reasoning clears</strong> → it was instrument-masked on the 3B; joint
+  reasoning + visual revives.</li>
+<li><strong>Retrieval clears</strong> (Δ ≥ +0.03 <strong>and</strong> damage-rate drops below
+  rescue-rate in the flip analysis) → perception + knowledge revives, and
+  selective retrieval becomes buildable because the 7B's correct answers
+  are finally confident enough to gate on.</li>
+</ul>
+<p><strong>One footgun killed first.</strong> Both gate scripts key their checkpoints on
+axis/subset/mode, <em>not</em> on model — point them at the 7B without changing
+the checkpoint dir and they'd silently replay the 3B's cached
+<code>{idx,gold,pred,ok}</code> and report 3B numbers as 7B. So the dir changes too:</p>
+<div class="language-bash highlight"><span class="filename">Bash</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># download the 7B (explicit path, load-by-path)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>huggingface-cli<span class="w"> </span>download<span class="w"> </span>UCSC-VLAA/MedVLThinker-7B-RL_m23k<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span>--local-dir<span class="w"> </span>/data/dan/weights/MedVLThinker-7B-RL_m23k
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># two one-line edits in BOTH gate_probe.py and gate_rag.py:</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1">#   MODEL    = &quot;/data/dan/weights/MedVLThinker-7B-RL_m23k&quot;   # was 3B</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">#   CKPT_DIR = &quot;gate_ckpts_7b&quot;                                # fresh — don&#39;t collide</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1"># VM-A — reasoning             |  # VM-B — retrieval (reuses retrieved_*.jsonl as-is)</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PYTORCH_CUDA_ALLOC_CONF</span><span class="o">=</span>expandable_segments:True
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>python<span class="w"> </span>-u<span class="w"> </span>gate_probe.py<span class="w"> </span>--axis<span class="w"> </span>reasoning<span class="w"> </span>--n<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>gate_reasoning_7b.log
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>python<span class="w"> </span>-u<span class="w"> </span>gate_rag.py<span class="w">            </span>--n<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>gate_rag_7b.log
+</span></code></pre></div>
+<p>The retrieval gate reuses <code>retrieved_medxpert_n100.jsonl</code> untouched —
+MedCPT was keyed on question text, independent of the generator, so no
+re-retrieval. Both launched and <strong>left running across the two VMs</strong> (~2 hr;
+the 7B is roughly twice the per-token cost). The calibration tell to watch
+next session: the no-RAG / think arms should rise well off 0.27 — if the
+7B is still stuck near chance, that itself says the benchmark is too hard
+to read either axis, and that's part of the verdict.</p>
+<p><strong>Verdict pending</strong> those two runs.</p>
+<hr />
+<h2 id="phase-9-side-decision-the-june-8-presentation-paper-m1">Phase 9 — Side-decision: the June-8 presentation paper → m1<a class="headerlink" href="#phase-9-side-decision-the-june-8-presentation-paper-m1" title="Permanent link">&para;</a></h2>
+<p>A literature-presentation assignment is due <strong>June 8</strong> (pick a paper,
+present with slides). The recommendation, given where the research
+<em>actually</em> landed today rather than where it was hoped to land:</p>
+<blockquote>
+<p><strong>m1 — "Unleash the Potential of Test-Time Scaling for Medical
+Reasoning"</strong> (arXiv 2504.00869).</p>
+</blockquote>
+<p>It's the paper that <strong>predicted today's reasoning result</strong>: m1's central
+findings — that medical reasoning <em>saturates</em> around a ~4K-token budget,
+and that the binding constraint is <strong>missing medical knowledge</strong> rather
+than insufficient thinking — are exactly what the reasoning-axis gate
+confirmed empirically on MedVLThinker, and they point at <em>why</em> the
+retrieval (knowledge) axis was the right thing to try next. Presenting it
+doubles as the written motivation for the project's own pivot.</p>
+<p>Locked: <strong>m1</strong>, deck already prepared. (The black/gold lab-report PPTX
+format with per-slide speaker scripts was offered but isn't needed — the
+presentation is already built.)</p>
+<hr />
+<h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Image-difficulty wedge: dead.</strong> Lesion-aware refinement returned a
+   pre-registered <strong>NO-GO</strong> (lesion_area ρ=+0.043, lesion_contrast ρ=+0.012
+   p=0.56, both wrong-signed, below the 0.1 floor across all 15 strata).
+   The June-2 REFINE ran to its honest end.</li>
+<li><strong>The failure pattern named</strong> — every dead method bet on a natural
+   correlation existing in the data. New rule: pick methods whose value is
+   <em>constructive/learned</em>, not contingent.</li>
+<li><strong>New direction: joint perception + knowledge allocation</strong> — per-question
+   allocation of a visual budget and a retrieval budget. Robust by
+   construction (always-on settings are net-positive), which is exactly
+   what the dead directions lacked.</li>
+<li><strong>Reasoning axis (3B): NO-GO</strong> — think − nothink flat-to-negative across
+   MedXpert-ALL / Understanding / PMC-VQA, with a single noise-level +0.030
+   on the Reasoning slice (1 of 4, on the line, multiple-comparisons trap).
+   Corroborates m1's saturation / knowledge-bound finding.</li>
+<li><strong>Visual axis (3B): live</strong> — vis_full − vis_low = <strong>+0.080</strong> on PMC-VQA
+   (+0.020 on MedXpert-MM), clears the bar.</li>
+<li><strong>Retrieval axis (3B): flat</strong> — always-on text RAG net <strong>+0.010</strong>; flip
+   analysis <strong>15% rescue vs 37% damage</strong>; a near-chance (27%) base masks any
+   selective-gate signal. Same no-confidence wall as the June-1 router.</li>
+<li><strong>The joint direction is underwater</strong> — needs two live axes, has zero
+   clean ones on the 3B.</li>
+<li><strong>7B confound-check launched, pre-registered as the final probe</strong> —
+   reasoning + retrieval at the +0.03 bar; <strong>both flat → direction dead,
+   full stop.</strong> Verdict pending the running 7B jobs.</li>
+<li><strong>June-8 presentation settled on m1</strong> (arXiv 2504.00869) — the paper
+   that predicted today's reasoning result.</li>
+</ol>
+<p>Plus the infra trail: trace-fix (system-prompt gating for the no-think
+arm), weights consolidated to <code>/data/dan/weights</code>, OOM /
+checkpoint-resume hardening, the retrieval env conflict diagnosed and
+<em>avoided</em> (no new image/venv — <code>faiss</code> + <code>sentence-transformers</code> added,
+<code>numpy</code> held <code>&lt;2</code>), and the retrieval KB built at <code>/data/dan/retrieval_kb</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">On the project's direction</p>
+<p>The site name still says <em>question-aware visual token pruning</em>. As of
+today the working direction is <strong>joint perception + knowledge
+allocation</strong> on MedVLThinker — but it has <em>not</em> cleared its feasibility
+gate (two flat axes on the 3B), so nothing is committed and the rebrand
+stays deferred, on the same discipline that's governed every pivot
+here. The 7B check decides whether this direction lives or joins the
+others.</p>
+</div>
+<hr />
+<h3 id="plan-for-tomorrow-next-session">Plan for tomorrow (next session)<a class="headerlink" href="#plan-for-tomorrow-next-session" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Read the 7B verdict.</strong> Paste the <code>###</code> lines from both
+      <code>gate_reasoning_7b.log</code> and <code>gate_rag_7b.log</code>, plus the flip-analysis
+      on the new <code>gate_ckpts_7b</code> retrieval checkpoints. Check first that the
+      no-RAG / think arms lift well off 0.27 (the calibration tell).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Apply the pre-registered rule, no relitigating:</strong> both flat →
+      joint perception+knowledge direction dead, full reset; reasoning
+      clears → revive joint reasoning+visual; retrieval clears (Δ ≥ +0.03
+      <strong>and</strong> damage &lt; rescue) → revive perception+knowledge and design the
+      joint controller.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If <strong>dead</strong>: a clean-slate direction hunt (Direction A / conformal
+      selective-prediction is the standing fallback — value-by-construction,
+      lowest re-NO-GO risk).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If <strong>alive</strong>: spec the joint perception–knowledge controller; confirm
+      the retrieval axis on the heavier image-aware retrieval fix.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>June 8:</strong> present <strong>m1</strong> (deck ready).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> gate scripts
+      (<code>gate_probe.py</code>, <code>gate_rag.py</code>, <code>retrieve.py</code>) once the verdict is in.</li>
+</ul>
+<hr />
+<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
+<p><strong>No code push.</strong> The gate scripts (<code>gate_probe.py</code>, <code>gate_rag.py</code>,
+<code>retrieve.py</code>) live in the <code>medvlthinker-imgdiff-compute</code> repo, and the
+<strong>7B confound-check is still running across both VMs</strong>
+(<code>gate_reasoning_7b.log</code> / <code>gate_rag_7b.log</code>, fresh <code>gate_ckpts_7b</code>). The
+commit and push come once the 7B verdict lands and the direction is either
+confirmed or reset — the push held until then, on the week's standing rule.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../day-03/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 3 — Tuesday, June 2, 2026">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Day 3 — Tuesday, June 2, 2026
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../bugs/" class="md-footer__link md-footer__link--next" aria-label="Next: Bugs &amp; Issues">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Bugs & Issues
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Leokuan0208" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
