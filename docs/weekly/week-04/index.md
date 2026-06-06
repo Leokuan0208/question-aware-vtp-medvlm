@@ -142,6 +142,48 @@ was sharded (`difficulty_medvlthinker.py --num_shards 2 --shard 0/1`)
 and left **running inference across both VMs** overnight; next session
 merges by qid and runs the lesion-aware verdict. No code pushed today.
 
+### [Day 4 — Thursday, June 4, 2026](day-04.md)
+
+The all-red day — but a disciplined one. June 3 (Day 25) was off, so this
+session opened on Tuesday's overnight verdict and rebuilt from a clean
+kill:
+
+- **Lesion-aware verdict: NO-GO.** The image-difficulty wedge is dead —
+  lesion features were *weaker* than the crude proxies, wrong-signed, not
+  significant (lesion_area ρ=+0.043, lesion_contrast ρ=+0.012 p=0.56,
+  below the 0.1 floor across all 15 strata). The
+  [Day 3 REFINE](day-03.md#phase-6-the-result-refine-and-the-sign-is-the-story)
+  run to its honest end.
+- **The failure pattern named** — every dead method (QSim, GridPrune/FASP,
+  image-complexity) bet on a *natural correlation existing in the data*.
+  New rule: pick methods whose value is **constructive/learned**, not
+  contingent.
+- **New direction: joint perception + knowledge allocation** — per-question
+  allocation of a *visual budget* and a *retrieval budget*. Robust by
+  construction (both axes have net-positive always-on settings), which is
+  exactly what the dead directions lacked. The novelty is the joint; the
+  two literatures (visual-token pruning, medical-RAG) are separate
+  communities.
+- **Reasoning axis (3B): NO-GO** — think − nothink flat-to-negative across
+  three of four MedXpert/PMC slices, one noise-level +0.030 on the Reasoning
+  slice (multiple-comparisons trap). Corroborates **m1**.
+- **Visual axis (3B): live** — vis_full − vis_low = **+0.080** on PMC-VQA,
+  clears the bar.
+- **Retrieval axis (3B): flat** — always-on text RAG (MedCPT + MedRAG
+  Textbooks) net **+0.010**; flip analysis **15% rescue vs 37% damage**;
+  near-chance (27%) base masks any selective-gate signal — the same
+  no-confidence wall as the [June-1 router](day-02.md).
+- **7B confound-check launched, pre-registered as the final probe** —
+  reasoning + retrieval at the +0.03 bar; **both flat → direction dead,
+  full stop.** Verdict pending the running 7B jobs.
+- **June-8 presentation** settled on **m1** ("Unleash the Potential of
+  Test-Time Scaling for Medical Reasoning", arXiv 2504.00869) — the paper
+  that predicted today's reasoning result.
+
+The joint perception+knowledge direction needs two live axes and has zero
+clean ones on the 3B — underwater pending the 7B. No code pushed today (gate
+scripts in `medvlthinker-imgdiff-compute`; 7B verdict mid-run).
+
 ---
 
 ## Plan for the week (May 31 – Jun 6)
@@ -168,13 +210,21 @@ merges by qid and runs the lesion-aware verdict. No code pushed today.
 - [x] **New base model + environment** — MedVLThinker (Qwen2.5-VL),
       isolated venv, repo `medvlthinker-imgdiff-compute`, 3B downloaded
       (Day 3)
-- [ ] **Merge difficulty shards + lesion-aware verdict** (Day 4) —
-      `complexity_lesion.py` (SLAKE masks) → `analyze.py`; GO vs.
-      stop-and-reconsider
-- [ ] If GO: MedVLThinker 3B inference + reproduce SLAKE/VQA-RAD
-      accuracy; difficulty extraction on the 3B as training labels
-- [ ] Commit the `medvlthinker-imgdiff-compute` scaffold once the gate
-      verdict is in
+- [x] **Merge difficulty shards + lesion-aware verdict** (Day 4) —
+      `complexity_lesion.py` (SLAKE masks) → `analyze.py`. **Verdict:
+      NO-GO** (lesion features wrong-signed, below the 0.1 floor) — the
+      image-difficulty wedge is dead.
+- [ ] ~~If GO: MedVLThinker 3B inference + reproduce SLAKE/VQA-RAD
+      accuracy; difficulty extraction on the 3B as training labels~~ —
+      *did not fire (NO-GO).*
+- [x] **Pivot: joint perception + knowledge allocation** (Day 4) — gated
+      reasoning / visual / retrieval axes on MedVLThinker-3B. Reasoning
+      **NO-GO**, visual **live (+0.080)**, retrieval **flat (+0.010)**.
+- [ ] **Read the 7B confound-check verdict** (next session) — reasoning +
+      retrieval on the 7B at the +0.03 bar; both flat → joint direction
+      dead, full stop.
+- [ ] Commit the `medvlthinker-imgdiff-compute` gate scripts
+      (`gate_probe.py`, `gate_rag.py`, `retrieve.py`) once the verdict is in
 - [ ] Read **ToMe** end-to-end (still pending from Week 2)
 
 ---
