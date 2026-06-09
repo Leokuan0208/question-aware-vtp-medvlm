@@ -54,6 +54,9 @@ nav:
           - weekly/week-04/day-03.md
           - weekly/week-04/day-04.md
           - weekly/week-04/day-05.md
+      - Week 5:
+          - weekly/week-05/index.md
+          - weekly/week-05/day-01.md
   - Bugs & Issues: bugs.md
   - Resources: resources.md
 
