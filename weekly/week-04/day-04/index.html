@@ -1480,9 +1480,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-9-side-decision-the-june-8-presentation-paper-m1" class="md-nav__link">
+  <a href="#phase-9-side-decision-the-june-8-presentation-paper-medvlthinker" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 9 — Side-decision: the June-8 presentation paper → m1
+      Phase 9 — Side-decision: the June-8 presentation paper → MedVLThinker
     </span>
   </a>
   
@@ -1574,6 +1574,8 @@
       
         
       
+        
+      
     
     
       
@@ -1627,6 +1629,27 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, June 7, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-05/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Tuesday, June 9, 2026
   </span>
   
 
@@ -1790,9 +1813,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-9-side-decision-the-june-8-presentation-paper-m1" class="md-nav__link">
+  <a href="#phase-9-side-decision-the-june-8-presentation-paper-medvlthinker" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 9 — Side-decision: the June-8 presentation paper → m1
+      Phase 9 — Side-decision: the June-8 presentation paper → MedVLThinker
     </span>
   </a>
   
@@ -1871,8 +1894,8 @@ on a new model and <strong>both came back flat</strong> — reasoning a NO-GO, r
 flat at +0.01 — leaving the new direction underwater on its own bar. It
 ends not on a conclusion but on a single pre-registered tiebreaker
 (<strong>a 7B confound-check, launched and running</strong>) and a side-decision: the
-June-8 literature presentation, settled on <strong>m1</strong>, the paper that
-predicted today's reasoning result.</p>
+June-8 literature presentation, settled on <strong>MedVLThinker</strong>, the paper
+behind the project's own base models.</p>
 <p>No code was pushed today — the gate scripts live in the
 <code>medvlthinker-imgdiff-compute</code> repo and the 7B verdict is still mid-run;
 the push waits for the verdict, as it has all week.</p>
@@ -2292,24 +2315,24 @@ next session: the no-RAG / think arms should rise well off 0.27 — if the
 to read either axis, and that's part of the verdict.</p>
 <p><strong>Verdict pending</strong> those two runs.</p>
 <hr />
-<h2 id="phase-9-side-decision-the-june-8-presentation-paper-m1">Phase 9 — Side-decision: the June-8 presentation paper → m1<a class="headerlink" href="#phase-9-side-decision-the-june-8-presentation-paper-m1" title="Permanent link">&para;</a></h2>
+<h2 id="phase-9-side-decision-the-june-8-presentation-paper-medvlthinker">Phase 9 — Side-decision: the June-8 presentation paper → MedVLThinker<a class="headerlink" href="#phase-9-side-decision-the-june-8-presentation-paper-medvlthinker" title="Permanent link">&para;</a></h2>
 <p>A literature-presentation assignment is due <strong>June 8</strong> (pick a paper,
-present with slides). The recommendation, given where the research
-<em>actually</em> landed today rather than where it was hoped to land:</p>
+present with slides). The choice landed on the natural one given the
+project:</p>
 <blockquote>
-<p><strong>m1 — "Unleash the Potential of Test-Time Scaling for Medical
-Reasoning"</strong> (arXiv 2504.00869).</p>
+<p><strong>MedVLThinker</strong> — the paper behind the project's own base models
+(MedVLThinker-7B / 32B-RL).</p>
 </blockquote>
-<p>It's the paper that <strong>predicted today's reasoning result</strong>: m1's central
-findings — that medical reasoning <em>saturates</em> around a ~4K-token budget,
-and that the binding constraint is <strong>missing medical knowledge</strong> rather
-than insufficient thinking — are exactly what the reasoning-axis gate
-confirmed empirically on MedVLThinker, and they point at <em>why</em> the
-retrieval (knowledge) axis was the right thing to try next. Presenting it
-doubles as the written motivation for the project's own pivot.</p>
-<p>Locked: <strong>m1</strong>, deck already prepared. (The black/gold lab-report PPTX
-format with per-slide speaker scripts was offered but isn't needed — the
-presentation is already built.)</p>
+<p>Presenting the paper of the model the entire project is built on doubles
+as the written motivation for the work itself — the architecture, the RL
+training that elicits the <code>&lt;think&gt;</code> traces, and the six-benchmark
+evaluation suite are all the substrate today's experiments run on. (The
+m1 test-time-scaling findings still get their due in the research write-up
+above, as the <em>literature</em> that predicted the reasoning-axis result — but
+the paper being <em>presented</em> on June 8 is MedVLThinker, not m1.)</p>
+<p>Locked: <strong>MedVLThinker</strong>, deck already prepared. (The black/gold
+lab-report PPTX format with per-slide speaker scripts was offered but
+isn't needed — the presentation is already built.)</p>
 <hr />
 <h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
 <ol>
@@ -2338,8 +2361,8 @@ presentation is already built.)</p>
 <li><strong>7B confound-check launched, pre-registered as the final probe</strong> —
    reasoning + retrieval at the +0.03 bar; <strong>both flat → direction dead,
    full stop.</strong> Verdict pending the running 7B jobs.</li>
-<li><strong>June-8 presentation settled on m1</strong> (arXiv 2504.00869) — the paper
-   that predicted today's reasoning result.</li>
+<li><strong>June-8 presentation settled on MedVLThinker</strong> — the paper behind the
+   project's own base models.</li>
 </ol>
 <p>Plus the infra trail: trace-fix (system-prompt gating for the no-think
 arm), weights consolidated to <code>/data/dan/weights</code>, OOM /
@@ -2373,7 +2396,7 @@ others.</p>
       lowest re-NO-GO risk).</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If <strong>alive</strong>: spec the joint perception–knowledge controller; confirm
       the retrieval axis on the heavier image-aware retrieval fix.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>June 8:</strong> present <strong>m1</strong> (deck ready).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>June 8:</strong> present <strong>MedVLThinker</strong> (deck ready).</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> gate scripts
       (<code>gate_probe.py</code>, <code>gate_rag.py</code>, <code>retrieve.py</code>) once the verdict is in.</li>
 </ul>

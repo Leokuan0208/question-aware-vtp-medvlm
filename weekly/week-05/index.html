@@ -1420,6 +1420,8 @@
       
         
       
+        
+      
     
     
       
@@ -1473,6 +1475,27 @@
   
   <span class="md-ellipsis">
     Day 1 — Sunday, June 7, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Tuesday, June 9, 2026
   </span>
   
 
@@ -1567,6 +1590,15 @@
   <a href="#day-1-sunday-june-7-2026" class="md-nav__link">
     <span class="md-ellipsis">
       Day 1 — Sunday, June 7, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-2-tuesday-june-9-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 2 — Tuesday, June 9, 2026
     </span>
   </a>
   
@@ -1689,6 +1721,36 @@ from <a href="../week-04/day-05/">Week 4 Day 5</a>:</p>
 headroom is real but unreachable from cheap signals, and that is the
 precise open problem. The most coherent the project has been: a working
 method plus a clean set of negatives that bound it. No code pushed today.</p>
+<h3 id="day-2-tuesday-june-9-2026"><a href="day-02/">Day 2 — Tuesday, June 9, 2026</a><a class="headerlink" href="#day-2-tuesday-june-9-2026" title="Permanent link">&para;</a></h3>
+<p>A disciplined day that <em>closed</em> the open question from Day 1 rather than
+opening a new one. (June 8 was the <strong>MedVLThinker presentation</strong>; June 9 is the next
+research session.) Path A — reach the +12.5pp headroom with a stronger cheap
+signal — got one clean, pre-registered shot, and was falsified:</p>
+<ul>
+<li><strong>Two untested signals added</strong> — extended <code>router_escalate.py</code> with the
+  <strong>full predictive distribution</strong> (<code>entropy</code> and the whole sorted A–J
+  log-prob vector, <code>dist_full</code>), the obvious thing Day 1's margin-only probe
+  skipped, on the identical CV folds.</li>
+<li><strong>An apparent accuracy win → stress-tested → falsified.</strong> At a hand-picked
+  threshold <code>dist_full</code>/<code>entropy</code> beat always-32B on the closed-form sets; a
+  Pareto sweep (<code>router_pareto.py</code>) made it look like it might hold; but a
+  <strong>pre-registered paired bootstrap</strong> (<code>router_bootstrap.py</code>, B=2000) at an
+  <em>a-priori</em> err-rate budget showed <strong>every gain non-significant — except
+  SLAKE <code>dist_full</code>, which is significantly <em>worse</em> than the 32B.</strong> Every
+  <code>SIG+</code> sat on a <code>peak</code> row whose budget was chosen on the data.</li>
+<li><strong>Path A closed cleanly</strong> — the headroom is not reachable from any cheap 7B
+  signal tested (margin, entropy, full distribution, or layer-14 hidden
+  state). Efficiency, not accuracy — now backed by a significance test.</li>
+<li><strong>Efficiency cascade intact and statistically clean</strong> — parity with the 32B
+  while keeping ~54–76% of questions on the cheap 7B (VQA-RAD ~24% escalation,
+  PathVQA ~36%, PMC-VQA ~46%; SLAKE the weak case at ~60%).</li>
+<li><strong>Signal choice flipped</strong> — use the simple <strong><code>margin</code></strong> (never significantly
+  negative anywhere), not <code>dist_full</code> (significantly hurts SLAKE). The rich
+  signal was best only at the accuracy peaks that didn't survive.</li>
+</ul>
+<p>The accuracy direction is honestly closed; the <strong>7B→32B confidence-margin
+efficiency cascade</strong> is the committed result. Next: a leave-one-dataset-out
+test for generalization. No code pushed today.</p>
 <hr />
 <h2 id="plan-for-the-week-jun-7-jun-13">Plan for the week (Jun 7 – Jun 13)<a class="headerlink" href="#plan-for-the-week-jun-7-jun-13" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
@@ -1701,17 +1763,22 @@ method plus a clean set of negatives that bound it. No code pushed today.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Escalation-gate test</strong> (Day 1) — naive margin gate + hidden-state
       probe; hidden state <strong>falsified</strong> (worse than margin); margin cascade
       <strong>works as efficiency</strong> on the four competent benchmarks.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Decide the framing to commit:</strong> efficiency cascade (Path B, the
-      defensible result now) vs. a further hunt for a stronger escalation
-      signal to reach the accuracy headroom (Path A, a real experiment that
-      could fail).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Decide the framing to commit</strong> (Day 2) — gave Path A one
+      pre-registered shot (full-distribution escalation signals); the bootstrap
+      <strong>falsified the accuracy gain</strong>, committing the project to the
+      <strong>efficiency cascade</strong> framing.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If efficiency framing: build clean <strong>accuracy-vs-cost curves</strong> across
-      the four competent benchmarks (VQA-RAD / SLAKE / PathVQA / PMC-VQA);
-      decide cost metric (escalation % → FLOPs / latency).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>June 8:</strong> present <strong>m1</strong> (deck ready).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> scripts
-      (<code>pmcvqa_recoverability.py</code>, <code>run_32b_vllm.py</code>, <code>router_escalate.py</code>,
-      cascade analysis, the vLLM 25.09 Dockerfile) once the framing is set.</li>
+      the four competent benchmarks (VQA-RAD / SLAKE / PathVQA / PMC-VQA) from
+      the verbatim <code>router_pareto.py</code> numbers, with <strong><code>margin</code></strong> as the
+      headline gate; decide cost metric (escalation % → FLOPs / latency).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Leave-one-dataset-out test</strong> (Day 2 → next) — fit the gate on some
+      competent datasets, route a held-out one; the generalization test that
+      turns "a real result on this data" into "a deployable method."</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>June 8:</strong> presented <strong>MedVLThinker</strong> (the project's base-model paper).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> scripts (<code>router_escalate.py</code>
+      extended, <code>router_pareto.py</code>, <code>router_bootstrap.py</code>, plus Day-1's
+      <code>run_32b_vllm.py</code> / cascade analysis / vLLM 25.09 Dockerfile) once the
+      LODO result is in.</li>
 </ul>
 <hr />
 <h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
