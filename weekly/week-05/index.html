@@ -12,28 +12,28 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
-        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-04/day-02/">
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-05/">
       
       
-        <link rel="prev" href="../day-01/">
+        <link rel="prev" href="../week-04/day-05/">
       
       
-        <link rel="next" href="../day-03/">
+        <link rel="next" href="day-01/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Day 2 — Monday, June 1, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Week 5 — Cross-model efficiency cascade (7B→32B) - Question-Aware Visual Token Pruning for Medical VLMs</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,9 +52,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#day-2-monday-june-1-2026" class="md-skip">
+        <a href="#week-5-cross-model-efficiency-cascade-7b32b" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Day 2 — Monday, June 1, 2026
+              Week 5 — Cross-model efficiency cascade (7B→32B)
             
           </span>
         </div>
@@ -223,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -240,7 +240,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../project/" class="md-tabs__link">
+      <a href="../../project/" class="md-tabs__link">
         
   
     
@@ -259,7 +259,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../baseline/" class="md-tabs__link">
+        <a href="../../baseline/" class="md-tabs__link">
           
   
     
@@ -277,7 +277,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../experiments/" class="md-tabs__link">
+      <a href="../../experiments/" class="md-tabs__link">
         
   
     
@@ -298,7 +298,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../" class="md-tabs__link">
+        <a href="../" class="md-tabs__link">
           
   
     
@@ -316,7 +316,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../bugs/" class="md-tabs__link">
+      <a href="../../bugs/" class="md-tabs__link">
         
   
     
@@ -333,7 +333,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../resources/" class="md-tabs__link">
+      <a href="../../resources/" class="md-tabs__link">
         
   
     
@@ -367,7 +367,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -397,7 +397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -417,7 +417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/" class="md-nav__link">
+      <a href="../../project/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -464,7 +464,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../baseline/" class="md-nav__link ">
+            <a href="../../baseline/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -497,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../baseline/huatuo-vision/" class="md-nav__link">
+      <a href="../../baseline/huatuo-vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -518,7 +518,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../baseline/qwen25-vl/" class="md-nav__link">
+      <a href="../../baseline/qwen25-vl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -539,7 +539,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../baseline/llava-med/" class="md-nav__link">
+      <a href="../../baseline/llava-med/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -567,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../experiments/" class="md-nav__link">
+      <a href="../../experiments/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -623,7 +623,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -691,7 +691,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../week-01/" class="md-nav__link ">
+            <a href="../week-01/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -724,7 +724,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-01/day-01/" class="md-nav__link">
+      <a href="../week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -745,7 +745,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-01/day-02/" class="md-nav__link">
+      <a href="../week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -766,7 +766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-01/day-03/" class="md-nav__link">
+      <a href="../week-01/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -787,7 +787,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-01/day-04/" class="md-nav__link">
+      <a href="../week-01/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -808,7 +808,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-01/day-05/" class="md-nav__link">
+      <a href="../week-01/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -829,7 +829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-01/day-06/" class="md-nav__link">
+      <a href="../week-01/day-06/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -850,7 +850,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-01/day-07/" class="md-nav__link">
+      <a href="../week-01/day-07/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -910,7 +910,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../week-02/" class="md-nav__link ">
+            <a href="../week-02/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -943,7 +943,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-02/day-01/" class="md-nav__link">
+      <a href="../week-02/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -964,7 +964,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-02/day-02/" class="md-nav__link">
+      <a href="../week-02/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -985,7 +985,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-02/day-03/" class="md-nav__link">
+      <a href="../week-02/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1006,7 +1006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-02/day-04/" class="md-nav__link">
+      <a href="../week-02/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1027,7 +1027,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-02/day-05/" class="md-nav__link">
+      <a href="../week-02/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1087,7 +1087,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../week-03/" class="md-nav__link ">
+            <a href="../week-03/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1120,7 +1120,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-03/day-01/" class="md-nav__link">
+      <a href="../week-03/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1141,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-03/day-02/" class="md-nav__link">
+      <a href="../week-03/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1162,7 +1162,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-03/day-03/" class="md-nav__link">
+      <a href="../week-03/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1183,7 +1183,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-03/day-04/" class="md-nav__link">
+      <a href="../week-03/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1204,7 +1204,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-03/day-05/" class="md-nav__link">
+      <a href="../week-03/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1230,8 +1230,6 @@
                 
   
   
-    
-  
   
   
     
@@ -1257,16 +1255,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../week-04/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1283,7 +1281,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_5">
             <span class="md-nav__icon md-icon"></span>
             Week 4
@@ -1299,7 +1297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../day-01/" class="md-nav__link">
+      <a href="../week-04/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1317,30 +1315,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Day 2 — Monday, June 1, 2026
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../week-04/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1349,113 +1327,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#phase-1-grid-probe-valid-and-the-gate-passed" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 1 — Grid probe: valid, and the gate passed
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-2-the-grid-result-the-signal-is-real-modest-and-late" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 2 — The grid result: the signal is real, modest, and late
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-3-the-cos_final-early-layer-trap-methodology-note" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 3 — The cos_final early-layer trap (methodology note)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-4-the-two-feature-probe-no-lift-the-gono-go" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 4 — The two-feature probe: no lift (the go/no-go)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-5-the-honest-call-on-direction-d" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 5 — The honest call on Direction D
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-6-the-evidence-stability-probe-direction-d-closed" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 6 — The evidence-stability probe: Direction D closed
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#honest-ledger-of-the-day" class="md-nav__link">
-    <span class="md-ellipsis">
-      Honest ledger of the day
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Honest ledger of the day">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#plan-for-tomorrow-june-2-day-24-week-4-day-3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Plan for tomorrow (June 2, Day 24 / Week 4 Day 3)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pushed-today" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pushed today
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1468,7 +1339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../day-03/" class="md-nav__link">
+      <a href="../week-04/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1489,7 +1360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../day-04/" class="md-nav__link">
+      <a href="../week-04/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1510,7 +1381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../day-05/" class="md-nav__link">
+      <a href="../week-04/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1536,6 +1407,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1553,16 +1426,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../week-05/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   <span class="md-ellipsis">
@@ -1573,13 +1446,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_6">
             <span class="md-nav__icon md-icon"></span>
             Week 5
@@ -1595,7 +1468,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../week-05/day-01/" class="md-nav__link">
+      <a href="day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1631,7 +1504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../bugs/" class="md-nav__link">
+      <a href="../../bugs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1651,7 +1524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../resources/" class="md-nav__link">
+      <a href="../../resources/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1691,87 +1564,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#phase-1-grid-probe-valid-and-the-gate-passed" class="md-nav__link">
+  <a href="#day-1-sunday-june-7-2026" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 1 — Grid probe: valid, and the gate passed
+      Day 1 — Sunday, June 7, 2026
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-2-the-grid-result-the-signal-is-real-modest-and-late" class="md-nav__link">
+  <a href="#plan-for-the-week-jun-7-jun-13" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 2 — The grid result: the signal is real, modest, and late
+      Plan for the week (Jun 7 – Jun 13)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-3-the-cos_final-early-layer-trap-methodology-note" class="md-nav__link">
+  <a href="#reflections-end-of-week" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 3 — The cos_final early-layer trap (methodology note)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-4-the-two-feature-probe-no-lift-the-gono-go" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 4 — The two-feature probe: no lift (the go/no-go)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-5-the-honest-call-on-direction-d" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 5 — The honest call on Direction D
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phase-6-the-evidence-stability-probe-direction-d-closed" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 6 — The evidence-stability probe: Direction D closed
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#honest-ledger-of-the-day" class="md-nav__link">
-    <span class="md-ellipsis">
-      Honest ledger of the day
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Honest ledger of the day">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#plan-for-tomorrow-june-2-day-24-week-4-day-3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Plan for tomorrow (June 2, Day 24 / Week 4 Day 3)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pushed-today" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pushed today
+      Reflections (end-of-week)
     </span>
   </a>
   
@@ -1792,7 +1605,7 @@
                   
 
   
-    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-04/day-02.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-05/index.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1800,302 +1613,115 @@
   
 
 
-<h1 id="day-2-monday-june-1-2026">Day 2 — Monday, June 1, 2026<a class="headerlink" href="#day-2-monday-june-1-2026" title="Permanent link">&para;</a></h1>
-<p><a href="../">← Back to Week 4 overview</a></p>
-<p><strong>Pivot phase</strong> (visual-grounding feasibility) · Week 4, Day 2 ·
-<strong>Day 23 of the project</strong></p>
-<hr />
-<p>The day the Direction-D router met its own bar — and the honest read
-is that, on the signals tested so far, it doesn't clear it. Two
-analyses, both offline on data already on disk: the <strong>budget×layer
-grid probe</strong> launched
-<a href="../day-01/#phase-8-the-budgetlayer-grid-probe-launched">yesterday</a>
-finished and was analyzed, and the <strong>parked two-feature check</strong> ran.
-The grid says the routable confidence signal is genuine but <strong>modest
-and late</strong> — it peaks at AUROC 0.756 at the final layer, with no
-cheap early-layer cell to exploit. The two-feature probe says
-combining confidence features gives <strong>no meaningful lift</strong> over the
-best single feature (0.762 → 0.758). Together they're clean evidence
-that a single-point, confidence-based Direction-D router doesn't
-close the realized-cost math that
-<a href="../day-01/#phase-9-approach-2-width-router-an-honest-negative">yesterday's Approach 2</a>
-already flagged. The decisive next test — whether <em>evidence-stability</em>
-(the axis genuinely orthogonal to confidence) adds signal — was then
-run that same evening, and it came back <strong>no</strong> (cross-budget flip
-AUROC 0.548 alone, +0.466 correlated with confidence, +0.001
-combined). So the verdict resolved from "partial" to a clean closure:
-the confidence half of Direction D is a clean negative, and the
-evidence-stability half — D's defining premise — adds nothing either.
-<strong>Direction D is closed.</strong> See
-<a href="#phase-6-the-evidence-stability-probe-direction-d-closed">Phase 6</a>
-for the deciding numbers.</p>
-<hr />
-<h2 id="phase-1-grid-probe-valid-and-the-gate-passed">Phase 1 — Grid probe: valid, and the gate passed<a class="headerlink" href="#phase-1-grid-probe-valid-and-the-gate-passed" title="Permanent link">&para;</a></h2>
-<p>The budget×layer grid finished cleanly: all five budgets wrote full
-files at n=17,303, the probe processes were done, and GPUs idle. The
-load-bearing check is the logit-lens sanity gate — at kr=1.0 the
-final-layer lens entropy must reproduce the stored <code>option_entropy</code>,
-or every early-layer cell is silently corrupted by a missing RMSNorm.
-It reproduced almost exactly (<strong><code>0.2213</code> vs <code>0.2213011…</code></strong>), so the
-lens wiring is correct and every cell in the grid is trustworthy.</p>
-<p>(The five extra <code>__partial.json</code> files are just the incremental
-1000-sample checkpoints — that's why a naive count read "10/5," not a
-problem. One uniform OmniMedVQA <code>.tif</code> "image is wrong" warning
-appears across all cells, so it doesn't bias the grid — but it's
-flagged for the day a per-dataset router is built.)</p>
-<hr />
-<h2 id="phase-2-the-grid-result-the-signal-is-real-modest-and-late">Phase 2 — The grid result: the signal is real, modest, and late<a class="headerlink" href="#phase-2-the-grid-result-the-signal-is-real-modest-and-late" title="Permanent link">&para;</a></h2>
-<p>The headline is an honest near-negative. The primary deployable
-proxy, <strong><code>lens_entropy</code>, peaks at AUROC 0.756 at layer 28</strong> (the
-final layer). That <em>confirms</em> — does not beat — the ~0.74 from
-yesterday's quick feasibility probe. The important new fact is the
-<em>shape</em> across depth:</p>
-<ul>
-<li>Layers 1–20: AUROC just oscillates around chance (~0.45–0.62), no
-  stable plateau.</li>
-<li>Layers 25–28: ramps hard, L25 0.727 → L28 0.756.</li>
-</ul>
-<p>So <strong>there is no cheap early-layer cell with usable signal.</strong> The
-whole point of the grid was to find the cheapest <em>early</em> place on the
-depth axis a router could read — and for the deployable proxies, one
-doesn't exist. Reading the signal costs a full forward pass.</p>
-<p>Reading the three proxies against that shape:</p>
-<ul>
-<li><strong><code>lens_entropy</code></strong> — the winner and the one to take seriously.
-  0.756 at L28, and critically it barely degrades on the <em>budget</em>
-  axis: at the same layer, kr=0.5 gives <strong>0.748</strong>, only 0.008 below
-  full budget. So the one real compute lever the grid hands you is
-  the budget axis — you can read this signal off a half-budget
-  prefill — not depth.</li>
-<li><strong><code>h_norm</code></strong> (hidden-state norm) — the same story one notch weaker
-  (0.730 at L28), with isolated mid-layer bumps (L13 0.651, L20
-  0.654, L25 0.693) that never form a usable early plateau. Strictly
-  dominated by <code>lens_entropy</code>; not worth its own router.</li>
-<li><strong><code>cos_final</code></strong> (cosine to the final-layer state) — looks high
-  early (0.659 at L6, decaying to noise by L28), and the analysis
-  script's "cheapest cell" line literally recommended "route by
-  reading cos_final at layer 6." <strong>That cell is a trap, not a
-  router</strong> — see Phase 3.</li>
-</ul>
-<p>The takeaway for Direction D: the grid set out to find a cheap early
-signal and the verdict is that there isn't one. The signal is genuine
-but modest (~0.75), localized to the final layer, and the only lever
-is "route on a kr=0.5 prefill" — which is exactly the kind of router
-<a href="../day-01/#phase-9-approach-2-width-router-an-honest-negative">Approach 2 tested yesterday</a>
-and found negative on realized cost. The grid gives no reason to
-expect a fresh single-feature router to flip that math; the
-underlying signal strength is the same ~0.75, just pinpointed.</p>
-<hr />
-<h2 id="phase-3-the-cos_final-early-layer-trap-methodology-note">Phase 3 — The <code>cos_final</code> early-layer trap (methodology note)<a class="headerlink" href="#phase-3-the-cos_final-early-layer-trap-methodology-note" title="Permanent link">&para;</a></h2>
-<p>The analysis script flagged <code>cos_final</code> at layer 6 (AUROC 0.659) as
-the "cheapest usable cell." It is <strong>not deployable</strong>, and it's worth
-recording why so future-me doesn't mistake it for an early-exit
-router.</p>
-<p><code>cos_final</code> is the cosine between layer-<em>k</em>'s hidden state and <em>this
-same sample's</em> layer-28 hidden state. To compute it at layer 6 you
-must already have run all 28 layers — so the "early" number is a
-post-hoc diagnostic about <em>when the representation converges</em>, not a
-signal available early at inference. The tell is at the other end:
-<code>cos_final</code> sits at 0.51 (chance) at L28, because cos(h₂₈, h₂₈) ≡ 1
-for every sample, giving zero discriminative power. So its apparent
-early-layer strength is an artifact of the metric's construction, and
-even at face value 0.659 is below <code>lens_entropy</code>'s 0.756. A real
-observation about representation convergence; not a cheap router.</p>
-<hr />
-<h2 id="phase-4-the-two-feature-probe-no-lift-the-gono-go">Phase 4 — The two-feature probe: no lift (the go/no-go)<a class="headerlink" href="#phase-4-the-two-feature-probe-no-lift-the-gono-go" title="Permanent link">&para;</a></h2>
-<p>The decisive cheap test: does combining <code>lens_entropy</code>@L28 with the
-answer <strong>margin</strong> and/or the option-token <strong>logprob</strong> push AUROC
-meaningfully past 0.756 — into the low 0.80s — enough to change the
-realized-cost story? The probe joins the grid's kr=1.0 dump with the
-scored run's per-option logprobs (clean <strong>17,303 / 17,303</strong> join,
-every dataset at full overlap), reproduces the entropy AUROC exactly
-as a join self-check (0.756), then layers on the extra features.</p>
-<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>--- single-feature AUROC (predicting WRONG@full) ---
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>   entropy        0.756
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>   margin         0.759
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>   option-logprob 0.762
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>--- fitted combinations (logistic, 5-fold CV) ---
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>   entropy + margin            0.761 ± 0.004
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>   entropy + logprob           0.756 ± 0.005
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>   entropy + margin + logprob  0.758 ± 0.005
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>--- multi-option subset (n_opt ≥ 3, 12451 samples) ---
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>   entropy-only   0.814
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>   all three      0.813 ± 0.010
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>================================================================
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>VERDICT  best single = 0.762   best combo = 0.758   lift = ±0.004
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>================================================================
-</span></code></pre></div>
-<p><strong>No meaningful lift.</strong> The three confidence features are mutually
-redundant — the fitted combination (0.758) does not beat the best
-single feature (0.762); the spread is within noise. This <strong>overturns</strong>
-the working hypothesis from
-<a href="../../week-03/day-05/#phase-6-the-feasibility-probe-zero-gpu-decisive">Day 19</a>
-that the option-token logprob would be Direction D's missing second
-feature. It isn't — it's carrying the same information entropy
-already had.</p>
-<p>One genuinely useful sub-result: on the <strong>multi-option subset</strong>
-(questions with ≥3 options, 12,451 samples) AUROC rises to <strong>0.814</strong>.
-The signal is materially stronger where the model has a real
-distribution to be uncertain over; the binary/2-option questions are
-diluting the aggregate. That's a lever for <em>where</em> a router could
-work, even though it doesn't rescue the feature-combination question.</p>
-<hr />
-<h2 id="phase-5-the-honest-call-on-direction-d">Phase 5 — The honest call on Direction D<a class="headerlink" href="#phase-5-the-honest-call-on-direction-d" title="Permanent link">&para;</a></h2>
-<p>Putting the two analyses together: the routable confidence signal is
-real but caps at ~0.76 (~0.81 on multi-option questions), lives only
-at the final layer, and gains nothing from combining the confidence
-features that were supposed to strengthen it. Yesterday's Approach 2
-already showed a confidence/width router at that signal strength
-doesn't pay for its compute. So <strong>a single-point, confidence-based
-Direction-D router does not clear its own bar</strong>, and building the full
-<code>confidence_router.py</code> on this footing isn't justified.</p>
-<p>And the verdict <strong>resolved the same evening</strong>, because the decisive
-test did get run (Phase 6). Direction D's <em>defining</em> signal was never
-confidence; it was <strong>evidence-stability</strong> — whether the answer flips
-when visual evidence is pruned — the one axis genuinely orthogonal to
-confidence. The stability+confidence probe tested exactly that, and it
-adds nothing: cross-budget evidence-flip scores AUROC 0.548 alone,
-correlates +0.466 with confidence (so isn't even orthogonal), and lifts
-the combination by +0.001. So both halves fail: <strong>the confidence path
-is a clean negative, and the evidence-stability path — the premise of
-the whole pivot — is too. Direction D is closed</strong>, and the A/C
-fallbacks (conformal risk control; per-question compute allocation)
-move up the queue.</p>
-<p>No GPU was spent today — every analysis was offline on existing dumps.
-That's the discipline paying off: the cheapest decisive experiments ran
-first, and closed the direction on the right test instead of a hunch.</p>
-<hr />
-<h2 id="phase-6-the-evidence-stability-probe-direction-d-closed">Phase 6 — The evidence-stability probe: Direction D closed<a class="headerlink" href="#phase-6-the-evidence-stability-probe-direction-d-closed" title="Permanent link">&para;</a></h2>
-<p>The deciding experiment, run the same evening, fully offline on the
-18-run sweep data. The question: does <strong>evidence-stability</strong> — whether
-the greedy answer flips as the independent <code>RandomPruner</code> strips
-visual tokens across kr 0.75 → 0.10 — add correctness signal
-orthogonal to confidence? The probe reproduced both confidence anchors
-as join self-checks (option-logprob 0.762, entropy 0.756) on the full
-17,303 join, then reported the new features.</p>
-<p>Predicting WRONG@full-budget, single-feature AUROC:</p>
-<table>
-<thead>
-<tr>
-<th>feature</th>
-<th>AUROC</th>
-<th>reading</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>confidence (option-logprob)</td>
-<td><strong>0.762</strong></td>
-<td>the bar to beat</td>
-</tr>
-<tr>
-<td>entropy (anchor)</td>
-<td>0.756</td>
-<td>reproduces the confidence anchor</td>
-</tr>
-<tr>
-<td>self-consistency (k=5 votes)</td>
-<td>0.675</td>
-<td>real but modest</td>
-</tr>
-<tr>
-<td>stability (fraction-flip)</td>
-<td><strong>0.548</strong></td>
-<td>barely above chance</td>
-</tr>
-<tr>
-<td>flip@kr0.5 (binary)</td>
-<td>0.530</td>
-<td>essentially nothing</td>
-</tr>
-</tbody>
-</table>
-<p>Orthogonality: <strong>pearson(confidence, stability) = +0.466</strong> — the
-evidence signal is positively correlated with confidence, not the
-orthogonal axis the router needed. Combinations (logistic, 5-fold CV):
-confidence alone 0.762; <strong>confidence + stability 0.763</strong> (+0.001);
-confidence + self-consistency 0.762; all three 0.763. <strong>No orthogonal
-lift.</strong> The clincher is <strong>PathVQA</strong> — the regime where
-evidence-independent errors concentrate, the one place the dial was
-theorized for — where stability adds <strong>−0.002</strong>.</p>
-<p>Reconciling with <a href="../../week-03/day-05/#phase-6-the-feasibility-probe-zero-gpu-decisive">May 31's green-light</a>
-("81.7 vs 64.3 stable→correct"): that was the <em>self-consistency</em>
-flavor of stability (0.675 today, folds into confidence), not the
-cross-budget evidence dial (0.548). Confidence in a stability costume —
-but it bought a clean kill on the right experiment rather than a hunch.</p>
-<p><strong>Direction D is closed.</strong> What survives is narrower but real: plain
-answer confidence predicts correctness, <strong>but only on multiple-choice</strong>
-(OmniMedVQA 0.809, MMMU 0.783, SLAKE 0.765, PMC-VQA 0.723; open-ended
-PathVQA &amp; VQA-RAD ~0.568). All the working features reduce to one
-thing — how peaked the answer distribution is — and none need the
-pruning machinery.</p>
-<hr />
-<h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>Grid probe valid</strong> — lens gate passed (0.2213 = 0.2213), all 5
-   budgets × 17.3k clean.</li>
-<li><strong>Routable signal is late and modest</strong> — <code>lens_entropy</code> 0.756 @
-   L28, robust on the budget axis (0.748 at kr=0.5), no early-layer
-   signal anywhere.</li>
-<li><strong><code>cos_final</code> early cell is a non-deployable diagnostic</strong> — logged
-   as a methodology note so it's not mistaken for a cheap router.</li>
-<li><strong>Two-feature probe: no lift</strong> — best single 0.762, best combo
-   0.758. Overturns the option-logprob-as-second-feature hypothesis;
-   the confidence features are mutually redundant.</li>
-<li><strong>Multi-option subset is stronger</strong> — AUROC 0.814 on ≥3-option
-   questions; the binary questions dilute the aggregate.</li>
-<li><strong>Direction D closed</strong> — the evidence-stability probe (run the same
-   evening) showed stability adds no orthogonal signal (0.548 alone,
-   +0.466 correlated, +0.001 combined, −0.002 on PathVQA). Both the
-   confidence path and the evidence-dial premise fail.</li>
-<li><strong>What survives</strong> — confidence predicts correctness, but only on
-   multiple-choice (MC sets 0.72–0.81; open-ended ~0.57). A/C fallbacks
-   (conformal; per-question compute) move up the queue.</li>
-</ol>
-<p>The day's worth is in what it ruled out cheaply: the option-logprob
-second feature, the hope of a cheap early-layer router, and — with the
-evening's stability probe — the evidence dial that was the entire
-premise of the pivot. Direction D is closed on the right experiment.</p>
+<h1 id="week-5-cross-model-efficiency-cascade-7b32b">Week 5 — Cross-model efficiency cascade (7B→32B)<a class="headerlink" href="#week-5-cross-model-efficiency-cascade-7b32b" title="Permanent link">&para;</a></h1>
+<p><span class="pill pill--wip">In progress</span></p>
+<p><strong>Pivot phase</strong> (single-model compute router → cross-model cascade) ·
+<strong>Week 5 of 12</strong></p>
+<p><strong>Goal of the week</strong> — resolve the question
+<a href="../week-04/">Week 4</a> left open: the single-model compute router
+cleared a <em>first</em> gate (routable heterogeneity looked real) but never
+proved the oracle headroom was <em>reachable</em>. Week 5 opens by auditing that
+direction to destruction — is the per-question oracle genuine
+complementarity or a statistical artifact? — and, if it fails, pivoting to
+the architecture that can actually carry complementarity: a <strong>7B→32B
+cross-model cascade</strong> (cheap model default, escalate hard questions to a
+genuinely different, larger model). Establish whether cross-model
+complementarity exists, and whether it is reachable from a cheap escalation
+signal.</p>
 <div class="admonition note">
-<p class="admonition-title">On the project's direction</p>
-<p>The site and project name still say <em>question-aware visual token
-pruning</em>. As of Day 19 the work pivoted to training-free
-<strong>visual-grounding / selective prediction</strong> (Direction D); Day 23
-closed Direction D — both the confidence path and the
-evidence-stability premise carry no usable orthogonal signal. What
-survives is a confidence-and-format finding that doesn't need the
-pruning machinery. The next session is a clean-slate reset
-(<a href="../day-03/">Day 24</a>). The rebrand stays deferred until the new
-direction produces a positive headline result.</p>
+<p class="admonition-title">The 12-week plan and the pivot</p>
+<p>The original plan had Week 5 as "Phase 3 — Scoring-head v1 (first
+trainable pruning module)." Pruning-for-accuracy was closed back in
+Week 3, so Week 5's actual focus is the cross-model cascade that the
+routing work converged on. The site name and the 7-phase plan are left
+as-is for now; the rebrand is deferred until the new direction produces
+a headline result — which, as of Day 1, it has a candidate for (a
+working efficiency cascade on competent medical VQA).</p>
 </div>
+<p>This page is the <strong>overview</strong> — a short summary of each day. Click any
+day's heading for the full detail page.</p>
 <hr />
-<h3 id="plan-for-tomorrow-june-2-day-24-week-4-day-3">Plan for tomorrow (June 2, Day 24 / Week 4 Day 3)<a class="headerlink" href="#plan-for-tomorrow-june-2-day-24-week-4-day-3" title="Permanent link">&para;</a></h3>
-<p>With Direction D closed (Phase 6), the surviving confidence finding is
-a <em>known technique on a new model</em> (A) — defensible but not strongly
-novel — and every prior path has dead-ended. So tomorrow is a
-deliberate <strong>clean-slate reset</strong>: scan recent medical-VLM literature
-and future-work sections for an under-executed <em>method</em> that fits the
-3-month / 2×A100 constraints, rather than salvaging another pivot off
-the existing work. (That hunt → <a href="../day-03/">Day 24</a>.)</p>
+<h3 id="day-1-sunday-june-7-2026"><a href="day-01/">Day 1 — Sunday, June 7, 2026</a><a class="headerlink" href="#day-1-sunday-june-7-2026" title="Permanent link">&para;</a></h3>
+<p>The biggest single day of the project — a direction audited to death and a
+breakthrough pivot in the same session. June 7 opened on the n=500 results
+from <a href="../week-04/day-05/">Week 4 Day 5</a>:</p>
+<ul>
+<li><strong>The June-6 oracle was a mirage.</strong> A luck-floor permutation control
+  showed the per-question oracle sits <strong>far <em>below</em></strong> the
+  independent-errors floor on every dataset (pooled real oracle 0.550 vs
+  luck floor 0.753, <strong>z = −29σ</strong>). The four single-model arms make
+  <em>positively correlated</em> errors — they're right together and wrong
+  together. The +9–10pp "headroom" was a max-of-K artifact, not reachable
+  signal.</li>
+<li><strong>Forensic audit → single-model routing definitively closed.</strong> Two root
+  causes: (1) think/nothink/RAG are <em>efficiency</em> knobs being misused as
+  <em>accuracy</em> knobs; (2) nothink/RAG are the <em>same 7B</em> lightly perturbed, so
+  the arms share one knowledge base and fail on the same questions. The
+  decisive <strong>PMC-VQA recoverability control</strong> (the competent benchmark — if
+  routing could work anywhere, here) confirmed it: oracle 0.690 ≪ luck
+  floor 0.931 (<strong>z = −25.1</strong>), and a trained router (<strong>0.498</strong>) can't even
+  match the best single arm (<strong>0.516</strong>).</li>
+<li><strong>Pivot: 7B→32B cross-model cascade.</strong> Complementarity needs <em>different
+  models</em>, not different policies on one model. Downloaded MedVLThinker-32B
+  (63 GB, 14 shards, split across both A100s), built a new <strong>vLLM 25.09
+  container</strong>, wrote <code>run_32b_vllm.py</code> (fixed an 80%-trace-truncation bug
+  via <code>max_tokens=2048</code>, a 6-image MedXpert crash via
+  <code>limit_mm_per_prompt=8</code>), and generated paired 32B/cheap-7B labels across
+  all six datasets overnight.</li>
+<li><strong>Cross-model complementarity is real</strong> — the <code>only-7B</code> cells are
+  <strong>20.8–26.8%</strong> (the cheap 7B rescues 104–134 questions per dataset the
+  32B gets wrong), and the oracle clears 32B-alone by <strong>+12.5pp pooled</strong>.
+  Fundamentally different from the redundant single-model arms; the pivot
+  was the right call.</li>
+<li><strong>…but the naive confidence-margin gate can't reach it on hard
+  benchmarks</strong> — it escalates <strong>96%</strong> to the 32B and just reproduces it.
+  The overnight <strong>hidden-state probe</strong> (<code>router_escalate.py</code>, layer-14
+  features) was <strong>falsified</strong>: hidden-state AUROC is <em>worse</em> than the raw
+  margin everywhere — the headroom isn't reachable from 7B internals.</li>
+<li><strong>The real, defensible result: a working efficiency cascade on competent
+  medical VQA.</strong> The simple margin gate matches or beats a 32B medical VLM
+  at <strong>30–60% of its inference cost</strong> across four datasets (VQA-RAD
+  <strong>0.781 @ 28%</strong> vs 32B 0.776; PathVQA 0.680 @ 60%; SLAKE 0.762 @ 63%;
+  PMC-VQA 0.554 @ 56%). MedXpert fails cleanly (near-chance, AUROC ~0.5).</li>
+</ul>
+<p>The honest framing: <strong>efficiency, not accuracy</strong> — match 32B quality at
+~60% cost where the 7B's confidence is predictive; the +12.5pp accuracy
+headroom is real but unreachable from cheap signals, and that is the
+precise open problem. The most coherent the project has been: a working
+method plus a clean set of negatives that bound it. No code pushed today.</p>
 <hr />
-<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
-<p>One commit to
-<strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>huatuo-llava-v15-med-pruning</code></a></strong>:</p>
-<p><strong><a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c"><code>04ef73c</code></a></strong>
-— <em>Add confidence + stability probes (Direction-D go/no-go).</em> Two
-scripts. <code>analysis/two_feature_probe.py</code> joins the grid kr=1.0 /
-layer-28 dump with the scored run's option logprobs (defensive schema
-inspection, reproduces the entropy AUROC as a join self-check), then
-fits margin and option-logprob on top of <code>lens_entropy</code>: no meaningful
-lift (best single 0.762, best combo 0.758), multi-option subset 0.814.
-<code>analysis/stability_confidence_probe.py</code> brings in the cross-budget
-evidence-flip and self-consistency stability features and reports
-their lift over confidence per dataset — the deciding run (Phase 6):
-stability 0.548 alone, +0.001 combined, −0.002 on PathVQA →
-<strong>Direction-D confidence-router closed.</strong> (The grid-analysis run
-produced the budget×layer AUROC table and <code>grid_analysis_&lt;date&gt;.log</code>
-under <code>results/grid_probe/</code>; the two probe scripts are the day's
-tracked code artifacts.)</p>
+<h2 id="plan-for-the-week-jun-7-jun-13">Plan for the week (Jun 7 – Jun 13)<a class="headerlink" href="#plan-for-the-week-jun-7-jun-13" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Audit the single-model router</strong> (Day 1) — luck-floor control +
+      PMC-VQA recoverability → <strong>closed</strong> (correlated errors, z = −25 to
+      −29σ; trained router below best-fixed).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Pivot to the 7B→32B cascade</strong> (Day 1) — 32B downloaded, vLLM 25.09
+      container built, paired labels generated; <strong>complementarity confirmed
+      real</strong> (+12.5pp oracle, 20–27% only-7B).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Escalation-gate test</strong> (Day 1) — naive margin gate + hidden-state
+      probe; hidden state <strong>falsified</strong> (worse than margin); margin cascade
+      <strong>works as efficiency</strong> on the four competent benchmarks.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Decide the framing to commit:</strong> efficiency cascade (Path B, the
+      defensible result now) vs. a further hunt for a stronger escalation
+      signal to reach the accuracy headroom (Path A, a real experiment that
+      could fail).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If efficiency framing: build clean <strong>accuracy-vs-cost curves</strong> across
+      the four competent benchmarks (VQA-RAD / SLAKE / PathVQA / PMC-VQA);
+      decide cost metric (escalation % → FLOPs / latency).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>June 8:</strong> present <strong>m1</strong> (deck ready).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> scripts
+      (<code>pmcvqa_recoverability.py</code>, <code>run_32b_vllm.py</code>, <code>router_escalate.py</code>,
+      cascade analysis, the vLLM 25.09 Dockerfile) once the framing is set.</li>
+</ul>
+<hr />
+<h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
+<p><em>Write this at the end of the week. The question Day 1 sets up: does the
+project commit to the efficiency-cascade framing (a real, modest, defensible
+contribution — 32B quality at ~60% cost on competent medical VQA), or spend
+more of the week chasing a stronger escalation signal to reach the +12.5pp
+accuracy headroom that the margin and layer-14 hidden states both can't
+touch? Day 1 gave the project its first working method and a clean boundary
+around it; the week decides how much further to push the boundary.</em></p>
 
 
 
@@ -2131,7 +1757,7 @@ tracked code artifacts.)</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../day-01/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 1 — Sunday, May 31, 2026">
+          <a href="../week-04/day-05/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 5 — Saturday, June 6, 2026">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2141,20 +1767,20 @@ tracked code artifacts.)</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Day 1 — Sunday, May 31, 2026
+                Day 5 — Saturday, June 6, 2026
               </div>
             </div>
           </a>
         
         
           
-          <a href="../day-03/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 3 — Tuesday, June 2, 2026">
+          <a href="day-01/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 1 — Sunday, June 7, 2026">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Day 3 — Tuesday, June 2, 2026
+                Day 1 — Sunday, June 7, 2026
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2195,12 +1821,12 @@ tracked code artifacts.)</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
-        <script src="../../../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

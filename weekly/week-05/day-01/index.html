@@ -1,0 +1,2429 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.">
+      
+      
+        <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
+      
+      
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-05/day-01/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../../../bugs/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Day 1 — Sunday, June 7, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-1-sunday-june-7-2026" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Question-Aware Visual Token Pruning for Medical VLMs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 1 — Sunday, June 7, 2026
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../project/" class="md-tabs__link">
+        
+  
+    
+  
+  Project Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../baseline/" class="md-tabs__link">
+          
+  
+    
+  
+  Baseline
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../experiments/" class="md-tabs__link">
+        
+  
+    
+  
+  Experiments
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+    
+  
+  Weekly Log
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../bugs/" class="md-tabs__link">
+        
+  
+    
+  
+  Bugs & Issues
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../resources/" class="md-tabs__link">
+        
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Question-Aware Visual Token Pruning for Medical VLMs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Leokuan0208/question-aware-vtp-medvlm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../baseline/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Baseline
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Baseline
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/huatuo-vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HuatuoGPT-Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/qwen25-vl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Qwen2.5-VL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/llava-med/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LLaVA-Med
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../experiments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Experiments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Weekly Log
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Weekly Log
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-01/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Week 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 10, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 11, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 12, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 13, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 14, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-06/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 6 — Friday, May 15, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-01/day-07/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 7 — Saturday, May 16, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-02/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Week 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 18, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 19, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 20, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-02/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 21, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-03/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 3
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Week 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 24, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, May 25, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, May 26, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Wednesday, May 27, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-03/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Thursday, May 28, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-04/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 4
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Week 4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-04/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, May 31, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-04/day-02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 2 — Monday, June 1, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-04/day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Tuesday, June 2, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-04/day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Thursday, June 4, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-04/day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Saturday, June 6, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 5
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            Week 5
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, June 7, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Sunday, June 7, 2026
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-reading-the-n500-gate-the-oracle-was-a-mirage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Reading the n=500 gate: the oracle was a mirage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-the-forensic-audit-and-the-pmc-vqa-recoverability-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — The forensic audit, and the PMC-VQA recoverability control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-pivot-a-7b32b-cross-model-cascade-and-the-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The pivot: a 7B→32B cross-model cascade (and the infrastructure)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-cross-model-complementarity-is-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — Cross-model complementarity is real
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-but-a-naive-margin-gate-cant-reach-it-on-hard-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — …but a naive margin gate can't reach it on hard benchmarks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-overnight-the-hidden-state-escalation-probe-and-the-real-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — Overnight: the hidden-state escalation probe, and the real result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-honest-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      The honest conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-next-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for next session
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bugs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bugs & Issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-reading-the-n500-gate-the-oracle-was-a-mirage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Reading the n=500 gate: the oracle was a mirage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-the-forensic-audit-and-the-pmc-vqa-recoverability-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — The forensic audit, and the PMC-VQA recoverability control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-pivot-a-7b32b-cross-model-cascade-and-the-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The pivot: a 7B→32B cross-model cascade (and the infrastructure)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-cross-model-complementarity-is-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — Cross-model complementarity is real
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-but-a-naive-margin-gate-cant-reach-it-on-hard-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — …but a naive margin gate can't reach it on hard benchmarks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-overnight-the-hidden-state-escalation-probe-and-the-real-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — Overnight: the hidden-state escalation probe, and the real result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-honest-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      The honest conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-next-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for next session
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-05/day-01.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="day-1-sunday-june-7-2026">Day 1 — Sunday, June 7, 2026<a class="headerlink" href="#day-1-sunday-june-7-2026" title="Permanent link">&para;</a></h1>
+<p><a href="../">← Back to Week 5 overview</a></p>
+<p><strong>Breakthrough + reframe</strong> (single-model routing closed → 7B→32B
+cross-model cascade) · Week 5, Day 1 · <strong>Day 29 of the project</strong></p>
+<hr />
+<p>The biggest single day of the project: a direction audited to death and a
+genuine breakthrough reached in the same session. It opened on the n=500
+results launched <a href="../../week-04/day-05/">Friday</a> and asked the decisive
+question Week 4 had deferred — <em>is the routable oracle headroom real, or a
+statistical mirage?</em> A luck-floor control answered cleanly: <strong>mirage.</strong> The
+four single-model policies make <em>correlated</em> errors, so their "oracle" is
+an artifact of taking the best of four. A forensic audit and a competent-regime
+control (PMC-VQA) confirmed it from two more angles, and <strong>single-model
+routing was definitively closed</strong> — the fourth direction to die in the
+pivot. But the diagnosis carried its own prescription: complementarity
+requires <em>different models</em>, not different policies on one model. That drove
+the pivot to a <strong>7B→32B cross-model cascade</strong>, a 63 GB model download, a new
+vLLM container, and an overnight paired-label run — and the cascade is the
+first thing all week where the core ingredient (complementarity) <strong>actually
+exists</strong>: the cheap 7B rescues 20–27% of the questions the 32B misses,
+oracle +12.5pp over always-32B. The catch, confirmed two ways: that accuracy
+headroom is <strong>not reachable</strong> from a cheap escalation signal (the margin gate
+escalates 96% on hard sets; a layer-14 hidden-state probe is <em>worse</em> than the
+margin). What <em>is</em> reachable, and is the day's real result, is a <strong>working
+efficiency cascade on competent medical VQA</strong> — 32B-level accuracy at 30–60%
+of 32B cost across four benchmarks.</p>
+<p>No code was pushed today — every script (<code>pmcvqa_recoverability.py</code>,
+<code>run_32b_vllm.py</code>, <code>router_escalate.py</code>, the cascade analysis, the vLLM 25.09
+Dockerfile) lives in the <code>medvlthinker-imgdiff-compute</code> repo; the push waits
+until the framing is committed, on the week's standing rule.</p>
+<div class="admonition note">
+<p class="admonition-title">Day count and a new week</p>
+<p>June 7 is the first day of <strong>Week 5</strong> (the weekly log runs Sun–Sat;
+Week 5 = Jun 7 – Jun 13). Global day numbers track the calendar
+(Day 1 = May 10), so June 7 is <strong>Day 29</strong>.</p>
+</div>
+<hr />
+<h2 id="phase-1-reading-the-n500-gate-the-oracle-was-a-mirage">Phase 1 — Reading the n=500 gate: the oracle was a mirage<a class="headerlink" href="#phase-1-reading-the-n500-gate-the-oracle-was-a-mirage" title="Permanent link">&para;</a></h2>
+<p>The <a href="../../week-04/day-05/#phase-7-the-n500-sharded-baseline-launched-and-running">n=500 sharded run</a>
+finished clean on both VMs; the <code>_s0of2</code> / <code>_s1of2</code> checkpoints merged by
+per-cell concatenation into a 1500-sample (3-dataset) record set. Week 4
+ended on an exciting-looking number — a per-question oracle ~9–10pp above
+the best fixed policy. Before trusting it, it needed the control Week 4
+flagged as decisive: <strong>is that oracle genuine complementarity, or just the
+inflation you always get from taking the best of K noisy arms?</strong></p>
+<p>The control is a <strong>luck-floor permutation test</strong> (<code>oracle_luckfloor.py</code>,
+2000 permutations, seed 42). The idea: the oracle is a <em>maximum over four
+cells</em>, and maxima inflate by chance — four arms each ~25–50% accurate will
+have <em>some</em> arm right on most questions purely because four independent
+draws rarely all miss. The luck floor is exactly that expected value, the
+oracle you'd see <strong>if the four arms made independent errors</strong> at their
+measured accuracies:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>luck floor = 1 − (1−acc₁)(1−acc₂)(1−acc₃)(1−acc₄)
+</span></code></pre></div>
+<p>The permutation version shuffles each cell's correctness pattern across
+questions (preserving each cell's accuracy, destroying any per-question
+relationship) and recomputes the oracle 2000× — same floor, plus a spread
+to express the gap in σ. The reads: real ≈ luck → artifact; real ≫ luck →
+genuine complementarity; <strong>real ≪ luck → the arms are <em>redundant</em>
+(correlated errors).</strong> The result landed on that third branch, hard:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th style="text-align: center;">nothink·norag</th>
+<th style="text-align: center;">think·norag</th>
+<th style="text-align: center;">rag·StatPearls</th>
+<th style="text-align: center;">rag·Textbooks</th>
+<th style="text-align: center;">best fixed</th>
+<th style="text-align: center;">real oracle</th>
+<th style="text-align: center;">luck floor</th>
+<th style="text-align: center;">gap (σ)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MedXpert-Reasoning</td>
+<td style="text-align: center;">0.228</td>
+<td style="text-align: center;">0.230</td>
+<td style="text-align: center;">0.208</td>
+<td style="text-align: center;">0.200</td>
+<td style="text-align: center;">0.230</td>
+<td style="text-align: center;">0.458</td>
+<td style="text-align: center;">0.623</td>
+<td style="text-align: center;"><span class="cell-bad">−0.165 (−13.2σ)</span></td>
+</tr>
+<tr>
+<td>MedXpert-Understanding</td>
+<td style="text-align: center;">0.266</td>
+<td style="text-align: center;">0.268</td>
+<td style="text-align: center;">0.276</td>
+<td style="text-align: center;">0.242</td>
+<td style="text-align: center;">0.276</td>
+<td style="text-align: center;">0.502</td>
+<td style="text-align: center;">0.705</td>
+<td style="text-align: center;"><span class="cell-bad">−0.203 (−15.8σ)</span></td>
+</tr>
+<tr>
+<td>PMC-VQA</td>
+<td style="text-align: center;">0.516</td>
+<td style="text-align: center;">0.494</td>
+<td style="text-align: center;">0.474</td>
+<td style="text-align: center;">0.462</td>
+<td style="text-align: center;">0.516</td>
+<td style="text-align: center;">0.690</td>
+<td style="text-align: center;">0.930</td>
+<td style="text-align: center;"><span class="cell-bad">−0.240 (−25.1σ)</span></td>
+</tr>
+<tr>
+<td><strong>Pooled</strong></td>
+<td style="text-align: center;"><strong>0.337</strong></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;"><strong>0.341</strong></td>
+<td style="text-align: center;"><strong>0.550</strong></td>
+<td style="text-align: center;"><strong>0.753</strong></td>
+<td style="text-align: center;"><span class="cell-bad"><strong>−0.203 (−29.3σ)</strong></span></td>
+</tr>
+</tbody>
+</table>
+<p>The real oracle sits <strong>20 points below</strong> the independent-errors floor at
+<strong>−29σ pooled</strong>. That's not "near the floor" (independent, nothing special)
+— it's far <em>below</em> it, the signature of arms whose errors are <strong>positively
+correlated</strong>: the four policies tend to be right together and wrong
+together. Which is exactly what they are mechanically — not four different
+models, but one 7B lightly perturbed by think/nothink and a retrieved
+passage. They share the same knowledge and perception, so they share most
+of their successes <em>and</em> failures. The Week-4 oracle headroom was real as a
+number but was a max-of-K mirage, not a signal any router could reach.</p>
+<hr />
+<h2 id="phase-2-the-forensic-audit-and-the-pmc-vqa-recoverability-control">Phase 2 — The forensic audit, and the PMC-VQA recoverability control<a class="headerlink" href="#phase-2-the-forensic-audit-and-the-pmc-vqa-recoverability-control" title="Permanent link">&para;</a></h2>
+<p>That demanded a full reckoning with <em>why</em> the routing direction kept
+failing across experiments. The audit named two structural root causes —
+not bad luck, design errors:</p>
+<ol>
+<li><strong>Wrong tool for the job.</strong> think / nothink / RAG are <em>efficiency</em>
+   methods — proven to save compute while <em>preserving</em> accuracy. They were
+   being used as <em>accuracy</em> methods. Routing among configurations can't
+   conjure correctness that none of them possesses.</li>
+<li><strong>Same brain, same blind spots.</strong> The 7B is RL-trained to think, so
+   "nothink" is a <em>hobbled version of the same model</em>; RAG just prepends a
+   passage. All four arms share one knowledge base, so they fail on the
+   <strong>same</strong> questions. Routing needs <em>complementary</em> errors; these are
+   <em>redundant</em> — precisely what the −29σ measured.</li>
+</ol>
+<p>The honest stress-test was to run the control on the benchmark where
+routing should work if it works anywhere: <strong>PMC-VQA</strong>, the competent regime
+(0.516, well off the floor), via <code>pmcvqa_recoverability.py</code>. If the arms
+are redundant <em>even here</em>, single-model routing is dead, not merely weak:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>PMC-VQA RECOVERABILITY CHECK  (N=500)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>(1) ORACLE vs LUCK FLOOR
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    nothink_norag 0.516 · think_norag 0.494 · think_rag_StatPearls 0.474 · think_rag_Textbooks 0.462
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    best-fixed = 0.516   oracle = 0.690   luck floor = 0.931 ± 0.010
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    &gt;&gt; oracle − luck = −0.241  (z = −25.1)   &gt;&gt;&gt; NOT above floor: redundant arms
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>(2)+(3) PREDICTABILITY + ROUTED GAIN  (scalar confidence features)
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    per-arm AUROC: noth.nor 0.72 · thin.nor 0.70 · thin.Sta 0.71 · thin.Tex 0.72
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    routed = 0.498   best_fixed = 0.516
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    &gt;&gt; routed − best_fixed = −0.018 ± 0.033     &gt;&gt; shuffle control = 0.498
+</span></code></pre></div>
+<p>Two things worth separating here. The per-arm <strong>AUROC ~0.70–0.72</strong> means
+confidence <em>does</em> predict whether a given arm is right — the signal exists.
+But a <strong>trained router still scores 0.498, <em>below</em> the 0.516 of just always
+using the best single arm.</strong> That's the crux: a predictive confidence
+signal can't manufacture complementarity that isn't in the arms. When every
+arm is wrong on the same question, knowing <em>which</em> arm is most confident
+buys nothing. <strong>Single-model routing definitively closed</strong> — the fourth
+direction killed in the pivot (after Direction D, image-difficulty, and the
+joint perception+knowledge framing).</p>
+<p>The prescription falls straight out of the diagnosis: if the failure is
+"same model → correlated errors," the fix is <strong>genuinely different models</strong>.</p>
+<hr />
+<h2 id="phase-3-the-pivot-a-7b32b-cross-model-cascade-and-the-infrastructure">Phase 3 — The pivot: a 7B→32B cross-model cascade (and the infrastructure)<a class="headerlink" href="#phase-3-the-pivot-a-7b32b-cross-model-cascade-and-the-infrastructure" title="Permanent link">&para;</a></h2>
+<p>The new direction: a <strong>cascade</strong> — run the cheap 7B by default, escalate
+the hard questions to a larger, <em>architecturally different</em> model (the 32B),
+and measure both the accuracy headroom (does the pair complement?) and the
+realizable cost saving (can a cheap gate decide when to escalate?). Standing
+up the 32B was most of the day's engineering:</p>
+<ul>
+<li><strong>Model.</strong> Downloaded <code>MedVLThinker-32B-RL_m23k</code> to
+  <code>/data/dan/weights/</code> — ~63 GB, 14 bf16 shards, split across <strong>both A100s</strong>
+  via <code>device_map="auto"</code> (layer split 32/37).</li>
+<li><strong>Container.</strong> Built a fresh <strong>NGC vLLM 25.09</strong> image in KUBERUN format
+  (vLLM 0.10.1.1, torch 2.9.0a0, transformers 4.55.2, Python 3.12, CUDA
+  13.0), this time with <strong>code-server</strong> as the UI instead of JupyterLab
+  (<code>--bind-addr 0.0.0.0:8888 --auth none "$HOME"</code>), and the JupyterLab
+  <code>root_dir</code> fix baked permanently into <code>CMD</code>.</li>
+<li><strong>Three bugs fixed in <code>run_32b_vllm.py</code></strong> — the ones that would have
+  silently corrupted the labels:<ul>
+<li><code>max_tokens=2048</code> — the default 512 truncated <strong>80% of think traces</strong>
+  before the answer letter, collapsing accuracy to ~10%. (The same
+  truncation class that's bitten before.)</li>
+<li><code>limit_mm_per_prompt={"image": 8}</code> — fixes a hard crash on MedXpert's
+  6-image samples (vLLM's default per-prompt image cap was too low).</li>
+<li>per-chunk <code>try/except</code> → one-by-one fallback, so one bad sample can't
+  kill a whole batch.</li>
+</ul>
+</li>
+</ul>
+<details class="note">
+<summary><code>run_32b_vllm.py</code> — the label-corrupting defaults that had to change</summary>
+<p>The two <code>max_tokens</code> / image-cap fixes are the difference between
+trustworthy 32B labels and a silently broken run. The 32B serves think
+mode; the cheap-7B baseline runs nothink with a 16-token cap.</p>
+<div class="language-python highlight"><span class="filename">Python</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">LLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;/data/dan/weights/MedVLThinker-32B-RL_m23k&quot;</span><span class="p">,</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>          <span class="n">tensor_parallel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>                 <span class="c1"># split across both A100s</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>          <span class="n">limit_mm_per_prompt</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span>        <span class="c1"># MedXpert has 6-image items</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>          <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;bfloat16&quot;</span><span class="p">,</span> <span class="n">gpu_memory_utilization</span><span class="o">=</span><span class="mf">0.92</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">sp</span> <span class="o">=</span> <span class="n">SamplingParams</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>   <span class="c1"># 512 truncated 80% of traces</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">run_chunk</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="k">return</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>            <span class="c1"># fast path</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="k">return</span> <span class="p">[</span><span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">([</span><span class="n">b</span><span class="p">],</span> <span class="n">sp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">]</span>   <span class="c1"># resilient one-by-one</span>
+</span></code></pre></div>
+</details>
+<ul>
+<li><strong>Overnight paired-label job.</strong> Generated complete, paired labels across
+  <strong>all six datasets</strong> for both the <strong>32B (think)</strong> and the <strong>cheap-7B
+  (nothink, 16 tokens)</strong>, plus <strong>layer-14 hidden-state features</strong>
+  (<code>feats_full/</code>) for the escalation probe in Phase 6.</li>
+</ul>
+<hr />
+<h2 id="phase-4-cross-model-complementarity-is-real">Phase 4 — Cross-model complementarity is real<a class="headerlink" href="#phase-4-cross-model-complementarity-is-real" title="Permanent link">&para;</a></h2>
+<p>With paired 7B/32B labels in hand, the cascade complementarity test
+(<code>cascade_complementarity.py</code>). The question: do the cheap 7B and the 32B
+have a non-trivial <code>only-7B</code> cell — questions the small model gets that the
+big one misses? Unlike the single-model arms, the answer is <strong>yes</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset (n=500)</th>
+<th style="text-align: center;">7B cheap</th>
+<th style="text-align: center;">32B</th>
+<th style="text-align: center;">both</th>
+<th style="text-align: center;"><strong>only-7B</strong></th>
+<th style="text-align: center;">only-32B</th>
+<th style="text-align: center;">neither</th>
+<th style="text-align: center;">oracle(7B∣32B)</th>
+<th style="text-align: center;">gain vs 32B</th>
+<th style="text-align: center;">7B rescues</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MedXpert-Reasoning</td>
+<td style="text-align: center;">0.228</td>
+<td style="text-align: center;">0.314</td>
+<td style="text-align: center;">0.190</td>
+<td style="text-align: center;"><span class="cell-good">0.268</span></td>
+<td style="text-align: center;">0.124</td>
+<td style="text-align: center;">0.418</td>
+<td style="text-align: center;">0.582</td>
+<td style="text-align: center;"><span class="cell-good">+0.268</span></td>
+<td style="text-align: center;">134 (26.8%)</td>
+</tr>
+<tr>
+<td>MedXpert-Understanding</td>
+<td style="text-align: center;">0.266</td>
+<td style="text-align: center;">0.382</td>
+<td style="text-align: center;">0.250</td>
+<td style="text-align: center;"><span class="cell-good">0.252</span></td>
+<td style="text-align: center;">0.132</td>
+<td style="text-align: center;">0.366</td>
+<td style="text-align: center;">0.634</td>
+<td style="text-align: center;"><span class="cell-good">+0.252</span></td>
+<td style="text-align: center;">126 (25.2%)</td>
+</tr>
+<tr>
+<td>PMC-VQA</td>
+<td style="text-align: center;">0.516</td>
+<td style="text-align: center;">0.550</td>
+<td style="text-align: center;">0.482</td>
+<td style="text-align: center;"><span class="cell-good">0.208</span></td>
+<td style="text-align: center;">0.068</td>
+<td style="text-align: center;">0.242</td>
+<td style="text-align: center;">0.758</td>
+<td style="text-align: center;"><span class="cell-good">+0.208</span></td>
+<td style="text-align: center;">104 (20.8%)</td>
+</tr>
+<tr>
+<td><strong>Pooled</strong></td>
+<td style="text-align: center;"><strong>0.337</strong></td>
+<td style="text-align: center;"><strong>0.415</strong></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;"><strong>0.658</strong></td>
+<td style="text-align: center;"><strong>+0.243</strong></td>
+<td style="text-align: center;"><strong>24.3%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>only-7B</code> pool is <strong>20.8–26.8%</strong> — the cheap 7B genuinely rescues
+104–134 questions per dataset that the 32B gets wrong. A perfect router over
+the pair would beat always-32B by <strong>+0.125 pooled</strong> (this headroom built on
+the <em>realistic</em> cheap-7B, not the inflated best-of-4). This is
+<strong>fundamentally different</strong> from the morning's redundant single-model arms:
+there's a real <code>only-7B</code> cell because the two models are genuinely
+different architectures with different failure modes. The 32B pivot was the
+right call. (The luck-floor z is still mildly negative, −4.5 to −12.2 — the
+two models share <em>some</em> correlated errors, as any two medical VLMs would —
+but the existence of a substantial <code>only-7B</code> pool is the part that matters
+for a cascade.)</p>
+<hr />
+<h2 id="phase-5-but-a-naive-margin-gate-cant-reach-it-on-hard-benchmarks">Phase 5 — …but a naive margin gate can't reach it on hard benchmarks<a class="headerlink" href="#phase-5-but-a-naive-margin-gate-cant-reach-it-on-hard-benchmarks" title="Permanent link">&para;</a></h2>
+<p>The oracle is the <em>ceiling</em>. The <em>implementable</em> version routes on a cheap
+signal: keep a question on the 7B when its confidence margin (top1 − top2
+logprob) is high, escalate to the 32B when it's low. That realistic cascade:</p>
+<ul>
+<li><strong>Pooled gated = 0.415, identical to always-32B (0.415) — escalating
+  96%.</strong> The margin gate essentially gave up on the 7B and sent almost
+  everything to the big model, so it just reproduces the 32B's accuracy at
+  the 32B's cost. On the two near-chance MedXpert sets the 7B's confidence
+  is noise (it can't tell which questions it actually knows), so the gate
+  can't keep anything on the cheap model. <strong>The same predictability wall
+  from the morning, confirmed a third time.</strong></li>
+<li><strong>PMC-VQA is the exception, and the seed:</strong> gated <strong>0.528</strong> escalating
+  only <strong>58%</strong> — within ~2pp of always-32B (0.550) while sending <strong>42% of
+  questions to the cheap model.</strong> That's not an accuracy win, it's an
+  <em>efficiency</em> one: ~96% of 32B accuracy at ~58% of 32B compute. It works
+  here precisely because PMC-VQA is the competent regime where the 7B's
+  confidence is predictive (AUROC ~0.72), not noise.</li>
+</ul>
+<p>So the naive confidence cascade is a clean <strong>NO on accuracy</strong> for the hard
+sets — the +12pp the oracle promises is not reachable from the cheap margin
+— but it hints at a real efficiency play wherever the 7B's confidence
+carries signal.</p>
+<hr />
+<h2 id="phase-6-overnight-the-hidden-state-escalation-probe-and-the-real-result">Phase 6 — Overnight: the hidden-state escalation probe, and the real result<a class="headerlink" href="#phase-6-overnight-the-hidden-state-escalation-probe-and-the-real-result" title="Permanent link">&para;</a></h2>
+<p>One pre-registered question remained: is the <em>margin</em> simply too crude — would
+a <strong>trained probe on the 7B's layer-14 hidden states</strong> identify the keep-vs-escalate
+boundary better, and so reach some of that +12pp headroom?
+<code>router_escalate.py</code> tested it across <strong>all six datasets</strong> overnight
+(margin gate vs. <code>hidden_last</code> / <code>hidden_mean</code> / <code>hidden+margin</code> probes).
+The answer is a clean, pre-registered <strong>no</strong> — and underneath the negative
+sits the day's actual result.</p>
+<p><strong>The hidden state lost to the margin.</strong> Compared at accuracy-for-a-given-escalation-cost,
+the raw margin is better or equal everywhere, and its <strong>7B-correctness AUROC
+is consistently <em>higher</em> than the trained hidden-state probe's</strong>: VQA-RAD
+0.76 vs 0.55, SLAKE 0.74 vs 0.63, PMC-VQA 0.71 vs 0.63, PathVQA 0.63 vs 0.62.
+The fancy signal is the <em>weaker</em> one. The +12.5pp oracle headroom is <strong>not
+reachable from layer-14 features</strong> — the margin was already the better gate,
+and it can't reach it either.</p>
+<p><strong>But the margin gate is a working efficiency cascade on competent medical
+VQA</strong> — this is the finding to carry forward. On the four closed-form
+benchmarks, the simple margin gate gets 32B-level accuracy (sometimes
+<em>better</em>) while sending 30–60% of questions to the cheap 7B:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th style="text-align: center;">margin cascade</th>
+<th style="text-align: center;">escalates</th>
+<th style="text-align: center;">always-32B</th>
+<th style="text-align: center;">7B-pred AUROC</th>
+<th>read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VQA-RAD</td>
+<td style="text-align: center;"><span class="cell-good">0.781</span></td>
+<td style="text-align: center;"><strong>28%</strong></td>
+<td style="text-align: center;">0.776</td>
+<td style="text-align: center;">0.76</td>
+<td>beats 32B at &lt;⅓ the cost</td>
+</tr>
+<tr>
+<td>PathVQA</td>
+<td style="text-align: center;"><span class="cell-good">0.680</span></td>
+<td style="text-align: center;">60%</td>
+<td style="text-align: center;">0.673</td>
+<td style="text-align: center;">0.63</td>
+<td>beats 32B at 60% cost</td>
+</tr>
+<tr>
+<td>SLAKE</td>
+<td style="text-align: center;">0.762</td>
+<td style="text-align: center;">63%</td>
+<td style="text-align: center;">0.764</td>
+<td style="text-align: center;">0.74</td>
+<td>matches 32B at 63% cost</td>
+</tr>
+<tr>
+<td>PMC-VQA</td>
+<td style="text-align: center;">0.554</td>
+<td style="text-align: center;">56%</td>
+<td style="text-align: center;">0.556</td>
+<td style="text-align: center;">0.71</td>
+<td>matches 32B at ~half cost</td>
+</tr>
+<tr>
+<td>MedXpert ×2</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">96–97%</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">~0.50</td>
+<td>fails (near-chance, nothing predictable)</td>
+</tr>
+</tbody>
+</table>
+<p>The two MedXpert sets fail cleanly and <em>for a stated reason</em> — near-chance
+accuracy means the 7B's confidence is uninformative (AUROC ~0.5), so there's
+nothing to gate on. That's a boundary, not an embarrassment.</p>
+<hr />
+<h2 id="the-honest-conclusion">The honest conclusion<a class="headerlink" href="#the-honest-conclusion" title="Permanent link">&para;</a></h2>
+<p>Both halves, stated without spin:</p>
+<ol>
+<li><strong>The hidden-state gate hypothesis is falsified</strong> — layer-14 features are
+   a <em>worse</em> escalation signal than the raw confidence margin (lower AUROC
+   on every dataset). A clean, pre-registered negative.</li>
+<li><strong>The simple confidence-margin cascade is a real efficiency method on
+   competent medical VQA</strong> — it matches or beats a 32B medical VLM at 30–60%
+   of its inference cost across four datasets. Framed honestly as
+   <strong>efficiency, not accuracy</strong>: "match 32B quality at ~60% cost via
+   confidence-gated cross-model cascading."</li>
+<li><strong>Cross-model complementarity is real but its accuracy headroom is
+   unreachable from cheap signals.</strong> The <code>only-7B</code> pool exists (+12.5pp
+   oracle), but neither the margin nor layer-14 hidden states can find it on
+   the hard benchmarks — that is the precise, well-defined open problem.</li>
+</ol>
+<p>This is the most coherent the project has been: a <strong>working method</strong> (the
+margin cascade on competent VQA) plus a <strong>clean set of negatives</strong> that
+draw its boundaries (no accuracy gain on near-chance MedXpert; hidden states
+don't beat the margin). The first direction in the entire pivot whose core
+ingredient — complementarity — actually exists.</p>
+<div class="admonition note">
+<p class="admonition-title">On the project's direction</p>
+<p>The site name still says <em>question-aware visual token pruning</em>. The
+working direction is now a <strong>7B→32B cross-model efficiency cascade</strong> on
+MedVLThinker. Unlike every prior pivot, this one has a <em>positive</em>
+result to point at (the competent-regime efficiency cascade), so the
+rebrand is closer — but it stays deferred until the framing (efficiency
+vs. a further reach for the accuracy headroom) is committed and the
+accuracy-vs-cost curves are built.</p>
+</div>
+<hr />
+<h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>The June-6 oracle was a max-of-K mirage</strong> — luck-floor control: real
+   oracle ≪ independent-errors floor on every dataset (pooled 0.550 vs
+   0.753, <strong>−29.3σ</strong>); the four single-model arms make positively
+   correlated errors.</li>
+<li><strong>Forensic audit → single-model routing definitively closed</strong> — two root
+   causes (efficiency knobs misused as accuracy knobs; one model's arms
+   share blind spots). PMC-VQA recoverability control (competent regime)
+   confirmed it: oracle 0.690 ≪ luck floor 0.931 (<strong>z = −25.1</strong>), trained
+   router <strong>0.498 &lt; best-fixed 0.516</strong>. The fourth dead direction of the
+   pivot.</li>
+<li><strong>Pivot to a 7B→32B cross-model cascade</strong> — complementarity needs
+   different <em>models</em>. Downloaded the 32B (63 GB, 14 shards, both A100s),
+   built a vLLM 25.09 / code-server container, wrote <code>run_32b_vllm.py</code> with
+   three label-saving fixes, generated paired 32B/cheap-7B labels + layer-14
+   features across all six datasets.</li>
+<li><strong>Cross-model complementarity is real</strong> — <code>only-7B</code> cells <strong>20.8–26.8%</strong>,
+   oracle <strong>+12.5pp</strong> over always-32B; the cheap 7B rescues 104–134
+   questions/dataset the 32B misses.</li>
+<li><strong>Naive margin gate can't reach the headroom on hard sets</strong> — escalates
+   <strong>96%</strong>, reproduces 32B; the predictability wall a third time. PMC-VQA is
+   the efficiency seed (0.528 @ 58% esc).</li>
+<li><strong>Hidden-state probe falsified</strong> — layer-14 AUROC <em>worse</em> than the margin
+   everywhere; the +12.5pp headroom isn't reachable from 7B internals.</li>
+<li><strong>The defensible result: a working efficiency cascade on four competent
+   benchmarks</strong> — 32B-level accuracy at 30–60% cost (VQA-RAD 0.781 @ 28%;
+   PathVQA 0.680 @ 60%; SLAKE 0.762 @ 63%; PMC-VQA 0.554 @ 56%); MedXpert
+   fails cleanly.</li>
+</ol>
+<hr />
+<h3 id="plan-for-next-session">Plan for next session<a class="headerlink" href="#plan-for-next-session" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Commit the day's scripts</strong> to <code>medvlthinker-imgdiff-compute</code> once the
+      framing is set — <code>pmcvqa_recoverability.py</code>, <code>oracle_luckfloor.py</code>,
+      <code>run_32b_vllm.py</code>, <code>cascade_complementarity.py</code>, <code>router_escalate.py</code>,
+      and the vLLM 25.09 Dockerfile.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Decide the framing:</strong> Path B (efficiency cascade — the defensible
+      result <em>now</em>) vs. Path A (hunt a stronger escalation signal — the 7B's
+      full logprob distribution, or a different layer — to reach the +12.5pp
+      headroom; a real experiment that could fail).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If Path B: build <strong>accuracy-vs-cost curves</strong> across VQA-RAD / SLAKE /
+      PathVQA / PMC-VQA, with a real cost axis (escalation % → FLOPs or
+      wall-clock), and position against efficiency-cascade literature.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>June 8:</strong> present <strong>m1</strong> (arXiv 2504.00869) — deck ready.</li>
+</ul>
+<hr />
+<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
+<p><strong>No code push.</strong> All of the day's scripts —
+<code>pmcvqa_recoverability.py</code>, <code>oracle_luckfloor.py</code>, <code>run_32b_vllm.py</code>,
+<code>cascade_complementarity.py</code>, <code>router_escalate.py</code>, and the <strong>vLLM 25.09
+Dockerfile</strong> — live in the <code>medvlthinker-imgdiff-compute</code> repo, alongside the
+overnight paired labels (<code>feats_full/</code>) and the merged n=500 records. The
+commit and push come once the efficiency-vs-accuracy-headroom framing is
+committed and the accuracy-vs-cost curves are built — the push held until
+then, on the week's standing rule.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Week 5 — Cross-model efficiency cascade (7B→32B)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Week 5 — Cross-model efficiency cascade (7B→32B)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../bugs/" class="md-footer__link md-footer__link--next" aria-label="Next: Bugs &amp; Issues">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Bugs & Issues
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Leokuan0208" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
