@@ -397,7 +397,7 @@ buildable or whether the oracle ceiling stays a ceiling.
       identical slice — does the RAG sign hold across corpora?
 - [ ] If predictable signal exists → spec the router + design the full 2×2
       (`--full_grid`) oracle on PMC/SLAKE (more reachable questions).
-- [ ] **June 8:** present **m1** (deck ready).
+- [ ] **June 8:** present **MedVLThinker** (deck ready).
 - [ ] Commit the `medvlthinker-imgdiff-compute` scripts (`gate_router.py`,
       `retrieve.py`, the index-build helper) once the analysis lands.
 

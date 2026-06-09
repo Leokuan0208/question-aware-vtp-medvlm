@@ -19,8 +19,8 @@ on a new model and **both came back flat** — reasoning a NO-GO, retrieval
 flat at +0.01 — leaving the new direction underwater on its own bar. It
 ends not on a conclusion but on a single pre-registered tiebreaker
 (**a 7B confound-check, launched and running**) and a side-decision: the
-June-8 literature presentation, settled on **m1**, the paper that
-predicted today's reasoning result.
+June-8 literature presentation, settled on **MedVLThinker**, the paper
+behind the project's own base models.
 
 No code was pushed today — the gate scripts live in the
 `medvlthinker-imgdiff-compute` repo and the 7B verdict is still mid-run;
@@ -440,26 +440,26 @@ to read either axis, and that's part of the verdict.
 
 ---
 
-## Phase 9 — Side-decision: the June-8 presentation paper → m1
+## Phase 9 — Side-decision: the June-8 presentation paper → MedVLThinker
 
 A literature-presentation assignment is due **June 8** (pick a paper,
-present with slides). The recommendation, given where the research
-*actually* landed today rather than where it was hoped to land:
+present with slides). The choice landed on the natural one given the
+project:
 
-> **m1 — "Unleash the Potential of Test-Time Scaling for Medical
-> Reasoning"** (arXiv 2504.00869).
+> **MedVLThinker** — the paper behind the project's own base models
+> (MedVLThinker-7B / 32B-RL).
 
-It's the paper that **predicted today's reasoning result**: m1's central
-findings — that medical reasoning *saturates* around a ~4K-token budget,
-and that the binding constraint is **missing medical knowledge** rather
-than insufficient thinking — are exactly what the reasoning-axis gate
-confirmed empirically on MedVLThinker, and they point at *why* the
-retrieval (knowledge) axis was the right thing to try next. Presenting it
-doubles as the written motivation for the project's own pivot.
+Presenting the paper of the model the entire project is built on doubles
+as the written motivation for the work itself — the architecture, the RL
+training that elicits the `<think>` traces, and the six-benchmark
+evaluation suite are all the substrate today's experiments run on. (The
+m1 test-time-scaling findings still get their due in the research write-up
+above, as the *literature* that predicted the reasoning-axis result — but
+the paper being *presented* on June 8 is MedVLThinker, not m1.)
 
-Locked: **m1**, deck already prepared. (The black/gold lab-report PPTX
-format with per-slide speaker scripts was offered but isn't needed — the
-presentation is already built.)
+Locked: **MedVLThinker**, deck already prepared. (The black/gold
+lab-report PPTX format with per-slide speaker scripts was offered but
+isn't needed — the presentation is already built.)
 
 ---
 
@@ -490,8 +490,8 @@ presentation is already built.)
 8. **7B confound-check launched, pre-registered as the final probe** —
    reasoning + retrieval at the +0.03 bar; **both flat → direction dead,
    full stop.** Verdict pending the running 7B jobs.
-9. **June-8 presentation settled on m1** (arXiv 2504.00869) — the paper
-   that predicted today's reasoning result.
+9. **June-8 presentation settled on MedVLThinker** — the paper behind the
+   project's own base models.
 
 Plus the infra trail: trace-fix (system-prompt gating for the no-think
 arm), weights consolidated to `/data/dan/weights`, OOM /
@@ -526,7 +526,7 @@ checkpoint-resume hardening, the retrieval env conflict diagnosed and
       lowest re-NO-GO risk).
 - [ ] If **alive**: spec the joint perception–knowledge controller; confirm
       the retrieval axis on the heavier image-aware retrieval fix.
-- [ ] **June 8:** present **m1** (deck ready).
+- [ ] **June 8:** present **MedVLThinker** (deck ready).
 - [ ] Commit the `medvlthinker-imgdiff-compute` gate scripts
       (`gate_probe.py`, `gate_rag.py`, `retrieve.py`) once the verdict is in.
 

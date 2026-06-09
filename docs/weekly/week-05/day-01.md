@@ -361,7 +361,7 @@ ingredient — complementarity — actually exists.
 - [ ] If Path B: build **accuracy-vs-cost curves** across VQA-RAD / SLAKE /
       PathVQA / PMC-VQA, with a real cost axis (escalation % → FLOPs or
       wall-clock), and position against efficiency-cascade literature.
-- [ ] **June 8:** present **m1** (arXiv 2504.00869) — deck ready.
+- [ ] **June 8:** present **MedVLThinker** (the project's base-model paper) — deck ready.
 
 ---
 

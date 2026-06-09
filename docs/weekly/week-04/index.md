@@ -186,9 +186,8 @@ kill:
 - **7B confound-check launched, pre-registered as the final probe** —
   reasoning + retrieval at the +0.03 bar; **both flat → direction dead,
   full stop.** Verdict pending the running 7B jobs.
-- **June-8 presentation** settled on **m1** ("Unleash the Potential of
-  Test-Time Scaling for Medical Reasoning", arXiv 2504.00869) — the paper
-  that predicted today's reasoning result.
+- **June-8 presentation** settled on **MedVLThinker** — the paper behind the
+  project's own base models.
 
 The joint perception+knowledge direction needs two live axes and has zero
 clean ones on the 3B — underwater pending the 7B. No code pushed today (gate

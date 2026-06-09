@@ -81,6 +81,38 @@ headroom is real but unreachable from cheap signals, and that is the
 precise open problem. The most coherent the project has been: a working
 method plus a clean set of negatives that bound it. No code pushed today.
 
+### [Day 2 — Tuesday, June 9, 2026](day-02.md)
+
+A disciplined day that *closed* the open question from Day 1 rather than
+opening a new one. (June 8 was the **MedVLThinker presentation**; June 9 is the next
+research session.) Path A — reach the +12.5pp headroom with a stronger cheap
+signal — got one clean, pre-registered shot, and was falsified:
+
+- **Two untested signals added** — extended `router_escalate.py` with the
+  **full predictive distribution** (`entropy` and the whole sorted A–J
+  log-prob vector, `dist_full`), the obvious thing Day 1's margin-only probe
+  skipped, on the identical CV folds.
+- **An apparent accuracy win → stress-tested → falsified.** At a hand-picked
+  threshold `dist_full`/`entropy` beat always-32B on the closed-form sets; a
+  Pareto sweep (`router_pareto.py`) made it look like it might hold; but a
+  **pre-registered paired bootstrap** (`router_bootstrap.py`, B=2000) at an
+  *a-priori* err-rate budget showed **every gain non-significant — except
+  SLAKE `dist_full`, which is significantly *worse* than the 32B.** Every
+  `SIG+` sat on a `peak` row whose budget was chosen on the data.
+- **Path A closed cleanly** — the headroom is not reachable from any cheap 7B
+  signal tested (margin, entropy, full distribution, or layer-14 hidden
+  state). Efficiency, not accuracy — now backed by a significance test.
+- **Efficiency cascade intact and statistically clean** — parity with the 32B
+  while keeping ~54–76% of questions on the cheap 7B (VQA-RAD ~24% escalation,
+  PathVQA ~36%, PMC-VQA ~46%; SLAKE the weak case at ~60%).
+- **Signal choice flipped** — use the simple **`margin`** (never significantly
+  negative anywhere), not `dist_full` (significantly hurts SLAKE). The rich
+  signal was best only at the accuracy peaks that didn't survive.
+
+The accuracy direction is honestly closed; the **7B→32B confidence-margin
+efficiency cascade** is the committed result. Next: a leave-one-dataset-out
+test for generalization. No code pushed today.
+
 ---
 
 ## Plan for the week (Jun 7 – Jun 13)
@@ -94,17 +126,22 @@ method plus a clean set of negatives that bound it. No code pushed today.
 - [x] **Escalation-gate test** (Day 1) — naive margin gate + hidden-state
       probe; hidden state **falsified** (worse than margin); margin cascade
       **works as efficiency** on the four competent benchmarks.
-- [ ] **Decide the framing to commit:** efficiency cascade (Path B, the
-      defensible result now) vs. a further hunt for a stronger escalation
-      signal to reach the accuracy headroom (Path A, a real experiment that
-      could fail).
+- [x] **Decide the framing to commit** (Day 2) — gave Path A one
+      pre-registered shot (full-distribution escalation signals); the bootstrap
+      **falsified the accuracy gain**, committing the project to the
+      **efficiency cascade** framing.
 - [ ] If efficiency framing: build clean **accuracy-vs-cost curves** across
-      the four competent benchmarks (VQA-RAD / SLAKE / PathVQA / PMC-VQA);
-      decide cost metric (escalation % → FLOPs / latency).
-- [ ] **June 8:** present **m1** (deck ready).
-- [ ] Commit the `medvlthinker-imgdiff-compute` scripts
-      (`pmcvqa_recoverability.py`, `run_32b_vllm.py`, `router_escalate.py`,
-      cascade analysis, the vLLM 25.09 Dockerfile) once the framing is set.
+      the four competent benchmarks (VQA-RAD / SLAKE / PathVQA / PMC-VQA) from
+      the verbatim `router_pareto.py` numbers, with **`margin`** as the
+      headline gate; decide cost metric (escalation % → FLOPs / latency).
+- [ ] **Leave-one-dataset-out test** (Day 2 → next) — fit the gate on some
+      competent datasets, route a held-out one; the generalization test that
+      turns "a real result on this data" into "a deployable method."
+- [x] **June 8:** presented **MedVLThinker** (the project's base-model paper).
+- [ ] Commit the `medvlthinker-imgdiff-compute` scripts (`router_escalate.py`
+      extended, `router_pareto.py`, `router_bootstrap.py`, plus Day-1's
+      `run_32b_vllm.py` / cascade analysis / vLLM 25.09 Dockerfile) once the
+      LODO result is in.
 
 ---
 
