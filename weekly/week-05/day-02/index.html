@@ -18,7 +18,7 @@
         <link rel="prev" href="../day-01/">
       
       
-        <link rel="next" href="../../../bugs/">
+        <link rel="next" href="../day-03/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -1422,6 +1422,8 @@
       
         
       
+        
+      
     
     
       
@@ -1591,6 +1593,42 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#phase-7-locking-the-deployable-gate-a-contamination-clean-frozen-margin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Locking the deployable gate: a contamination-clean frozen margin
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-the-honest-compute-number-prefill-inclusive-flops-75" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — The honest compute number: prefill-inclusive FLOPs ≈ 75%
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-9-does-anything-beat-the-1-d-margin-gate-learned-router-conformal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 9 — Does anything beat the 1-D margin gate? (learned router · conformal)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-10-setting-up-the-overnight-resolution-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 10 — Setting up the overnight resolution sweep
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#honest-ledger-of-the-day" class="md-nav__link">
     <span class="md-ellipsis">
       Honest ledger of the day
@@ -1627,6 +1665,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Wednesday, June 10, 2026
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1768,6 +1827,42 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#phase-7-locking-the-deployable-gate-a-contamination-clean-frozen-margin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7 — Locking the deployable gate: a contamination-clean frozen margin
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-the-honest-compute-number-prefill-inclusive-flops-75" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8 — The honest compute number: prefill-inclusive FLOPs ≈ 75%
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-9-does-anything-beat-the-1-d-margin-gate-learned-router-conformal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 9 — Does anything beat the 1-D margin gate? (learned router · conformal)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-10-setting-up-the-overnight-resolution-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 10 — Setting up the overnight resolution sweep
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#honest-ledger-of-the-day" class="md-nav__link">
     <span class="md-ellipsis">
       Honest ledger of the day
@@ -1846,11 +1941,18 @@ from any cheap 7B signal tested. The same numbers, read the other way, leave
 the day's real contribution standing and now statistically backed — a
 <strong>working efficiency cascade</strong>: match the 32B at no significant accuracy cost
 while keeping roughly half to three-quarters of questions on the cheap 7B.</p>
-<p>No code was pushed today — every script
-(<code>router_escalate.py</code> extended, <code>router_pareto.py</code>, <code>router_bootstrap.py</code>)
-lives in the <code>medvlthinker-imgdiff-compute</code> repo, and the push waits until the
-generalization test (leave-one-dataset-out) is in and the framing is written
-up, on the week's standing rule.</p>
+<p>With the framing settled, the rest of the session <strong>locked the deployable
+artifact</strong>: a contamination-clean <strong>frozen margin gate</strong> (<code>router_margin.pkl</code>),
+an <strong>honest prefill-inclusive compute number (~75%)</strong> correcting an earlier
+optimistic proxy, and a sweep of fancier alternatives (a learned router, a
+conformal mechanism) that all <strong>fail to beat the simple 1-D gate</strong> — then
+launched an overnight <strong>resolution sweep</strong> to chase the one remaining
+efficiency lever, the 7B's vision-token prefill.</p>
+<p>The previous session's analysis scripts were committed the following day
+(June 10) — see <em>Pushed today</em> below. The day's own code
+(<code>router_escalate.py</code> extended, <code>router_pareto.py</code>, <code>router_bootstrap.py</code>,
+plus the deployable-gate and FLOPs scripts) is all CPU-only work on the
+existing paired labels.</p>
 <div class="admonition note">
 <p class="admonition-title">Day count, and June 8</p>
 <p>June 8 (Day 30) was the <strong>MedVLThinker literature presentation</strong> — the
@@ -2126,6 +2228,70 @@ from any device with <code>tail -f run.log</code>. The terminal UI is disposable
 logfile is the source of truth.</p>
 </details>
 <hr />
+<h2 id="phase-7-locking-the-deployable-gate-a-contamination-clean-frozen-margin">Phase 7 — Locking the deployable gate: a contamination-clean frozen margin<a class="headerlink" href="#phase-7-locking-the-deployable-gate-a-contamination-clean-frozen-margin" title="Permanent link">&para;</a></h2>
+<p>With Path A closed and efficiency the committed framing, the afternoon turned
+to making the <em>deployable artifact</em> honest — the frozen 1-D margin gate that
+the paper will actually ship. The first requirement is that the gate be
+trained on data <strong>disjoint from eval</strong>, so the threshold isn't fit on the
+test set (the same sin the morning's <code>peak</code> rows committed). The check:
+MedVLThinker-7B's <strong>m23k RL training is text-only</strong> — MedQA / MedMCQA / HeadQA,
+no PMC-VQA images — so the <strong>PMC-VQA train split is a clean, uncontaminated
+source</strong> for fitting the gate.</p>
+<p><code>router_margin.pkl</code> was fit on that clean PMC-VQA train split with <strong>all 2,000
+eval samples held out</strong>. The contamination all-clear shows in the numbers: the
+train split is genuinely separate and a bit harder (<strong>train 7B acc 0.460 vs
+eval baseline 0.539</strong>), so there's no leakage inflating the gate. A bootstrap
+CI on the frozen gate then confirms <strong>efficiency parity across all four
+competent benchmarks</strong> (PMC-VQA, SLAKE, VQA-RAD, PathVQA) — PathVQA shows a
+<strong>nominal +0.010 that does <em>not</em> survive Bonferroni correction</strong>. So the
+frozen gate is the deployable system, and it is a <em>parity (efficiency)</em> result
+— exactly consistent with the morning's bootstrap, now demonstrated on a gate
+trained without ever touching eval.</p>
+<hr />
+<h2 id="phase-8-the-honest-compute-number-prefill-inclusive-flops-75">Phase 8 — The honest compute number: prefill-inclusive FLOPs ≈ 75%<a class="headerlink" href="#phase-8-the-honest-compute-number-prefill-inclusive-flops-75" title="Permanent link">&para;</a></h2>
+<p>The efficiency headline needs a defensible cost figure. An earlier proxy put
+the cascade at a flattering <strong>~59% of always-32B</strong>, but that counted <strong>decode
+FLOPs only</strong> — the 32B's long think-generation — and undercounted <strong>prefill</strong>
+(processing the question + image), which the cheap 7B pays on <em>every</em> question
+and the 32B pays again on each escalation. A <strong>prefill-inclusive FLOPs model</strong>
+counts both, and lands the cascade at <strong>~75% of always-32B compute</strong>. That is
+the number to report — the honest one, not the decode-only proxy. (This is the
+figure <a href="../day-03/">Day 3</a> later refines to a held-out 74% by serving the cheap
+leg at reduced resolution.)</p>
+<hr />
+<h2 id="phase-9-does-anything-beat-the-1-d-margin-gate-learned-router-conformal">Phase 9 — Does anything beat the 1-D margin gate? (learned router · conformal)<a class="headerlink" href="#phase-9-does-anything-beat-the-1-d-margin-gate-learned-router-conformal" title="Permanent link">&para;</a></h2>
+<p>A fair question before settling on a one-dimensional threshold: would a richer
+gate do better? Three attempts, all <strong>failing to beat the simple frozen
+margin gate</strong>:</p>
+<ul>
+<li><strong>A learned multi-feature router</strong> (HistGBM over a 12-dimensional feature
+  set) — does not beat the 1-D margin gate on transfer.</li>
+<li><strong>A CP-Router-style split-conformal mechanism</strong> — <strong>dominated by the frozen
+  margin gate at every coverage level</strong>.</li>
+<li><strong>A signal-separation diagnostic</strong> that explains <em>why</em>, structurally:
+  <strong>AUROC(margin → "32B breaks it" vs. "32B fixes it") ≈ 0.5 on 3/4 datasets</strong>,
+  and the label-oracle's best gain sits <strong>inside the shuffle floor</strong>. The
+  margin can flag that a question is <em>hard</em> (so escalate it), but carries
+  <strong>no signal about whether escalating will actually fix it</strong> — which is the
+  structural reason no threshold beats parity, and why the cascade is an
+  efficiency result rather than an accuracy one.</li>
+</ul>
+<p>The contrast paper for the write-up (and the presentation target) is
+<strong>CP-Router</strong> (Su et al., arXiv 2505.19970, AAAI) — a conformal routing method
+the frozen 1-D gate matches or beats here.</p>
+<hr />
+<h2 id="phase-10-setting-up-the-overnight-resolution-sweep">Phase 10 — Setting up the overnight resolution sweep<a class="headerlink" href="#phase-10-setting-up-the-overnight-resolution-sweep" title="Permanent link">&para;</a></h2>
+<p>The one efficiency lever left untouched: the 7B leg's cost is <strong>~90%
+vision-token prefill</strong>, so cutting vision tokens cuts the cheap leg directly.
+Porting the HuatuoGPT-Vision LLaVA/CLIP token-pruning patcher to
+Qwen2.5-VL + vLLM is not an overnight job, so the safe overnight-runnable
+proxy is a <strong><code>max_pixels</code> resolution-budget sweep</strong> (fewer vision tokens via a
+lower pixel cap). <code>run_7b_prune_sweep.py</code> was built; a <strong>TP=2 crash on
+<code>custom_all_reduce</code></strong> was fixed by adding <strong><code>disable_custom_all_reduce=True</code></strong>
+to the <code>LLM()</code> constructor. The job was launched and confirmed running at
+<strong>cap640 acc 0.535 vs the full-res baseline 0.539</strong> before the session ended —
+its analysis is the opening of <a href="../day-03/">Day 3</a>.</p>
+<hr />
 <h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Path A given one clean, pre-registered shot</strong> — added the full
@@ -2151,6 +2317,23 @@ logfile is the source of truth.</p>
    ~46%; SLAKE the weak case at ~60%).</li>
 <li><strong>Signal-choice flipped</strong> — use the simple <strong><code>margin</code></strong> (never significantly
    negative), not <code>dist_full</code> (significantly hurts SLAKE).</li>
+<li><strong>Frozen margin gate trained contamination-clean</strong> — <code>router_margin.pkl</code>
+   fit on a clean PMC-VQA train split (m23k RL is text-only → train is
+   uncontaminated), all 2,000 eval held out (train 7B 0.460 vs eval 0.539); a
+   bootstrap CI confirms efficiency parity across all four competent
+   benchmarks (PathVQA's nominal +0.010 dies under Bonferroni).</li>
+<li><strong>Honest compute number</strong> — a prefill-inclusive FLOPs model puts the cascade
+   at <strong>~75% of always-32B</strong>, correcting an optimistic decode-only proxy
+   (~59%). Always the honest number.</li>
+<li><strong>Nothing beats the 1-D margin gate</strong> — a learned HistGBM (12-dim) router
+    fails to transfer; a CP-Router-style conformal mechanism is dominated at
+    every coverage level; a signal-separation diagnostic (AUROC ≈ 0.5 on 3/4)
+    shows the margin can't predict <em>whether</em> escalation fixes a question, which
+    is why no threshold beats parity. Contrast paper: CP-Router (arXiv
+    2505.19970, AAAI).</li>
+<li><strong>Overnight resolution sweep launched</strong> — <code>run_7b_prune_sweep.py</code> (TP=2
+    <code>custom_all_reduce</code> crash fixed with <code>disable_custom_all_reduce=True</code>),
+    running at cap640 0.535 vs full-res 0.539; analysis opens Day 3.</li>
 </ol>
 <hr />
 <div class="admonition note">
@@ -2168,27 +2351,28 @@ deployable method."</p>
 <hr />
 <h3 id="plan-for-next-session">Plan for next session<a class="headerlink" href="#plan-for-next-session" title="Permanent link">&para;</a></h3>
 <ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Analyze the overnight resolution sweep</strong> — does cutting the 7B's
+      vision tokens (cap640 → cap320 → cap160 → cap80) hold accuracy while
+      lowering the cheap leg's prefill cost? (Decided on Day 3.)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Leave-one-dataset-out generalization test</strong> — fit the gate on some
       competent datasets, route a held-out one; the test of whether a gate
       tuned elsewhere still matches 32B at reduced cost on an unseen dataset
       (what "deployable method" requires, and the final word on accuracy).</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Build the accuracy-vs-cost Pareto SVG</strong> for the site from the verbatim
       <code>router_pareto.py</code> numbers, using <strong><code>margin</code></strong> as the headline gate.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Decide the cost axis for the write-up (escalation % → FLOPs or
-      wall-clock latency) so "match 32B at X% cost" has real units.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Commit the day's scripts</strong> to <code>medvlthinker-imgdiff-compute</code>
-      (<code>router_escalate.py</code> extended, <code>router_pareto.py</code>, <code>router_bootstrap.py</code>)
-      once the LODO result is in.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Commit the session's scripts</strong> to <code>medvlthinker-imgdiff-compute</code> —
+      done the next day (June 10) as <code>d474015</code> (see <em>Pushed today</em>).</li>
 </ul>
 <hr />
 <h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
-<p><strong>No code push.</strong> The day's analysis — the extended <code>router_escalate.py</code>,
-<code>router_pareto.py</code>, and <code>router_bootstrap.py</code> — lives in the
-<code>medvlthinker-imgdiff-compute</code> repo, all CPU-only on the existing paired
-labels (<code>ckpts/gate_7b_vllm</code>, <code>ckpts/gate_32b</code>). The commit and push come once
-the leave-one-dataset-out generalization test confirms the efficiency claim
-and the framing is written up — the push held until then, on the week's
-standing rule.</p>
+<p><strong>No push on June 9 itself</strong> — the day's work was all CPU-only analysis on the
+existing paired labels (<code>ckpts/gate_7b_vllm</code>, <code>ckpts/gate_32b</code>). The session's
+scripts (the extended <code>router_escalate.py</code>, <code>router_pareto.py</code>,
+<code>router_bootstrap.py</code>, the frozen-gate training, the prefill-inclusive FLOPs
+analysis, the learned-router / conformal comparisons, and
+<code>run_7b_prune_sweep.py</code>) were committed the <strong>following session (June 10)</strong> as
+<a href="https://github.com/Leokuan0208/medvlthinker-imgdiff-compute/tree/d474015"><code>d474015</code></a>
+(<code>751f042..d474015</code> on <code>main</code>).</p>
 
 
 
@@ -2241,13 +2425,13 @@ standing rule.</p>
         
         
           
-          <a href="../../../bugs/" class="md-footer__link md-footer__link--next" aria-label="Next: Bugs &amp; Issues">
+          <a href="../day-03/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 3 — Wednesday, June 10, 2026">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Bugs & Issues
+                Day 3 — Wednesday, June 10, 2026
               </div>
             </div>
             <div class="md-footer__button md-icon">

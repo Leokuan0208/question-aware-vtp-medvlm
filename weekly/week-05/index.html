@@ -1422,6 +1422,8 @@
       
         
       
+        
+      
     
     
       
@@ -1496,6 +1498,27 @@
   
   <span class="md-ellipsis">
     Day 2 — Tuesday, June 9, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 3 — Wednesday, June 10, 2026
   </span>
   
 
@@ -1599,6 +1622,15 @@
   <a href="#day-2-tuesday-june-9-2026" class="md-nav__link">
     <span class="md-ellipsis">
       Day 2 — Tuesday, June 9, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-3-wednesday-june-10-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 3 — Wednesday, June 10, 2026
     </span>
   </a>
   
@@ -1749,8 +1781,53 @@ signal — got one clean, pre-registered shot, and was falsified:</p>
   signal was best only at the accuracy peaks that didn't survive.</li>
 </ul>
 <p>The accuracy direction is honestly closed; the <strong>7B→32B confidence-margin
-efficiency cascade</strong> is the committed result. Next: a leave-one-dataset-out
-test for generalization. No code pushed today.</p>
+efficiency cascade</strong> is the committed result. With the framing settled, the
+rest of the session <strong>locked the deployable artifact</strong>: a contamination-clean
+<strong>frozen margin gate</strong> (<code>router_margin.pkl</code>, fit on a clean PMC-VQA train split
+with all eval held out — m23k RL is text-only, so train is uncontaminated; a
+bootstrap CI confirms efficiency parity across all four competent benchmarks);
+an <strong>honest prefill-inclusive FLOPs ≈ 75%</strong> of always-32B (correcting an
+optimistic ~59% decode-only proxy); and a check that <strong>nothing beats the 1-D
+margin gate</strong> — a learned HistGBM router and a CP-Router-style conformal
+mechanism both lose, and a signal-separation diagnostic (AUROC ≈ 0.5 on 3/4)
+shows the margin can't predict <em>whether</em> escalation fixes a question.
+Contrast/target paper: <strong>CP-Router</strong> (arXiv 2505.19970, AAAI). An overnight
+<strong>resolution sweep</strong> was then launched (cap640 0.535 vs full-res 0.539).
+Pushed the next day as <code>d474015</code>.</p>
+<h3 id="day-3-wednesday-june-10-2026"><a href="day-03/">Day 3 — Wednesday, June 10, 2026</a><a class="headerlink" href="#day-3-wednesday-june-10-2026" title="Permanent link">&para;</a></h3>
+<p>A build-and-measure day with one sharp methodological catch and one honest
+walk-back, building on the frozen gate + honest FLOPs locked the previous
+evening (now on <a href="day-02/">Day 2</a>).</p>
+<ul>
+<li><strong>Resolution sweep — no visual cliff.</strong> Shrinking the 7B's vision tokens
+  leaves accuracy flat from fullres down to cap160 (pooled 0.621→0.617),
+  degrading only at cap80, concentrated in the radiology sets (SLAKE −0.033,
+  VQA-RAD −0.044). An <strong>efficiency</strong> lever, not an accuracy one.</li>
+<li><strong>A τ-on-test trap, caught.</strong> The first cascade-sim chose its threshold <em>on
+  the eval data</em>, faking a 25-point cost gap between two equal-accuracy arms —
+  overfitting to SLAKE sampling noise. Replaced with a <strong>held-out τ grid</strong>.</li>
+<li><strong>Held-out grid → cap320 at 74%.</strong> τ trained on pmctrain transfers across
+  serving resolution; serving the 7B at <strong>cap320</strong> holds the cascade at
+  <strong>0.572 (= always-32B parity)</strong> at <strong>74%</strong> of always-32B compute
+  (prefill-inclusive), down from 79% at full resolution — a free 5-point
+  saving. Refines the ~75% carried from June 9.</li>
+<li><strong>Real-time cascade harness built</strong> (<code>rt_cascade.py</code> + <code>rt_analyze.py</code>) —
+  live 7B→gate→32B with per-GPU power/energy/VRAM/latency, HF-separate (true
+  VRAM: 7B ≈ 18 GB / 32B ≈ 68 GB) chosen over vLLM-pooling, resumable, with a
+  faithfulness check vs the validated vLLM labels baked in.</li>
+<li><strong>A smoke-test scare, honestly walked back.</strong> Cascade 0.500 &lt; 7B 0.660 on a
+  50-question slice looked like a broken 32B leg; the faithfulness check
+  (HF 0.355 vs vLLM 0.387, 84% agreement, 0% truncation) showed it was a hard
+  slice + engine numerics — <strong>not a bug</strong> — correcting a too-quick call.</li>
+<li><strong>Full cap320 real-time run launched</strong> — all six benchmarks, 8,220 queries,
+  overnight, tracking the offline 0.572 to yield the wall-clock/energy analog
+  of the FLOPs 74%.</li>
+</ul>
+<p>Bottom line: the resolution work is an <strong>efficiency ablation that strengthens
+the cascade</strong> (cheap leg tolerates 2–4× fewer vision tokens for free), and the
+real-time harness will turn the FLOPs 74% into a measured wall-clock/energy
+number. Today also cleared the previous session's code backlog —
+pushed as <code>d474015</code>.</p>
 <hr />
 <h2 id="plan-for-the-week-jun-7-jun-13">Plan for the week (Jun 7 – Jun 13)<a class="headerlink" href="#plan-for-the-week-jun-7-jun-13" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
@@ -1767,18 +1844,26 @@ test for generalization. No code pushed today.</p>
       pre-registered shot (full-distribution escalation signals); the bootstrap
       <strong>falsified the accuracy gain</strong>, committing the project to the
       <strong>efficiency cascade</strong> framing.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> If efficiency framing: build clean <strong>accuracy-vs-cost curves</strong> across
-      the four competent benchmarks (VQA-RAD / SLAKE / PathVQA / PMC-VQA) from
-      the verbatim <code>router_pareto.py</code> numbers, with <strong><code>margin</code></strong> as the
-      headline gate; decide cost metric (escalation % → FLOPs / latency).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Accuracy-vs-cost / cost grid</strong> (Day 3) — a held-out τ grid over
+      resolution caps; the cascade holds <strong>0.572 (= always-32B parity)</strong> at
+      <strong>74%</strong> prefill-inclusive compute serving at <strong>cap320</strong>. (A polished
+      cost-vs-accuracy SVG from the <code>router_pareto.py</code> numbers still to draw.)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Frozen gate trained contamination-clean + honest FLOPs</strong> (June 9 eve,
+      logged Day 3) — <code>router_margin.pkl</code> on clean PMC-VQA train; prefill-incl
+      FLOPs ~75%; learned-router &amp; CP-Router-conformal both fail to beat the
+      1-D margin gate.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Read the full cap320 real-time run</strong> (Day 3 → next) — confirm live
+      pooled accuracy tracks <strong>0.572</strong>; report the cascade's <strong>energy as % of
+      always-32B</strong> beside the FLOPs 74%, with the per-benchmark
+      latency/power/VRAM table.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Leave-one-dataset-out test</strong> (Day 2 → next) — fit the gate on some
       competent datasets, route a held-out one; the generalization test that
       turns "a real result on this data" into "a deployable method."</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>June 8:</strong> presented <strong>MedVLThinker</strong> (the project's base-model paper).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> scripts (<code>router_escalate.py</code>
-      extended, <code>router_pareto.py</code>, <code>router_bootstrap.py</code>, plus Day-1's
-      <code>run_32b_vllm.py</code> / cascade analysis / vLLM 25.09 Dockerfile) once the
-      LODO result is in.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> scripts — Day-3 code
+      (<code>rt_cascade.py</code>, <code>rt_analyze.py</code>, the held-out τ grid) plus the
+      previous session's uncommitted scripts (frozen-gate training, FLOPs,
+      conformal, <code>run_7b_prune_sweep.py</code>) — once the real-time numbers are in.</li>
 </ul>
 <hr />
 <h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
