@@ -26,11 +26,19 @@ the day's real contribution standing and now statistically backed — a
 **working efficiency cascade**: match the 32B at no significant accuracy cost
 while keeping roughly half to three-quarters of questions on the cheap 7B.
 
-No code was pushed today — every script
-(`router_escalate.py` extended, `router_pareto.py`, `router_bootstrap.py`)
-lives in the `medvlthinker-imgdiff-compute` repo, and the push waits until the
-generalization test (leave-one-dataset-out) is in and the framing is written
-up, on the week's standing rule.
+With the framing settled, the rest of the session **locked the deployable
+artifact**: a contamination-clean **frozen margin gate** (`router_margin.pkl`),
+an **honest prefill-inclusive compute number (~75%)** correcting an earlier
+optimistic proxy, and a sweep of fancier alternatives (a learned router, a
+conformal mechanism) that all **fail to beat the simple 1-D gate** — then
+launched an overnight **resolution sweep** to chase the one remaining
+efficiency lever, the 7B's vision-token prefill.
+
+The previous session's analysis scripts were committed the following day
+(June 10) — see *Pushed today* below. The day's own code
+(`router_escalate.py` extended, `router_pareto.py`, `router_bootstrap.py`,
+plus the deployable-gate and FLOPs scripts) is all CPU-only work on the
+existing paired labels.
 
 !!! note "Day count, and June 8"
     June 8 (Day 30) was the **MedVLThinker literature presentation** — the
@@ -274,6 +282,83 @@ Two refinements the bootstrap hands the write-up:
 
 ---
 
+## Phase 7 — Locking the deployable gate: a contamination-clean frozen margin
+
+With Path A closed and efficiency the committed framing, the afternoon turned
+to making the *deployable artifact* honest — the frozen 1-D margin gate that
+the paper will actually ship. The first requirement is that the gate be
+trained on data **disjoint from eval**, so the threshold isn't fit on the
+test set (the same sin the morning's `peak` rows committed). The check:
+MedVLThinker-7B's **m23k RL training is text-only** — MedQA / MedMCQA / HeadQA,
+no PMC-VQA images — so the **PMC-VQA train split is a clean, uncontaminated
+source** for fitting the gate.
+
+`router_margin.pkl` was fit on that clean PMC-VQA train split with **all 2,000
+eval samples held out**. The contamination all-clear shows in the numbers: the
+train split is genuinely separate and a bit harder (**train 7B acc 0.460 vs
+eval baseline 0.539**), so there's no leakage inflating the gate. A bootstrap
+CI on the frozen gate then confirms **efficiency parity across all four
+competent benchmarks** (PMC-VQA, SLAKE, VQA-RAD, PathVQA) — PathVQA shows a
+**nominal +0.010 that does *not* survive Bonferroni correction**. So the
+frozen gate is the deployable system, and it is a *parity (efficiency)* result
+— exactly consistent with the morning's bootstrap, now demonstrated on a gate
+trained without ever touching eval.
+
+---
+
+## Phase 8 — The honest compute number: prefill-inclusive FLOPs ≈ 75%
+
+The efficiency headline needs a defensible cost figure. An earlier proxy put
+the cascade at a flattering **~59% of always-32B**, but that counted **decode
+FLOPs only** — the 32B's long think-generation — and undercounted **prefill**
+(processing the question + image), which the cheap 7B pays on *every* question
+and the 32B pays again on each escalation. A **prefill-inclusive FLOPs model**
+counts both, and lands the cascade at **~75% of always-32B compute**. That is
+the number to report — the honest one, not the decode-only proxy. (This is the
+figure [Day 3](day-03.md) later refines to a held-out 74% by serving the cheap
+leg at reduced resolution.)
+
+---
+
+## Phase 9 — Does anything beat the 1-D margin gate? (learned router · conformal)
+
+A fair question before settling on a one-dimensional threshold: would a richer
+gate do better? Three attempts, all **failing to beat the simple frozen
+margin gate**:
+
+- **A learned multi-feature router** (HistGBM over a 12-dimensional feature
+  set) — does not beat the 1-D margin gate on transfer.
+- **A CP-Router-style split-conformal mechanism** — **dominated by the frozen
+  margin gate at every coverage level**.
+- **A signal-separation diagnostic** that explains *why*, structurally:
+  **AUROC(margin → "32B breaks it" vs. "32B fixes it") ≈ 0.5 on 3/4 datasets**,
+  and the label-oracle's best gain sits **inside the shuffle floor**. The
+  margin can flag that a question is *hard* (so escalate it), but carries
+  **no signal about whether escalating will actually fix it** — which is the
+  structural reason no threshold beats parity, and why the cascade is an
+  efficiency result rather than an accuracy one.
+
+The contrast paper for the write-up (and the presentation target) is
+**CP-Router** (Su et al., arXiv 2505.19970, AAAI) — a conformal routing method
+the frozen 1-D gate matches or beats here.
+
+---
+
+## Phase 10 — Setting up the overnight resolution sweep
+
+The one efficiency lever left untouched: the 7B leg's cost is **~90%
+vision-token prefill**, so cutting vision tokens cuts the cheap leg directly.
+Porting the HuatuoGPT-Vision LLaVA/CLIP token-pruning patcher to
+Qwen2.5-VL + vLLM is not an overnight job, so the safe overnight-runnable
+proxy is a **`max_pixels` resolution-budget sweep** (fewer vision tokens via a
+lower pixel cap). `run_7b_prune_sweep.py` was built; a **TP=2 crash on
+`custom_all_reduce`** was fixed by adding **`disable_custom_all_reduce=True`**
+to the `LLM()` constructor. The job was launched and confirmed running at
+**cap640 acc 0.535 vs the full-res baseline 0.539** before the session ended —
+its analysis is the opening of [Day 3](day-03.md).
+
+---
+
 ## Honest ledger of the day
 
 1. **Path A given one clean, pre-registered shot** — added the full
@@ -299,6 +384,23 @@ Two refinements the bootstrap hands the write-up:
    ~46%; SLAKE the weak case at ~60%).
 7. **Signal-choice flipped** — use the simple **`margin`** (never significantly
    negative), not `dist_full` (significantly hurts SLAKE).
+8. **Frozen margin gate trained contamination-clean** — `router_margin.pkl`
+   fit on a clean PMC-VQA train split (m23k RL is text-only → train is
+   uncontaminated), all 2,000 eval held out (train 7B 0.460 vs eval 0.539); a
+   bootstrap CI confirms efficiency parity across all four competent
+   benchmarks (PathVQA's nominal +0.010 dies under Bonferroni).
+9. **Honest compute number** — a prefill-inclusive FLOPs model puts the cascade
+   at **~75% of always-32B**, correcting an optimistic decode-only proxy
+   (~59%). Always the honest number.
+10. **Nothing beats the 1-D margin gate** — a learned HistGBM (12-dim) router
+    fails to transfer; a CP-Router-style conformal mechanism is dominated at
+    every coverage level; a signal-separation diagnostic (AUROC ≈ 0.5 on 3/4)
+    shows the margin can't predict *whether* escalation fixes a question, which
+    is why no threshold beats parity. Contrast paper: CP-Router (arXiv
+    2505.19970, AAAI).
+11. **Overnight resolution sweep launched** — `run_7b_prune_sweep.py` (TP=2
+    `custom_all_reduce` crash fixed with `disable_custom_all_reduce=True`),
+    running at cap640 0.535 vs full-res 0.539; analysis opens Day 3.
 
 ---
 
@@ -317,26 +419,27 @@ Two refinements the bootstrap hands the write-up:
 
 ### Plan for next session
 
+- [ ] **Analyze the overnight resolution sweep** — does cutting the 7B's
+      vision tokens (cap640 → cap320 → cap160 → cap80) hold accuracy while
+      lowering the cheap leg's prefill cost? (Decided on Day 3.)
 - [ ] **Leave-one-dataset-out generalization test** — fit the gate on some
       competent datasets, route a held-out one; the test of whether a gate
       tuned elsewhere still matches 32B at reduced cost on an unseen dataset
       (what "deployable method" requires, and the final word on accuracy).
 - [ ] **Build the accuracy-vs-cost Pareto SVG** for the site from the verbatim
       `router_pareto.py` numbers, using **`margin`** as the headline gate.
-- [ ] Decide the cost axis for the write-up (escalation % → FLOPs or
-      wall-clock latency) so "match 32B at X% cost" has real units.
-- [ ] **Commit the day's scripts** to `medvlthinker-imgdiff-compute`
-      (`router_escalate.py` extended, `router_pareto.py`, `router_bootstrap.py`)
-      once the LODO result is in.
+- [x] **Commit the session's scripts** to `medvlthinker-imgdiff-compute` —
+      done the next day (June 10) as `d474015` (see *Pushed today*).
 
 ---
 
 ## Pushed today
 
-**No code push.** The day's analysis — the extended `router_escalate.py`,
-`router_pareto.py`, and `router_bootstrap.py` — lives in the
-`medvlthinker-imgdiff-compute` repo, all CPU-only on the existing paired
-labels (`ckpts/gate_7b_vllm`, `ckpts/gate_32b`). The commit and push come once
-the leave-one-dataset-out generalization test confirms the efficiency claim
-and the framing is written up — the push held until then, on the week's
-standing rule.
+**No push on June 9 itself** — the day's work was all CPU-only analysis on the
+existing paired labels (`ckpts/gate_7b_vllm`, `ckpts/gate_32b`). The session's
+scripts (the extended `router_escalate.py`, `router_pareto.py`,
+`router_bootstrap.py`, the frozen-gate training, the prefill-inclusive FLOPs
+analysis, the learned-router / conformal comparisons, and
+`run_7b_prune_sweep.py`) were committed the **following session (June 10)** as
+[`d474015`](https://github.com/Leokuan0208/medvlthinker-imgdiff-compute/tree/d474015)
+(`751f042..d474015` on `main`).
