@@ -1424,6 +1424,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1519,6 +1523,48 @@
   
   <span class="md-ellipsis">
     Day 3 — Wednesday, June 10, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 4 — Friday, June 12, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="day-05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 5 — Saturday, June 13, 2026
   </span>
   
 
@@ -1637,6 +1683,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#day-4-friday-june-12-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 4 — Friday, June 12, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-5-saturday-june-13-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      Day 5 — Saturday, June 13, 2026
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#plan-for-the-week-jun-7-jun-13" class="md-nav__link">
     <span class="md-ellipsis">
       Plan for the week (Jun 7 – Jun 13)
@@ -1678,7 +1742,7 @@
 
 
 <h1 id="week-5-cross-model-efficiency-cascade-7b32b">Week 5 — Cross-model efficiency cascade (7B→32B)<a class="headerlink" href="#week-5-cross-model-efficiency-cascade-7b32b" title="Permanent link">&para;</a></h1>
-<p><span class="pill pill--wip">In progress</span></p>
+<p><span class="pill pill--done">Done</span></p>
 <p><strong>Pivot phase</strong> (single-model compute router → cross-model cascade) ·
 <strong>Week 5 of 12</strong></p>
 <p><strong>Goal of the week</strong> — resolve the question
@@ -1828,6 +1892,61 @@ the cascade</strong> (cheap leg tolerates 2–4× fewer vision tokens for free),
 real-time harness will turn the FLOPs 74% into a measured wall-clock/energy
 number. Today also cleared the previous session's code backlog —
 pushed as <code>d474015</code>.</p>
+<h3 id="day-4-friday-june-12-2026"><a href="day-04/">Day 4 — Friday, June 12, 2026</a><a class="headerlink" href="#day-4-friday-june-12-2026" title="Permanent link">&para;</a></h3>
+<p>A pure paper-production day (June 11 was off) — turning the cascade into a
+submission-grade <strong>CVGIP 2026</strong> manuscript (8-page cap, two-column DOCX), in
+three demanding rounds of format-and-content fixes against the official
+template and a submitted exemplar (EIBNet), with the full render-check loop on
+every build:</p>
+<ul>
+<li><strong>Two-column, template-locked</strong> — read the template XML for the spec (83 mm
+  columns, centered all-caps headings, 100–150-word abstract, no page numbers,
+  professor-first authorship); fixed the body font from 9 pt to the measured
+  <strong>10 pt</strong> (12 pt headings); restyled the algorithm to EIBNet's
+  horizontal-rules-only form.</li>
+<li><strong>Bibliography 20 → 33</strong> verified references across five Related-Work
+  subsections; density raised to fill the full <strong>8 pages</strong> (cross-model
+  motivation, §3.4 calibration rigor, §4.1 expanded setup, §4.8 Limitations,
+  the resolution–compute frontier).</li>
+<li><strong>Hid our own 7B <em>and</em> 32B accuracy</strong> from Table 1 / Fig 3 — only
+  cascade-vs-published shown (<strong>+2.28 macro / +8.81</strong>), because our internal
+  reproductions <em>exceed</em> the published MedVLThinker baselines and would invite
+  harness-difference questions; endpoints relabeled as cascade operating points.</li>
+<li><strong>Corrected authorship</strong> — Yuan-Kai Wang and Li-Wen Kuan only; removed the
+  mistaken co-author "Dan" (<strong>Dan is Li-Wen Kuan himself</strong>).</li>
+<li><strong>Headline firmed</strong> — the live cascade runs at a measured <strong>0.639×</strong> of
+  always-32B compute at parity (63.1% escalation; 4398 J vs 6883 J/query).</li>
+</ul>
+<p>Still pending (not fabricated): peak VRAM and ~7 reference author lists. No code
+pushed.</p>
+<h3 id="day-5-saturday-june-13-2026"><a href="day-05/">Day 5 — Saturday, June 13, 2026</a><a class="headerlink" href="#day-5-saturday-june-13-2026" title="Permanent link">&para;</a></h3>
+<p>A reviewer-grade audit — attack the manuscript the way a top-venue reviewer
+would, then close the holes. One training-free script (<code>fbe_and_signals.py</code>,
+checkpoint-only, zero new inference) did most of the work:</p>
+<ul>
+<li><strong>The τ that wasn't.</strong> The paper describes the gate as a raw-margin threshold
+  (τ = 0.426), but <code>router_margin.pkl</code> is a <strong>StandardScaler + logistic
+  pipeline</strong>, so 0.426 is a cut in <em>standardized z-space</em> — raw thresholding
+  escalates 46.1% vs the live <strong>63.1%</strong>, a <strong>17-point</strong> reproducibility gap.
+  Eq. 2 as written wouldn't reproduce the headline.</li>
+<li><strong>MMMU exclusion contradicted</strong> — the 7B scores <strong>0.547</strong> on MMMU (above
+  chance), so "excluded because near-chance" doesn't hold for it (MedXpert at
+  0.225 / 0.256 stays defensible).</li>
+<li><strong>Six-router tie</strong> — margin / top1 / entropy / temp-margin / conformal / FBE,
+  <strong>none beats the one-line margin gate</strong> at matched compute (best Δ +0.0020,
+  ns under Bonferroni). Converts the paper's negative result from assertion to
+  demonstration.</li>
+<li><strong>Calibration is irrelevant to routing</strong> — the 7B is badly over-confident
+  (T = 3.65) but recalibration moves accuracy +0.0004 (ns); the bottleneck is
+  rescue-event unpredictability. <strong>FBE degenerates</strong> (escalates 98.6%); the
+  <strong>oracle ceiling</strong> (rescuable 0.157 / breakable 0.134) nets only +0.023,
+  unreachable from any 7B signal.</li>
+<li><strong>Gate-description decision</strong> — lean toward refitting a true raw-margin
+  quantile gate so "parameter-free" is literally true; cite <strong>Narasimhan
+  (2022)</strong> / <strong>Jitkrittum (2023)</strong> for the deferral rule, CP-Router as contrast.</li>
+</ul>
+<p>The result is left intact and <strong>better-supported</strong>, with two honest manuscript
+fixes (gate description, MMMU) queued. No code pushed.</p>
 <hr />
 <h2 id="plan-for-the-week-jun-7-jun-13">Plan for the week (Jun 7 – Jun 13)<a class="headerlink" href="#plan-for-the-week-jun-7-jun-13" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
@@ -1864,16 +1983,46 @@ pushed as <code>d474015</code>.</p>
       (<code>rt_cascade.py</code>, <code>rt_analyze.py</code>, the held-out τ grid) plus the
       previous session's uncommitted scripts (frozen-gate training, FLOPs,
       conformal, <code>run_7b_prune_sweep.py</code>) — once the real-time numbers are in.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Write the CVGIP 2026 manuscript</strong> (Day 4) — eight-page two-column DOCX,
+      template-locked, 33 references, our 7B/32B hidden, Dan removed from
+      authorship, headline <strong>0.639×</strong> compute.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Reviewer-grade audit of the manuscript</strong> (Day 5) — six-router bake-off
+      (none beats the one-line gate), the τ/pipeline reproducibility gap, the
+      MMMU-exclusion contradiction, and the calibration-irrelevance finding.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Resolve the gate description</strong> (Day 5 → next) — refit a true raw-margin
+      quantile gate (or rewrite §3.2 for the standardized-margin gate) and fix
+      the MMMU exclusion before resubmission.</li>
 </ul>
 <hr />
 <h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
-<p><em>Write this at the end of the week. The question Day 1 sets up: does the
-project commit to the efficiency-cascade framing (a real, modest, defensible
-contribution — 32B quality at ~60% cost on competent medical VQA), or spend
-more of the week chasing a stronger escalation signal to reach the +12.5pp
-accuracy headroom that the margin and layer-14 hidden states both can't
-touch? Day 1 gave the project its first working method and a clean boundary
-around it; the week decides how much further to push the boundary.</em></p>
+<p>Week 5 was the week the project <em>became a paper</em>. It opened mid-pivot — the
+single-model compute router still on the table — and closed with a written,
+format-locked CVGIP 2026 manuscript built on a clean, defensible result. The
+research arc resolved cleanly along the way: the single-model router was
+<strong>audited to death</strong> (Day 1 — correlated errors, oracle far below the
+independence floor), the pivot to a <strong>7B→32B cross-model cascade</strong> found the
+complementarity the single model lacked (Day 1 — +12.5pp oracle, 20–27%
+only-7B), and the decisive question — <em>is that accuracy headroom reachable from
+a cheap signal?</em> — was answered <strong>no</strong> under a pre-registered bootstrap
+(Day 2), committing the project to an honest <strong>efficiency</strong> framing rather than
+an oversold accuracy one. Day 3 turned that into a number (a held-out grid:
+<strong>0.572 parity at 74%</strong> compute, serving cap320), and the June 9 evening work
+locked the deployable artifact (a contamination-clean frozen gate, honest
+prefill-inclusive FLOPs).</p>
+<p>The last two days were about <em>defensibility</em>, and they raised the bar in the
+right direction. Day 4 produced the manuscript; Day 5 then attacked it like a
+reviewer and made it stronger — the six-router bake-off converts the central
+negative result from an assertion into a demonstration (nothing beats a
+one-line gate), and the audit surfaced two genuine honesty fixes (the gate is a
+standardized-margin logistic, not the raw threshold the text claims; MMMU
+isn't actually near-chance for the 7B) that a careful reviewer <em>would</em> have
+caught. The measured <strong>0.639×</strong> headline is the kind of number that survives
+scrutiny because it came from a live run, not an estimate. What's left is
+editorial, not scientific: make the gate description match the checkpoint
+(lean: refit a truly raw-margin gate so "parameter-free" is literally true),
+re-justify the MMMU exclusion, and drop in the last pending values. The result
+is real, modest, and honestly framed — exactly the posture the whole pivot was
+arguing for.</p>
 
 
 
