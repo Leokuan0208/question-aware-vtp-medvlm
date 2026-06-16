@@ -1,6 +1,6 @@
 # Week 5 — Cross-model efficiency cascade (7B→32B)
 
-<span class="pill pill--wip">In progress</span>
+<span class="pill pill--done">Done</span>
 
 **Pivot phase** (single-model compute router → cross-model cascade) ·
 **Week 5 of 12**
@@ -160,6 +160,65 @@ real-time harness will turn the FLOPs 74% into a measured wall-clock/energy
 number. Today also cleared the previous session's code backlog —
 pushed as `d474015`.
 
+### [Day 4 — Friday, June 12, 2026](day-04.md)
+
+A pure paper-production day (June 11 was off) — turning the cascade into a
+submission-grade **CVGIP 2026** manuscript (8-page cap, two-column DOCX), in
+three demanding rounds of format-and-content fixes against the official
+template and a submitted exemplar (EIBNet), with the full render-check loop on
+every build:
+
+- **Two-column, template-locked** — read the template XML for the spec (83 mm
+  columns, centered all-caps headings, 100–150-word abstract, no page numbers,
+  professor-first authorship); fixed the body font from 9 pt to the measured
+  **10 pt** (12 pt headings); restyled the algorithm to EIBNet's
+  horizontal-rules-only form.
+- **Bibliography 20 → 33** verified references across five Related-Work
+  subsections; density raised to fill the full **8 pages** (cross-model
+  motivation, §3.4 calibration rigor, §4.1 expanded setup, §4.8 Limitations,
+  the resolution–compute frontier).
+- **Hid our own 7B *and* 32B accuracy** from Table 1 / Fig 3 — only
+  cascade-vs-published shown (**+2.28 macro / +8.81**), because our internal
+  reproductions *exceed* the published MedVLThinker baselines and would invite
+  harness-difference questions; endpoints relabeled as cascade operating points.
+- **Corrected authorship** — Yuan-Kai Wang and Li-Wen Kuan only; removed the
+  mistaken co-author "Dan" (**Dan is Li-Wen Kuan himself**).
+- **Headline firmed** — the live cascade runs at a measured **0.639×** of
+  always-32B compute at parity (63.1% escalation; 4398 J vs 6883 J/query).
+
+Still pending (not fabricated): peak VRAM and ~7 reference author lists. No code
+pushed.
+
+### [Day 5 — Saturday, June 13, 2026](day-05.md)
+
+A reviewer-grade audit — attack the manuscript the way a top-venue reviewer
+would, then close the holes. One training-free script (`fbe_and_signals.py`,
+checkpoint-only, zero new inference) did most of the work:
+
+- **The τ that wasn't.** The paper describes the gate as a raw-margin threshold
+  (τ = 0.426), but `router_margin.pkl` is a **StandardScaler + logistic
+  pipeline**, so 0.426 is a cut in *standardized z-space* — raw thresholding
+  escalates 46.1% vs the live **63.1%**, a **17-point** reproducibility gap.
+  Eq. 2 as written wouldn't reproduce the headline.
+- **MMMU exclusion contradicted** — the 7B scores **0.547** on MMMU (above
+  chance), so "excluded because near-chance" doesn't hold for it (MedXpert at
+  0.225 / 0.256 stays defensible).
+- **Six-router tie** — margin / top1 / entropy / temp-margin / conformal / FBE,
+  **none beats the one-line margin gate** at matched compute (best Δ +0.0020,
+  ns under Bonferroni). Converts the paper's negative result from assertion to
+  demonstration.
+- **Calibration is irrelevant to routing** — the 7B is badly over-confident
+  (T = 3.65) but recalibration moves accuracy +0.0004 (ns); the bottleneck is
+  rescue-event unpredictability. **FBE degenerates** (escalates 98.6%); the
+  **oracle ceiling** (rescuable 0.157 / breakable 0.134) nets only +0.023,
+  unreachable from any 7B signal.
+- **Gate-description decision** — lean toward refitting a true raw-margin
+  quantile gate so "parameter-free" is literally true; cite **Narasimhan
+  (2022)** / **Jitkrittum (2023)** for the deferral rule, CP-Router as contrast.
+
+The result is left intact and **better-supported**, with two honest manuscript
+fixes (gate description, MMMU) queued. No code pushed.
+
 ---
 
 ## Plan for the week (Jun 7 – Jun 13)
@@ -197,15 +256,46 @@ pushed as `d474015`.
       (`rt_cascade.py`, `rt_analyze.py`, the held-out τ grid) plus the
       previous session's uncommitted scripts (frozen-gate training, FLOPs,
       conformal, `run_7b_prune_sweep.py`) — once the real-time numbers are in.
+- [x] **Write the CVGIP 2026 manuscript** (Day 4) — eight-page two-column DOCX,
+      template-locked, 33 references, our 7B/32B hidden, Dan removed from
+      authorship, headline **0.639×** compute.
+- [x] **Reviewer-grade audit of the manuscript** (Day 5) — six-router bake-off
+      (none beats the one-line gate), the τ/pipeline reproducibility gap, the
+      MMMU-exclusion contradiction, and the calibration-irrelevance finding.
+- [ ] **Resolve the gate description** (Day 5 → next) — refit a true raw-margin
+      quantile gate (or rewrite §3.2 for the standardized-margin gate) and fix
+      the MMMU exclusion before resubmission.
 
 ---
 
 ## Reflections (end-of-week)
 
-_Write this at the end of the week. The question Day 1 sets up: does the
-project commit to the efficiency-cascade framing (a real, modest, defensible
-contribution — 32B quality at ~60% cost on competent medical VQA), or spend
-more of the week chasing a stronger escalation signal to reach the +12.5pp
-accuracy headroom that the margin and layer-14 hidden states both can't
-touch? Day 1 gave the project its first working method and a clean boundary
-around it; the week decides how much further to push the boundary._
+Week 5 was the week the project *became a paper*. It opened mid-pivot — the
+single-model compute router still on the table — and closed with a written,
+format-locked CVGIP 2026 manuscript built on a clean, defensible result. The
+research arc resolved cleanly along the way: the single-model router was
+**audited to death** (Day 1 — correlated errors, oracle far below the
+independence floor), the pivot to a **7B→32B cross-model cascade** found the
+complementarity the single model lacked (Day 1 — +12.5pp oracle, 20–27%
+only-7B), and the decisive question — *is that accuracy headroom reachable from
+a cheap signal?* — was answered **no** under a pre-registered bootstrap
+(Day 2), committing the project to an honest **efficiency** framing rather than
+an oversold accuracy one. Day 3 turned that into a number (a held-out grid:
+**0.572 parity at 74%** compute, serving cap320), and the June 9 evening work
+locked the deployable artifact (a contamination-clean frozen gate, honest
+prefill-inclusive FLOPs).
+
+The last two days were about *defensibility*, and they raised the bar in the
+right direction. Day 4 produced the manuscript; Day 5 then attacked it like a
+reviewer and made it stronger — the six-router bake-off converts the central
+negative result from an assertion into a demonstration (nothing beats a
+one-line gate), and the audit surfaced two genuine honesty fixes (the gate is a
+standardized-margin logistic, not the raw threshold the text claims; MMMU
+isn't actually near-chance for the 7B) that a careful reviewer *would* have
+caught. The measured **0.639×** headline is the kind of number that survives
+scrutiny because it came from a live run, not an estimate. What's left is
+editorial, not scientific: make the gate description match the checkpoint
+(lean: refit a truly raw-margin gate so "parameter-free" is literally true),
+re-justify the MMMU exclusion, and drop in the last pending values. The result
+is real, modest, and honestly framed — exactly the posture the whole pivot was
+arguing for.
