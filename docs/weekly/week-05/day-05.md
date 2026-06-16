@@ -31,30 +31,114 @@ The day ends on the decision of how to make the paper's gate description honest
 
 ---
 
-## Phase 1 — The reviewer attack surface, in five tiers
+## Phase 1 — The reviewer attack surface: verdict, and the numbered holes
 
 A focused literature review of medical VLMs, visual-token pruning, and
-model-cascade/routing produced a prioritized list of where the paper is most
-exposed:
+model-cascade/routing produced a prioritized, **numbered** list of where the
+paper is most exposed — graded the way a hostile top-venue reviewer would.
 
-- **Tier 1 — framing & exclusions.** Framing contradictions and the
-  credibility of the benchmark exclusions (does the "excluded because
-  near-chance" story actually hold per benchmark?).
-- **Tier 2 — missing baselines.** CP-Router/**FBE** (and the fact the paper's
-  CP-Router treatment omits **FBE**, its core mechanism), proxy-confidence
-  signals, and calibration methods.
-- **Tier 3 — measurement rigor.** Energy-attribution and engine-faithfulness
-  gaps.
-- **Tier 4 — statistics.** Multiple-comparison correction (Bonferroni) on the
-  router comparisons.
-- **Tier 5 — related work.** RL-reasoning medical VLMs and the token-pruning
-  literature.
+**The honest verdict.** A domain transfer + a negative result + measured
+energy *is* a real paper, but at the top tier reviewers will ask *"what is new
+beyond a known theory landing where it predicts it should?"* Three things have
+to be answered: (1) that novelty question; (2) **the paper contradicts itself
+on its own thesis** (an accuracy-win headline vs. an efficiency-at-parity
+claim); and (3) it **exposes a benchmark-cherry-picking attack** a hostile
+reviewer will use to reject outright. Fix (2) and (3) and add the missing
+baselines → a **solid workshop/mid-tier** paper. Add headroom recovery *or*
+airtight six-benchmark generality → a **journal (IEEE-Transactions-tier)**
+target is reachable. (For scale: the draft is ~3,000 words / 6 tables / 3
+figures; a journal version is ~8,000–12,000 words, ~8–11 tables, ~6–8 figures —
+mostly *write-up of analysis already run*, not new compute.)
 
-Two reference-level problems were flagged immediately: the **MMMU-Health
-exclusion rationale is contradicted by the paper's own cited benchmark study**,
-and the **manuscript describes the gate as a raw-margin threshold while the
-shipped artifact is a StandardScaler+logistic pipeline** — both confirmed
-empirically in Phase 3.
+??? note "Tier 1 — the holes that get you rejected (fix first)"
+    - **#1 — The headline contradicts the thesis.** The abstract/§4.2 frame
+      the cascade as an *accuracy win* ("exceeds published MedVLThinker-32B
+      68.53% by 2.28 pts," Table 1 macro = **70.81%**), but §4.3/Table 3 argue
+      *efficiency at parity* (cascade **0.655** vs always-32B **0.645**, CIs
+      spanning zero). They even use different math — Table 1 is a **macro**
+      over four benchmarks vs **published** numbers (a different harness),
+      Table 3 is **pooled/micro** on the held-out half (n=1815) vs **our own**
+      always-32B. Reads as "the author picked whichever comparison looked
+      best." **Fix:** pick *efficiency at parity*; make every accuracy
+      comparison cascade-vs-our-own-always-32B; demote "vs published" to one
+      validation sentence.
+    - **#2 — "Never worse than the 7B" is false on our own data.** Table 1:
+      cascade PathVQA **66.45 < published-7B 66.83**, yet the abstract says
+      "never worse than the 7B" and Fig 3's caption claims "exceeds the
+      published 7B on all four." **Fix:** state the monotonicity guarantee only
+      at the pooled/same-harness level (Table 3: cascade 0.655 ≥ cheap-only
+      0.633) and flag PathVQA as the case where *broken > rescued*.
+    - **#3 — Benchmark-exclusion credibility.** The "excluded because
+      near-chance" story must hold *per benchmark* — and MMMU breaks it (see
+      Phase 3). **Fix:** report the full six-benchmark table.
+
+??? note "Tier 2 — missing baselines"
+    - **#6 — Proxy-confidence baseline (the highest-value *scientific* test).**
+      Train a small head on the 7B's hidden states / cheap features to predict
+      the rescue event *without running the 32B*. If it fails, the negative
+      result becomes near-bulletproof; if it succeeds, there's a positive
+      method.
+    - **#7 — Cheap-model calibration is never addressed.** A reviewer asks "the
+      deferral signal is bad because the 7B is miscalibrated — did you fix
+      that?" **Fix:** temperature/Platt-scale the margin and show it doesn't
+      move the gate (it doesn't — see Phase 4), or scope it as future work.
+    - **#8 — "Learned router fails" is in tension with the paper it anchors
+      on.** Jitkrittum (2023) shows *post-hoc estimators beat confidence
+      deferral*; our learned router *is* a post-hoc estimator and *fails*.
+      **Fix:** explain head-on — the rescue event is near-unpredictable from 7B
+      signals *in this domain* (the AUROC≈0.65 probe is exactly this argument).
+    - **#9 — The "CP-Router-style" baseline omits CP-Router's core (FBE).**
+      Either implement Full-and-Binary-Entropy faithfully or rename the
+      baseline "split-conformal set-size router" and stop attributing it to
+      CP-Router.
+    - **#10 — Best-of-n on the cheap model (BEST-Route [22]) is an unrun
+      baseline.** Sampling the 7B a few times before deciding is a known way to
+      sharpen the deferral signal. Justify out-of-scope (it changes the cost
+      model) or run a small version.
+
+??? note "Tier 3 — measurement rigor (where the paper can actually shine)"
+    - **#11 — Energy attribution is under-specified.** 53 J for the 7B pass
+      implies ~0.1–0.2 s at A100 power — plausible, but does it include
+      idle/baseline power, preprocessing, tokenization? How was per-leg energy
+      isolated with both models co-resident on separate GPUs? **Fix:** specify
+      NVML sampling rate, integration window, idle-baseline subtraction, and
+      report **mean ± std over repeated runs** — match the kJ rigor of the Yang
+      paper being emulated.
+    - **#12 — The always-32B baseline must be *measured* natively**, not
+      estimated, with full power logging repeated for variance (the 0.639×
+      headline rides on it).
+    - **#13 — HF-vs-vLLM faithfulness at the *cascade* level**, not just the
+      32B leg — compute the cascade accuracy natively under HF and reconcile
+      against the vLLM-labeled version.
+
+??? note "Tier 4 — statistics & evaluation hygiene"
+    - **#16 — Multiple comparisons.** Many pairwise parity claims; the
+      Bonferroni discipline (PathVQA's +0.010 doesn't survive it) must be *in
+      the paper*, with corrected intervals.
+    - **#17 — n=272 (VQA-RAD) is too small to carry 82.35%.** Don't headline
+      it; lead with pooled parity and add bootstrap CIs to *every* per-benchmark
+      cell of Table 1.
+    - **#18 — Single seed / greedy only.** Add at least one sampled-decoding
+      robustness run, or state it as a bounded limitation.
+    - **#19 — Define the four escalation buckets formally** (rescued / broken /
+      wasted / redundant) in terms of (ŷ₇, ŷ₃₂, y).
+
+??? note "Tier 5 — related work & novelty positioning (thin where it matters most)"
+    - **#20 — Zero medical RL-reasoning VLMs cited**, despite building *on* one.
+      Add and position as *complementary*: **MedVLM-R1** (Pan et al., MICCAI
+      2025, 2502.19634), **Med-R1** (Lai et al., 2503.13939), **GMAI-VL-R1**
+      (2504.01886), **Lingshu** (2506.07044), **MedGemma** (Google, 2025).
+    - **#21 — Zero visual-token-pruning methods cited**, despite the project's
+      origin. Engage the real literature — **FastV** (ECCV 2024), **SparseVLM**
+      (ICML 2025), **PruMerge**, **HiRED** (AAAI 2025), **VScan** (2505.22654),
+      **LLaVA-Mini** (ICLR 2025), **ATP-LLaVA** (CVPR 2025) — as the orthogonal
+      *"make each leg cheaper"* axis that composes with the cascade (and
+      reconnects the paper to its question-aware-pruning origins).
+
+Two of these were the highest-priority reference-level problems and were
+**confirmed empirically in Phase 3**: the MMMU exclusion (#3) and the
+gate-description mismatch (the artifact is a `StandardScaler`+logistic
+pipeline, not the raw-margin threshold the text claims).
 
 ---
 
@@ -221,33 +305,80 @@ does not match the shipped `StandardScaler`+logistic artifact. Two clean fixes:
 
 ---
 
+## Phase 6 — The prioritized fix plan (pre-registered gates)
+
+The audit closes with a fix queue ordered by **impact-per-GPU-hour**, each with
+a falsification gate registered *before* spending compute — the discipline
+that's served every prior dead end:
+
+1. **All-six-benchmark accuracy + full cascade on all six** (closes #3) — pure
+   inference on the existing harness. *Gate:* if the cascade is ever worse than
+   always-7B on any benchmark, the monotonicity claim must soften. **Highest
+   impact, lowest cost — run first.**
+2. **Directly-instrumented always-32B energy/latency** (closes #11, #12, #5) —
+   full power logging, repeated for variance. *Gate:* the measured ratio must
+   land near **0.639×** or the headline changes.
+3. **HF-vs-vLLM cascade reconciliation** (closes #13) — cascade accuracy
+   natively under HF vs the vLLM-labeled version. *Gate:* agreement at the
+   *cascade* level, not just the 32B leg.
+4. **Proxy-confidence baseline** (closes #6 — *the* category-changing
+   experiment) — a small head on the 7B's hidden states to predict the rescue
+   event without running the 32B. *Gate:* held-out rescue-AUROC must beat the
+   0.60 bar **and** lift matched-budget accuracy with a CI clear of zero. Fail
+   → the negative result is near-bulletproof; succeed → there's a positive
+   method.
+5. **Cheap-model calibration check** (closes #7) — temperature/Platt-scale the
+   margin, re-evaluate the gate.
+6. **Faithful FBE conformal baseline** (closes #9).
+7. **Multiple-comparison correction + per-cell bootstrap CIs everywhere**
+   (closes #16, #17) — analysis only.
+
+Items **1–3 are a single sequential overnight chain** on the idle GPUs (they
+close the three Tier-1/Tier-3 holes that most threaten acceptance for the least
+compute); **item 4 is the one that can move the paper from "negative result" to
+"method."**
+
+---
+
 ## Honest ledger of the day
 
-1. **Reviewer attack surface mapped** in five tiers (framing/exclusions,
-   baselines, measurement rigor, statistics, related work), with the
-   CP-Router-omits-FBE, MMMU-exclusion, and gate-description issues flagged up
-   front.
-2. **`fbe_and_signals.py`** — a training-free, checkpoint-only router bake-off,
+1. **Reviewer attack surface mapped** as ~22 numbered holes across five tiers,
+   with the **verdict** stated plainly: fix the self-contradiction and the
+   cherry-picking attack and add baselines → workshop/mid-tier; add headroom
+   recovery or six-benchmark generality → journal-tier.
+2. **Two Tier-1 self-contradictions caught in the manuscript** — (#1) an
+   accuracy-win headline (Table 1 macro **70.81%** vs published) fights the
+   efficiency-at-parity claim (Table 3 **0.655** vs own 32B, CIs spanning
+   zero), on *different math/harnesses*; (#2) "**never worse than the 7B**" is
+   false on the paper's own data (cascade PathVQA **66.45 < published-7B
+   66.83**).
+3. **`fbe_and_signals.py`** — a training-free, checkpoint-only router bake-off,
    frontier-matched to the deployed gate.
-3. **The τ reproducibility gap** — the gate is a `StandardScaler`+logistic
+4. **The τ reproducibility gap** — the gate is a `StandardScaler`+logistic
    pipeline, so τ = 0.426 is a cut in **z-space**, not raw-margin space; raw
    thresholding gives 46.1% escalation vs the live **63.1%** (a 17-point swing,
    and Eq. 2 wouldn't reproduce the headline).
-4. **MMMU exclusion contradicted** — 7B = **0.5471** on MMMU (above chance);
+5. **MMMU exclusion contradicted** — 7B = **0.5471** on MMMU (above chance);
    MedXpert exclusion stays defensible (0.2254 / 0.2563).
-5. **Six-router tie** — margin / top1 / entropy / temp-margin / conformal /
+6. **Six-router tie** — margin / top1 / entropy / temp-margin / conformal /
    FBE, none beats the one-line gate at matched compute (Bonferroni demands
    ~0.0100; best Δ is +0.0020, ns).
-6. **Calibration is irrelevant to routing** — T = 3.65 over-confidence, but
+7. **Calibration is irrelevant to routing** — T = 3.65 over-confidence, but
    recalibration moves accuracy +0.0004 (ns); the bottleneck is rescue
-   unpredictability.
-7. **FBE degenerates** (escalates 98.6%); **oracle ceiling** rescuable 0.157 /
-   breakable 0.134 → escalate-all nets +0.023, unreachable from 7B signals.
-8. **Headline confirmed** — competent-four escalation **0.631** is the correct
+   unpredictability. **FBE degenerates** (escalates 98.6%); **oracle ceiling**
+   rescuable 0.157 / breakable 0.134 → escalate-all nets +0.023, unreachable
+   from 7B signals.
+8. **Missing-reference gaps named** — zero medical RL-reasoning VLMs (MedVLM-R1,
+   Med-R1, GMAI-VL-R1, Lingshu, MedGemma) and zero visual-token-pruning methods
+   (FastV, SparseVLM, HiRED, VScan, LLaVA-Mini, ATP-LLaVA), the latter
+   reconnecting the paper to its pruning origins.
+9. **Headline confirmed** — competent-four escalation **0.631** is the correct
    headline (overall 0.662).
-9. **Gate-description decision** — lean option (b), a true raw-margin quantile
-   gate; cite Narasimhan (2022) / Jitkrittum (2023) for the deferral rule,
-   CP-Router as contrast.
+10. **Gate-description decision + a pre-registered fix queue** — lean option (b)
+    (true raw-margin quantile gate; cite Narasimhan 2022 / Jitkrittum 2023,
+    CP-Router as contrast); items 1–3 (all-six table, instrumented 32B energy,
+    HF/vLLM reconciliation) are tonight's chain, item 4 (proxy-confidence
+    probe) the one that could turn the negative result into a method.
 
 !!! note "On the project's direction"
     The audit leaves the cascade's *result* intact and **better-supported** —
@@ -261,17 +392,29 @@ does not match the shipped `StandardScaler`+logistic artifact. Two clean fixes:
 
 ### Plan for next session
 
+- [ ] **Run tonight's chain — fix-plan items 1–3** (see Phase 6): the
+      all-six-benchmark accuracy + full cascade (closes #3), the
+      directly-instrumented always-32B energy/latency (closes #11/#12/#5), and
+      the HF-vs-vLLM cascade reconciliation (closes #13) — one sequential
+      overnight `nohup` batch, the cheapest fixes for the holes that most
+      threaten acceptance.
+- [ ] **The category-changer — fix-plan item 4:** the proxy-confidence probe
+      (small head on 7B features predicting the rescue event without the 32B),
+      pre-registered gate AUROC > 0.60 + CI clear of zero. Fail → bulletproof
+      negative; succeed → a positive method.
 - [ ] **Settle the gate description** — refit the raw-margin quantile gate
       (option b) and re-run the live cascade so "parameter-free one-line
       threshold" is literally true, or rewrite §3.2 for the standardized-margin
       gate; report τ accordingly.
-- [ ] **Fix the MMMU exclusion** — re-justify (it's not near-chance for the 7B)
-      or fold MMMU back in.
-- [ ] **Fold the bake-off into Table 3** and add the two new sentences
-      (FBE-degeneration, calibration-irrelevance); check whether the conformal
-      +0.0020 sliver lives in PMC-VQA before giving it a sentence.
-- [ ] Add the **FBE mechanism** to the CP-Router baseline; drop in **peak VRAM**
-      and the **~7 reference author lists** still pending from Day 4.
+- [ ] **Fix the two Tier-1 contradictions** — make every accuracy comparison
+      cascade-vs-own-32B (demote "vs published" to one validation sentence), and
+      state monotonicity only at the pooled level (flagging PathVQA); re-justify
+      or fold back the **MMMU** exclusion.
+- [ ] **Statistics + related work** — Bonferroni-corrected intervals and
+      per-cell bootstrap CIs in Table 1 (items 6–7); add the missing medical
+      RL-reasoning and visual-token-pruning citations (#20/#21).
+- [ ] Drop in the **peak VRAM** and the **~7 reference author lists** still
+      pending from [Day 4](day-04.md).
 
 ---
 

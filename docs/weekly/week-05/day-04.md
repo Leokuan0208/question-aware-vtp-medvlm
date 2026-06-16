@@ -138,6 +138,33 @@ editorial changes:
 The paper now fills the **full 8 pages** (the hard cap, re-checked on every
 build): two-column, 10 pt body / 12 pt headings, three-line (booktabs) tables,
 horizontal-rule algorithms, 33 references, no page numbers, validation passing.
+Table 1's four-benchmark macro-averages, top to bottom, are **62.00 / 68.53 /
+68.13 / 70.81** (published-7B / published-32B / our cheap-7B / cascade) — the
+cascade exceeds the published 32B and sits above our cheap 7B at the macro
+level. The **0.639×** headline is `r + E₇/E₃₂` — the escalation rate plus the
+cheap leg's tiny share — which is *why* it's almost entirely the escalation
+rate (the cheap cap320 leg is only ~53 J, 0.008×).
+
+??? note "Tool knowledge — DOCX two-column build mechanics (hard-won this day)"
+    - **Tables need `layout: TableLayoutType.FIXED`** (imported from `docx`),
+      or LibreOffice ignores `columnWidths` entirely and auto-sizes by content,
+      wrapping headers.
+    - Even with fixed layout, a 7-character hyphenated header ("PMC-VQA",
+      "VQA-RAD") at 9 pt needs ~850+ DXA to stay on one line; **760 DXA is
+      insufficient** (LibreOffice breaks at the hyphen). The reliable workaround
+      is **abbreviated headers** (PMC / RAD / Path / SLAKE) with a **legend in
+      the caption**.
+    - Forcing full-width spanning elements to page tops via
+      `SectionType.NEXT_PAGE` reliably **leaves the preceding page's right
+      column empty**. The clean layout is **one 1-col title section + one
+      continuous 2-col section** for the whole body, every figure/table sized to
+      column width.
+    - **Build bugs fixed this day:** a split Table 4 breaking across the column
+      boundary, a stray leading period on the References heading, the orphaned
+      §4.5 heading (`keepNext`/`keepLines`), and a page-4 gap (resolved by
+      ordering Table 2 ahead of Fig 3).
+    - Mandatory check loop, every build: `validate.py` → LibreOffice PDF convert
+      → `pdfinfo | grep Pages` (≤ 8) → `pdftoppm` → **view every rendered page**.
 
 ---
 

@@ -192,32 +192,46 @@ pushed.
 ### [Day 5 — Saturday, June 13, 2026](day-05.md)
 
 A reviewer-grade audit — attack the manuscript the way a top-venue reviewer
-would, then close the holes. One training-free script (`fbe_and_signals.py`,
-checkpoint-only, zero new inference) did most of the work:
+would, then close the holes. The literature review produced **~22 numbered
+holes across five tiers** and a blunt **verdict**: fix the self-contradiction
+and the benchmark-cherry-picking attack and add baselines → workshop/mid-tier;
+add headroom recovery or six-benchmark generality → journal-tier. One
+training-free script (`fbe_and_signals.py`, checkpoint-only, zero new inference)
+did the empirical work:
 
+- **Two Tier-1 self-contradictions in the manuscript** — (#1) an accuracy-win
+  headline (Table 1 macro **70.81%** vs *published* numbers) fights the
+  efficiency-at-parity claim (Table 3 **0.655** vs *own* 32B, CIs spanning
+  zero), on different math/harnesses; (#2) "**never worse than the 7B**" is
+  *false* on the paper's own data — cascade PathVQA **66.45 < published-7B
+  66.83**.
 - **The τ that wasn't.** The paper describes the gate as a raw-margin threshold
   (τ = 0.426), but `router_margin.pkl` is a **StandardScaler + logistic
   pipeline**, so 0.426 is a cut in *standardized z-space* — raw thresholding
   escalates 46.1% vs the live **63.1%**, a **17-point** reproducibility gap.
-  Eq. 2 as written wouldn't reproduce the headline.
 - **MMMU exclusion contradicted** — the 7B scores **0.547** on MMMU (above
   chance), so "excluded because near-chance" doesn't hold for it (MedXpert at
   0.225 / 0.256 stays defensible).
 - **Six-router tie** — margin / top1 / entropy / temp-margin / conformal / FBE,
   **none beats the one-line margin gate** at matched compute (best Δ +0.0020,
-  ns under Bonferroni). Converts the paper's negative result from assertion to
-  demonstration.
-- **Calibration is irrelevant to routing** — the 7B is badly over-confident
-  (T = 3.65) but recalibration moves accuracy +0.0004 (ns); the bottleneck is
-  rescue-event unpredictability. **FBE degenerates** (escalates 98.6%); the
-  **oracle ceiling** (rescuable 0.157 / breakable 0.134) nets only +0.023,
-  unreachable from any 7B signal.
-- **Gate-description decision** — lean toward refitting a true raw-margin
-  quantile gate so "parameter-free" is literally true; cite **Narasimhan
-  (2022)** / **Jitkrittum (2023)** for the deferral rule, CP-Router as contrast.
+  ns under Bonferroni); FBE degenerates (escalates 98.6%); the oracle ceiling
+  (rescuable 0.157 / breakable 0.134) nets +0.023, unreachable from any 7B
+  signal. Calibration is irrelevant (T = 3.65, recalibration +0.0004 ns).
+- **Missing-reference gaps** — zero medical RL-reasoning VLMs (MedVLM-R1,
+  Med-R1, GMAI-VL-R1, Lingshu, MedGemma) and zero visual-token-pruning methods
+  (FastV, SparseVLM, HiRED, VScan, LLaVA-Mini, ATP-LLaVA), the latter
+  reconnecting the paper to its pruning origins.
+- **A pre-registered fix queue** — items 1–3 (all-six table, instrumented 32B
+  energy, HF/vLLM reconciliation) as tonight's chain; item 4 (a proxy-confidence
+  probe, gated AUROC > 0.60) the one that could turn the negative result into a
+  positive method. Gate-description decision: lean toward a true raw-margin
+  quantile gate; cite **Narasimhan (2022)** / **Jitkrittum (2023)**, CP-Router
+  as contrast.
 
-The result is left intact and **better-supported**, with two honest manuscript
-fixes (gate description, MMMU) queued. No code pushed.
+The result is left intact and **better-supported** — the negative routing
+result is now a demonstration, not an assertion — with the honest manuscript
+fixes (the two contradictions, the gate description, MMMU, the missing
+citations) queued. No code pushed.
 
 ---
 
