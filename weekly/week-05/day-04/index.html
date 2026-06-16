@@ -1987,7 +1987,37 @@ editorial changes:</p>
 </ul>
 <p>The paper now fills the <strong>full 8 pages</strong> (the hard cap, re-checked on every
 build): two-column, 10 pt body / 12 pt headings, three-line (booktabs) tables,
-horizontal-rule algorithms, 33 references, no page numbers, validation passing.</p>
+horizontal-rule algorithms, 33 references, no page numbers, validation passing.
+Table 1's four-benchmark macro-averages, top to bottom, are <strong>62.00 / 68.53 /
+68.13 / 70.81</strong> (published-7B / published-32B / our cheap-7B / cascade) — the
+cascade exceeds the published 32B and sits above our cheap 7B at the macro
+level. The <strong>0.639×</strong> headline is <code>r + E₇/E₃₂</code> — the escalation rate plus the
+cheap leg's tiny share — which is <em>why</em> it's almost entirely the escalation
+rate (the cheap cap320 leg is only ~53 J, 0.008×).</p>
+<details class="note">
+<summary>Tool knowledge — DOCX two-column build mechanics (hard-won this day)</summary>
+<ul>
+<li><strong>Tables need <code>layout: TableLayoutType.FIXED</code></strong> (imported from <code>docx</code>),
+  or LibreOffice ignores <code>columnWidths</code> entirely and auto-sizes by content,
+  wrapping headers.</li>
+<li>Even with fixed layout, a 7-character hyphenated header ("PMC-VQA",
+  "VQA-RAD") at 9 pt needs ~850+ DXA to stay on one line; <strong>760 DXA is
+  insufficient</strong> (LibreOffice breaks at the hyphen). The reliable workaround
+  is <strong>abbreviated headers</strong> (PMC / RAD / Path / SLAKE) with a <strong>legend in
+  the caption</strong>.</li>
+<li>Forcing full-width spanning elements to page tops via
+  <code>SectionType.NEXT_PAGE</code> reliably <strong>leaves the preceding page's right
+  column empty</strong>. The clean layout is <strong>one 1-col title section + one
+  continuous 2-col section</strong> for the whole body, every figure/table sized to
+  column width.</li>
+<li><strong>Build bugs fixed this day:</strong> a split Table 4 breaking across the column
+  boundary, a stray leading period on the References heading, the orphaned
+  §4.5 heading (<code>keepNext</code>/<code>keepLines</code>), and a page-4 gap (resolved by
+  ordering Table 2 ahead of Fig 3).</li>
+<li>Mandatory check loop, every build: <code>validate.py</code> → LibreOffice PDF convert
+  → <code>pdfinfo | grep Pages</code> (≤ 8) → <code>pdftoppm</code> → <strong>view every rendered page</strong>.</li>
+</ul>
+</details>
 <hr />
 <h2 id="what-still-genuinely-needs-leo-not-fabricated">What still genuinely needs Leo (not fabricated)<a class="headerlink" href="#what-still-genuinely-needs-leo-not-fabricated" title="Permanent link">&para;</a></h2>
 <p>Two items were flagged as needing real values rather than invented ones:</p>

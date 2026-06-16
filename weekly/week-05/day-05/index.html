@@ -1606,9 +1606,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-reviewer-attack-surface-in-five-tiers" class="md-nav__link">
+  <a href="#phase-1-the-reviewer-attack-surface-verdict-and-the-numbered-holes" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 1 — The reviewer attack surface, in five tiers
+      Phase 1 — The reviewer attack surface: verdict, and the numbered holes
     </span>
   </a>
   
@@ -1645,6 +1645,15 @@
   <a href="#phase-5-making-the-gate-description-honest-and-what-to-cite" class="md-nav__link">
     <span class="md-ellipsis">
       Phase 5 — Making the gate description honest, and what to cite
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-the-prioritized-fix-plan-pre-registered-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — The prioritized fix plan (pre-registered gates)
     </span>
   </a>
   
@@ -1774,9 +1783,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-reviewer-attack-surface-in-five-tiers" class="md-nav__link">
+  <a href="#phase-1-the-reviewer-attack-surface-verdict-and-the-numbered-holes" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 1 — The reviewer attack surface, in five tiers
+      Phase 1 — The reviewer attack surface: verdict, and the numbered holes
     </span>
   </a>
   
@@ -1813,6 +1822,15 @@
   <a href="#phase-5-making-the-gate-description-honest-and-what-to-cite" class="md-nav__link">
     <span class="md-ellipsis">
       Phase 5 — Making the gate description honest, and what to cite
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-the-prioritized-fix-plan-pre-registered-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — The prioritized fix plan (pre-registered gates)
     </span>
   </a>
   
@@ -1902,29 +1920,126 @@ and its <strong>last calendar day</strong> (Week 5 = Jun 7 – Jun 13). The week
 out below.</p>
 </div>
 <hr />
-<h2 id="phase-1-the-reviewer-attack-surface-in-five-tiers">Phase 1 — The reviewer attack surface, in five tiers<a class="headerlink" href="#phase-1-the-reviewer-attack-surface-in-five-tiers" title="Permanent link">&para;</a></h2>
+<h2 id="phase-1-the-reviewer-attack-surface-verdict-and-the-numbered-holes">Phase 1 — The reviewer attack surface: verdict, and the numbered holes<a class="headerlink" href="#phase-1-the-reviewer-attack-surface-verdict-and-the-numbered-holes" title="Permanent link">&para;</a></h2>
 <p>A focused literature review of medical VLMs, visual-token pruning, and
-model-cascade/routing produced a prioritized list of where the paper is most
-exposed:</p>
+model-cascade/routing produced a prioritized, <strong>numbered</strong> list of where the
+paper is most exposed — graded the way a hostile top-venue reviewer would.</p>
+<p><strong>The honest verdict.</strong> A domain transfer + a negative result + measured
+energy <em>is</em> a real paper, but at the top tier reviewers will ask <em>"what is new
+beyond a known theory landing where it predicts it should?"</em> Three things have
+to be answered: (1) that novelty question; (2) <strong>the paper contradicts itself
+on its own thesis</strong> (an accuracy-win headline vs. an efficiency-at-parity
+claim); and (3) it <strong>exposes a benchmark-cherry-picking attack</strong> a hostile
+reviewer will use to reject outright. Fix (2) and (3) and add the missing
+baselines → a <strong>solid workshop/mid-tier</strong> paper. Add headroom recovery <em>or</em>
+airtight six-benchmark generality → a <strong>journal (IEEE-Transactions-tier)</strong>
+target is reachable. (For scale: the draft is ~3,000 words / 6 tables / 3
+figures; a journal version is ~8,000–12,000 words, ~8–11 tables, ~6–8 figures —
+mostly <em>write-up of analysis already run</em>, not new compute.)</p>
+<details class="note">
+<summary>Tier 1 — the holes that get you rejected (fix first)</summary>
 <ul>
-<li><strong>Tier 1 — framing &amp; exclusions.</strong> Framing contradictions and the
-  credibility of the benchmark exclusions (does the "excluded because
-  near-chance" story actually hold per benchmark?).</li>
-<li><strong>Tier 2 — missing baselines.</strong> CP-Router/<strong>FBE</strong> (and the fact the paper's
-  CP-Router treatment omits <strong>FBE</strong>, its core mechanism), proxy-confidence
-  signals, and calibration methods.</li>
-<li><strong>Tier 3 — measurement rigor.</strong> Energy-attribution and engine-faithfulness
-  gaps.</li>
-<li><strong>Tier 4 — statistics.</strong> Multiple-comparison correction (Bonferroni) on the
-  router comparisons.</li>
-<li><strong>Tier 5 — related work.</strong> RL-reasoning medical VLMs and the token-pruning
-  literature.</li>
+<li><strong>#1 — The headline contradicts the thesis.</strong> The abstract/§4.2 frame
+  the cascade as an <em>accuracy win</em> ("exceeds published MedVLThinker-32B
+  68.53% by 2.28 pts," Table 1 macro = <strong>70.81%</strong>), but §4.3/Table 3 argue
+  <em>efficiency at parity</em> (cascade <strong>0.655</strong> vs always-32B <strong>0.645</strong>, CIs
+  spanning zero). They even use different math — Table 1 is a <strong>macro</strong>
+  over four benchmarks vs <strong>published</strong> numbers (a different harness),
+  Table 3 is <strong>pooled/micro</strong> on the held-out half (n=1815) vs <strong>our own</strong>
+  always-32B. Reads as "the author picked whichever comparison looked
+  best." <strong>Fix:</strong> pick <em>efficiency at parity</em>; make every accuracy
+  comparison cascade-vs-our-own-always-32B; demote "vs published" to one
+  validation sentence.</li>
+<li><strong>#2 — "Never worse than the 7B" is false on our own data.</strong> Table 1:
+  cascade PathVQA <strong>66.45 &lt; published-7B 66.83</strong>, yet the abstract says
+  "never worse than the 7B" and Fig 3's caption claims "exceeds the
+  published 7B on all four." <strong>Fix:</strong> state the monotonicity guarantee only
+  at the pooled/same-harness level (Table 3: cascade 0.655 ≥ cheap-only
+  0.633) and flag PathVQA as the case where <em>broken &gt; rescued</em>.</li>
+<li><strong>#3 — Benchmark-exclusion credibility.</strong> The "excluded because
+  near-chance" story must hold <em>per benchmark</em> — and MMMU breaks it (see
+  Phase 3). <strong>Fix:</strong> report the full six-benchmark table.</li>
 </ul>
-<p>Two reference-level problems were flagged immediately: the <strong>MMMU-Health
-exclusion rationale is contradicted by the paper's own cited benchmark study</strong>,
-and the <strong>manuscript describes the gate as a raw-margin threshold while the
-shipped artifact is a StandardScaler+logistic pipeline</strong> — both confirmed
-empirically in Phase 3.</p>
+</details>
+<details class="note">
+<summary>Tier 2 — missing baselines</summary>
+<ul>
+<li><strong>#6 — Proxy-confidence baseline (the highest-value <em>scientific</em> test).</strong>
+  Train a small head on the 7B's hidden states / cheap features to predict
+  the rescue event <em>without running the 32B</em>. If it fails, the negative
+  result becomes near-bulletproof; if it succeeds, there's a positive
+  method.</li>
+<li><strong>#7 — Cheap-model calibration is never addressed.</strong> A reviewer asks "the
+  deferral signal is bad because the 7B is miscalibrated — did you fix
+  that?" <strong>Fix:</strong> temperature/Platt-scale the margin and show it doesn't
+  move the gate (it doesn't — see Phase 4), or scope it as future work.</li>
+<li><strong>#8 — "Learned router fails" is in tension with the paper it anchors
+  on.</strong> Jitkrittum (2023) shows <em>post-hoc estimators beat confidence
+  deferral</em>; our learned router <em>is</em> a post-hoc estimator and <em>fails</em>.
+  <strong>Fix:</strong> explain head-on — the rescue event is near-unpredictable from 7B
+  signals <em>in this domain</em> (the AUROC≈0.65 probe is exactly this argument).</li>
+<li><strong>#9 — The "CP-Router-style" baseline omits CP-Router's core (FBE).</strong>
+  Either implement Full-and-Binary-Entropy faithfully or rename the
+  baseline "split-conformal set-size router" and stop attributing it to
+  CP-Router.</li>
+<li><strong>#10 — Best-of-n on the cheap model (BEST-Route [22]) is an unrun
+  baseline.</strong> Sampling the 7B a few times before deciding is a known way to
+  sharpen the deferral signal. Justify out-of-scope (it changes the cost
+  model) or run a small version.</li>
+</ul>
+</details>
+<details class="note">
+<summary>Tier 3 — measurement rigor (where the paper can actually shine)</summary>
+<ul>
+<li><strong>#11 — Energy attribution is under-specified.</strong> 53 J for the 7B pass
+  implies ~0.1–0.2 s at A100 power — plausible, but does it include
+  idle/baseline power, preprocessing, tokenization? How was per-leg energy
+  isolated with both models co-resident on separate GPUs? <strong>Fix:</strong> specify
+  NVML sampling rate, integration window, idle-baseline subtraction, and
+  report <strong>mean ± std over repeated runs</strong> — match the kJ rigor of the Yang
+  paper being emulated.</li>
+<li><strong>#12 — The always-32B baseline must be <em>measured</em> natively</strong>, not
+  estimated, with full power logging repeated for variance (the 0.639×
+  headline rides on it).</li>
+<li><strong>#13 — HF-vs-vLLM faithfulness at the <em>cascade</em> level</strong>, not just the
+  32B leg — compute the cascade accuracy natively under HF and reconcile
+  against the vLLM-labeled version.</li>
+</ul>
+</details>
+<details class="note">
+<summary>Tier 4 — statistics &amp; evaluation hygiene</summary>
+<ul>
+<li><strong>#16 — Multiple comparisons.</strong> Many pairwise parity claims; the
+  Bonferroni discipline (PathVQA's +0.010 doesn't survive it) must be <em>in
+  the paper</em>, with corrected intervals.</li>
+<li><strong>#17 — n=272 (VQA-RAD) is too small to carry 82.35%.</strong> Don't headline
+  it; lead with pooled parity and add bootstrap CIs to <em>every</em> per-benchmark
+  cell of Table 1.</li>
+<li><strong>#18 — Single seed / greedy only.</strong> Add at least one sampled-decoding
+  robustness run, or state it as a bounded limitation.</li>
+<li><strong>#19 — Define the four escalation buckets formally</strong> (rescued / broken /
+  wasted / redundant) in terms of (ŷ₇, ŷ₃₂, y).</li>
+</ul>
+</details>
+<details class="note">
+<summary>Tier 5 — related work &amp; novelty positioning (thin where it matters most)</summary>
+<ul>
+<li><strong>#20 — Zero medical RL-reasoning VLMs cited</strong>, despite building <em>on</em> one.
+  Add and position as <em>complementary</em>: <strong>MedVLM-R1</strong> (Pan et al., MICCAI
+  2025, 2502.19634), <strong>Med-R1</strong> (Lai et al., 2503.13939), <strong>GMAI-VL-R1</strong>
+  (2504.01886), <strong>Lingshu</strong> (2506.07044), <strong>MedGemma</strong> (Google, 2025).</li>
+<li><strong>#21 — Zero visual-token-pruning methods cited</strong>, despite the project's
+  origin. Engage the real literature — <strong>FastV</strong> (ECCV 2024), <strong>SparseVLM</strong>
+  (ICML 2025), <strong>PruMerge</strong>, <strong>HiRED</strong> (AAAI 2025), <strong>VScan</strong> (2505.22654),
+  <strong>LLaVA-Mini</strong> (ICLR 2025), <strong>ATP-LLaVA</strong> (CVPR 2025) — as the orthogonal
+  <em>"make each leg cheaper"</em> axis that composes with the cascade (and
+  reconnects the paper to its question-aware-pruning origins).</li>
+</ul>
+</details>
+<p>Two of these were the highest-priority reference-level problems and were
+<strong>confirmed empirically in Phase 3</strong>: the MMMU exclusion (#3) and the
+gate-description mismatch (the artifact is a <code>StandardScaler</code>+logistic
+pipeline, not the raw-margin threshold the text claims).</p>
 <hr />
 <h2 id="phase-2-a-training-free-router-bake-off-fbe_and_signalspy">Phase 2 — A training-free router bake-off (<code>fbe_and_signals.py</code>)<a class="headerlink" href="#phase-2-a-training-free-router-bake-off-fbe_and_signalspy" title="Permanent link">&para;</a></h2>
 <p>To answer Tiers 2 and 4 without spending any GPU, the bake-off runs entirely on
@@ -2070,12 +2185,50 @@ does not match the shipped <code>StandardScaler</code>+logistic artifact. Two cl
   raw-margin gate with no learned-router paper needed.</li>
 </ul>
 <hr />
+<h2 id="phase-6-the-prioritized-fix-plan-pre-registered-gates">Phase 6 — The prioritized fix plan (pre-registered gates)<a class="headerlink" href="#phase-6-the-prioritized-fix-plan-pre-registered-gates" title="Permanent link">&para;</a></h2>
+<p>The audit closes with a fix queue ordered by <strong>impact-per-GPU-hour</strong>, each with
+a falsification gate registered <em>before</em> spending compute — the discipline
+that's served every prior dead end:</p>
+<ol>
+<li><strong>All-six-benchmark accuracy + full cascade on all six</strong> (closes #3) — pure
+   inference on the existing harness. <em>Gate:</em> if the cascade is ever worse than
+   always-7B on any benchmark, the monotonicity claim must soften. <strong>Highest
+   impact, lowest cost — run first.</strong></li>
+<li><strong>Directly-instrumented always-32B energy/latency</strong> (closes #11, #12, #5) —
+   full power logging, repeated for variance. <em>Gate:</em> the measured ratio must
+   land near <strong>0.639×</strong> or the headline changes.</li>
+<li><strong>HF-vs-vLLM cascade reconciliation</strong> (closes #13) — cascade accuracy
+   natively under HF vs the vLLM-labeled version. <em>Gate:</em> agreement at the
+   <em>cascade</em> level, not just the 32B leg.</li>
+<li><strong>Proxy-confidence baseline</strong> (closes #6 — <em>the</em> category-changing
+   experiment) — a small head on the 7B's hidden states to predict the rescue
+   event without running the 32B. <em>Gate:</em> held-out rescue-AUROC must beat the
+   0.60 bar <strong>and</strong> lift matched-budget accuracy with a CI clear of zero. Fail
+   → the negative result is near-bulletproof; succeed → there's a positive
+   method.</li>
+<li><strong>Cheap-model calibration check</strong> (closes #7) — temperature/Platt-scale the
+   margin, re-evaluate the gate.</li>
+<li><strong>Faithful FBE conformal baseline</strong> (closes #9).</li>
+<li><strong>Multiple-comparison correction + per-cell bootstrap CIs everywhere</strong>
+   (closes #16, #17) — analysis only.</li>
+</ol>
+<p>Items <strong>1–3 are a single sequential overnight chain</strong> on the idle GPUs (they
+close the three Tier-1/Tier-3 holes that most threaten acceptance for the least
+compute); <strong>item 4 is the one that can move the paper from "negative result" to
+"method."</strong></p>
+<hr />
 <h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>Reviewer attack surface mapped</strong> in five tiers (framing/exclusions,
-   baselines, measurement rigor, statistics, related work), with the
-   CP-Router-omits-FBE, MMMU-exclusion, and gate-description issues flagged up
-   front.</li>
+<li><strong>Reviewer attack surface mapped</strong> as ~22 numbered holes across five tiers,
+   with the <strong>verdict</strong> stated plainly: fix the self-contradiction and the
+   cherry-picking attack and add baselines → workshop/mid-tier; add headroom
+   recovery or six-benchmark generality → journal-tier.</li>
+<li><strong>Two Tier-1 self-contradictions caught in the manuscript</strong> — (#1) an
+   accuracy-win headline (Table 1 macro <strong>70.81%</strong> vs published) fights the
+   efficiency-at-parity claim (Table 3 <strong>0.655</strong> vs own 32B, CIs spanning
+   zero), on <em>different math/harnesses</em>; (#2) "<strong>never worse than the 7B</strong>" is
+   false on the paper's own data (cascade PathVQA <strong>66.45 &lt; published-7B
+   66.83</strong>).</li>
 <li><strong><code>fbe_and_signals.py</code></strong> — a training-free, checkpoint-only router bake-off,
    frontier-matched to the deployed gate.</li>
 <li><strong>The τ reproducibility gap</strong> — the gate is a <code>StandardScaler</code>+logistic
@@ -2089,14 +2242,20 @@ does not match the shipped <code>StandardScaler</code>+logistic artifact. Two cl
    ~0.0100; best Δ is +0.0020, ns).</li>
 <li><strong>Calibration is irrelevant to routing</strong> — T = 3.65 over-confidence, but
    recalibration moves accuracy +0.0004 (ns); the bottleneck is rescue
-   unpredictability.</li>
-<li><strong>FBE degenerates</strong> (escalates 98.6%); <strong>oracle ceiling</strong> rescuable 0.157 /
-   breakable 0.134 → escalate-all nets +0.023, unreachable from 7B signals.</li>
+   unpredictability. <strong>FBE degenerates</strong> (escalates 98.6%); <strong>oracle ceiling</strong>
+   rescuable 0.157 / breakable 0.134 → escalate-all nets +0.023, unreachable
+   from 7B signals.</li>
+<li><strong>Missing-reference gaps named</strong> — zero medical RL-reasoning VLMs (MedVLM-R1,
+   Med-R1, GMAI-VL-R1, Lingshu, MedGemma) and zero visual-token-pruning methods
+   (FastV, SparseVLM, HiRED, VScan, LLaVA-Mini, ATP-LLaVA), the latter
+   reconnecting the paper to its pruning origins.</li>
 <li><strong>Headline confirmed</strong> — competent-four escalation <strong>0.631</strong> is the correct
    headline (overall 0.662).</li>
-<li><strong>Gate-description decision</strong> — lean option (b), a true raw-margin quantile
-   gate; cite Narasimhan (2022) / Jitkrittum (2023) for the deferral rule,
-   CP-Router as contrast.</li>
+<li><strong>Gate-description decision + a pre-registered fix queue</strong> — lean option (b)
+    (true raw-margin quantile gate; cite Narasimhan 2022 / Jitkrittum 2023,
+    CP-Router as contrast); items 1–3 (all-six table, instrumented 32B energy,
+    HF/vLLM reconciliation) are tonight's chain, item 4 (proxy-confidence
+    probe) the one that could turn the negative result into a method.</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">On the project's direction</p>
@@ -2110,17 +2269,29 @@ site rebrand remains Leo's call.</p>
 <hr />
 <h3 id="plan-for-next-session">Plan for next session<a class="headerlink" href="#plan-for-next-session" title="Permanent link">&para;</a></h3>
 <ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Run tonight's chain — fix-plan items 1–3</strong> (see Phase 6): the
+      all-six-benchmark accuracy + full cascade (closes #3), the
+      directly-instrumented always-32B energy/latency (closes #11/#12/#5), and
+      the HF-vs-vLLM cascade reconciliation (closes #13) — one sequential
+      overnight <code>nohup</code> batch, the cheapest fixes for the holes that most
+      threaten acceptance.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>The category-changer — fix-plan item 4:</strong> the proxy-confidence probe
+      (small head on 7B features predicting the rescue event without the 32B),
+      pre-registered gate AUROC &gt; 0.60 + CI clear of zero. Fail → bulletproof
+      negative; succeed → a positive method.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Settle the gate description</strong> — refit the raw-margin quantile gate
       (option b) and re-run the live cascade so "parameter-free one-line
       threshold" is literally true, or rewrite §3.2 for the standardized-margin
       gate; report τ accordingly.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Fix the MMMU exclusion</strong> — re-justify (it's not near-chance for the 7B)
-      or fold MMMU back in.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Fold the bake-off into Table 3</strong> and add the two new sentences
-      (FBE-degeneration, calibration-irrelevance); check whether the conformal
-      +0.0020 sliver lives in PMC-VQA before giving it a sentence.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add the <strong>FBE mechanism</strong> to the CP-Router baseline; drop in <strong>peak VRAM</strong>
-      and the <strong>~7 reference author lists</strong> still pending from Day 4.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Fix the two Tier-1 contradictions</strong> — make every accuracy comparison
+      cascade-vs-own-32B (demote "vs published" to one validation sentence), and
+      state monotonicity only at the pooled level (flagging PathVQA); re-justify
+      or fold back the <strong>MMMU</strong> exclusion.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Statistics + related work</strong> — Bonferroni-corrected intervals and
+      per-cell bootstrap CIs in Table 1 (items 6–7); add the missing medical
+      RL-reasoning and visual-token-pruning citations (#20/#21).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Drop in the <strong>peak VRAM</strong> and the <strong>~7 reference author lists</strong> still
+      pending from <a href="../day-04/">Day 4</a>.</li>
 </ul>
 <hr />
 <h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>

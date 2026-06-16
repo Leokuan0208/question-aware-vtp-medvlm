@@ -1921,32 +1921,46 @@ every build:</p>
 pushed.</p>
 <h3 id="day-5-saturday-june-13-2026"><a href="day-05/">Day 5 — Saturday, June 13, 2026</a><a class="headerlink" href="#day-5-saturday-june-13-2026" title="Permanent link">&para;</a></h3>
 <p>A reviewer-grade audit — attack the manuscript the way a top-venue reviewer
-would, then close the holes. One training-free script (<code>fbe_and_signals.py</code>,
-checkpoint-only, zero new inference) did most of the work:</p>
+would, then close the holes. The literature review produced <strong>~22 numbered
+holes across five tiers</strong> and a blunt <strong>verdict</strong>: fix the self-contradiction
+and the benchmark-cherry-picking attack and add baselines → workshop/mid-tier;
+add headroom recovery or six-benchmark generality → journal-tier. One
+training-free script (<code>fbe_and_signals.py</code>, checkpoint-only, zero new inference)
+did the empirical work:</p>
 <ul>
+<li><strong>Two Tier-1 self-contradictions in the manuscript</strong> — (#1) an accuracy-win
+  headline (Table 1 macro <strong>70.81%</strong> vs <em>published</em> numbers) fights the
+  efficiency-at-parity claim (Table 3 <strong>0.655</strong> vs <em>own</em> 32B, CIs spanning
+  zero), on different math/harnesses; (#2) "<strong>never worse than the 7B</strong>" is
+  <em>false</em> on the paper's own data — cascade PathVQA <strong>66.45 &lt; published-7B
+  66.83</strong>.</li>
 <li><strong>The τ that wasn't.</strong> The paper describes the gate as a raw-margin threshold
   (τ = 0.426), but <code>router_margin.pkl</code> is a <strong>StandardScaler + logistic
   pipeline</strong>, so 0.426 is a cut in <em>standardized z-space</em> — raw thresholding
-  escalates 46.1% vs the live <strong>63.1%</strong>, a <strong>17-point</strong> reproducibility gap.
-  Eq. 2 as written wouldn't reproduce the headline.</li>
+  escalates 46.1% vs the live <strong>63.1%</strong>, a <strong>17-point</strong> reproducibility gap.</li>
 <li><strong>MMMU exclusion contradicted</strong> — the 7B scores <strong>0.547</strong> on MMMU (above
   chance), so "excluded because near-chance" doesn't hold for it (MedXpert at
   0.225 / 0.256 stays defensible).</li>
 <li><strong>Six-router tie</strong> — margin / top1 / entropy / temp-margin / conformal / FBE,
   <strong>none beats the one-line margin gate</strong> at matched compute (best Δ +0.0020,
-  ns under Bonferroni). Converts the paper's negative result from assertion to
-  demonstration.</li>
-<li><strong>Calibration is irrelevant to routing</strong> — the 7B is badly over-confident
-  (T = 3.65) but recalibration moves accuracy +0.0004 (ns); the bottleneck is
-  rescue-event unpredictability. <strong>FBE degenerates</strong> (escalates 98.6%); the
-  <strong>oracle ceiling</strong> (rescuable 0.157 / breakable 0.134) nets only +0.023,
-  unreachable from any 7B signal.</li>
-<li><strong>Gate-description decision</strong> — lean toward refitting a true raw-margin
-  quantile gate so "parameter-free" is literally true; cite <strong>Narasimhan
-  (2022)</strong> / <strong>Jitkrittum (2023)</strong> for the deferral rule, CP-Router as contrast.</li>
+  ns under Bonferroni); FBE degenerates (escalates 98.6%); the oracle ceiling
+  (rescuable 0.157 / breakable 0.134) nets +0.023, unreachable from any 7B
+  signal. Calibration is irrelevant (T = 3.65, recalibration +0.0004 ns).</li>
+<li><strong>Missing-reference gaps</strong> — zero medical RL-reasoning VLMs (MedVLM-R1,
+  Med-R1, GMAI-VL-R1, Lingshu, MedGemma) and zero visual-token-pruning methods
+  (FastV, SparseVLM, HiRED, VScan, LLaVA-Mini, ATP-LLaVA), the latter
+  reconnecting the paper to its pruning origins.</li>
+<li><strong>A pre-registered fix queue</strong> — items 1–3 (all-six table, instrumented 32B
+  energy, HF/vLLM reconciliation) as tonight's chain; item 4 (a proxy-confidence
+  probe, gated AUROC &gt; 0.60) the one that could turn the negative result into a
+  positive method. Gate-description decision: lean toward a true raw-margin
+  quantile gate; cite <strong>Narasimhan (2022)</strong> / <strong>Jitkrittum (2023)</strong>, CP-Router
+  as contrast.</li>
 </ul>
-<p>The result is left intact and <strong>better-supported</strong>, with two honest manuscript
-fixes (gate description, MMMU) queued. No code pushed.</p>
+<p>The result is left intact and <strong>better-supported</strong> — the negative routing
+result is now a demonstration, not an assertion — with the honest manuscript
+fixes (the two contradictions, the gate description, MMMU, the missing
+citations) queued. No code pushed.</p>
 <hr />
 <h2 id="plan-for-the-week-jun-7-jun-13">Plan for the week (Jun 7 – Jun 13)<a class="headerlink" href="#plan-for-the-week-jun-7-jun-13" title="Permanent link">&para;</a></h2>
 <ul class="task-list">
