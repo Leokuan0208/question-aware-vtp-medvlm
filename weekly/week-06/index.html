@@ -12,28 +12,28 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
-        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/baseline/">
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-06/">
       
       
-        <link rel="prev" href="../project/">
+        <link rel="prev" href="../week-05/day-05/">
       
       
-        <link rel="next" href="medvlthinker/">
+        <link rel="next" href="day-01/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Baselines & Models - Model Cascades for Medical VLMs</title>
+        <title>Week 6 — From gate to structure: the Adaptive-Compute Cascade (ACC) - Model Cascades for Medical VLMs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,9 +52,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#baselines-models" class="md-skip">
+        <a href="#week-6-from-gate-to-structure-the-adaptive-compute-cascade-acc" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Model Cascades for Medical VLMs" class="md-header__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Model Cascades for Medical VLMs" class="md-header__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Baselines &amp; Models
+              Week 6 — From gate to structure: the Adaptive-Compute Cascade (ACC)
             
           </span>
         </div>
@@ -223,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -240,7 +240,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../project/" class="md-tabs__link">
+      <a href="../../project/" class="md-tabs__link">
         
   
     
@@ -255,13 +255,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../baseline/" class="md-tabs__link">
           
   
     
@@ -279,7 +277,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../experiments/" class="md-tabs__link">
+      <a href="../../experiments/" class="md-tabs__link">
         
   
     
@@ -294,11 +292,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../weekly/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
     
@@ -316,7 +316,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../bugs/" class="md-tabs__link">
+      <a href="../../bugs/" class="md-tabs__link">
         
   
     
@@ -333,7 +333,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../resources/" class="md-tabs__link">
+      <a href="../../resources/" class="md-tabs__link">
         
   
     
@@ -367,7 +367,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Model Cascades for Medical VLMs" class="md-nav__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
+    <a href="../.." title="Model Cascades for Medical VLMs" class="md-nav__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -397,7 +397,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -417,7 +417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../project/" class="md-nav__link">
+      <a href="../../project/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -434,8 +434,6 @@
       
   
   
-    
-  
   
   
     
@@ -458,22 +456,19 @@
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../../baseline/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -484,13 +479,13 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_3" id="__nav_3_label" tabindex="">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Baselines
@@ -506,7 +501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="medvlthinker/" class="md-nav__link">
+      <a href="../../baseline/medvlthinker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -527,7 +522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="huatuo-vision/" class="md-nav__link">
+      <a href="../../baseline/huatuo-vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -548,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="qwen25-vl/" class="md-nav__link">
+      <a href="../../baseline/qwen25-vl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -569,7 +564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="llava-med/" class="md-nav__link">
+      <a href="../../baseline/llava-med/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -590,7 +585,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/" class="md-nav__link">
+      <a href="../../setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -618,7 +613,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../experiments/" class="md-nav__link">
+      <a href="../../experiments/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -635,6 +630,8 @@
       
   
   
+    
+  
   
   
     
@@ -659,19 +656,22 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -682,13 +682,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Weekly Log
@@ -739,7 +739,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-01/" class="md-nav__link ">
+            <a href="../week-01/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -772,7 +772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-01/" class="md-nav__link">
+      <a href="../week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -793,7 +793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-02/" class="md-nav__link">
+      <a href="../week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -814,7 +814,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-03/" class="md-nav__link">
+      <a href="../week-01/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -835,7 +835,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-04/" class="md-nav__link">
+      <a href="../week-01/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -856,7 +856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-05/" class="md-nav__link">
+      <a href="../week-01/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -877,7 +877,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-06/" class="md-nav__link">
+      <a href="../week-01/day-06/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -898,7 +898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-07/" class="md-nav__link">
+      <a href="../week-01/day-07/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -958,7 +958,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-02/" class="md-nav__link ">
+            <a href="../week-02/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -991,7 +991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-01/" class="md-nav__link">
+      <a href="../week-02/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1012,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-02/" class="md-nav__link">
+      <a href="../week-02/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1033,7 +1033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-03/" class="md-nav__link">
+      <a href="../week-02/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,7 +1054,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-04/" class="md-nav__link">
+      <a href="../week-02/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1075,7 +1075,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-05/" class="md-nav__link">
+      <a href="../week-02/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1135,7 +1135,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-03/" class="md-nav__link ">
+            <a href="../week-03/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1168,7 +1168,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-01/" class="md-nav__link">
+      <a href="../week-03/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1189,7 +1189,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-02/" class="md-nav__link">
+      <a href="../week-03/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1210,7 +1210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-03/" class="md-nav__link">
+      <a href="../week-03/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1231,7 +1231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-04/" class="md-nav__link">
+      <a href="../week-03/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1252,7 +1252,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-05/" class="md-nav__link">
+      <a href="../week-03/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1312,7 +1312,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-04/" class="md-nav__link ">
+            <a href="../week-04/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1345,7 +1345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-01/" class="md-nav__link">
+      <a href="../week-04/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1366,7 +1366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-02/" class="md-nav__link">
+      <a href="../week-04/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1387,7 +1387,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-03/" class="md-nav__link">
+      <a href="../week-04/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1408,7 +1408,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-04/" class="md-nav__link">
+      <a href="../week-04/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1429,7 +1429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-05/" class="md-nav__link">
+      <a href="../week-04/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1489,7 +1489,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-05/" class="md-nav__link ">
+            <a href="../week-05/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1522,7 +1522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-01/" class="md-nav__link">
+      <a href="../week-05/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1543,7 +1543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-02/" class="md-nav__link">
+      <a href="../week-05/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1564,7 +1564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-03/" class="md-nav__link">
+      <a href="../week-05/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1585,7 +1585,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-04/" class="md-nav__link">
+      <a href="../week-05/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1606,7 +1606,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-05/" class="md-nav__link">
+      <a href="../week-05/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1632,6 +1632,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1649,16 +1651,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-06/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   <span class="md-ellipsis">
@@ -1669,13 +1671,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_7">
             <span class="md-nav__icon md-icon"></span>
             Week 6
@@ -1691,7 +1693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-06/day-01/" class="md-nav__link">
+      <a href="day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1727,7 +1729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../bugs/" class="md-nav__link">
+      <a href="../../bugs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1747,7 +1749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../resources/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1787,68 +1789,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#current-the-cascade-models" class="md-nav__link">
+  <a href="#day-1-wednesday-june-17-2026" class="md-nav__link">
     <span class="md-ellipsis">
-      Current — the cascade models
+      Day 1 — Wednesday, June 17, 2026
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Current — the cascade models">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#medvlthinker-7b-32b-rl" class="md-nav__link">
-    <span class="md-ellipsis">
-      MedVLThinker-7B / -32B-RL
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#legacy-the-visual-token-pruning-era" class="md-nav__link">
+  <a href="#plan-for-the-week-jun-14-jun-20" class="md-nav__link">
     <span class="md-ellipsis">
-      Legacy — the visual-token-pruning era
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Legacy — the visual-token-pruning era">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#huatuogpt-vision-7b" class="md-nav__link">
-    <span class="md-ellipsis">
-      HuatuoGPT-Vision-7B
+      Plan for the week (Jun 14 – Jun 20)
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#qwen25-vl-7b-instruct" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#reflections-end-of-week" class="md-nav__link">
     <span class="md-ellipsis">
-      Qwen2.5-VL-7B-Instruct
+      Reflections (end-of-week)
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#llava-med-v15-v10" class="md-nav__link">
-    <span class="md-ellipsis">
-      LLaVA-Med v1.5 / v1.0
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1867,7 +1830,7 @@
                   
 
   
-    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/baseline/index.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-06/index.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1875,65 +1838,77 @@
   
 
 
-<h1 id="baselines-models">Baselines &amp; Models<a class="headerlink" href="#baselines-models" title="Permanent link">&para;</a></h1>
-<p>The project has run on several base models across its lifetime. The <strong>current</strong>
-base models are the <strong>MedVLThinker</strong> 7B/32B pair that the cascade is built on;
-the three earlier models belong to the <strong>visual-token-pruning era</strong> and are
-preserved here as research history. Each page documents the exact environment,
-versions, and verification steps used to reproduce that baseline.</p>
+<h1 id="week-6-from-gate-to-structure-the-adaptive-compute-cascade-acc">Week 6 — From gate to structure: the Adaptive-Compute Cascade (ACC)<a class="headerlink" href="#week-6-from-gate-to-structure-the-adaptive-compute-cascade-acc" title="Permanent link">&para;</a></h1>
+<p><span class="pill pill--wip">In progress</span></p>
+<p><strong>Structural-pivot phase</strong> (the gate axis is closed → the strong-leg compute
+mode is the real lever) · <strong>Week 6 of 12</strong></p>
+<p><strong>Goal of the week</strong> — <a href="../week-05/">Week 5</a> closed with a
+reviewer-grade audit that left the <strong>gate axis</strong> looking exhausted: no learned
+or conformal router beats a one-line margin gate, because the rescue event is
+near-unpredictable from any cheap 7B signal. Week 6 opens by asking the obvious
+follow-up — <em>if the gate can't be improved, where is the remaining compute
+lever?</em> — and finds the answer on a completely different axis: the <strong>strong
+leg's reasoning mode</strong>. The week's job is to turn that into a defensible method
+(<strong>ACC</strong>) with honest, measured accounting, and to position it against the
+cascade/routing literature.</p>
 <hr />
-<h2 id="current-the-cascade-models">Current — the cascade models<a class="headerlink" href="#current-the-cascade-models" title="Permanent link">&para;</a></h2>
-<h3 id="medvlthinker-7b-32b-rl"><a href="medvlthinker/">MedVLThinker-7B / -32B-RL</a><a class="headerlink" href="#medvlthinker-7b-32b-rl" title="Permanent link">&para;</a></h3>
-<p><span class="pill pill--wip">Active — the cascade base models</span></p>
-<p>The cheap and strong legs of the cascade. MedVLThinker is a family of
-<strong>RL-tuned reasoning VLMs</strong> built on Qwen2.5-VL, with explicit
-<code>&lt;think&gt;</code> / <code>&lt;answer&gt;</code> modes, evaluated on a 6-benchmark, 8,220-question
-medical-VQA suite. The 7B is the cheap leg; the 32B (in both no-think and think
-modes) is the strong leg. Published baselines reproduce within ~1 point.</p>
-<p><strong>Stack:</strong> dual A100 80GB · <strong>vLLM 25.09</strong> (NGC container, ~35× over HF for
-inference) · Hugging Face Transformers (for VRAM-accurate measurement) · bf16.</p>
-<p>→ <a href="medvlthinker/">Full model details, eval suite, and infrastructure</a></p>
+<h3 id="day-1-wednesday-june-17-2026"><a href="day-01/">Day 1 — Wednesday, June 17, 2026</a><a class="headerlink" href="#day-1-wednesday-june-17-2026" title="Permanent link">&para;</a></h3>
+<p>A two-part day and a genuine turn in the project. The morning fixed the
+<strong>literature position</strong>; the afternoon (run in <strong>Claude Code</strong>, captured in
+<code>progress_June_17.md</code>) produced the result that reframes the contribution.</p>
+<ul>
+<li><strong>Literature positioning.</strong> The method is a <strong>post-generation cascade</strong> (not
+  a router); the field's eval unit is a swept cost–quality curve (<strong>AIQ /
+  nAUC</strong>); the "74% at parity" result maps to the established metric
+  <strong>Quality-Neutral Cost (QNC)</strong>; <strong>LLMRouterBench</strong> (Jan 2026) corroborates
+  "simple beats complex"; and <strong>no training-free cascade for medical VLMs
+  exists</strong> — the gap is confirmed. Output: a tiered <strong>18-paper reading list</strong>
+  (FrugalGPT, AutoMix, Cascade Routing, RouteLLM, RouterBench, CP-Router,
+  LLMRouterBench, the 2026 survey, + VLM/confidence tiers) with code repos.</li>
+<li><strong>The gate axis is closed</strong> — ~63% of 7B errors are futile to escalate (32B
+  also wrong), recoverability ≈0.6 AUROC from any cheap signal, and plain
+  margin beats/ties every fancier gate. A clean, publishable negative result.</li>
+<li><strong>No-think over-thinks perception</strong> — the real lever: 32B-no-think beats
+  32B-think by <strong>+7.7 (SLAKE) / +11.7 (VQA-RAD)</strong> at ~2 vs ~477 decode tokens.</li>
+<li><strong>ACC (Adaptive-Compute Cascade)</strong> — 3 tiers from 2 checkpoints (7B-nt →
+  <strong>32B-no-think</strong> → 32B-think) matches always-32B-think at <strong>−72% latency /
+  −75% energy / ~½ FLOPs</strong> on ALL-6, guardrail-clean (0.35 → 0.00), ~97%
+  latency cuts on the perception pools.</li>
+<li><strong>ACC-v2</strong> — a free 7B/32B-<strong>disagreement</strong> gate strictly Pareto-improves;
+  holding the structure fixed, all real gates cluster (51–62% FLOPs) and only
+  random collapses — the win is <strong>structure, not gate</strong>. VADR honestly retired
+  as non-novel.</li>
+</ul>
+<p>Framed as an <strong>efficiency-systems</strong> contribution (NVML-calibrated, R²=0.99,
+perception-scoped). Deliverable: a readable <strong>13-page Word report</strong>
+(<code>Progress_June_17.docx</code>). No code pushed.</p>
 <hr />
-<h2 id="legacy-the-visual-token-pruning-era">Legacy — the visual-token-pruning era<a class="headerlink" href="#legacy-the-visual-token-pruning-era" title="Permanent link">&para;</a></h2>
-<p>These three models were the baselines while the project targeted question-aware
-visual token pruning (Weeks 1–3). They are <strong>superseded</strong> but kept for the
-record; the pivot writeups are on
-<a href="../weekly/week-02/day-05/">Week 2, Day 5</a> (LLaVA-Med → Qwen2.5-VL),
-<a href="../weekly/week-03/day-01/">Week 3, Day 1</a> (Qwen2.5-VL validated), and
-<a href="../weekly/week-03/day-02/">Week 3, Day 2</a> (Qwen2.5-VL → HuatuoGPT).</p>
-<h3 id="huatuogpt-vision-7b"><a href="huatuo-vision/">HuatuoGPT-Vision-7B</a><a class="headerlink" href="#huatuogpt-vision-7b" title="Permanent link">&para;</a></h3>
-<p><span class="pill pill--done">Legacy — final pruning-era baseline (May 25, 2026)</span></p>
-<p>The reproducibility-first pruning baseline. A medical-instruction-tuned VLM on
-the LLaVA-v1.5 architecture with a Qwen2-7B backbone (Chen et al. 2024,
-<a href="https://arxiv.org/abs/2406.19280">arXiv:2406.19280</a>). <strong>Paper Table 4
-reproduced end-to-end on May 25</strong>, 5/6 benchmarks within 0.55 pts (VQA-RAD
-61.35, SLAKE 76.44, PathVQA 57.67, PMC-VQA 54.20, OmniMedVQA 73.46, MMMU H&amp;M
-50.34). It was on this model that the pruning sweeps were run — and that random
-selection Pareto-dominated every structured method, closing pruning as a
-method.</p>
-<p><strong>Stack:</strong> NGC PyTorch 23.10 · transformers 4.41.2 · flash-attn 2.5.8 · 7B · bf16.</p>
-<p>→ <a href="huatuo-vision/">Full setup, Dockerfile, and verification</a></p>
-<h3 id="qwen25-vl-7b-instruct"><a href="qwen25-vl/">Qwen2.5-VL-7B-Instruct</a><a class="headerlink" href="#qwen25-vl-7b-instruct" title="Permanent link">&para;</a></h3>
-<p><span class="pill pill--done">Legacy — frozen May 25, 2026</span></p>
-<p>The active baseline for a single day (May 24–25). Passed a 20/20 strict
-MCQ-letter compliance smoke test, validating the LLaVA-Med → Qwen2.5-VL pivot —
-but an eval-harness coverage gap (VLMEvalKit / lmms-eval don't cover the three
-target datasets) made the reproducibility story weaker than HuatuoGPT's, so the
-project moved on. The smoke-test artifact is preserved on the frozen
-<a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning">Qwen-v25-vl-med-pruning</a>
-repo.</p>
-<p><strong>Stack:</strong> NGC PyTorch 25.06 · transformers 4.49 · flash-attn 2.7.4 · 8.29B · bf16.</p>
-<p>→ <a href="qwen25-vl/">Full setup, Dockerfile, and verification</a></p>
-<h3 id="llava-med-v15-v10"><a href="llava-med/">LLaVA-Med v1.5 / v1.0</a><a class="headerlink" href="#llava-med-v15-v10" title="Permanent link">&para;</a></h3>
-<p><span class="pill pill--done">Legacy — frozen May 24, 2026</span></p>
-<p>The <strong>original</strong> baseline (May 10–21). Microsoft's biomedical-instruction-tuned
-VLM on Mistral-7B (v1.5) / LLaMA-7B (v1.0). Frozen after two unreproducibility
-issues: a substring-match bug in the v1.0 closed-set scorer that inflated
-accuracy by 9–12 points, and 0/11 MCQ-letter compliance that blocked use of
-standardized eval harnesses. The LLaVA-Med-era environment is documented on the
-<a href="../setup/">Environment setup (legacy)</a> page.</p>
-<p><strong>Stack:</strong> NGC PyTorch 23.10 · transformers 4.36.2 · flash-attn 2.3.6 (source) · 7B · bf16.</p>
-<p>→ <a href="llava-med/">Full setup, Dockerfile, and verification</a></p>
+<h2 id="plan-for-the-week-jun-14-jun-20">Plan for the week (Jun 14 – Jun 20)<a class="headerlink" href="#plan-for-the-week-jun-14-jun-20" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Literature positioning</strong> (Day 1) — name the method (post-generation
+      cascade), the eval unit (AIQ/nAUC, QNC), and the gap (training-free
+      medical-VLM cascade); 18-paper tiered reading list.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Close the gate axis</strong> (Day 1) — the saturated-gate negative result
+      (~63% futile, ≈0.6 AUROC, margin beats all).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Find and validate the real lever → ACC</strong> (Day 1) —
+      no-think-overthinks-perception → the 3-tier ACC cascade and the free
+      ACC-v2 agreement gate, with measured latency/energy/FLOPs.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Draft the higher-tier paper around "structure + agreement gate"</strong> —
+      lead with the no-think finding; saturated-gate result as the motivating
+      negative finding.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Mixed-set calibration of the think threshold</strong> — make the ALL-6
+      (reasoning-inclusive) deployment honest, not perception-only.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Stand up the AutoMix baseline</strong> and begin the Tier-1 reading.</li>
+</ul>
+<hr />
+<h2 id="reflections-end-of-week">Reflections (end-of-week)<a class="headerlink" href="#reflections-end-of-week" title="Permanent link">&para;</a></h2>
+<p><em>Write this at the end of the week. The question Day 1 forces: now that ACC has
+relocated the contribution from the (exhausted) gate axis to the strong-leg
+structural axis, does the rest of the week go into making ACC airtight and
+written up for a higher-tier venue — the mixed-set calibration, the AutoMix
+baseline, the paper draft — or does a new compute lever appear worth chasing?
+Day 1 turned a stack of negative gate results into a positive structural method;
+the week decides how far to harden it.</em></p>
 
 
 
@@ -1969,7 +1944,7 @@ standardized eval harnesses. The LLaVA-Med-era environment is documented on the
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../project/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Project Overview">
+          <a href="../week-05/day-05/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Day 5 — Saturday, June 13, 2026">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1979,20 +1954,20 @@ standardized eval harnesses. The LLaVA-Med-era environment is documented on the
                 Previous
               </span>
               <div class="md-ellipsis">
-                Project Overview
+                Day 5 — Saturday, June 13, 2026
               </div>
             </div>
           </a>
         
         
           
-          <a href="medvlthinker/" class="md-footer__link md-footer__link--next" aria-label="Next: MedVLThinker (current)">
+          <a href="day-01/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 1 — Wednesday, June 17, 2026">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                MedVLThinker (current)
+                Day 1 — Wednesday, June 17, 2026
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2033,12 +2008,12 @@ standardized eval harnesses. The LLaVA-Med-era environment is documented on the
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.">
+        <meta name="description" content="Training-free model cascades for compute-efficient medical VQA, from visual-token pruning to the Adaptive-Compute Cascade (ACC).">
       
       
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Model Cascades for Medical VLMs</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#question-aware-visual-token-pruning-for-medical-vlms" class="md-skip">
+        <a href="#model-cascades-for-medical-vlms" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +92,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="." title="Model Cascades for Medical VLMs" class="md-header__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -106,7 +106,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Question-Aware Visual Token Pruning for Medical VLMs
+            Model Cascades for Medical VLMs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -264,7 +264,7 @@
   
     
   
-  Baseline
+  Baselines
 
         </a>
       </li>
@@ -365,13 +365,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="." title="Model Cascades for Medical VLMs" class="md-nav__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Question-Aware Visual Token Pruning for Medical VLMs
+    Model Cascades for Medical VLMs
   </label>
   
     <div class="md-nav__source">
@@ -450,9 +450,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-i-am-right-now" class="md-nav__link">
+  <a href="#where-the-project-stands-now" class="md-nav__link">
     <span class="md-ellipsis">
-      Where I am right now
+      Where the project stands now
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-research-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      The research journey
     </span>
   </a>
   
@@ -523,6 +532,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -542,7 +555,7 @@
               
   
   <span class="md-ellipsis">
-    Baseline
+    Baselines
   </span>
   
 
@@ -558,10 +571,31 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            Baseline
+            Baselines
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="baseline/medvlthinker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MedVLThinker (current)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -575,7 +609,7 @@
         
   
   <span class="md-ellipsis">
-    HuatuoGPT-Vision
+    HuatuoGPT-Vision (legacy)
   </span>
   
 
@@ -596,7 +630,7 @@
         
   
   <span class="md-ellipsis">
-    Qwen2.5-VL
+    Qwen2.5-VL (legacy)
   </span>
   
 
@@ -617,7 +651,28 @@
         
   
   <span class="md-ellipsis">
-    LLaVA-Med
+    LLaVA-Med (legacy)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Environment setup (legacy)
   </span>
   
 
@@ -665,6 +720,8 @@
       
         
           
+        
+      
         
       
         
@@ -1649,6 +1706,91 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="weekly/week-06/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 6
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Week 6
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="weekly/week-06/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Wednesday, June 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1732,9 +1874,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-i-am-right-now" class="md-nav__link">
+  <a href="#where-the-project-stands-now" class="md-nav__link">
     <span class="md-ellipsis">
-      Where I am right now
+      Where the project stands now
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-research-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      The research journey
     </span>
   </a>
   
@@ -1781,20 +1932,24 @@
   
 
 
-<h1 id="question-aware-visual-token-pruning-for-medical-vlms">Question-Aware Visual Token Pruning for Medical VLMs<a class="headerlink" href="#question-aware-visual-token-pruning-for-medical-vlms" title="Permanent link">&para;</a></h1>
-<p>A research notebook tracking the design, implementation, and evaluation
-of a <strong>question-aware visual token pruning</strong> mechanism for medical
+<h1 id="model-cascades-for-medical-vlms">Model Cascades for Medical VLMs<a class="headerlink" href="#model-cascades-for-medical-vlms" title="Permanent link">&para;</a></h1>
+<p>A research notebook tracking the design, implementation, and evaluation of a
+<strong>training-free model cascade</strong> for compute-efficient medical
 vision–language models (VLMs).</p>
-<p><strong>The core idea.</strong> Medical VLMs like LLaVA-Med encode an input image
-into hundreds of visual tokens, most of which are irrelevant to any
-given question. Can we prune those tokens <em>conditionally on the question</em>
-before they enter the language model — reducing compute and possibly
-improving answer quality?</p>
+<p><strong>The core idea.</strong> Large reasoning VLMs answer medical visual questions
+accurately but expensively; small VLMs are cheap but weaker. A <strong>cascade</strong>
+runs the cheap model first and escalates only the questions it can't handle to
+the large model — so most queries are answered cheaply and the expensive model
+is reserved for the residual. The goal is to <strong>match a 32B model's accuracy at
+a fraction of its compute</strong>, with honest, measured (prefill-inclusive)
+accounting — and <em>without training</em> any new component.</p>
 <div class="admonition note">
 <p class="admonition-title">About this site</p>
-<p>Everything here is a work in progress. Pages get updated as the
-project evolves; "last updated" timestamps appear at the bottom of
-each page.</p>
+<p>This project began (May 2026) as <em>"Question-Aware Visual Token Pruning for
+Medical VLMs"</em> and arrived at model cascading through a documented series
+of pivots — see <a href="#the-research-journey">The research journey</a> below. The
+older directions are preserved as history; pages get updated as the work
+evolves, with "last updated" timestamps at the bottom of each page.</p>
 </div>
 <hr />
 <h2 id="project-at-a-glance">Project at a glance<a class="headerlink" href="#project-at-a-glance" title="Permanent link">&para;</a></h2>
@@ -1815,16 +1970,20 @@ each page.</p>
 <td>May 10, 2026</td>
 </tr>
 <tr>
-<td><strong>Baseline</strong></td>
-<td><a href="https://github.com/microsoft/LLaVA-Med">LLaVA-Med v1.5 (Mistral-7B)</a></td>
+<td><strong>Direction</strong></td>
+<td>Training-free 7B→32B compute cascade for medical VQA</td>
+</tr>
+<tr>
+<td><strong>Base models</strong></td>
+<td><a href="baseline/medvlthinker/">MedVLThinker-7B / -32B-RL</a> (Qwen2.5-VL, RL-tuned reasoning)</td>
 </tr>
 <tr>
 <td><strong>Stack</strong></td>
-<td>Python, PyTorch, Hugging Face Transformers, CUDA</td>
+<td>Python, PyTorch, Hugging Face, <strong>vLLM 25.09</strong>, dual A100 80GB</td>
 </tr>
 <tr>
 <td><strong>Research Q</strong></td>
-<td><em>Can question-conditioned visual token pruning preserve (or improve) medical VQA accuracy while reducing inference cost?</em></td>
+<td><em>Can a training-free cascade match a 32B medical VLM's accuracy at a fraction of its inference cost, with honest energy/latency accounting?</em></td>
 </tr>
 <tr>
 <td><strong>Researcher</strong></td>
@@ -1840,371 +1999,112 @@ each page.</p>
 </tr>
 </tbody>
 </table>
-<p>See <a href="project/">Project Overview</a> for the full motivation, hypothesis,
-and 12-week plan.</p>
-<h2 id="where-i-am-right-now">Where I am right now<a class="headerlink" href="#where-i-am-right-now" title="Permanent link">&para;</a></h2>
-<p><span class="pill pill--wip">In progress</span> &nbsp;
-<strong>Week 4 — Direction D closed; clean-slate pivot to image-difficulty-driven adaptive compute.</strong> Week 1
-closed out May 16
-(<a href="weekly/week-01/#end-of-week-status">overview</a>). Week 2
-closed out May 23 with the first pivot — LLaVA-Med v1.0 → Qwen2.5-VL
-(<a href="weekly/week-02/#reflections-end-of-week">overview</a>). The
-Qwen2.5-VL pivot was validated May 24 with 20/20 strict MCQ-letter
-compliance, then a second pivot followed on May 25 to
-<a href="baseline/huatuo-vision/">HuatuoGPT-Vision-7B (LLaVA-v1.5 architecture)</a>
-for reproducibility, with
-<a href="baseline/huatuo-vision/#baseline-metrics">paper Table 4 reproduced same-day</a>.
-<a href="weekly/week-03/day-03/">Day 17</a> found and fixed a no-op bug in
-the May 25 patcher (Bug #7), rewrote it as <strong>v2 pre-LLM</strong> (130
-lines vs 280, ~30% speedup at kr=0.5), and produced the first
-successfully-pruned sweep on HuatuoGPT-Vision-7B.
-<a href="weekly/week-03/day-04/">Day 18</a> analyzed those numbers and got
-the <em>opposite</em> of the central thesis's prediction: <strong>mean-pooled
-QSim is uniformly worse than Random at every keep-ratio</strong>, the
-qsim_max ablation made it worse not better, and the failure was
-diagnosed as structural to cosine-similarity-on-pre-LLM-embeddings
-(diversity collapse + scoring-space brittleness).
-<a href="weekly/week-03/day-05/">Day 19</a> is the hinge. The overnight E3
-sweep tested the coverage-aware fixes (GridPrune, FASP+GridPrune) —
-and <strong>Random Pareto-dominates both on accuracy <em>and</em> latency at
-every keep-ratio.</strong> Three sweeps, five methods, all losing to
-random selection: training-free visual-token pruning is <strong>closed as
-a method</strong> for this model. But the <em>reason</em> Random does so well —
-HuatuoGPT-Vision barely needs the fine-grained visual evidence,
-losing only 0.57 pts at kr=0.5 — is a <strong>visual-grounding</strong> finding,
-not a pruning one. A zero-GPU feasibility probe on existing data
-confirmed it: <strong>answer-stability under visual-evidence removal
-tracks correctness (81.7% stable when correct vs 64.3% when wrong)</strong>,
-with a 20.7% locked-in-wrong population concentrated in PathVQA
-(30.0%). That green-lit a pivot to <strong>training-free visual grounding /
-selective prediction</strong> — an evidence-sensitivity router over proven
-components (Direction D), with conformal risk control (A) and
-per-question compute allocation (C) as live alternatives. Today's
-push
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/dbe8daa"><code>dbe8daa</code></a>
-landed the scored-sweep instrumentation (logprob capture +
-self-consistency + nested-budget pruning); an 18-run scored sweep is
-running overnight to produce the data the router needs. Three repos:
-<a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>llava-med-pruning-v1</code></a>
-(frozen),
-<a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning"><code>Qwen-v25-vl-med-pruning</code></a>
-(frozen), and
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning"><code>huatuo-llava-v15-med-pruning</code></a>
-(active).
-<a href="weekly/week-04/day-01/">Day 22</a> (May 31, opening Week 4) put a
-measured foundation under the pivot. After fixing the nested arm that
-had failed overnight and passing the 18/18 gate, a four-way
-feasibility study established: (1) a <strong>per-dataset evidence-dependence
-gradient</strong>, triangulated across accuracy drop <em>and</em> answer-flip rate —
-PMC-VQA needs the pixels (−7.0 pts at kr=0.10, 30.5% flips), PathVQA
-essentially doesn't (−0.3 pts, 11.0% flips), confirming Day 19's
-locked-in-wrong observation; (2) a <strong>flip-direction evidence-loss
-rate</strong> per dataset (PMC-VQA 10.7% → PathVQA 4.4%) as the router
-target; (3) a real router signal — <strong>confidence predicts correctness
-at AUROC ≈ 0.74</strong>, with offline budget-router headroom positive at
-every budget pair (peak ~1.6 pts); and (4) an honest negative — a
-realized-cost <em>width</em> router loses on compute (double-pass overhead
-exceeds fixed-high). A heavier budget×layer grid probe was launched to
-locate the cheapest early signal; results land next session. Pushed at
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4"><code>df0a3c4</code></a>
-(nested-run fix + the Direction-D feasibility suite).
-<a href="weekly/week-04/day-02/">Day 23</a> (June 1) ran the decisive offline
-analyses and <strong>closed Direction D</strong>. The grid probe showed the
-routable confidence signal is real but late and modest (<code>lens_entropy</code>
-AUROC 0.756 at the final layer, no cheap early-layer cell); the
-two-feature check found no lift from combining confidence features
-(0.762 → 0.758); and the deciding <strong>evidence-stability</strong> probe that
-evening showed D's defining axis carries nothing orthogonal to
-confidence (cross-budget flip 0.548 alone, +0.001 combined, −0.002 on
-PathVQA). What survives is narrower but real: <strong>answer confidence
-predicts correctness, but only on multiple-choice</strong> (0.72–0.81;
-open-ended PathVQA &amp; VQA-RAD ~0.57). All the working features reduce to
-distribution peakedness, and none need the pruning machinery. Both
-probes pushed at
-<a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c"><code>04ef73c</code></a>.
-<a href="weekly/week-04/day-03/">Day 24</a> (June 2) is the most decisive pivot
-of the project — a deliberate <strong>clean-slate reset</strong>. With every prior
-path dead-ended, a fresh literature hunt landed on an empty cell:
-<strong>image-difficulty-driven adaptive reasoning-compute allocation</strong> — a
-difficulty signal derived from the <em>visual content</em> (lesion subtlety /
-image complexity), computed <em>before generation</em>, used to <em>allocate
-reasoning compute</em> in medical VLMs (the mechanism is commoditized; the
-novelty is the signal). The method externalizes difficulty by sampling
-(pass-count) and routes each <code>(image, question)</code> to a reasoning-budget
-bucket via an input-side predictor — with the Direction-D "no readable
-internal signal" result <em>as</em> the motivation for externalizing. A same-day falsification test (zero new models,
-on HuatuoGPT, 2,394 cases) returned <strong>REFINE</strong>: image complexity does
-predict per-case difficulty with question type held fixed and highly
-significantly (entropy partial ρ=−0.113, p=3e-8), but weakly (|ρ|≤0.11)
-and <em>negatively</em> — busier images are slightly easier, so whole-image
-texture is measuring evidence-richness, not lesion subtlety. The refine
-path is lesion-aware complexity from SLAKE organ masks. A new base model
-was selected and stood up: <strong>MedVLThinker</strong> (UCSC-VLAA, Qwen2.5-VL,
-Apache-2.0 — open code + difficulty-filtered data + eval harness +
-<code>&lt;think&gt;</code>/<code>&lt;answer&gt;</code> checkpoints), in an isolated venv (transformers
-4.37 vs ≥4.49 conflict keeps the HuatuoGPT env untouched), new repo
-<code>medvlthinker-imgdiff-compute</code>, 3B downloaded. The definitive 3B gate —
-after a caught-and-fixed <code>--limit</code> sampling trap — was sharded
-(<code>--num_shards 2 --shard 0/1</code>) and left running inference across both
-VMs overnight; no code pushed today.</p>
-<div class="admonition note">
-<p class="admonition-title">The project is mid-pivot</p>
-<p>The site and project name still say <em>question-aware visual token
-pruning</em>. The work has moved through a visual-grounding pivot
-(Direction D, now closed) to a clean-slate pivot:
-<strong>image-difficulty-driven adaptive reasoning-compute allocation</strong>
-on a new base model (MedVLThinker). The rebrand stays deferred
-until the falsification gate fully clears and training is underway.</p>
-</div>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Built reproducible Docker image (NGC PyTorch 23.10, CUDA 12.2)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Stack sanity check (PyTorch, transformers, accelerate, flash-attn)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Cloned LLaVA-Med, installed editable</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Downloaded <code>llava-med-v1.5-mistral-7b</code> weights (~15 GB)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> First successful inference via <code>llava.serve.cli</code></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Found, root-caused, and patched a CLI bug in <code>llava/serve/cli.py</code>
-      → see <a href="bugs/#1-llavaservecli-stops-generation-immediately-for-the-mistral-variant">Bugs &amp; Issues #1</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Set up this documentation site (local + deployed to GitHub Pages)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> First read-pass of <code>prepare_inputs_labels_for_multimodal</code> —
-      visual-token splicing logic mapped, position-ID handling noted
-      → <a href="weekly/week-01/day-04/#architecture-deep-dive-partial-paused-for-later">Week 1, Day 4</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Strategic decision: implement pruning directly on v1.5
-      (inference-only method, no v1.0 reproduction needed)
-      &nbsp; — <em>revised May 15: pivoted back to v1.0 once the complete
-      v1.5 baseline row showed the gap to published fine-tuned
-      figures</em></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Scaffolded evaluation harness <code>~/llava-med-pruning/</code> —
-      4 of 11 files implemented, 7 documented stubs awaiting fill-in</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Downloaded benchmark datasets: VQA-RAD, SLAKE, PathVQA
-      (~990 MB total, all verified against authoritative sources)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Recovered from a <code>pip --force-reinstall</code> regression that broke
-      the container → see <a href="bugs/#2-pip-install-force-reinstall-cascaded-and-clobbered-the-ngc-pinned-stack">Bugs &amp; Issues #2</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Implemented the harness end-to-end for the VQA-RAD path —
-      <code>metrics.py</code>, <code>model_loader.py</code>, <code>runner.py</code>, <code>run_eval.py</code>, and
-      the VQA-RAD loader (SLAKE + PathVQA loaders still stubbed)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Investigated a ~29-point baseline-vs-literature gap; verified
-      via the reference <code>model_vqa.py</code> that the harness is correct —
-      the gap is evaluation methodology, not a code bug</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Found and fixed an <code>answer_type</code> mislabeling bug in the VQA-RAD
-      loader → see <a href="bugs/#3-vqa-rad-huggingface-mirror-dropped-the-answer_type-field-loader-heuristic-mislabels-closed-questions">Bugs &amp; Issues #3</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Ran <strong>E00</strong> baseline on VQA-RAD test — closed 0.537, open recall
-      0.340 → <a href="experiments/#e00-baseline-no-pruning-v15">Experiments</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Put <code>~/llava-med-pruning/</code> under git version control</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Batch 3 done</strong> — implemented SLAKE + PathVQA loaders; ran E00
-      on all three v1.5 benchmarks. Complete v1.5 baseline row:
-      VQA-RAD closed 0.537 / open 0.340; SLAKE closed 0.587 / open
-      0.395; PathVQA closed 0.587 / open 0.106
-      → <a href="experiments/#e00-baseline-no-pruning-v15">Experiments</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Strategic pivot to LLaVA-Med v1.0</strong> — once the full v1.5 row
-      was visible, the 24-32 point gap to published v1.0 fine-tuned
-      figures made v1.0's per-dataset delta weights the better
-      baseline. Forked the harness to <code>~/llava-med-pruning-v1</code>,
-      successfully merged the VQA-RAD delta (~13 GB merged model),
-      wrote v1.0's hand-rolled <code>model_loader.py</code>
-      → <a href="weekly/week-01/day-06/#the-strategic-pivot-switching-to-llava-med-v10">Week 1, Day 6</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Rebuilt the v1.0 environment cleanly via Dockerfile and finished
-      the v1.0 harness — pushed to
-      <a href="https://github.com/Leokuan0208/llava-med-pruning-v1"><code>Leokuan0208/llava-med-pruning-v1</code></a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>v1.0 stage-2 zero-shot baseline reproduces the paper</strong> —
-      0.58 closed on VQA-RAD, within 8 pts of paper's stage-2 row
-      (~0.50). First paper-comparable v1.0 result in this project.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Day 7 finding "all three v1.0 deltas broken" recorded; <strong>revised
-      May 17</strong> after rebuilding the reproduction tables — see below.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Week 1 complete.</strong> Full ledger on the
-      <a href="weekly/week-01/#end-of-week-status">Week 1 overview</a>.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> DeepSpeed activation-checkpointing fixed (Day 7 carry-over)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>5-epoch VQA-RAD full FT completed</strong> — closed 0.570 vs stage-2
-      zero-shot 0.580. <strong>Memorization without generalization</strong> (loss
-      1.13 → 0.004). Stage-2 zero-shot adopted as the canonical
-      v1.0 baseline.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>v1.0 baseline row extended to all three datasets</strong> —
-      cross-validated via Baron-GG: VQA-RAD 0.577, SLAKE 0.488,
-      PathVQA 0.556 (closed).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Reproduction tables consolidated</strong> — open-recall reproduces
-      paper to within ±1.5 pts across all configs/datasets;
-      closed-accuracy reproduces on stage-2 (±4 pts) but has a
-      31-63 pt gap on FT-merged models. The gap is almost certainly
-      a closed-set scoring-recipe issue (likely <code>--answer-prompter</code>),
-      not broken weights. Full tables on the
-      <a href="experiments/#on-the-v10-reproduction-track">Experiments page</a>
-      and <a href="weekly/week-02/day-01/#phase-85-paper-table-4-vs-our-reproduction-consolidated">Week 2, Day 1</a>.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>SLAKE pipeline completed</strong> — loader wired into runner
-      registry; 216-entry candidate set built.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>First working visual-token pruning method</strong> — in-LLM pruning
-      with 32-layer hook architecture + decode-step mask
-      coordination; smoke-tested with random and qsim methods at
-      kr=0.5
-      → <a href="weekly/week-02/day-01/#phase-12-the-decode-step-debugging-saga-5-iterations">Week 2, Day 1</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>First ablation result at kr=0.75 in</strong> — on VQA-RAD,
-      question-similarity pruning scored 60.29 closed vs random
-      pruning's 56.99 (+3.30 pts) and vs the unpruned baseline's
-      57.72 (+2.57 pts). First positive datapoint on the project's
-      central thesis; needs the full Pareto curve to confirm.
-      → <a href="weekly/week-02/day-01/#phase-14-kr075-ablation-result-question-aware-pruning-beats-baseline">Week 2, Day 1, Phase 14</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Yesterday's 8-run sweep (<code>c216bbe</code>) diagnosed as a no-op.</strong>
-      Smell-test showed bit-identical scores across all 8
-      configurations on May 26 morning. Root cause: wrong patch
-      target — HuatuoGPT-Vision forks LLaVA's multimodal-prep
-      method into a <code>_new</code>-suffixed variant we hadn't wrapped.
-      → <a href="weekly/week-03/day-03/#phase-1-morning-the-smell-test-that-found-the-bug">Week 3, Day 3, Phase 1</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>v1 fix cascade</strong> — three real bugs fixed in sequence:
-      method rename, attention-mask frame reconciliation,
-      position_ids RoPE OOB. v1 archived as a research artifact
-      at <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/72bdd28"><code>72bdd28</code></a>.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>v1 → v2 architectural rewrite.</strong> Pre-LLM pruning instead of
-      post-layer-0; 130 lines vs 280, ~30% inference speedup at
-      kr=0.5. Pushed at
-      <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/85cb249"><code>85cb249</code></a>.
-      → <a href="weekly/week-03/day-03/#phase-5-the-pre-llm-rewrite-v2">Week 3, Day 3, Phase 5</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>First successfully-pruned 8-run sweep complete.</strong>
-      {qsim, random} × {kr=0.75, 0.5, 0.25, 0.1} across 6
-      benchmarks on HuatuoGPT-Vision-7B; ~4-5h wall time. Per-run
-      <code>__scores.json</code> + <code>__latency_summary.json</code> files committed at
-      <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/24ef568"><code>24ef568</code></a>.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Two literature surveys written.</strong> (1) Cosine-similarity
-      scoring positioned: QSim ≈ ZSPAPrune's relevance phase ≈
-      ResPrune's Setting-3 baseline; not novel as a formula.
-      (2) Token merging vs pruning; medical-VQA properties →
-      <a href="project/#methods-roadmap-tiers-1-3">Methods Roadmap (Tier 1/2/3)</a>.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Negative result on QSim, analyzed.</strong> Random beats
-      mean-pooled QSim at every keep-ratio (gap +0.84 → +3.11 pts
-      as kr drops 0.75 → 0.10). Cause: diversity collapse +
-      scoring-space brittleness.
-      → <a href="weekly/week-03/day-04/#phase-2-reading-the-result">Week 3, Day 4, Phase 2</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>qsim_max ablation ruled out reduction-operator cause.</strong>
-      Same-day follow-up sweep: max-similarity is uniformly <em>worse</em>
-      than mean-pooled QSim, which is uniformly worse than Random.
-      Failure mode is structural to text-only scoring on pre-LLM
-      embeddings.
-      → <a href="weekly/week-03/day-04/#phase-4-the-qsim_max-ablation">Week 3, Day 4, Phase 4</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Two new methods designed and implemented for tonight.</strong>
-      <a href="weekly/week-03/day-04/#phase-6-fasp-gridprune-design">GridPrune</a>
-      (zonal-budget coverage-aware selection) +
-      <a href="weekly/week-03/day-04/#phase-6-fasp-gridprune-design">FASP+GridPrune</a>
-      (medical anatomy filter → zone budget by fused score →
-      local top-K). Targets both QSim failure modes.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Patcher latency decomposed.</strong> <code>prune_time_s</code> /
-      <code>prefill_time_s</code> / <code>decode_time_s</code> fields land automatically
-      for any method via the v2 patcher's bracket rewrite. Tonight's
-      sweep produces phase-resolved latency for the first time.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>E3 sweep analyzed (Day 19).</strong> {random, gridprune,
-      fasp_gridprune} × {0.75, 0.5, 0.25, 0.1}. <strong>Random
-      Pareto-dominates both structured methods on accuracy <em>and</em>
-      latency at every kr.</strong> FASP+GridPrune edges GridPrune
-      everywhere but neither reaches Random. Pruning-as-method
-      closed.
-      → <a href="weekly/week-03/day-05/#phase-2-e3-results-random-wins-again">Week 3, Day 5, Phase 2</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>kr=0.75 anomaly diagnosed and logged as Bug #10</strong> — a
-      degenerate FASP+GridPrune backfill branch (<code>kr &gt; 1 −
-      bg_fraction</code>) inflated that cell; removing the artifact made
-      the negative result cleaner.
-      → <a href="bugs/#10-degenerate-faspgridprune-branch-at-kr075-inflated-the-e3-table">Bugs &amp; Issues #10</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Strategic pivot to training-free visual grounding.</strong> Four
-      directions scoped against a literature scan; Direction D
-      (evidence-sensitivity router) the lead, A (conformal risk
-      control) and C (per-question compute) live alternatives.
-      → <a href="weekly/week-03/day-05/#phase-5-the-strategic-pivot-four-directions">Week 3, Day 5, Phase 5</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Feasibility probe green-lit the pivot (zero GPU).</strong>
-      Answer-stability tracks correctness (81.7% vs 64.3% stable);
-      20.7% locked-in-wrong, concentrated in PathVQA. Specified the
-      router's needed second feature (option-token logprob).
-      → <a href="weekly/week-03/day-05/#phase-6-the-feasibility-probe-zero-gpu-decisive">Week 3, Day 5, Phase 6</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Scored-sweep instrumentation built and pushed</strong> at
-      <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/dbe8daa"><code>dbe8daa</code></a>
-      — logprob capture + self-consistency + nested-budget pruning;
-      18-run overnight scored sweep launched.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Nested arm fixed and 18/18 gate passed (Day 22).</strong> The
-      nested scored-sweep arm had failed overnight on an argparse
-      bug; fixed, relaunched 4+4 across two VMs, nesting verified
-      offline.
-      → <a href="weekly/week-04/day-01/#phase-1-the-nested-arm-failed-overnight-fix-and-relaunch">Week 4, Day 1, Phase 1</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Per-dataset evidence-dependence gradient established
-      (Day 22)</strong> — triangulated across accuracy drop <em>and</em> flip rate.
-      PMC-VQA most evidence-dependent (−7.0 pt, 30.5% flips), PathVQA
-      least (−0.3 pt, 11.0% flips).
-      → <a href="weekly/week-04/day-01/#phase-3-per-dataset-evidence-dependence-the-gold">Week 4, Day 1, Phase 3</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Flip-direction evidence-loss split (Day 22)</strong> — GT recovered
-      exactly from answer-text position in options; per-dataset
-      evidence-loss rate (PMC-VQA 10.7% → PathVQA 4.4%) is the router
-      target.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Router signal confirmed (Day 22)</strong> — confidence predicts
-      correctness at <strong>AUROC ≈ 0.74</strong>; offline budget-router headroom
-      positive at every budget pair (peak ~1.6 pt).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Approach 2 width-router — clean negative on compute
-      (Day 22)</strong> — double-pass overhead exceeds fixed-high latency.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Direction-D feasibility suite pushed</strong> at
-      <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/df0a3c4"><code>df0a3c4</code></a>;
-      budget×layer grid probe launched (results land next session).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Grid probe analyzed (Day 23)</strong> — lens gate passed; routable
-      signal is <strong>late and modest</strong> (<code>lens_entropy</code> AUROC 0.756 @
-      L28, near-chance through L1–20, no cheap early-layer cell;
-      robust on the budget axis at 0.748 for kr=0.5).
-      → <a href="weekly/week-04/day-02/#phase-2-the-grid-result-the-signal-is-real-modest-and-late">Week 4, Day 2, Phase 2</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Two-feature probe — no lift (Day 23)</strong> — best single 0.762,
-      best combo 0.758; option-logprob is redundant with entropy,
-      overturning the missing-second-feature hypothesis. Multi-option
-      subset stronger at 0.814. Confidence path to the router is a
-      clean negative.
-      → <a href="weekly/week-04/day-02/#phase-4-the-two-feature-probe-no-lift-the-gono-go">Week 4, Day 2, Phase 4</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Direction D closed (Day 23 evening)</strong> — the decisive
-      evidence-stability probe: cross-budget flip AUROC 0.548 alone,
-      +0.466 correlated with confidence, +0.001 combined, −0.002 on
-      PathVQA. Both probes pushed at
-      <a href="https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning/commit/04ef73c"><code>04ef73c</code></a>.
-      What survives: confidence predicts correctness on MC only.
-      → <a href="weekly/week-04/day-02/#phase-6-the-evidence-stability-probe-direction-d-closed">Week 4, Day 2, Phase 6</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Clean-slate pivot (Day 24)</strong> — new direction:
-      image-difficulty-driven adaptive reasoning-compute allocation.
-      Tore down Direction B (re-enters the saturated token-scoring
-      arena); the wedge is an image-derived, pre-generation difficulty
-      signal.
-      → <a href="weekly/week-04/day-03/#phase-3-the-wedge-image-derived-pre-generation-difficulty">Week 4, Day 3, Phase 3</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Falsification gate (Day 24) — REFINE</strong> — image complexity
-      predicts difficulty with question fixed, highly significant but
-      weak (|ρ|≤0.11) and <em>negative</em> (busier = easier ⇒ whole-image
-      texture measures evidence-richness, not lesion subtlety). Refine
-      with lesion-aware complexity.
-      → <a href="weekly/week-04/day-03/#phase-6-the-result-refine-and-the-sign-is-the-story">Week 4, Day 3, Phase 6</a></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>New base model + environment (Day 24)</strong> — MedVLThinker
-      (Qwen2.5-VL, open stack, <code>&lt;think&gt;</code>/<code>&lt;answer&gt;</code>, pass-count
-      difficulty data); isolated venv (transformers 4.37 vs ≥4.49);
-      new repo <code>medvlthinker-imgdiff-compute</code>; 3B downloaded.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Day 25</strong> — merge the difficulty shards, run the lesion-aware
-      verdict (<code>complexity_lesion.py</code> → <code>analyze.py</code>): GO vs.
-      stop-and-reconsider; if GO, MedVLThinker 3B inference +
-      difficulty extraction as training labels.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Commit the <code>medvlthinker-imgdiff-compute</code> scaffold once the gate
-      verdict lands</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <a href="bugs/#5-llava-med-v10-published-per-dataset-fine-tuned-deltas-are-not-paper-reproducible">Bug #5</a>
-      with the revised "VQA-RAD catastrophic, PathVQA degraded, SLAKE
-      missing" narrative</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Finish reading visual-token-pruning literature (ToMe, FastV,
-      SparseVLM, GAP) — slipped six days</li>
-</ul>
-<p>See the <a href="weekly/week-01/">Week 1 log</a>,
-<a href="weekly/week-02/">Week 2 log</a>,
-<a href="weekly/week-03/">Week 3 log</a>, and
-<a href="weekly/week-04/">Week 4 log</a> for daily notes.</p>
+<p>See <a href="project/">Project Overview</a> for the full motivation, method, related
+work, and 12-week plan.</p>
+<hr />
+<h2 id="where-the-project-stands-now">Where the project stands now<a class="headerlink" href="#where-the-project-stands-now" title="Permanent link">&para;</a></h2>
+<p><span class="pill pill--wip">In progress</span> &nbsp; <strong>Week 6 — the gate
+axis is closed; the win is structural (ACC).</strong></p>
+<p>The committed result is a <strong>7B→32B confidence-margin cascade</strong> on
+<a href="baseline/medvlthinker/">MedVLThinker</a>: on the four competent medical-VQA
+benchmarks it holds <strong>32B-level accuracy at a measured 0.639× of always-32B
+compute</strong> (≈36% energy saved), with a deployable frozen margin gate. A
+reviewer-grade audit (<a href="weekly/week-05/">Week 5</a>) then established that
+the <em>gate</em> cannot be improved — no learned or conformal router beats a one-line
+margin gate, because the rescue event is near-unpredictable from any cheap 7B
+signal.</p>
+<p><a href="weekly/week-06/">Week 6</a> found the lever the gate work was missing:
+the <strong>strong leg's compute mode.</strong> The 32B's chain-of-thought <em>over-thinks</em>
+perception VQA (no-think beats think by <strong>+7.7 on SLAKE / +11.7 on VQA-RAD</strong> at
+~2 decode tokens vs ~477), so turning the 32B's <em>fast</em> mode into an
+intermediate cascade tier yields <strong>ACC</strong> (the Adaptive-Compute Cascade): a
+3-tier cascade from two checkpoints (7B-nt → <strong>32B-no-think</strong> → 32B-think) that
+matches always-32B-think accuracy at <strong>−72% latency / −75% energy / ~½ FLOPs</strong>,
+guardrail-clean. <strong>ACC-v2</strong> adds a free 7B/32B-disagreement gate that strictly
+Pareto-improves. The work is framed as an honest <strong>efficiency-systems</strong>
+contribution, written up for <strong>CVGIP 2026</strong> (submitted) with a higher-tier
+resubmission in progress.</p>
+<p>See the weekly logs for daily notes:
+<a href="weekly/week-01/">Week 1</a> ·
+<a href="weekly/week-02/">Week 2</a> ·
+<a href="weekly/week-03/">Week 3</a> ·
+<a href="weekly/week-04/">Week 4</a> ·
+<a href="weekly/week-05/">Week 5</a> ·
+<a href="weekly/week-06/">Week 6</a>.</p>
+<hr />
+<h2 id="the-research-journey">The research journey<a class="headerlink" href="#the-research-journey" title="Permanent link">&para;</a></h2>
+<p>The project converged on cascading by <strong>eliminating</strong> the alternatives — each
+dead end closed with evidence, each pivot motivated by the last. The full
+chronology lives in the <a href="weekly/">Weekly Log</a>; the spine:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>When</th>
+<th>Direction</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Visual-token pruning</strong></td>
+<td>Weeks 1–3</td>
+<td>Question-aware pruning on <a href="baseline/llava-med/">LLaVA-Med</a> → <a href="baseline/qwen25-vl/">Qwen2.5-VL</a> → <a href="baseline/huatuo-vision/">HuatuoGPT-Vision</a></td>
+<td><strong>Closed.</strong> Random selection Pareto-dominates every structured pruning method at every keep-ratio — but the <em>reason</em> (the model barely needs fine-grained visual evidence) is a grounding finding, not a pruning one.</td>
+</tr>
+<tr>
+<td><strong>Visual grounding / adaptive compute</strong></td>
+<td>Week 4</td>
+<td>Evidence-sensitivity routing; image-difficulty-driven compute allocation</td>
+<td><strong>Closed.</strong> No readable internal signal orthogonal to confidence; the image-difficulty wedge came back weak and wrong-signed.</td>
+</tr>
+<tr>
+<td><strong>Single-model routing</strong></td>
+<td>Week 5</td>
+<td>4-policy (think/nothink × RAG/noRAG) routing on <a href="baseline/medvlthinker/">MedVLThinker-7B</a></td>
+<td><strong>Closed.</strong> The arms of one model are redundant decision-makers; the oracle falls far below the independence floor (z = −25 to −29σ).</td>
+</tr>
+<tr>
+<td><strong>Cross-model cascade</strong></td>
+<td>Week 5</td>
+<td>7B→32B confidence-margin cascade</td>
+<td><strong>Committed.</strong> Real complementarity (+12.5pp oracle); the margin cascade matches 32B at <strong>0.639× compute</strong>. Accuracy headroom is real but unreachable from cheap signals.</td>
+</tr>
+<tr>
+<td><strong>ACC</strong></td>
+<td>Week 6</td>
+<td>Strong-leg compute mode → 3-tier cascade + agreement gate</td>
+<td><strong>Current.</strong> Matches always-32B-think at <strong>−72% latency / −75% energy / ~½ FLOPs</strong>.</td>
+</tr>
+</tbody>
+</table>
+<p>The through-line: a careful chain of <strong>honest negative results</strong> that
+progressively narrowed the design space until a real, defensible efficiency
+contribution remained.</p>
+<hr />
 <h2 id="how-this-site-is-organised">How this site is organised<a class="headerlink" href="#how-this-site-is-organised" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><a href="project/">Project Overview</a></strong> — research question, motivation,
-  hypothesis, related work, the 12-week plan. <em>Read this first.</em></li>
-<li><strong><a href="baseline/">Baseline</a></strong> — how the LLaVA-Med baseline is
-  installed and configured, with hardware, versions, commands, and
-  gotchas.</li>
-<li><strong><a href="experiments/">Experiments</a></strong> — running log of pruning strategies
-  tried, with metrics and ablations.</li>
+<li><strong><a href="project/">Project Overview</a></strong> — research question, motivation, the
+  method (cascade + ACC), related work, and the 12-week plan. <em>Read this
+  first.</em></li>
+<li><strong><a href="baseline/">Baselines &amp; Models</a></strong> — the current
+  <a href="baseline/medvlthinker/">MedVLThinker</a> base models and the legacy baselines
+  from the pruning era, each with environment, versions, and verification.</li>
+<li><strong><a href="experiments/">Experiments</a></strong> — the running experiment log across all
+  phases, from pruning sweeps to the cascade.</li>
 <li><strong><a href="weekly/">Weekly Log</a></strong> — one page per week, daily notes.</li>
-<li><strong><a href="bugs/">Bugs &amp; Issues</a></strong> — bugs encountered, with full
-  troubleshooting trails.</li>
-<li><strong><a href="resources/">Resources</a></strong> — papers, datasets, code, tools.</li>
+<li><strong><a href="bugs/">Bugs &amp; Issues</a></strong> — bugs encountered, with full troubleshooting
+  trails.</li>
+<li><strong><a href="resources/">Resources</a></strong> — papers, datasets, code, and tools (cascade
+  reading list + the legacy pruning library).</li>
 </ul>
 <h2 id="quick-links">Quick links<a class="headerlink" href="#quick-links" title="Permanent link">&para;</a></h2>
 <ul>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg></span> <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm">Project repository</a></li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/></svg></span> <a href="https://arxiv.org/abs/2306.00890">LLaVA-Med paper (NeurIPS 2023)</a></li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/></svg></span> <a href="https://arxiv.org/abs/2210.09461">Token Merging — ToMe (Bolya et al., ICLR 2023)</a></li>
-<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/></svg></span> <a href="https://arxiv.org/abs/2403.06764">FastV — visual token pruning for VLMs (Chen et al., ECCV 2024)</a></li>
+<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/></svg></span> <a href="https://arxiv.org/abs/2305.05176">FrugalGPT — LLM cascades (Chen et al., 2023)</a></li>
+<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/></svg></span> <a href="https://arxiv.org/abs/2310.12963">AutoMix — self-verifying cascade routing (2023)</a></li>
+<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/></svg></span> <a href="https://arxiv.org/abs/2505.19970">CP-Router — conformal routing (Su et al., 2025)</a></li>
+<li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/></svg></span> <a href="https://arxiv.org/abs/2603.04445">A 2026 survey of routing strategies</a></li>
 </ul>
 
 

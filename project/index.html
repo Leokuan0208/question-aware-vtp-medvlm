@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.">
+        <meta name="description" content="Training-free model cascades for compute-efficient medical VQA, from visual-token pruning to the Adaptive-Compute Cascade (ACC).">
       
       
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Project Overview - Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Project Overview - Model Cascades for Medical VLMs</title>
       
     
     
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href=".." title="Model Cascades for Medical VLMs" class="md-header__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +108,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Question-Aware Visual Token Pruning for Medical VLMs
+            Model Cascades for Medical VLMs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -266,7 +266,7 @@
   
     
   
-  Baseline
+  Baselines
 
         </a>
       </li>
@@ -367,13 +367,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href=".." title="Model Cascades for Medical VLMs" class="md-nav__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Question-Aware Visual Token Pruning for Medical VLMs
+    Model Cascades for Medical VLMs
   </label>
   
     <div class="md-nav__source">
@@ -499,89 +499,29 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hypothesis" class="md-nav__link">
+  <a href="#the-method" class="md-nav__link">
     <span class="md-ellipsis">
-      Hypothesis
+      The method
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#related-work-skim-list-to-read-properly-in-week-12" class="md-nav__link">
+  <a href="#related-work" class="md-nav__link">
     <span class="md-ellipsis">
-      Related work (skim list — to read properly in Week 1–2)
+      Related work
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#approach-sketch" class="md-nav__link">
+  <a href="#the-research-journey-how-we-got-here" class="md-nav__link">
     <span class="md-ellipsis">
-      Approach (sketch)
+      The research journey (how we got here)
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#methods-roadmap-tiers-1-3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Methods Roadmap (Tiers 1-3)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Methods Roadmap (Tiers 1-3)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-medical-vqa-admits-different-methods-than-general-vqa" class="md-nav__link">
-    <span class="md-ellipsis">
-      Why medical VQA admits different methods than general VQA
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-1-cheap-defensible-probably-useful" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 1 — Cheap, defensible, probably-useful
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-2-medical-specific-extensions-the-papers-novel-angle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 2 — Medical-specific extensions (the paper's novel angle)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-3-speculative-paper-shaping-if-1-2-results-are-strong" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 3 — Speculative, paper-shaping if 1-2 results are strong
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-papers-pitch-if-tier-1-2-land" class="md-nav__link">
-    <span class="md-ellipsis">
-      The paper's pitch (if Tier 1-2 land)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -630,6 +570,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -649,7 +593,7 @@
               
   
   <span class="md-ellipsis">
-    Baseline
+    Baselines
   </span>
   
 
@@ -665,10 +609,31 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            Baseline
+            Baselines
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../baseline/medvlthinker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MedVLThinker (current)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -682,7 +647,7 @@
         
   
   <span class="md-ellipsis">
-    HuatuoGPT-Vision
+    HuatuoGPT-Vision (legacy)
   </span>
   
 
@@ -703,7 +668,7 @@
         
   
   <span class="md-ellipsis">
-    Qwen2.5-VL
+    Qwen2.5-VL (legacy)
   </span>
   
 
@@ -724,7 +689,28 @@
         
   
   <span class="md-ellipsis">
-    LLaVA-Med
+    LLaVA-Med (legacy)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Environment setup (legacy)
   </span>
   
 
@@ -772,6 +758,8 @@
       
         
           
+        
+      
         
       
         
@@ -1756,6 +1744,91 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../weekly/week-06/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 6
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Week 6
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weekly/week-06/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Wednesday, June 17, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1866,89 +1939,29 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hypothesis" class="md-nav__link">
+  <a href="#the-method" class="md-nav__link">
     <span class="md-ellipsis">
-      Hypothesis
+      The method
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#related-work-skim-list-to-read-properly-in-week-12" class="md-nav__link">
+  <a href="#related-work" class="md-nav__link">
     <span class="md-ellipsis">
-      Related work (skim list — to read properly in Week 1–2)
+      Related work
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#approach-sketch" class="md-nav__link">
+  <a href="#the-research-journey-how-we-got-here" class="md-nav__link">
     <span class="md-ellipsis">
-      Approach (sketch)
+      The research journey (how we got here)
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#methods-roadmap-tiers-1-3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Methods Roadmap (Tiers 1-3)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Methods Roadmap (Tiers 1-3)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-medical-vqa-admits-different-methods-than-general-vqa" class="md-nav__link">
-    <span class="md-ellipsis">
-      Why medical VQA admits different methods than general VQA
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-1-cheap-defensible-probably-useful" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 1 — Cheap, defensible, probably-useful
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-2-medical-specific-extensions-the-papers-novel-angle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 2 — Medical-specific extensions (the paper's novel angle)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-3-speculative-paper-shaping-if-1-2-results-are-strong" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 3 — Speculative, paper-shaping if 1-2 results are strong
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-papers-pitch-if-tier-1-2-land" class="md-nav__link">
-    <span class="md-ellipsis">
-      The paper's pitch (if Tier 1-2 land)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1995,8 +2008,16 @@
 
 <h1 id="project-overview">Project Overview<a class="headerlink" href="#project-overview" title="Permanent link">&para;</a></h1>
 <h2 id="title">Title<a class="headerlink" href="#title" title="Permanent link">&para;</a></h2>
-<p class="project-title">Question-Aware Visual Token Pruning for Medical VLMs.</p>
+<p class="project-title">Training-Free Model Cascades for Compute-Efficient Medical VLMs.</p>
 
+<div class="admonition note">
+<p class="admonition-title">A note on the title</p>
+<p>The project was launched as <em>"Question-Aware Visual Token Pruning for
+Medical VLMs"</em> and the GitHub repository keeps that name. Through the
+pivots documented below, the work is now a <strong>training-free model cascade</strong>
+for medical VQA. The original pruning direction is preserved as
+<a href="#the-research-journey-how-we-got-here">research history</a>.</p>
+</div>
 <h2 id="people">People<a class="headerlink" href="#people" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2021,457 +2042,245 @@
 </tbody>
 </table>
 <h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
-<p>Medical vision–language models like LLaVA-Med work by:</p>
+<p>Medical VQA is increasingly solved by <strong>large reasoning VLMs</strong> — models that
+emit a long chain-of-thought before answering. They are accurate, but a single
+answer can cost hundreds of decode tokens on a 32B model: slow, energy-hungry,
+and hard to deploy at scale in a clinical setting.</p>
+<p>Yet most medical-VQA questions are <em>not</em> hard. A 7B model already answers a
+large share of them correctly; only a minority genuinely need the big model's
+capacity. This is exactly the setting a <strong>cascade</strong> is built for:</p>
 <ol>
-<li>Passing an image through a vision encoder (typically a CLIP ViT)
-   that produces a sequence of <strong>visual tokens</strong> — one per image patch
-   plus a global token. For a standard 336×336 input with patch size
-   14, that's 576 tokens.</li>
-<li>Projecting those tokens into the language model's embedding space.</li>
-<li>Prepending them to the user's text question and letting the LM
-   generate an answer.</li>
+<li>Run a <strong>cheap model</strong> (7B) on every question.</li>
+<li>Use a lightweight <strong>gate</strong> to decide, per question, whether the cheap answer
+   can be trusted.</li>
+<li><strong>Escalate only the uncertain questions</strong> to the <strong>expensive model</strong> (32B).</li>
 </ol>
-<p>Most of those 576 tokens are not relevant to any given question. A
-question like <em>"Is there a pneumothorax in the right lung?"</em> depends on
-a small region of the image; the rest is noise that the model must
-nonetheless attend over at full cost.</p>
-<p><strong>The opportunity:</strong> if we can identify which visual tokens matter
-<em>for the specific question being asked</em> and drop the rest, we can:</p>
-<ul>
-<li>Reduce inference compute (fewer tokens through the LM).</li>
-<li>Potentially improve answer quality (less distractor signal).</li>
-<li>Make the model more interpretable (we can visualise which patches it
-  kept).</li>
-</ul>
+<p>If the gate is good and most questions stay on the cheap leg, the cascade
+approaches the big model's accuracy at a fraction of its cost — and because
+nothing is trained, it drops onto any existing model pair.</p>
 <h2 id="research-question">Research question<a class="headerlink" href="#research-question" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>Can a question-conditioned token-pruning mechanism preserve — or
-improve — medical VQA accuracy on standard benchmarks while
-meaningfully reducing inference cost on the LLaVA-Med baseline?</p>
+<p>Can a <strong>training-free</strong> cascade match a 32B medical VLM's accuracy on
+standard medical-VQA benchmarks while <strong>substantially reducing inference
+cost</strong> — measured honestly in prefill-inclusive FLOPs, wall-clock latency,
+and energy?</p>
 </blockquote>
-<h2 id="hypothesis">Hypothesis<a class="headerlink" href="#hypothesis" title="Permanent link">&para;</a></h2>
-<p>A lightweight scoring head, conditioned on the question embedding, can
-rank visual tokens by relevance and prune the bottom K% with negligible
-accuracy loss. We expect:</p>
-<ul>
-<li><strong>Lower bound:</strong> at K = 25%, accuracy on VQA-RAD / SLAKE drops by
-  less than 1 absolute point.</li>
-<li><strong>Upper bound:</strong> at K = 50%, accuracy may drop by 2–4 points but
-  latency drops more than proportionally because attention cost is
-  quadratic in token count.</li>
-<li><strong>Sweet spot:</strong> somewhere in between, ideally with a regime where
-  accuracy <em>improves</em> on questions that target small image regions.</li>
-</ul>
-<p>This is a hypothesis, not a result — the experiments will tell us
-whether the shape of the trade-off actually looks like this.</p>
-<h2 id="related-work-skim-list-to-read-properly-in-week-12">Related work (skim list — to read properly in Week 1–2)<a class="headerlink" href="#related-work-skim-list-to-read-properly-in-week-12" title="Permanent link">&para;</a></h2>
+<h2 id="the-method">The method<a class="headerlink" href="#the-method" title="Permanent link">&para;</a></h2>
+<p>The deployable system is a <strong>7B→32B confidence-margin cascade</strong> on the
+<a href="../baseline/medvlthinker/">MedVLThinker</a> model family, refined over Weeks 5–6
+into the <strong>Adaptive-Compute Cascade (ACC)</strong>.</p>
+<p><strong>The gate.</strong> The cheap model's <strong>confidence margin</strong> — the gap between its top
+two answer-option probabilities — is the escalation signal. A single frozen
+threshold, fit once on a held-out split, decides escalation. A reviewer-grade
+audit showed this one-line gate is <em>near-optimal</em>: no learned, conformal, or
+self-verification gate beats it, because whether the 32B will <em>rescue</em> a given
+7B error is near-unpredictable (≈0.6 AUROC) from any cheap signal. The gate
+axis is therefore <strong>closed</strong> — an honest negative result that rules out a large
+family of "smarter router" proposals.</p>
+<p><strong>The structural lever (ACC).</strong> The real compute lever turned out to be the
+<em>strong leg's reasoning mode</em>. The 32B's chain-of-thought <strong>over-thinks
+perception VQA</strong> — on the competent benchmarks, 32B-<em>no-think</em> beats 32B-think
+(e.g. +7.7 on SLAKE, +11.7 on VQA-RAD) at ~2 decode tokens instead of ~477. So
+ACC promotes the 32B's <em>fast</em> mode to an intermediate tier:</p>
+<pre class="mermaid"><code>flowchart LR
+  Q["(image, question)"]
+  T0["Tier 0&lt;br/&gt;7B no-think @ cap320&lt;br/&gt;~0.18 s"]
+  G0{"margin&lt;br/&gt;confident?"}
+  T1["Tier 1&lt;br/&gt;32B no-think @ cap320&lt;br/&gt;~0.34 s"]
+  G1{"margin / agreement&lt;br/&gt;confident?"}
+  T2["Tier 2&lt;br/&gt;32B think @ full-res&lt;br/&gt;~28 s"]
+  A["Answer"]
+
+  Q --&gt; T0 --&gt; G0
+  G0 -- yes --&gt; A
+  G0 -- no --&gt; T1 --&gt; G1
+  G1 -- yes --&gt; A
+  G1 -- no --&gt; T2 --&gt; A</code></pre>
+<p>Three tiers built from only <strong>two checkpoints</strong>, each gated by its own margin;
+slow reasoning fires only on the residual that genuinely needs it. <strong>ACC-v2</strong>
+adds the one cascade-native gate that survives scrutiny: because both models
+have already run by Tier 1, their <strong>disagreement</strong> is a free query-by-committee
+signal — escalate to the think tier only when 7B and 32B disagree.</p>
+<p><strong>The result.</strong> Against an always-32B-think baseline at matched accuracy, ACC
+cuts <strong>latency by 72%, energy by 75%, and FLOPs by roughly half</strong> on the full
+six-benchmark pool (far more on the perception-only pools), and is strictly
+<strong>guardrail-clean</strong>. The accounting is the contribution's backbone: FLOPs are
+exact and prefill-inclusive; latency and energy are calibrated against real
+batch-1 NVML measurements (R² = 0.99).</p>
+<h2 id="related-work">Related work<a class="headerlink" href="#related-work" title="Permanent link">&para;</a></h2>
+<p>The work sits in the <strong>LLM/VLM cascade-and-routing</strong> literature. A cascade is a
+<em>post-generation</em> method (decide after the cheap model answers), distinct from
+a <em>router</em> (decide before generating). The standard evaluation unit is a swept
+<strong>cost–quality curve</strong> summarized by AIQ / nAUC; the project's "match quality
+at lower cost" result corresponds to the established metric <strong>Quality-Neutral
+Cost (QNC)</strong>.</p>
 <table>
 <thead>
 <tr>
 <th>Paper</th>
-<th>Authors</th>
 <th>Venue</th>
-<th>Institution(s)</th>
 <th>Why it's relevant</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/5abcdf8ecdcacba028c6662789194572-Abstract-Datasets_and_Benchmarks.html">LLaVA-Med: Training a Large Language-and-Vision Assistant for Biomedicine in One Day</a></td>
-<td>Li, Wong, Zhang et al.</td>
-<td>NeurIPS 2023 (Datasets &amp; Benchmarks, Spotlight)</td>
-<td>Microsoft Research</td>
-<td>Our baseline — medical instruction-tuned VLM</td>
+<td><a href="https://arxiv.org/abs/2305.05176">FrugalGPT</a></td>
+<td>2023</td>
+<td>The canonical LLM cascade — cheap→expensive with a learned scorer; our margin gate is the training-free analog</td>
 </tr>
 <tr>
-<td><a href="https://openreview.net/forum?id=JroZRaRw7Eu">Token Merging: Your ViT But Faster (ToMe)</a></td>
-<td>Bolya et al.</td>
-<td>ICLR 2023 (notable top-5%)</td>
-<td>Georgia Tech, Meta AI</td>
-<td>Classic ViT-side token reduction; question-agnostic</td>
+<td><a href="https://arxiv.org/abs/2310.12963">AutoMix</a></td>
+<td>2023</td>
+<td>Self-verifying cascade routing — the closest analog to ACC's self-gating</td>
 </tr>
 <tr>
-<td><a href="https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/10478.pdf">An Image is Worth 1/2 Tokens After Layer 2 (FastV)</a></td>
-<td>Chen et al.</td>
-<td>ECCV 2024 (Oral, top-2%)</td>
-<td>Peking University, Alibaba Group</td>
-<td>Closest prior art — drops visual tokens inside the LM after early layers</td>
+<td><a href="https://arxiv.org/abs/2410.10347">Cascade Routing</a></td>
+<td>2024</td>
+<td>The strongest general cascade-routing baseline to compare against</td>
 </tr>
 <tr>
-<td><a href="https://openaccess.thecvf.com/content/ICCV2025/html/Shang_LLaVA-PruMerge_Adaptive_Token_Reduction_for_Efficient_Large_Multimodal_Models_ICCV_2025_paper.html">LLaVA-PruMerge: Adaptive Token Reduction for Efficient Large Multimodal Models</a></td>
-<td>Shang et al.</td>
-<td>ICCV 2025</td>
-<td>UCF, UW-Madison, USC, UIC</td>
-<td>Adaptive token reduction conditioned on visual-encoder sparsity</td>
+<td><a href="https://arxiv.org/abs/2406.18665">RouteLLM</a></td>
+<td>2024</td>
+<td>Learned routing with preference data; the transfer-framing reference</td>
 </tr>
 <tr>
-<td><a href="https://openreview.net/forum?id=80faIPZ67S">SparseVLM: Visual Token Sparsification for Efficient VLM Inference</a></td>
-<td>Y. Zhang et al.</td>
-<td>ICML 2025 (poster)</td>
-<td>Peking University, Fudan, UC Berkeley, Panasonic</td>
-<td><strong>Text-aware</strong> visual token pruning in general VLMs — closest in spirit to our "question-aware" angle</td>
+<td><a href="https://arxiv.org/abs/2403.12031">RouterBench</a></td>
+<td>2024</td>
+<td>Standard routing benchmark + the AIQ/nAUC evaluation convention</td>
 </tr>
 <tr>
-<td><a href="https://arxiv.org/abs/2506.21873">Grounding-Aware Token Pruning (GAP)</a></td>
-<td>Chien et al.</td>
-<td>arXiv 2025 (preprint)</td>
-<td>National Tsing Hua University</td>
-<td>Position-ID re-alignment fix after token drop — critical correction for RoPE-based VLMs</td>
+<td><a href="https://arxiv.org/abs/2505.19970">CP-Router</a></td>
+<td>2025</td>
+<td>Conformal routing (Full-and-Binary-Entropy) — our nearest neighbor on the signal side, used as a contrast baseline</td>
 </tr>
 <tr>
-<td><a href="https://arxiv.org/abs/2603.11625">MedPruner: Training-Free Hierarchical Token Pruning for Efficient 3D Medical Image Understanding in VLMs</a></td>
-<td>Liu et al.</td>
-<td>arXiv 2026 (preprint)</td>
-<td>CUHK, Westlake University (+ collaborators)</td>
-<td>Closest medical-domain prior art; 3D-focused but uses attention-based selection in a Medical VLM</td>
+<td><a href="https://arxiv.org/abs/2601.07206">LLMRouterBench</a></td>
+<td>2026</td>
+<td>Independently corroborates "simple baselines beat complex learned routers" — our exact internal finding</td>
 </tr>
 <tr>
-<td><a href="https://arxiv.org/abs/2602.03134">SwiftVLM: Efficient Vision-Language Model Inference via Cross-Layer Token Bypass</a></td>
-<td>Qian et al.</td>
-<td>arXiv 2026 (preprint, Feb 2026)</td>
-<td>Tsinghua University</td>
-<td>Training-free pruning with a <strong>bypass</strong> paradigm — unselected tokens forwarded to later layers for re-evaluation rather than committed-pruned at shallow layers. Directly relevant to our open question of "where in the LLaMA stack to prune"</td>
-</tr>
-<tr>
-<td><a href="https://arxiv.org/abs/2511.10081">GridPrune: From "Where to Look" to "What to Select" in Visual Token Pruning for MLLMs</a></td>
-<td>Duan et al.</td>
-<td>arXiv November 2025 (preprint)</td>
-<td>—</td>
-<td>Spatial-coverage-aware pruning: divide tokens into zones, allocate per-zone budget by fused (text-relevance + saliency) score, do local top-K. Tested in our E3 sweep as a coverage-aware response to Phase 4's diversity-collapse diagnosis</td>
-</tr>
-<tr>
-<td><em>Add as you read.</em></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<td><a href="https://arxiv.org/abs/2603.04445">Routing survey</a></td>
+<td>2026</td>
+<td>The taxonomy this work is positioned within; flags the no-think-intermediate-tier intersection as an open gap</td>
 </tr>
 </tbody>
 </table>
-<p>The key gap: most prior work prunes tokens <strong>without</strong> reference to
-the question — they're question-agnostic. SparseVLM is the closest
-existing work to question-awareness, but operates on general VLMs.
-Our angle is making pruning question-aware <em>in the medical domain</em>,
-where the question encodes strong spatial priors (anatomy + finding
-type). The
-<a href="../weekly/week-03/day-03/#phase-8-two-literature-surveys-during-the-sweep">Day 17 literature survey</a>
-also surfaced two new neighbors: <strong>ZSPAPrune (Oct 2025)</strong> uses our
-exact mean-pooled cosine score as its "relevance" phase and adds
-diversity selection on top; <strong>ResPrune</strong> evaluates our exact
-formula as its Setting-3 ablation and reports it as the weakest of
-three formulations (Setting-1, max-similarity-across-text-tokens,
-wins by ~3 pts). Both feed directly into the
-<a href="#methods-roadmap-tiers-1-3">Methods Roadmap</a> below.</p>
-<h2 id="approach-sketch">Approach (sketch)<a class="headerlink" href="#approach-sketch" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart LR
-  IMG["Input image"]
-  Q["Question text"]
-
-  subgraph VIS["Vision branch"]
-    direction TB
-    VE["Vision encoder&lt;br/&gt;CLIP ViT-L/14"]
-    VT["256 visual tokens"]
-    PROJ["Projector&lt;br/&gt;Linear 1024 → 4096"]
-    VE --&gt; VT --&gt; PROJ
-  end
-
-  subgraph TXT["Text branch"]
-    direction TB
-    TOK["Tokenize + embed&lt;br/&gt;(LM input embedding)"]
-  end
-
-  EMB["Inject visual tokens&lt;br/&gt;between im_start / im_end"]
-
-  subgraph LLM["LLaMA decoder (32 layers)"]
-    direction TB
-    L0["Layer 0&lt;br/&gt;+ pruning hook"]
-    SCORE["Score visual tokens&lt;br/&gt;cosine sim vs question"]
-    KEEP["Keep top-K&lt;br/&gt;(original spatial order)"]
-    L1["Layers 1–31&lt;br/&gt;+ attention-mask slice"]
-    L0 --&gt; SCORE --&gt; KEEP --&gt; L1
-  end
-
-  ANS["Answer"]
-
-  IMG --&gt; VE
-  Q --&gt; TOK
-  PROJ --&gt; EMB
-  TOK --&gt; EMB
-  EMB --&gt; L0
-  TOK -. "question vector&lt;br/&gt;for scoring" .-&gt; SCORE
-  L1 --&gt; ANS</code></pre>
-<p>The pruning logic is the new component; everything else is reused
-from LLaVA-Med v1.0. Each component, briefly:</p>
-<ul>
-<li><strong>Vision encoder + projector</strong> are unmodified. CLIP-ViT-L/14 at
-  224×224 produces 256 visual tokens at the projector output, each in
-  the LLM's 4096-dim embedding space.</li>
-<li><strong>Pruning runs inside the LLM, at the input to layer 0.</strong> This is a
-  reversal of an earlier design choice — pre-projector pruning was
-  attempted first but is incompatible with LLaVA-Med v1.0's forward
-  pass, which validates that the number of visual feature vectors
-  matches the count of <code>&lt;im_patch&gt;</code> placeholder tokens in the prompt.
-  Pruning <em>after</em> the visual tokens are injected into the LLM's input
-  sequence sidesteps the validation. This is the same insertion point
-  FastV uses.</li>
-<li><strong>Scoring is cosine similarity against the pooled question
-  embedding.</strong> The question text gets tokenized and embedded through
-  the LLM's input embedding layer (the only space where it's directly
-  comparable to projected visual tokens), then mean-pooled to a single
-  4096-dim vector. Each visual token is scored against that vector via
-  cosine similarity; the top-K are kept in their original spatial
-  order.</li>
-<li><strong>Hook architecture spans all 32 LLaMA decoder layers.</strong> Layer 0's
-  pre-forward hook performs the scoring, the selection, and slicing
-  of <code>hidden_states</code> and <code>attention_mask</code>. Layers 1-31 each have a
-  pre-forward hook that re-slices <code>attention_mask</code> to match the pruned
-  sequence length the cache now holds. A monkey-patched
-  <code>prepare_inputs_for_generation</code> keeps the externally-maintained
-  decode-step <code>attention_mask</code> consistent with the pruned KV cache.
-  All of this is hook-based and training-free — no model surgery.</li>
-<li><strong>Random pruning is the comparison floor.</strong> Same hooks, same hyper-
-  parameters, same machinery; indices drawn from a seeded
-  <code>torch.Generator</code> instead of question similarity. The ablation
-  isolates the contribution of question-awareness specifically.</li>
-</ul>
-<p><strong>First result (May 17, kr=0.75 on VQA-RAD):</strong> question-aware pruning
-beats the unpruned stage-2 baseline by +2.6 pts closed accuracy
-(60.29 vs 57.72) while removing 25% of visual tokens; random pruning
-at the same ratio is within noise of baseline (56.99). One ratio is
-one datapoint — the full Pareto curve (kr ∈ 0.50, 0.25, 0.10) is
-what tests whether the +3.3 pt qsim-over-random gap holds, grows, or
-disappears. Full writeup:
-<a href="../weekly/week-02/day-01/#phase-14-kr075-ablation-result-question-aware-pruning-beats-baseline">Week 2, Day 1</a>.</p>
-<p><strong>Known limitations of the current approach</strong>, flagged up front:</p>
-<ul>
-<li><strong>Position-ID re-indexing</strong> — when visual tokens are dropped, the
-  remaining tokens get re-indexed contiguously. This is the
-  FastV-style convention and is accepted in the literature, but it's
-  worth noting that GAP-style positional preservation is an
-  alternative we haven't tested.</li>
-<li><strong>Latency overhead at low pruning ratios.</strong> Hook fixed-cost
-  (32 layer hooks + the <code>prepare_inputs_for_generation</code> patch + the
-  scoring computation) currently dominates the compute saved by
-  dropping 64 of 256 tokens. Speedup is expected to emerge at
-  kr ≤ 0.5 where the visual-token reduction is more substantial.</li>
-<li><strong>VQA-RAD only so far.</strong> SLAKE and PathVQA repeats follow once the
-  VQA-RAD Pareto curve is filled in.</li>
-</ul>
-<p>Open design choices not yet explored (will be Phase 4+):</p>
-<ul>
-<li><strong>Alternative scoring functions</strong> — cross-attention rather than
-  cosine similarity, FastV-style layer-K attention scoring, or a
-  small learned MLP.</li>
-<li><strong>Pruning at a later LLaMA layer</strong> — FastV finds that pruning after
-  layer 2-3 often outperforms pruning at layer 0 because early layers
-  contribute to the question representation that scoring depends on.</li>
-<li><strong>Per-question keep-ratio</strong> — easy questions don't need many tokens;
-  hard ones do. An adaptive kr could improve the Pareto curve.</li>
-</ul>
-<h2 id="methods-roadmap-tiers-1-3">Methods Roadmap (Tiers 1-3)<a class="headerlink" href="#methods-roadmap-tiers-1-3" title="Permanent link">&para;</a></h2>
-<p>Synthesised on
-<a href="../weekly/week-03/day-03/#phase-8-two-literature-surveys-during-the-sweep">Day 17</a>
-from two literature surveys: the cosine-similarity scoring landscape
-and the token-merging-and-medical-VQA properties landscape. The
-tiers are ordered by combined "expected upside × ease of
-implementation" — Tier 1 is cheap and probably-useful, Tier 2 is
-medical-specific and methodologically interesting, Tier 3 is
-speculative and frames the paper around if Tier 1-2 results are
-strong.</p>
-<h3 id="why-medical-vqa-admits-different-methods-than-general-vqa">Why medical VQA admits different methods than general VQA<a class="headerlink" href="#why-medical-vqa-admits-different-methods-than-general-vqa" title="Permanent link">&para;</a></h3>
-<p>Three identifiable properties from the medical-imaging literature
-that should shape method choice:</p>
-<ul>
-<li><strong>High background-to-signal ratio.</strong> Chest X-rays are mostly
-  black borders + uniform soft tissue; pathology slides have
-  vast stretches of stroma punctuated by clusters of interest.
-  This is widely-observed in medical-imaging analysis, though
-  earlier notes here attributed a specific quote to a
-  "ViTAS (Ahmed et al., 2026)" paper that was found on May 28
-  audit not to exist. <strong>Implication: the redundancy ceiling is
-  higher than general VQA — aggressive compression should work
-  better here.</strong></li>
-<li><strong>Lesions are small and localized.</strong> Medical-VQA survey (Lin et
-  al., 2023): <em>"the task needs to focus on a fine-grained scale
-  because a lesion is microscopic."</em> <strong>Implication: drop the 3
-  tokens with the lesion and the question can't be answered, no
-  matter how many other tokens you keep. Token-level individual
-  scoring (like QSim) is vulnerable; spatial-coherence-aware
-  scoring is potentially valuable.</strong></li>
-<li><strong>Question types strongly predict which tokens matter.</strong> Modality
-  ("CT or MRI?") needs almost any patch; abnormality
-  ("is there a pneumothorax?") needs the lesion region.
-  <strong>Implication: per-question-type adaptive compression — aggressive
-  for modality/plane, conservative for abnormality — is
-  medical-VQA-specific and not in the general-VQA pruning
-  literature.</strong></li>
-</ul>
-<h3 id="tier-1-cheap-defensible-probably-useful">Tier 1 — Cheap, defensible, probably-useful<a class="headerlink" href="#tier-1-cheap-defensible-probably-useful" title="Permanent link">&para;</a></h3>
-<p>Small code changes; expected to give the strongest results-per-hour
-return. Status updated end of Day 18 (May 27, 2026) after the
-<a href="../weekly/week-03/day-04/#phase-4-the-qsim_max-ablation">QSim_max ablation</a>
-ruled out reduction-operator fixes:</p>
-<ul>
-<li><strong>A. ~~Max-similarity-across-text-tokens scoring~~</strong> (ResPrune
-  Setting-1). ~~Replace QSim's mean-pool-then-cosine with
-  per-visual-token max-similarity across all question text tokens.~~
-  <strong>Tested May 27 — failed.</strong> Max-sim is uniformly <em>worse</em> than
-  mean-pool QSim at every kr, which is itself uniformly worse than
-  Random. The mean-pool was acting as a weak diversity regularizer;
-  removing it made things worse. Diagnosis: the failure mode isn't
-  the reduction operator, it's the <strong>scoring space</strong> —
-  cosine-similarity on pre-LLM embeddings doesn't track what the
-  LLM actually attends to. ResPrune's published Setting-1 &gt; Setting-3
-  result doesn't transfer to our setting (different base model,
-  different benchmarks, different pruning location).</li>
-<li><strong>B. Coverage-aware selection</strong> (newly promoted to top of Tier 1
-  after Day 18's diagnosis). <strong>GridPrune</strong> (Duan et al., arXiv
-  November 2025; <a href="https://arxiv.org/abs/2511.10081">arXiv:2511.10081</a>)
-  is the strongest published instance — divides visual tokens into
-  spatial zones, allocates per-zone budget proportional to a fused
-  text-relevance + saliency score, does local top-K within each
-  zone. Coverage-by-construction makes diversity collapse
-  impossible. <strong>Tested May 28 in tonight's E3 sweep.</strong></li>
-<li><strong>C. Token merging at the same insertion point</strong> (ToMe-style).
-  Replace the "drop the bottom (1-kr)" step with "merge each
-  discarded token into its nearest kept neighbor in embedding
-  space." Same hook architecture; same target keep count for clean
-  comparison against pruning. Tests whether the high-redundancy
-  property of medical imaging is being underused by pure pruning.
-  <em>Pending Day 19+.</em></li>
-</ul>
-<p>The negative result on Tier 1-A reshapes the experimental
-priorities. The two open questions that matter now are: <strong>(i) does
-coverage-aware selection (GridPrune) recover from QSim's diversity
-collapse on medical benchmarks?</strong> and <strong>(ii) does adding a
-medical-anatomy filter (FASP+GridPrune) yield further gains over
-vanilla GridPrune?</strong> Both are tested in tonight's E3 sweep.</p>
-<h3 id="tier-2-medical-specific-extensions-the-papers-novel-angle">Tier 2 — Medical-specific extensions (the paper's novel angle)<a class="headerlink" href="#tier-2-medical-specific-extensions-the-papers-novel-angle" title="Permanent link">&para;</a></h3>
-<p>Where the paper's contribution gets distinctive. Each item leverages
-one of the medical-VQA properties above.</p>
-<ul>
-<li><strong>D. Question-type-conditional compression.</strong> Detect question type
-  from the text via simple keyword matching ("modality" / "plane" /
-  "anatomy" / "abnormality"); route to different keep-ratios per
-  type (aggressive for modality/plane, conservative for abnormality).
-  Medical-specific in a way general-VQA pruning can't be; rule is
-  simple enough to be defensible without learned components.</li>
-<li><strong>E. Spatial-coherence-aware QSim.</strong> After scoring, give a bonus
-  to tokens whose 4-spatial-neighbors also score highly. Addresses
-  the "lesions are localized" property — for an abnormality
-  question, keep the <em>whole lesion region</em>, not 3 random tokens
-  from inside it.</li>
-<li><strong>F. Question-text reweighting.</strong> Weight question tokens by
-  content-richness (TF-IDF or token embedding norm) before
-  averaging in QSim. Addresses sub-word tokenization noise —
-  "pneumothorax" splits into multiple sub-pieces; the meaningful
-  piece should count more than the article "a".</li>
-</ul>
-<h3 id="tier-3-speculative-paper-shaping-if-1-2-results-are-strong">Tier 3 — Speculative, paper-shaping if 1-2 results are strong<a class="headerlink" href="#tier-3-speculative-paper-shaping-if-1-2-results-are-strong" title="Permanent link">&para;</a></h3>
-<p>These are the experiments that, if they land, redefine the paper's
-narrative from "method evaluation" to "diagnostic study of medical
-VLM behavior under compression".</p>
-<ul>
-<li><strong>G. Test for "Visual Aphasia" in our results.</strong> Run an ablation
-  that replaces visual tokens with random noise after pruning,
-  keeping the question. If accuracy doesn't drop much, the model
-  is doing shortcut learning rather than visual grounding. HEAL-
-  MedVQA-style finding; if present, contributes "current medical
-  VLMs aren't using visual information as well as their accuracy
-  numbers suggest, and pruning gains come partly from compute
-  reduction on non-diagnostic tokens" as a substantive observation.</li>
-<li><strong>H. Re-evaluate on RadImageNet-VQA.</strong> A shortcut-resistant
-  medical VQA benchmark designed so text-only accuracy is near
-  random. If our pruning methods hold up there, that's much
-  stronger evidence than holding up on VQA-RAD where text-only
-  does ~33%.</li>
-</ul>
-<h3 id="the-papers-pitch-if-tier-1-2-land">The paper's pitch (if Tier 1-2 land)<a class="headerlink" href="#the-papers-pitch-if-tier-1-2-land" title="Permanent link">&para;</a></h3>
-<p>Combining the threads from both surveys:</p>
-<blockquote>
-<p>A study of visual token compression for medical VLMs: we (a)
-systematically benchmark question-aware pruning, diversity-aware
-pruning, and merging-based compression across keep-ratios; (b)
-propose a hybrid prune-and-merge framework that exploits the
-high background-to-signal ratio characteristic of medical
-imaging; (c) introduce question-type-conditional compression
-that leverages the structured taxonomy of medical VQA
-questions; and (d) characterize when text-awareness genuinely
-helps versus when it co-occurs with shortcut learning.</p>
-</blockquote>
-<p>This frames the work around the medical <em>application</em> (where
-there's a real gap), backs into methods (where individual
-techniques have prior art but the combination is novel), and
-front-loads the empirical analysis (which is where the
-contribution is genuinely original).</p>
+<p>The <strong>gap</strong> this project occupies: <em>training-free × cascade × medical VLM ×
+prefill-inclusive honest accounting</em> is an unoccupied intersection — no
+published training-free cascade for medical VLMs exists. VLM-specific neighbors
+(AVR, SGL, VL-RouterBench) and confidence-deferral theory (Narasimhan 2022,
+Jitkrittum 2023, Geifman &amp; El-Yaniv 2017) are tracked in
+<a href="../resources/">Resources</a>.</p>
+<details class="note">
+<summary>Legacy related work — the visual-token-pruning era</summary>
+<p>The project's first three weeks targeted <strong>question-aware visual token
+pruning</strong>, with a related-work set centered on ToMe, FastV, SparseVLM,
+PruMerge, GridPrune, GAP, and MedPruner. That literature, and the
+medical-VQA-properties survey behind it, is preserved in the
+<a href="../weekly/week-03/">Week 3 logs</a> and
+<a href="../resources/#legacy-visual-token-pruning">Resources</a>. The token-pruning
+literature reconnects to the current work as the <em>orthogonal</em> "make each
+leg cheaper" axis that composes with a cascade.</p>
+</details>
+<h2 id="the-research-journey-how-we-got-here">The research journey (how we got here)<a class="headerlink" href="#the-research-journey-how-we-got-here" title="Permanent link">&para;</a></h2>
+<p>The cascade direction was reached by <strong>eliminating</strong> alternatives — a chain of
+evidence-backed negative results. Each phase is documented in full in the
+<a href="../weekly/">Weekly Log</a>; the spine:</p>
+<ol>
+<li><strong>Visual-token pruning (Weeks 1–3).</strong> Question-aware pruning across three
+   base models (<a href="../baseline/llava-med/">LLaVA-Med</a> →
+   <a href="../baseline/qwen25-vl/">Qwen2.5-VL</a> →
+   <a href="../baseline/huatuo-vision/">HuatuoGPT-Vision</a>). <strong>Closed:</strong> random selection
+   Pareto-dominates every structured method at every keep-ratio. The reason —
+   the model barely needs fine-grained visual evidence — is a grounding
+   finding.</li>
+<li><strong>Visual grounding / adaptive compute (Week 4).</strong> Evidence-sensitivity
+   routing and an image-difficulty compute wedge. <strong>Closed:</strong> no internal
+   signal orthogonal to confidence; the image-difficulty signal was weak and
+   wrong-signed.</li>
+<li><strong>Single-model routing (Week 5).</strong> 4-policy routing on one
+   <a href="../baseline/medvlthinker/">MedVLThinker-7B</a>. <strong>Closed:</strong> the arms of one
+   model share knowledge and blind spots — the oracle falls far below the
+   independence floor (z = −25 to −29σ).</li>
+<li><strong>Cross-model cascade (Week 5).</strong> 7B→32B confidence-margin cascade.
+   <strong>Committed:</strong> real complementarity (+12.5pp oracle); matches 32B at 0.639×
+   compute; accuracy headroom unreachable from cheap signals.</li>
+<li><strong>ACC (Week 6).</strong> The strong-leg compute mode → a 3-tier cascade + a free
+   agreement gate. <strong>Current.</strong></li>
+</ol>
 <h2 id="12-week-plan">12-week plan<a class="headerlink" href="#12-week-plan" title="Permanent link">&para;</a></h2>
+<p>The original plan targeted a trainable pruning head; the actual trajectory
+pivoted to cascading. Status reflects what happened.</p>
 <table>
 <thead>
 <tr>
 <th style="text-align: center;">Phase</th>
 <th>Weeks</th>
 <th>Focus</th>
-<th>Deliverable</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: center;">1</td>
 <td>1–2</td>
-<td>Baseline &amp; literature</td>
-<td>Reproduced LLaVA-Med, lit-review notes, profiling numbers</td>
+<td>Baseline &amp; literature (LLaVA-Med → Qwen2.5-VL)</td>
+<td><span class="pill pill--done">Done</span></td>
 </tr>
 <tr>
 <td style="text-align: center;">2</td>
-<td>3–4</td>
-<td>Codebase deep-dive</td>
-<td>Diagram of LLaVA-Med's forward pass, identified pruning insertion points</td>
+<td>3</td>
+<td>HuatuoGPT-Vision baseline; pruning sweeps</td>
+<td><span class="pill pill--done">Done — pruning closed</span></td>
 </tr>
 <tr>
 <td style="text-align: center;">3</td>
-<td>5–6</td>
-<td>Scoring-head v1</td>
-<td>First trainable pruning module, sanity-check results</td>
+<td>4</td>
+<td>Visual grounding / adaptive-compute exploration</td>
+<td><span class="pill pill--done">Done — closed</span></td>
 </tr>
 <tr>
 <td style="text-align: center;">4</td>
-<td>7–8</td>
-<td>Training &amp; ablations</td>
-<td>K-sweep, head-architecture ablations</td>
+<td>5</td>
+<td>Pivot to the 7B→32B cascade; reviewer-grade audit; CVGIP submission</td>
+<td><span class="pill pill--done">Done</span></td>
 </tr>
 <tr>
 <td style="text-align: center;">5</td>
-<td>9–10</td>
-<td>Full evaluation</td>
-<td>VQA-RAD / SLAKE numbers, latency benchmarks</td>
+<td>6</td>
+<td>ACC — the structural result; literature positioning</td>
+<td><span class="pill pill--wip">In progress</span></td>
 </tr>
 <tr>
 <td style="text-align: center;">6</td>
-<td>11</td>
-<td>Write-up</td>
-<td>Draft report, figures</td>
+<td>7–10</td>
+<td>Harden ACC: mixed-set calibration, runnable baselines (AutoMix, Cascade Routing), higher-tier write-up</td>
+<td><span class="pill pill--planned">Planned</span></td>
 </tr>
 <tr>
 <td style="text-align: center;">7</td>
-<td>12</td>
-<td>Final report &amp; demo</td>
-<td>Polished report, code release</td>
+<td>11–12</td>
+<td>Final report, figures, code release</td>
+<td><span class="pill pill--planned">Planned</span></td>
 </tr>
 </tbody>
 </table>
-<p>These dates will shift; the <a href="../weekly/">Weekly Log</a> tracks what
-actually happens.</p>
+<p>The <a href="../weekly/">Weekly Log</a> tracks what actually happens.</p>
 <h2 id="success-criteria">Success criteria<a class="headerlink" href="#success-criteria" title="Permanent link">&para;</a></h2>
-<p>The project is a success if <strong>any</strong> of the following are true:</p>
+<p>The project is a success if <strong>any</strong> of the following hold:</p>
 <ol>
-<li>We achieve ≥40% token reduction with &lt;1pt accuracy drop on VQA-RAD
-   and SLAKE.</li>
-<li>We find a question-type regime where pruning <em>improves</em> accuracy.</li>
-<li>We produce a clean, reusable pruning module that other researchers
-   can plug into LLaVA-Med or similar VLMs.</li>
+<li>A training-free cascade matches a 32B medical VLM's accuracy at a clear,
+   honestly-measured compute saving on the competent medical-VQA benchmarks.
+   <em>(Met: the margin cascade at 0.639× compute; ACC at −72% latency / −75%
+   energy.)</em></li>
+<li>The negative result on the gate axis is airtight and broad enough that its
+   <em>generality</em> is a contribution.</li>
+<li>A clean, reusable, training-free cascade + measurement harness that other
+   researchers can drop onto a different model pair.</li>
 </ol>
-<p>The project is <strong>not</strong> a failure if pruning doesn't help — a careful
-negative result with proper ablations is also a useful contribution.</p>
+<p>A careful <strong>negative result</strong> with proper ablations is itself a useful
+contribution — and several of this project's load-bearing findings are exactly
+that.</p>
 
 
 
@@ -2524,13 +2333,13 @@ negative result with proper ablations is also a useful contribution.</p>
         
         
           
-          <a href="../baseline/" class="md-footer__link md-footer__link--next" aria-label="Next: Baseline">
+          <a href="../baseline/" class="md-footer__link md-footer__link--next" aria-label="Next: Baselines &amp;amp; Models">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Baseline
+                Baselines &amp; Models
               </div>
             </div>
             <div class="md-footer__button md-icon">

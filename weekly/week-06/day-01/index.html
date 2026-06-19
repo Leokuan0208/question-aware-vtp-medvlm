@@ -12,28 +12,28 @@
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
       
       
-        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/baseline/">
+        <link rel="canonical" href="https://leokuan0208.github.io/question-aware-vtp-medvlm/weekly/week-06/day-01/">
       
       
-        <link rel="prev" href="../project/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="medvlthinker/">
+        <link rel="next" href="../../../bugs/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Baselines & Models - Model Cascades for Medical VLMs</title>
+        <title>Day 1 — Wednesday, June 17, 2026 - Model Cascades for Medical VLMs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,9 +52,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#baselines-models" class="md-skip">
+        <a href="#day-1-wednesday-june-17-2026" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Model Cascades for Medical VLMs" class="md-header__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
+    <a href="../../.." title="Model Cascades for Medical VLMs" class="md-header__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Baselines &amp; Models
+              Day 1 — Wednesday, June 17, 2026
             
           </span>
         </div>
@@ -223,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
     
@@ -240,7 +240,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../project/" class="md-tabs__link">
+      <a href="../../../project/" class="md-tabs__link">
         
   
     
@@ -255,13 +255,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../../baseline/" class="md-tabs__link">
           
   
     
@@ -279,7 +277,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../experiments/" class="md-tabs__link">
+      <a href="../../../experiments/" class="md-tabs__link">
         
   
     
@@ -294,11 +292,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../weekly/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
     
@@ -316,7 +316,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../bugs/" class="md-tabs__link">
+      <a href="../../../bugs/" class="md-tabs__link">
         
   
     
@@ -333,7 +333,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../resources/" class="md-tabs__link">
+      <a href="../../../resources/" class="md-tabs__link">
         
   
     
@@ -367,7 +367,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Model Cascades for Medical VLMs" class="md-nav__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
+    <a href="../../.." title="Model Cascades for Medical VLMs" class="md-nav__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -397,7 +397,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -417,7 +417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../project/" class="md-nav__link">
+      <a href="../../../project/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -434,8 +434,6 @@
       
   
   
-    
-  
   
   
     
@@ -458,22 +456,19 @@
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../../../baseline/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -484,13 +479,13 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_3" id="__nav_3_label" tabindex="">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Baselines
@@ -506,7 +501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="medvlthinker/" class="md-nav__link">
+      <a href="../../../baseline/medvlthinker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -527,7 +522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="huatuo-vision/" class="md-nav__link">
+      <a href="../../../baseline/huatuo-vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -548,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="qwen25-vl/" class="md-nav__link">
+      <a href="../../../baseline/qwen25-vl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -569,7 +564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="llava-med/" class="md-nav__link">
+      <a href="../../../baseline/llava-med/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -590,7 +585,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/" class="md-nav__link">
+      <a href="../../../setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -618,7 +613,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../experiments/" class="md-nav__link">
+      <a href="../../../experiments/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -635,6 +630,8 @@
       
   
   
+    
+  
   
   
     
@@ -659,19 +656,22 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -682,13 +682,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Weekly Log
@@ -739,7 +739,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-01/" class="md-nav__link ">
+            <a href="../../week-01/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -772,7 +772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-01/" class="md-nav__link">
+      <a href="../../week-01/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -793,7 +793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-02/" class="md-nav__link">
+      <a href="../../week-01/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -814,7 +814,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-03/" class="md-nav__link">
+      <a href="../../week-01/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -835,7 +835,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-04/" class="md-nav__link">
+      <a href="../../week-01/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -856,7 +856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-05/" class="md-nav__link">
+      <a href="../../week-01/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -877,7 +877,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-06/" class="md-nav__link">
+      <a href="../../week-01/day-06/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -898,7 +898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-01/day-07/" class="md-nav__link">
+      <a href="../../week-01/day-07/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -958,7 +958,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-02/" class="md-nav__link ">
+            <a href="../../week-02/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -991,7 +991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-01/" class="md-nav__link">
+      <a href="../../week-02/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1012,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-02/" class="md-nav__link">
+      <a href="../../week-02/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1033,7 +1033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-03/" class="md-nav__link">
+      <a href="../../week-02/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,7 +1054,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-04/" class="md-nav__link">
+      <a href="../../week-02/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1075,7 +1075,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-02/day-05/" class="md-nav__link">
+      <a href="../../week-02/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1135,7 +1135,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-03/" class="md-nav__link ">
+            <a href="../../week-03/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1168,7 +1168,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-01/" class="md-nav__link">
+      <a href="../../week-03/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1189,7 +1189,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-02/" class="md-nav__link">
+      <a href="../../week-03/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1210,7 +1210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-03/" class="md-nav__link">
+      <a href="../../week-03/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1231,7 +1231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-04/" class="md-nav__link">
+      <a href="../../week-03/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1252,7 +1252,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-03/day-05/" class="md-nav__link">
+      <a href="../../week-03/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1312,7 +1312,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-04/" class="md-nav__link ">
+            <a href="../../week-04/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1345,7 +1345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-01/" class="md-nav__link">
+      <a href="../../week-04/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1366,7 +1366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-02/" class="md-nav__link">
+      <a href="../../week-04/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1387,7 +1387,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-03/" class="md-nav__link">
+      <a href="../../week-04/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1408,7 +1408,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-04/" class="md-nav__link">
+      <a href="../../week-04/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1429,7 +1429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-04/day-05/" class="md-nav__link">
+      <a href="../../week-04/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1489,7 +1489,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-05/" class="md-nav__link ">
+            <a href="../../week-05/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1522,7 +1522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-01/" class="md-nav__link">
+      <a href="../../week-05/day-01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1543,7 +1543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-02/" class="md-nav__link">
+      <a href="../../week-05/day-02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1564,7 +1564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-03/" class="md-nav__link">
+      <a href="../../week-05/day-03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1585,7 +1585,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-04/" class="md-nav__link">
+      <a href="../../week-05/day-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1606,7 +1606,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../weekly/week-05/day-05/" class="md-nav__link">
+      <a href="../../week-05/day-05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1632,6 +1632,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1649,16 +1651,16 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../weekly/week-06/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1675,7 +1677,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_7">
             <span class="md-nav__icon md-icon"></span>
             Week 6
@@ -1688,10 +1690,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../weekly/week-06/day-01/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Day 1 — Wednesday, June 17, 2026
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1700,6 +1722,122 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-where-this-work-sits-the-literature-positioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — Where this work sits: the literature positioning
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-the-gate-axis-closed-a-clean-negative-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — The gate axis, closed (a clean negative result)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-real-lever-no-think-over-thinks-perception" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The real lever: no-think over-thinks perception
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-acc-the-adaptive-compute-cascade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — ACC: the Adaptive-Compute Cascade
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-acc-v2-and-proof-that-the-win-is-the-structure-not-the-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — ACC-v2, and proof that the win is the structure, not the gate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-novelty-honesty-and-what-to-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — Novelty, honesty, and what to claim
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deliverable-progress_june_17docx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deliverable — Progress_June_17.docx
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-for-next-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plan for next session
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pushed-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pushed today
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1727,7 +1865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../bugs/" class="md-nav__link">
+      <a href="../../../bugs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1747,7 +1885,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../../resources/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1787,19 +1925,82 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#current-the-cascade-models" class="md-nav__link">
+  <a href="#phase-1-where-this-work-sits-the-literature-positioning" class="md-nav__link">
     <span class="md-ellipsis">
-      Current — the cascade models
+      Phase 1 — Where this work sits: the literature positioning
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Current — the cascade models">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-the-gate-axis-closed-a-clean-negative-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — The gate axis, closed (a clean negative result)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-the-real-lever-no-think-over-thinks-perception" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — The real lever: no-think over-thinks perception
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-acc-the-adaptive-compute-cascade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — ACC: the Adaptive-Compute Cascade
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-acc-v2-and-proof-that-the-win-is-the-structure-not-the-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5 — ACC-v2, and proof that the win is the structure, not the gate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-novelty-honesty-and-what-to-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6 — Novelty, honesty, and what to claim
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deliverable-progress_june_17docx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deliverable — Progress_June_17.docx
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#honest-ledger-of-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest ledger of the day
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Honest ledger of the day">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#medvlthinker-7b-32b-rl" class="md-nav__link">
+  <a href="#plan-for-next-session" class="md-nav__link">
     <span class="md-ellipsis">
-      MedVLThinker-7B / -32B-RL
+      Plan for next session
     </span>
   </a>
   
@@ -1811,44 +2012,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#legacy-the-visual-token-pruning-era" class="md-nav__link">
+  <a href="#pushed-today" class="md-nav__link">
     <span class="md-ellipsis">
-      Legacy — the visual-token-pruning era
+      Pushed today
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Legacy — the visual-token-pruning era">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#huatuogpt-vision-7b" class="md-nav__link">
-    <span class="md-ellipsis">
-      HuatuoGPT-Vision-7B
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qwen25-vl-7b-instruct" class="md-nav__link">
-    <span class="md-ellipsis">
-      Qwen2.5-VL-7B-Instruct
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#llava-med-v15-v10" class="md-nav__link">
-    <span class="md-ellipsis">
-      LLaVA-Med v1.5 / v1.0
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1867,7 +2035,7 @@
                   
 
   
-    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/baseline/index.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/Leokuan0208/question-aware-vtp-medvlm/edit/main/docs/weekly/week-06/day-01.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1875,65 +2043,403 @@
   
 
 
-<h1 id="baselines-models">Baselines &amp; Models<a class="headerlink" href="#baselines-models" title="Permanent link">&para;</a></h1>
-<p>The project has run on several base models across its lifetime. The <strong>current</strong>
-base models are the <strong>MedVLThinker</strong> 7B/32B pair that the cascade is built on;
-the three earlier models belong to the <strong>visual-token-pruning era</strong> and are
-preserved here as research history. Each page documents the exact environment,
-versions, and verification steps used to reproduce that baseline.</p>
+<h1 id="day-1-wednesday-june-17-2026">Day 1 — Wednesday, June 17, 2026<a class="headerlink" href="#day-1-wednesday-june-17-2026" title="Permanent link">&para;</a></h1>
+<p><a href="../">← Back to Week 6 overview</a></p>
+<p><strong>The wrong axis: the gate is closed, and the real lever is the strong leg's
+compute mode → ACC</strong> · Week 6, Day 1 · <strong>Day 39 of the project</strong></p>
 <hr />
-<h2 id="current-the-cascade-models">Current — the cascade models<a class="headerlink" href="#current-the-cascade-models" title="Permanent link">&para;</a></h2>
-<h3 id="medvlthinker-7b-32b-rl"><a href="medvlthinker/">MedVLThinker-7B / -32B-RL</a><a class="headerlink" href="#medvlthinker-7b-32b-rl" title="Permanent link">&para;</a></h3>
-<p><span class="pill pill--wip">Active — the cascade base models</span></p>
-<p>The cheap and strong legs of the cascade. MedVLThinker is a family of
-<strong>RL-tuned reasoning VLMs</strong> built on Qwen2.5-VL, with explicit
-<code>&lt;think&gt;</code> / <code>&lt;answer&gt;</code> modes, evaluated on a 6-benchmark, 8,220-question
-medical-VQA suite. The 7B is the cheap leg; the 32B (in both no-think and think
-modes) is the strong leg. Published baselines reproduce within ~1 point.</p>
-<p><strong>Stack:</strong> dual A100 80GB · <strong>vLLM 25.09</strong> (NGC container, ~35× over HF for
-inference) · Hugging Face Transformers (for VRAM-accurate measurement) · bf16.</p>
-<p>→ <a href="medvlthinker/">Full model details, eval suite, and infrastructure</a></p>
+<p>A two-part day, and a genuine turn in the project. The morning established
+<em>where this work sits</em> in the cascade/routing literature; the afternoon (run
+in <strong>Claude Code</strong>, captured in <code>progress_June_17.md</code>) produced the result
+that reframes the whole contribution: <strong>the escalation gate is a dead axis —
+it cannot be improved beyond plain margin — and the real compute lever is the
+<em>strong leg's reasoning mode</em>.</strong> The 32B's "thinking" actively <em>over-thinks</em>
+perception VQA, so turning its fast no-think mode into an intermediate cascade
+tier yields <strong>ACC</strong> (Adaptive-Compute Cascade): a 3-tier cascade built from
+just two model checkpoints that matches always-32B-think accuracy at <strong>−72%
+latency / −75% energy / ~½ FLOPs</strong> on the full pool, guardrail-clean. The
+gate-improvement work from the prior weeks doesn't vanish — it becomes a clean,
+publishable <em>negative result</em> that motivates the structural move.</p>
+<div class="admonition note">
+<p class="admonition-title">Day count, machine, and the Claude Code switch</p>
+<p>June 14–16 had no tracked research session, so this opens Week 6 and is the
+<strong>1st working session</strong> of the week; June 17 is <strong>Day 39</strong> of the project
+(calendar count from May 10). The literature work was done in chat; the
+experimental work was run in <strong>Claude Code</strong> and handed back as a Markdown
+log (<code>progress_June_17.md</code>), which was rebuilt into a readable 13-page Word
+report (<code>Progress_June_17.docx</code>).</p>
+</div>
 <hr />
-<h2 id="legacy-the-visual-token-pruning-era">Legacy — the visual-token-pruning era<a class="headerlink" href="#legacy-the-visual-token-pruning-era" title="Permanent link">&para;</a></h2>
-<p>These three models were the baselines while the project targeted question-aware
-visual token pruning (Weeks 1–3). They are <strong>superseded</strong> but kept for the
-record; the pivot writeups are on
-<a href="../weekly/week-02/day-05/">Week 2, Day 5</a> (LLaVA-Med → Qwen2.5-VL),
-<a href="../weekly/week-03/day-01/">Week 3, Day 1</a> (Qwen2.5-VL validated), and
-<a href="../weekly/week-03/day-02/">Week 3, Day 2</a> (Qwen2.5-VL → HuatuoGPT).</p>
-<h3 id="huatuogpt-vision-7b"><a href="huatuo-vision/">HuatuoGPT-Vision-7B</a><a class="headerlink" href="#huatuogpt-vision-7b" title="Permanent link">&para;</a></h3>
-<p><span class="pill pill--done">Legacy — final pruning-era baseline (May 25, 2026)</span></p>
-<p>The reproducibility-first pruning baseline. A medical-instruction-tuned VLM on
-the LLaVA-v1.5 architecture with a Qwen2-7B backbone (Chen et al. 2024,
-<a href="https://arxiv.org/abs/2406.19280">arXiv:2406.19280</a>). <strong>Paper Table 4
-reproduced end-to-end on May 25</strong>, 5/6 benchmarks within 0.55 pts (VQA-RAD
-61.35, SLAKE 76.44, PathVQA 57.67, PMC-VQA 54.20, OmniMedVQA 73.46, MMMU H&amp;M
-50.34). It was on this model that the pruning sweeps were run — and that random
-selection Pareto-dominated every structured method, closing pruning as a
-method.</p>
-<p><strong>Stack:</strong> NGC PyTorch 23.10 · transformers 4.41.2 · flash-attn 2.5.8 · 7B · bf16.</p>
-<p>→ <a href="huatuo-vision/">Full setup, Dockerfile, and verification</a></p>
-<h3 id="qwen25-vl-7b-instruct"><a href="qwen25-vl/">Qwen2.5-VL-7B-Instruct</a><a class="headerlink" href="#qwen25-vl-7b-instruct" title="Permanent link">&para;</a></h3>
-<p><span class="pill pill--done">Legacy — frozen May 25, 2026</span></p>
-<p>The active baseline for a single day (May 24–25). Passed a 20/20 strict
-MCQ-letter compliance smoke test, validating the LLaVA-Med → Qwen2.5-VL pivot —
-but an eval-harness coverage gap (VLMEvalKit / lmms-eval don't cover the three
-target datasets) made the reproducibility story weaker than HuatuoGPT's, so the
-project moved on. The smoke-test artifact is preserved on the frozen
-<a href="https://github.com/Leokuan0208/Qwen-v25-vl-med-pruning">Qwen-v25-vl-med-pruning</a>
-repo.</p>
-<p><strong>Stack:</strong> NGC PyTorch 25.06 · transformers 4.49 · flash-attn 2.7.4 · 8.29B · bf16.</p>
-<p>→ <a href="qwen25-vl/">Full setup, Dockerfile, and verification</a></p>
-<h3 id="llava-med-v15-v10"><a href="llava-med/">LLaVA-Med v1.5 / v1.0</a><a class="headerlink" href="#llava-med-v15-v10" title="Permanent link">&para;</a></h3>
-<p><span class="pill pill--done">Legacy — frozen May 24, 2026</span></p>
-<p>The <strong>original</strong> baseline (May 10–21). Microsoft's biomedical-instruction-tuned
-VLM on Mistral-7B (v1.5) / LLaMA-7B (v1.0). Frozen after two unreproducibility
-issues: a substring-match bug in the v1.0 closed-set scorer that inflated
-accuracy by 9–12 points, and 0/11 MCQ-letter compliance that blocked use of
-standardized eval harnesses. The LLaVA-Med-era environment is documented on the
-<a href="../setup/">Environment setup (legacy)</a> page.</p>
-<p><strong>Stack:</strong> NGC PyTorch 23.10 · transformers 4.36.2 · flash-attn 2.3.6 (source) · 7B · bf16.</p>
-<p>→ <a href="llava-med/">Full setup, Dockerfile, and verification</a></p>
+<h2 id="phase-1-where-this-work-sits-the-literature-positioning">Phase 1 — Where this work sits: the literature positioning<a class="headerlink" href="#phase-1-where-this-work-sits-the-literature-positioning" title="Permanent link">&para;</a></h2>
+<p>A deep cascade/routing literature search to establish domain fluency,
+evaluation conventions, and the baselines to beat. The useful results:</p>
+<ul>
+<li><strong>The method has a precise name.</strong> The confidence-margin gate is a
+  <strong>post-generation cascade</strong>, <em>not</em> a router (routers decide before
+  generating; cascades decide after the cheap model has answered).</li>
+<li><strong>The evaluation unit is a curve.</strong> The field reports a swept cost–quality
+  curve summarized by <strong>AIQ</strong> or <strong>nAUC</strong> — not a single operating point — and
+  the project's "74% at parity" maps directly onto the established metric
+  <strong>Quality-Neutral Cost (QNC)</strong>.</li>
+<li><strong>The simplicity result is corroborated.</strong> <strong>LLMRouterBench</strong> (Jan 2026)
+  independently finds that <em>simple baselines routinely beat complex learned
+  routers</em> — exactly the project's own internal finding.</li>
+<li><strong>The gap is real and unoccupied.</strong> No published <strong>training-free cascade for
+  medical VLMs</strong> exists; the intersection of <em>training-free × cascade × medical
+  VLM × prefill-inclusive honest accounting</em> is open ground.</li>
+</ul>
+<p>Output: a tiered <strong>18-paper reading list</strong> with runnable-baseline code repos
+identified. The Tier-1 must-reads — <strong>FrugalGPT</strong> (2305.05176), <strong>AutoMix</strong>
+(2310.12963), <strong>Cascade Routing</strong> (2410.10347), <strong>RouteLLM</strong> (2406.18665),
+<strong>RouterBench</strong> (2403.12031), <strong>CP-Router</strong> (2505.19970), <strong>LLMRouterBench</strong>
+(2601.07206), and the <strong>2026 routing survey</strong> (2603.04445) — plus VLM-specific
+neighbors (AVR, SGL, VL-RouterBench, MMR-Bench), confidence mechanics (Hybrid
+LLM, GATEKEEPER), and skim-tier context. If only four this week: <strong>Cascade
+Routing, AutoMix, RouteLLM, LLMRouterBench</strong> (strongest baseline, closest
+analog, transfer framing, best corroborating cite).</p>
+<hr />
+<h2 id="phase-2-the-gate-axis-closed-a-clean-negative-result">Phase 2 — The gate axis, closed (a clean negative result)<a class="headerlink" href="#phase-2-the-gate-axis-closed-a-clean-negative-result" title="Permanent link">&para;</a></h2>
+<p>The afternoon began by attacking the <em>gate</em> — the escalation decision — and
+proved, with a stack of negative results, that it is <strong>signal-limited and not
+improvable</strong>:</p>
+<ul>
+<li><strong>~63% of the 7B's errors are futile to escalate</strong> — the 32B is <em>also</em> wrong
+  on them, so no gate can rescue them.</li>
+<li><strong>Recoverability is only ≈0.6 AUROC</strong> from any cheap signal — the rescue
+  event is near-unpredictable from anything the 7B exposes.</li>
+<li><strong>Plain margin already beats or ties every fancier gate</strong> — conformal /
+  MSP / Chow (≡ CP-Router), learned-correctness (FrugalGPT scorer),
+  learned-deferral (Jitkrittum-style), self-verification, entropy, and
+  Gini / DOCTOR all cluster at or below it.</li>
+</ul>
+<p>This cleanly rules out the large family of "smarter router" approaches the
+current literature keeps proposing — a result worth publishing in its own
+right. The corollary: <strong>any further compute savings must come from somewhere
+other than the gate.</strong></p>
+<hr />
+<h2 id="phase-3-the-real-lever-no-think-over-thinks-perception">Phase 3 — The real lever: no-think <em>over-thinks</em> perception<a class="headerlink" href="#phase-3-the-real-lever-no-think-over-thinks-perception" title="Permanent link">&para;</a></h2>
+<p>The somewhere-else turned out to be the <strong>strong leg's compute mode</strong>. The
+32B's chain-of-thought "thinking" — assumed to be strictly better — actually
+<em>hurts</em> on perception VQA, because it talks itself out of correct
+quick-glance answers:</p>
+<ul>
+<li><strong>32B-no-think beats 32B-think by +7.7 on SLAKE and +11.7 on VQA-RAD</strong>, at
+  <strong>~2 decode tokens instead of ~477.</strong></li>
+</ul>
+<p>So on the competent perception benchmarks, the expensive reasoning mode is both
+<em>slower</em> and <em>less accurate</em>. That single observation is the lever the gate
+work was missing.</p>
+<hr />
+<h2 id="phase-4-acc-the-adaptive-compute-cascade">Phase 4 — ACC: the Adaptive-Compute Cascade<a class="headerlink" href="#phase-4-acc-the-adaptive-compute-cascade" title="Permanent link">&para;</a></h2>
+<p>Reframing the strong-leg axis as a proper cascade method gives <strong>ACC</strong> — three
+tiers built from only <strong>two</strong> model checkpoints, stopping at the first
+confident answer, each tier gated by its own margin:</p>
+<ul>
+<li><strong>Tier 0</strong> — 7B-no-think @ cap320 (~0.18 s / 25 J)</li>
+<li><strong>Tier 1</strong> — <strong>32B-no-think</strong> @ cap320 (~0.34 s / 65 J; exposes logprobs)</li>
+<li><strong>Tier 2</strong> — 32B-think @ full-res (~28 s / 6994 J)</li>
+</ul>
+<p>The big model's <strong>fast no-think mode is the intermediate workhorse</strong>; slow
+reasoning fires only on the residual that genuinely needs it. (Per-config
+batch-1 latency/energy is calibrated against real NVML measurements at
+<strong>R² = 0.99</strong> — 0.0716 s and 18.17 J per think token.)</p>
+<p><strong>Honest held-out result</strong> (50/50 split, 20 seeds, at parity accuracy):</p>
+<table>
+<thead>
+<tr>
+<th>Pool</th>
+<th>Metric</th>
+<th style="text-align: right;">Deployed / standard</th>
+<th style="text-align: right;">ACC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ALL-6</td>
+<td>latency</td>
+<td style="text-align: right;">20.0 s</td>
+<td style="text-align: right;"><strong>5.7 s (−72%)</strong></td>
+</tr>
+<tr>
+<td>ALL-6</td>
+<td>FLOPs</td>
+<td style="text-align: right;">81%</td>
+<td style="text-align: right;"><strong>55%</strong></td>
+</tr>
+<tr>
+<td>ALL-6</td>
+<td>energy</td>
+<td style="text-align: right;">7049 J</td>
+<td style="text-align: right;"><strong>1505 J (−75%)</strong></td>
+</tr>
+<tr>
+<td>ALL-6</td>
+<td>guardrail-fails</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;"><strong>0.00</strong></td>
+</tr>
+<tr>
+<td>ALL-5</td>
+<td>latency</td>
+<td style="text-align: right;">9.1 s</td>
+<td style="text-align: right;"><strong>0.28 s (−97%)</strong></td>
+</tr>
+<tr>
+<td>COMP-4</td>
+<td>latency</td>
+<td style="text-align: right;">8.2 s</td>
+<td style="text-align: right;"><strong>0.39 s (−97%)</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Head-to-head vs. standard reasoning cascades</strong> (ALL-6, parity acc 0.5723;
+M2 = standard 2-tier 7B-think→32B-think; M3 = standard 3-tier
+7B-nt→7B-think→32B-think):</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th style="text-align: right;">acc</th>
+<th style="text-align: right;">esc→think</th>
+<th style="text-align: right;">FLOPs%</th>
+<th style="text-align: right;">latency</th>
+<th style="text-align: right;">energy</th>
+<th style="text-align: right;">guard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M2 — std 2-tier (think)</td>
+<td style="text-align: right;">0.5725</td>
+<td style="text-align: right;">86%</td>
+<td style="text-align: right;">105%</td>
+<td style="text-align: right;">29.8 s</td>
+<td style="text-align: right;">7049 J</td>
+<td style="text-align: right;">0.35</td>
+</tr>
+<tr>
+<td>M3 — std 3-tier</td>
+<td style="text-align: right;">0.5697</td>
+<td style="text-align: right;">65%</td>
+<td style="text-align: right;">89%</td>
+<td style="text-align: right;">23.2 s</td>
+<td style="text-align: right;">5499 J</td>
+<td style="text-align: right;">0.25</td>
+</tr>
+<tr>
+<td><strong>M1 — ACC (margin)</strong></td>
+<td style="text-align: right;">0.5694</td>
+<td style="text-align: right;">19%</td>
+<td style="text-align: right;"><strong>54.7%</strong></td>
+<td style="text-align: right;"><strong>5.93 s</strong></td>
+<td style="text-align: right;"><strong>1505 J</strong></td>
+<td style="text-align: right;"><strong>0.00</strong></td>
+</tr>
+<tr>
+<td><strong>M1b — ACC + agreement</strong></td>
+<td style="text-align: right;">0.5710</td>
+<td style="text-align: right;">14%</td>
+<td style="text-align: right;"><strong>53.5%</strong></td>
+<td style="text-align: right;"><strong>4.86 s</strong></td>
+<td style="text-align: right;"><strong>1220 J</strong></td>
+<td style="text-align: right;"><strong>0.00</strong></td>
+</tr>
+</tbody>
+</table>
+<p>ACC dominates every efficiency axis at matched accuracy. (M2 exceeds 100%
+FLOPs because a 7B-<em>think</em> cheap leg is both slow and weaker on perception, so
+it still escalates 73–86% of the time to the think tier.)</p>
+<hr />
+<h2 id="phase-5-acc-v2-and-proof-that-the-win-is-the-structure-not-the-gate">Phase 5 — ACC-v2, and proof that the win is the structure, not the gate<a class="headerlink" href="#phase-5-acc-v2-and-proof-that-the-win-is-the-structure-not-the-gate" title="Permanent link">&para;</a></h2>
+<p>ACC-v2 adds the one cascade-native gate improvement that survives scrutiny:
+because <strong>both</strong> models have already run at the middle tier, their
+<strong>disagreement</strong> is a <em>free</em> query-by-committee signal — escalate to the think
+tier only when 7B and 32B disagree. It strictly Pareto-improves ACC (the M1b
+row above: 53.5% FLOPs, 4.86 s, 1220 J at slightly <em>higher</em> accuracy).</p>
+<p>Holding the ACC 3-tier structure fixed and swapping only the gate proves the
+win is <strong>structural</strong>: every real gate lands in a tight band; only the
+signal-free random router collapses.</p>
+<table>
+<thead>
+<tr>
+<th>gate (ALL-6, parity 0.5723)</th>
+<th style="text-align: right;">acc</th>
+<th style="text-align: right;">esc→think</th>
+<th style="text-align: right;">FLOPs%</th>
+<th style="text-align: right;">latency</th>
+<th style="text-align: right;">energy</th>
+<th style="text-align: right;">guard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>margin (Chow; ACC v1)</td>
+<td style="text-align: right;">0.5694</td>
+<td style="text-align: right;">19%</td>
+<td style="text-align: right;">54.7%</td>
+<td style="text-align: right;">5.93 s</td>
+<td style="text-align: right;">1505 J</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr>
+<td>MSP / Chow ≡ CP-Router</td>
+<td style="text-align: right;">0.5704</td>
+<td style="text-align: right;">19%</td>
+<td style="text-align: right;">57.8%</td>
+<td style="text-align: right;">6.60 s</td>
+<td style="text-align: right;">1675 J</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr>
+<td>entropy</td>
+<td style="text-align: right;">0.5695</td>
+<td style="text-align: right;">21%</td>
+<td style="text-align: right;">62.2%</td>
+<td style="text-align: right;">7.99 s</td>
+<td style="text-align: right;">2033 J</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr>
+<td>Gini / DOCTOR</td>
+<td style="text-align: right;">0.5705</td>
+<td style="text-align: right;">21%</td>
+<td style="text-align: right;">61.6%</td>
+<td style="text-align: right;">7.82 s</td>
+<td style="text-align: right;">1991 J</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr>
+<td>learned-correct (FrugalGPT)</td>
+<td style="text-align: right;">0.5679</td>
+<td style="text-align: right;">19%</td>
+<td style="text-align: right;">60.5%</td>
+<td style="text-align: right;">7.61 s</td>
+<td style="text-align: right;">1934 J</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr>
+<td>learned-defer (VADR)</td>
+<td style="text-align: right;">0.5673</td>
+<td style="text-align: right;">14%</td>
+<td style="text-align: right;">51.0%</td>
+<td style="text-align: right;">5.01 s</td>
+<td style="text-align: right;">1260 J</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr>
+<td><strong>agreement (ACC-v2, ours)</strong></td>
+<td style="text-align: right;">0.5710</td>
+<td style="text-align: right;">14%</td>
+<td style="text-align: right;">53.5%</td>
+<td style="text-align: right;">4.86 s</td>
+<td style="text-align: right;">1220 J</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr>
+<td>random (no signal)</td>
+<td style="text-align: right;">0.5689</td>
+<td style="text-align: right;">86%</td>
+<td style="text-align: right;">130.2%</td>
+<td style="text-align: right;">23.44 s</td>
+<td style="text-align: right;">6105 J</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+</tbody>
+</table>
+<p>All real gates cluster at <strong>51–62% FLOPs / 5.0–8.0 s</strong>; random collapses to
+<strong>130% / 23.4 s</strong>. (Aside: CP-Router's conformal set-size is monotone in
+top-1 probability for ≤5-option MCQ, so it reduces to MSP/Chow here.) The
+spread among gates is small; the structural lever is what moves the needle.</p>
+<hr />
+<h2 id="phase-6-novelty-honesty-and-what-to-claim">Phase 6 — Novelty, honesty, and what to claim<a class="headerlink" href="#phase-6-novelty-honesty-and-what-to-claim" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>VADR was honestly retired.</strong> The one idea that didn't hold up — a
+  bidirectional learned-deferral signal (VADR) — was abandoned after an
+  adversarial prior-art check and a failed load-bearing claim, rather than
+  quietly dropped.</li>
+<li><strong>The accounting is the differentiator.</strong> FLOPs are exact and
+  prefill-inclusive; latency and energy are calibrated against real batch-1
+  NVML at R² = 0.99; scope is explicitly the <strong>four competent perception
+  benchmarks</strong> (MMMU and MedXpert excluded — both models near chance there).</li>
+<li><strong>What to claim:</strong> an <strong>efficiency-systems</strong> contribution, not an accuracy
+  one. The defensible novelty is narrow but real — <em>a three-tier-from-two-models
+  cascade that uses the large model's no-think mode as the intermediate
+  workhorse tier</em>, applied to medical VQA with measured latency and energy, an
+  intersection the 2026 routing survey flags as an open gap. Foreground the
+  <strong>structure + the free agreement gate</strong>; cite CAR and margin-gated-CoT for the
+  self-gating precedent; present the <strong>saturated-gate finding as a deliberate
+  negative result</strong> that motivates the structural move.</li>
+</ul>
+<hr />
+<h2 id="deliverable-progress_june_17docx">Deliverable — <code>Progress_June_17.docx</code><a class="headerlink" href="#deliverable-progress_june_17docx" title="Permanent link">&para;</a></h2>
+<p>The Claude Code Markdown log was rebuilt into a readable <strong>13-page Word
+report</strong>: the full content reorganized, with three rendered charts (think vs
+no-think by benchmark; the ACC latency/FLOPs/energy headline; the gate
+bake-off), cleanly shaded/zebra tables with the "ours" rows highlighted,
+properly typeset equations (margin, softmax/entropy/Gini, the agreement gate,
+expected per-query cost, FLOPs/backbone, and the energy trapezoid), callout
+boxes, and a conclusion. Every number traces back to the log — nothing
+fabricated.</p>
+<hr />
+<h2 id="honest-ledger-of-the-day">Honest ledger of the day<a class="headerlink" href="#honest-ledger-of-the-day" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Literature position fixed</strong> — the method is a <em>post-generation cascade</em>;
+   the eval unit is a swept curve (AIQ/nAUC); "74% at parity" = the established
+   <strong>QNC</strong> metric; <strong>LLMRouterBench</strong> corroborates "simple beats complex"; and
+   the training-free-medical-VLM-cascade gap is confirmed unoccupied. 18-paper
+   tiered reading list with code repos.</li>
+<li><strong>The gate axis is closed</strong> — ~63% of 7B errors are futile, recoverability
+   ≈0.6 AUROC, and plain margin beats/ties every fancier gate. A clean negative
+   result that rules out the "smarter router" family.</li>
+<li><strong>No-think over-thinks perception</strong> — 32B-no-think beats 32B-think by <strong>+7.7
+   (SLAKE) / +11.7 (VQA-RAD)</strong> at ~2 vs ~477 decode tokens. The lever the gate
+   work was missing.</li>
+<li><strong>ACC</strong> — a 3-tier-from-2-checkpoints cascade (7B-nt → <strong>32B-nt</strong> →
+   32B-think) matching always-32B-think at <strong>−72% latency / −75% energy /
+   ~½ FLOPs</strong> on ALL-6, guardrail-clean, ~97% latency cuts on perception pools.</li>
+<li><strong>ACC-v2</strong> — the free 7B/32B-disagreement gate strictly Pareto-improves;
+   holding the structure fixed, all real gates cluster (51–62% FLOPs) and only
+   random collapses — the win is <strong>structure, not gate</strong>.</li>
+<li><strong>Honest framing + VADR retired</strong> — efficiency-systems contribution, NVML-
+   calibrated (R²=0.99), perception-scoped; VADR dropped after a prior-art
+   check.</li>
+<li><strong>Deliverable</strong> — a 13-page readable Word report of the full log.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">On the project's direction</p>
+<p>This is a real evolution of the contribution. Through Week 5 the project's
+deployable result was the <strong>frozen margin gate</strong>; June 17 shows that gate is
+a <em>dead axis</em> (clean negative result) and relocates the win to the
+<strong>strong-leg compute mode</strong> — yielding <strong>ACC</strong> and its free agreement gate.
+The CVGIP 2026 submission stands as-is, but the higher-tier resubmission
+now has a stronger spine: lead with <em>no-think-overthinks-perception</em>, frame
+the contribution as <strong>structure + agreement gate</strong>, and use the
+saturated-gate result as the negative finding that motivates it. The site
+still carries its original <em>visual-token-pruning</em> name; with the work now
+centered on a named method (<strong>ACC</strong>), the rebrand is well overdue — but
+remains Leo's call.</p>
+</div>
+<hr />
+<h3 id="plan-for-next-session">Plan for next session<a class="headerlink" href="#plan-for-next-session" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Draft the paper around "structure + agreement gate"</strong> — lead with the
+      no-think-overthinks-perception finding; present ACC and ACC-v2 as the
+      method, and the saturated-gate result as the motivating negative finding.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Mixed-set calibration of the think threshold</strong> — calibrate on a
+      reasoning-inclusive mix so the <strong>ALL-6</strong> deployment is honest rather than
+      perception-only (the current scope caveat).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Treat the gate axis as closed</strong> — any further compute savings must come
+      from a genuinely new signal beyond cheap-model confidence; none that is
+      both free and helpful has been found.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Begin the Tier-1 reading (Cascade Routing, AutoMix, RouteLLM,
+      LLMRouterBench) and stand up the <strong>AutoMix</strong> baseline for comparison.</li>
+</ul>
+<hr />
+<h2 id="pushed-today">Pushed today<a class="headerlink" href="#pushed-today" title="Permanent link">&para;</a></h2>
+<p><strong>No code push.</strong> The day's experimental work was run in <strong>Claude Code</strong> on the
+research server and captured as <code>progress_June_17.md</code>; the deliverables
+(<code>Progress_June_17.docx</code> and the figures) are reports, not commits to the
+<code>medvlthinker-imgdiff-compute</code> repo.</p>
 
 
 
@@ -1969,7 +2475,7 @@ standardized eval harnesses. The LLaVA-Med-era environment is documented on the
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../project/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Project Overview">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Week 6 — From gate to structure: the Adaptive-Compute Cascade (ACC)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1979,20 +2485,20 @@ standardized eval harnesses. The LLaVA-Med-era environment is documented on the
                 Previous
               </span>
               <div class="md-ellipsis">
-                Project Overview
+                Week 6 — From gate to structure: the Adaptive-Compute Cascade (ACC)
               </div>
             </div>
           </a>
         
         
           
-          <a href="medvlthinker/" class="md-footer__link md-footer__link--next" aria-label="Next: MedVLThinker (current)">
+          <a href="../../../bugs/" class="md-footer__link md-footer__link--next" aria-label="Next: Bugs &amp; Issues">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                MedVLThinker (current)
+                Bugs & Issues
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2033,12 +2539,12 @@ standardized eval harnesses. The LLaVA-Med-era environment is documented on the
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

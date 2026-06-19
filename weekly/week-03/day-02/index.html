@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.">
+        <meta name="description" content="Training-free model cascades for compute-efficient medical VQA, from visual-token pruning to the Adaptive-Compute Cascade (ACC).">
       
       
         <meta name="author" content="Li-Wen Kuan (關力文) — Leo Kuan">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Day 2 — Monday, May 25, 2026 - Question-Aware Visual Token Pruning for Medical VLMs</title>
+        <title>Day 2 — Monday, May 25, 2026 - Model Cascades for Medical VLMs</title>
       
     
     
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-header__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../../.." title="Model Cascades for Medical VLMs" class="md-header__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +108,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Question-Aware Visual Token Pruning for Medical VLMs
+            Model Cascades for Medical VLMs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -264,7 +264,7 @@
   
     
   
-  Baseline
+  Baselines
 
         </a>
       </li>
@@ -367,13 +367,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Question-Aware Visual Token Pruning for Medical VLMs" class="md-nav__button md-logo" aria-label="Question-Aware Visual Token Pruning for Medical VLMs" data-md-component="logo">
+    <a href="../../.." title="Model Cascades for Medical VLMs" class="md-nav__button md-logo" aria-label="Model Cascades for Medical VLMs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Question-Aware Visual Token Pruning for Medical VLMs
+    Model Cascades for Medical VLMs
   </label>
   
     <div class="md-nav__source">
@@ -449,6 +449,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -468,7 +472,7 @@
               
   
   <span class="md-ellipsis">
-    Baseline
+    Baselines
   </span>
   
 
@@ -484,10 +488,31 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            Baseline
+            Baselines
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../baseline/medvlthinker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MedVLThinker (current)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -501,7 +526,7 @@
         
   
   <span class="md-ellipsis">
-    HuatuoGPT-Vision
+    HuatuoGPT-Vision (legacy)
   </span>
   
 
@@ -522,7 +547,7 @@
         
   
   <span class="md-ellipsis">
-    Qwen2.5-VL
+    Qwen2.5-VL (legacy)
   </span>
   
 
@@ -543,7 +568,28 @@
         
   
   <span class="md-ellipsis">
-    LLaVA-Med
+    LLaVA-Med (legacy)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Environment setup (legacy)
   </span>
   
 
@@ -593,6 +639,8 @@
       
         
           
+        
+      
         
       
         
@@ -1782,6 +1830,91 @@
   
   <span class="md-ellipsis">
     Day 5 — Saturday, June 13, 2026
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../week-06/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Week 6
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Week 6
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../week-06/day-01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Day 1 — Wednesday, June 17, 2026
   </span>
   
 
