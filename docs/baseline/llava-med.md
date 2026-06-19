@@ -2,6 +2,12 @@
 
 <span class="pill pill--done">Frozen — May 24, 2026</span>
 
+!!! warning "Legacy baseline (visual-token-pruning era)"
+    This was the project's **original** baseline. The project has since pivoted
+    to **model cascading** on [MedVLThinker](medvlthinker.md) — see [The
+    research journey](../project.md#the-research-journey-how-we-got-here). This
+    page is preserved as history.
+
 LLaVA-Med was the original baseline for this project (May 10–May 21,
 2026). This page documents the exact environment used to reproduce
 that baseline so anyone — including future-me — can rebuild it

@@ -49,7 +49,7 @@ questions:
   would at layer 2-3. They run an ablation across K ∈ {0, 1, 2, 3,
   4, 5} and find K=2 is the sweet spot. This is consistent with the
   "Open design choices" note already on the
-  [Project Overview](../../project.md#approach-sketch) page —
+  [Project Overview](../../project.md#the-method) page —
   but the FastV reading promotes it from "thing to consider" to
   "thing the literature has already settled."
 - **Attention-based scoring is the established baseline.** FastV

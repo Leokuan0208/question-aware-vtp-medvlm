@@ -20,13 +20,15 @@ codebase and base model. The phases below are organized chronologically.
 | [3](#phase-3-huatuogpt-vision-7b-baseline-may-25) | May 25 | HuatuoGPT-Vision-7B · [`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning) | E0_huatuo — paper Table 4 reproduced, 5/6 benchmarks within 0.55 pts | <span class="pill pill--done">Complete</span> |
 | [4](#phase-4-huatuogpt-pruning-v1-v2-patcher-may-25-27) | May 25-27 | HuatuoGPT-Vision-7B · v2 patcher (pre-LLM) | **Random beats QSim at every keep-ratio.** Gap grows from +0.84 (kr=0.75) to +3.11 (kr=0.10) pts on total. qsim_max ablation made it worse, not better. | <span class="pill pill--done">Complete (negative result)</span> |
 | [5](#phase-5-gridprune-family-may-28) | May 28 | HuatuoGPT-Vision-7B · v2 patcher | **Random Pareto-dominates GridPrune and FASP+GridPrune on accuracy *and* latency at every kr.** Third sweep where structured pruning loses to random. Pruning-as-method closed; project pivots to visual-grounding. | <span class="pill pill--done">Complete (negative result)</span> |
-| [6](#phase-6-direction-d-feasibility-scored-sweep-may-31--jun-1) | May 31 – Jun 1 | HuatuoGPT-Vision-7B · scored harness | **Direction-D feasibility — closed (negative).** Evidence-dependence gradient is real, but neither confidence-feature combos nor the cross-budget evidence-stability signal (0.548 alone, +0.001 combined) clear the router's bar. Survives: confidence predicts correctness on multiple-choice only. | <span class="pill pill--done">Complete (negative result)</span> |
-| [7](#phase-7-image-difficulty-falsification-gate-jun-2) | Jun 2 | HuatuoGPT-Vision-7B (gate) → MedVLThinker | **Clean-slate pivot: image-difficulty-driven adaptive compute.** Falsification gate (does image complexity predict difficulty with question fixed) → **REFINE**: real, significant (p=3e-8), but weak (\|ρ\|≤0.11) and negative. Lesion-aware refinement + MedVLThinker gate pending. | <span class="pill pill--wip">In progress</span> |
+| [6](#phase-6-direction-d-feasibility-scored-sweep-may-31-jun-1) | May 31 – Jun 1 | HuatuoGPT-Vision-7B · scored harness | **Direction-D feasibility — closed (negative).** Evidence-dependence gradient is real, but neither confidence-feature combos nor the cross-budget evidence-stability signal (0.548 alone, +0.001 combined) clear the router's bar. Survives: confidence predicts correctness on multiple-choice only. | <span class="pill pill--done">Complete (negative result)</span> |
+| [7](#phase-7-image-difficulty-falsification-gate-jun-2) | Jun 2 | HuatuoGPT-Vision-7B (gate) → MedVLThinker | **Clean-slate pivot: image-difficulty-driven adaptive compute.** Falsification gate (does image complexity predict difficulty with question fixed) → **REFINE**: real, significant (p=3e-8), but weak (\|ρ\|≤0.11) and negative. Lesion-aware refinement + MedVLThinker gate pending — then **superseded** by the cascade pivot. | <span class="pill pill--done">Closed → pivot</span> |
+| [8](#phase-8-cross-model-cascade-era) | Jun 7 – Jun 17 | **MedVLThinker-7B/32B** · [`medvlthinker-imgdiff-compute`](https://github.com/Leokuan0208/medvlthinker-imgdiff-compute) | **Cross-model cascade era.** Single-model routing closed (oracle below the independence floor); the 7B→32B margin cascade holds 32B parity at **0.639× compute**; **ACC** (3-tier) then matches always-32B-think at **−72% latency / −75% energy / ~½ FLOPs**. | <span class="pill pill--wip">In progress</span> |
 
-**Active codebase as of May 27, 2026:**
-[`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning).
-All Phase 3-5 experiments share this harness; Phases 1-2 are frozen
-on their respective archived harnesses.
+**Active codebase (cascade era):**
+[`medvlthinker-imgdiff-compute`](https://github.com/Leokuan0208/medvlthinker-imgdiff-compute)
+— all Week 5–6 cascade / ACC work. The pruning-era harness
+[`huatuo-llava-v15-med-pruning`](https://github.com/Leokuan0208/huatuo-llava-v15-med-pruning)
+carries Phases 3–5; Phases 1–2 are frozen on their archived harnesses.
 
 ## Evaluation harness
 
@@ -923,6 +925,38 @@ VMs; the lesion-augmented verdict is the GO / stop decision.
 
 Full analysis:
 [Week 4, Day 3](weekly/week-04/day-03.md).
+
+---
+
+## Phase 8 — Cross-model cascade era
+
+_Weeks 5–6. The detailed, day-by-day experiment records for the cascade live
+in the [Weekly Log](weekly/index.md); this is the summary. Base models:
+[MedVLThinker-7B/32B](baseline/medvlthinker.md); repo
+[`medvlthinker-imgdiff-compute`](https://github.com/Leokuan0208/medvlthinker-imgdiff-compute)._
+
+**8a — Single-model routing, closed (Week 5).** A 4-policy (think/nothink ×
+RAG/noRAG) router over *one* MedVLThinker-7B was forensically closed: the arms
+of a single model are redundant decision-makers, and the per-question oracle
+falls far below the independence luck floor (z = −25 to −29σ). →
+[Week 5 overview](weekly/week-05/index.md).
+
+**8b — The 7B→32B margin cascade (Week 5).** A cross-model cascade shows real
+complementarity (+12.5pp oracle over always-32B). A frozen confidence-margin
+gate (τ in z-space, `router_margin.pkl`) holds **exact 32B parity at a measured
+0.639× of always-32B compute** (≈36% energy saved) on the four competent
+benchmarks. A reviewer-grade six-router bake-off found **nothing beats the
+one-line margin gate** — the gate axis is closed (rescue is ~0.6 AUROC
+unpredictable from any cheap signal). Written up as the **CVGIP 2026**
+manuscript. → [Week 5, Day 5](weekly/week-05/day-05.md).
+
+**8c — ACC, the structural result (Week 6).** The real compute lever is the
+strong leg's mode: the 32B *over-thinks* perception VQA (no-think beats think
+by +7.7 SLAKE / +11.7 VQA-RAD at ~2 vs ~477 decode tokens). **ACC** promotes
+32B-no-think to an intermediate tier (7B-nt → 32B-nt → 32B-think), matching
+always-32B-think at **−72% latency / −75% energy / ~½ FLOPs**, guardrail-clean;
+**ACC-v2** adds a free 7B/32B-disagreement gate. →
+[Week 6, Day 1](weekly/week-06/day-01.md).
 
 ---
 

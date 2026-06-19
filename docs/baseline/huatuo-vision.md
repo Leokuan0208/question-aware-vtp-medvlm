@@ -1,6 +1,13 @@
 # Baseline: HuatuoGPT-Vision-7B
 
-<span class="pill pill--done">Active baseline — reproduction validated May 25, 2026</span>
+<span class="pill pill--done">Legacy — final pruning-era baseline (May 25, 2026)</span>
+
+!!! warning "Legacy baseline (visual-token-pruning era)"
+    This was the **final** pruning-era baseline — the model the pruning sweeps
+    ran on. The project has since pivoted to **model cascading** on
+    [MedVLThinker](medvlthinker.md) — see [The research
+    journey](../project.md#the-research-journey-how-we-got-here). Preserved as
+    history.
 
 HuatuoGPT-Vision-7B is the **current baseline** for this project,
 adopted on May 25, 2026 after the second pivot of Week 3. The pivot

@@ -72,7 +72,7 @@ decisions at each stage; no irreversible loss.
 
 This is **directly relevant to the "where in the LLaMA stack to
 prune?" question** that's been an open design choice since Day 1
-(see [Project Overview, Approach (sketch)](../../project.md#approach-sketch)).
+(see [Project Overview, Approach (sketch)](../../project.md#the-method)).
 The FastV reading from yesterday already argued for "later than
 layer 0" — SwiftVLM goes further and argues that *no single layer*
 is the right answer, that pruning should be a multi-stage decision
@@ -115,7 +115,7 @@ A few things to be careful about before adopting bypass uncritically:
 
 Both papers added under the visual-token-pruning section. Both also
 appear in the related-work table on the
-[Project Overview](../../project.md#related-work-skim-list-to-read-properly-in-week-12).
+[Project Overview](../../project.md#related-work).
 
 ---
 

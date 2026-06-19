@@ -1,4 +1,10 @@
-# Baseline: LLaVA-Med
+# Environment Setup (LLaVA-Med era)
+
+!!! warning "Legacy environment"
+    This documents the original **single-A100** environment used for the
+    LLaVA-Med pruning baseline (May 2026). The project now runs on **dual
+    A100 80GB with vLLM 25.09** on the [MedVLThinker](baseline/medvlthinker.md)
+    models — see that page for current infrastructure. Preserved as history.
 
 LLaVA-Med is the **baseline** we're modifying. This page documents the
 exact environment used to reproduce the baseline so anyone — including

@@ -27,7 +27,7 @@ against the published pruning literature, and **(2)** a structured
 look at token *merging* and the medical-VQA properties that should
 shape method choice. Both feed directly into the paper's related
 work and a new **Methods Roadmap (Tier 1/2/3)** on the
-[project page](../../project.md#methods-roadmap-tiers-1-3).
+[project page](../../project.md#the-research-journey-how-we-got-here).
 
 Three commits pushed today to `huatuo-llava-v15-med-pruning`. Code
 delta against yesterday's
@@ -657,7 +657,7 @@ method choice. The three most important:
 Three more properties (anatomy structure constraints, scan-modality
 diversity, dataset-shift sensitivity) feed downstream into the
 Methods Roadmap. Full writeup folded into the
-[project page's Methods Roadmap](../../project.md#methods-roadmap-tiers-1-3).
+[project page's Methods Roadmap](../../project.md#the-research-journey-how-we-got-here).
 
 ### A QSim weakness worth flagging up front
 
@@ -745,7 +745,7 @@ Third commit of the day captured the raw results:
    small-localized-lesions, structured-question-types — that map
    onto specific method choices. Three tiers of next-step
    experiments documented on the
-   [project page](../../project.md#methods-roadmap-tiers-1-3).
+   [project page](../../project.md#the-research-journey-how-we-got-here).
 8. **The QSim weakness worth flagging.** Mean-pooled cosine is
    probably weaker than max-similarity; QSim has no diversity term
    and may concentrate too narrowly. Random baseline at every

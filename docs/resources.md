@@ -3,6 +3,56 @@
 A curated list of everything I'm using as a reference for the project.
 Updated as I go.
 
+!!! note "Current vs legacy"
+    The project is now a **model cascade** for medical VLMs. The cascade /
+    routing reading list below is the current core; the **visual-token-pruning**
+    library (the project's first direction) is preserved further down under
+    [Legacy — visual token pruning](#legacy-visual-token-pruning).
+
+## Cascade & routing (current direction)
+
+The current base models are documented on the
+[MedVLThinker](baseline/medvlthinker.md) page. The 18-paper tiered reading
+list (compiled Week 6) for the cascade direction:
+
+### Tier 1 — must-reads (the baselines to beat + the closest analogs)
+
+- **FrugalGPT** — Chen et al., 2023. [arXiv:2305.05176](https://arxiv.org/abs/2305.05176) — the canonical LLM cascade; our margin gate is the training-free analog.
+- **AutoMix** — 2023. [arXiv:2310.12963](https://arxiv.org/abs/2310.12963) — self-verifying cascade routing; closest analog to ACC's self-gating.
+- **Cascade Routing** — 2024. [arXiv:2410.10347](https://arxiv.org/abs/2410.10347) — the strongest general cascade-routing baseline to compare against.
+- **RouteLLM** — 2024. [arXiv:2406.18665](https://arxiv.org/abs/2406.18665) — learned routing from preference data; the transfer-framing reference.
+- **RouterBench** — 2024. [arXiv:2403.12031](https://arxiv.org/abs/2403.12031) — standard routing benchmark; source of the AIQ / nAUC evaluation convention.
+- **CP-Router** — Su et al., 2025. [arXiv:2505.19970](https://arxiv.org/abs/2505.19970) — conformal routing (Full-and-Binary-Entropy); our nearest neighbor on the signal side, used as a contrast baseline.
+- **LLMRouterBench** — 2026. [arXiv:2601.07206](https://arxiv.org/abs/2601.07206) — independently corroborates "simple baselines beat complex learned routers."
+- **A survey of routing strategies** — 2026. [arXiv:2603.04445](https://arxiv.org/abs/2603.04445) — the taxonomy this work sits in; flags the no-think-intermediate-tier intersection as an open gap.
+
+### Tier 2 — VLM-specific neighbors
+
+- **AVR** — [arXiv:2603.12823](https://arxiv.org/abs/2603.12823); **SGL** — [arXiv:2412.03324](https://arxiv.org/abs/2412.03324); **VL-RouterBench** — [arXiv:2512.23562](https://arxiv.org/abs/2512.23562); **MMR-Bench** — [arXiv:2601.17814](https://arxiv.org/abs/2601.17814).
+
+### Tier 3 — confidence / deferral mechanics
+
+- **Hybrid LLM** — [arXiv:2404.14618](https://arxiv.org/abs/2404.14618); **GATEKEEPER**.
+- Deferral theory grounding the raw-margin gate: **Narasimhan et al. (2022)** (post-hoc deferral), **Jitkrittum et al. (2023)** (when post-hoc beats confidence), **Geifman & El-Yaniv (2017)** (selective prediction), **Scheffer et al. (2001)** (margin as confidence).
+
+### Tier 4 — context / skim
+
+- **Doing More with Less: A Survey on Routing** — [arXiv:2502.00409](https://arxiv.org/abs/2502.00409); **RouterEval** — [arXiv:2503.10657](https://arxiv.org/abs/2503.10657); **CascadeVLM** — [arXiv:2405.11301](https://arxiv.org/abs/2405.11301).
+
+### Evaluation conventions
+
+- The method is a **post-generation cascade** (decide after the cheap model answers), not a pre-generation router.
+- The standard unit is a swept **cost–quality curve** summarized by **AIQ** or **nAUC**; the project's "match quality at lower cost" maps to **Quality-Neutral Cost (QNC)**.
+
+---
+
+## Legacy — visual token pruning
+
+_The references below are from the project's first direction (visual-token
+pruning, Weeks 1–3) and the Week-4 adaptive-compute exploration. They are kept
+for the record; the token-pruning literature reconnects to the cascade as the
+orthogonal "make each leg cheaper" axis._
+
 ## Core papers
 
 ### The baseline

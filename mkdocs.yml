@@ -1,10 +1,10 @@
 # =============================================================================
-# MkDocs configuration for "Question-Aware Visual Token Pruning for
-# Medical VLMs" — a 12-week research project documentation site.
+# MkDocs configuration for "Model Cascades for Medical VLMs"
+# (formerly "Question-Aware Visual Token Pruning") — a 12-week research project.
 # =============================================================================
 
-site_name: Question-Aware Visual Token Pruning for Medical VLMs
-site_description: A research project on question-conditioned visual token pruning, built on the LLaVA-Med baseline.
+site_name: Model Cascades for Medical VLMs
+site_description: Training-free model cascades for compute-efficient medical VQA, from visual-token pruning to the Adaptive-Compute Cascade (ACC).
 site_author: Li-Wen Kuan (關力文) — Leo Kuan
 
 site_url: https://leokuan0208.github.io/question-aware-vtp-medvlm/
@@ -16,11 +16,13 @@ edit_uri: edit/main/docs/
 nav:
   - Home: index.md
   - Project Overview: project.md
-  - Baseline:
+  - Baselines:
       - baseline/index.md
-      - HuatuoGPT-Vision: baseline/huatuo-vision.md
-      - Qwen2.5-VL: baseline/qwen25-vl.md
-      - LLaVA-Med: baseline/llava-med.md
+      - MedVLThinker (current): baseline/medvlthinker.md
+      - HuatuoGPT-Vision (legacy): baseline/huatuo-vision.md
+      - Qwen2.5-VL (legacy): baseline/qwen25-vl.md
+      - LLaVA-Med (legacy): baseline/llava-med.md
+      - Environment setup (legacy): setup.md
   - Experiments: experiments.md
   - Weekly Log:
       - weekly/index.md
@@ -61,6 +63,9 @@ nav:
           - weekly/week-05/day-03.md
           - weekly/week-05/day-04.md
           - weekly/week-05/day-05.md
+      - Week 6:
+          - weekly/week-06/index.md
+          - weekly/week-06/day-01.md
   - Bugs & Issues: bugs.md
   - Resources: resources.md
 

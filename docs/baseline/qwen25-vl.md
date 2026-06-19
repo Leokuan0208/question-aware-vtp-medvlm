@@ -2,6 +2,12 @@
 
 <span class="pill pill--done">Frozen — May 25, 2026</span>
 
+!!! warning "Legacy baseline (visual-token-pruning era)"
+    A one-day baseline during the pruning era. The project has since pivoted to
+    **model cascading** on [MedVLThinker](medvlthinker.md) — see [The research
+    journey](../project.md#the-research-journey-how-we-got-here). Preserved as
+    history.
+
 Qwen2.5-VL-7B-Instruct was the active baseline for one day
 (May 24-25, 2026). The MCQ-letter compliance smoke test passed
 20/20 strict — confirming the LLaVA-Med v1.0 → Qwen2.5-VL pivot

@@ -13,12 +13,12 @@ page. Weeks run Sunday → Saturday.
 | [3](week-03/index.md)  | May 24 – May 30, 2026 | 1 | Qwen2.5-VL pivot validated, **second pivot to HuatuoGPT-Vision-7B**, baseline reproduced, then three pruning sweeps all lose to random — **pruning closed, pivot to visual grounding** | <span class="pill pill--done">Done</span> |
 | [4](week-04/index.md)  | May 31 – Jun 6, 2026  | pivot | Direction-D **closed**, image-difficulty wedge **killed**, reframed to a per-question **compute router** — on the 7B it clears its first gate (~25% policy-flip, +9–10pp oracle ceiling); predictability still to test | <span class="pill pill--done">Done</span> |
 | [5](week-05/index.md)  | Jun 7 – Jun 13, 2026  | pivot | Single-model routing **closed**, pivot to a **7B→32B cross-model cascade** — the margin-gated cascade holds **32B parity at a measured 0.639× compute** (held-out grid: 74% at cap320); accuracy headroom real but unreachable from cheap signals. Written up as the **CVGIP 2026 manuscript** and hardened by a reviewer-grade audit (six-router bake-off: nothing beats the one-line gate). | <span class="pill pill--done">Done</span> |
-| 6  | Jun 14 – Jun 20, 2026 | 3 | Sanity-check results, debugging | <span class="pill pill--planned">Planned</span> |
-| 7  | Jun 21 – Jun 27, 2026 | 4 — Training & ablations | K-sweep | <span class="pill pill--planned">Planned</span> |
-| 8  | Jun 28 – Jul 4, 2026  | 4 | Head-architecture ablations | <span class="pill pill--planned">Planned</span> |
-| 9  | Jul 5 – Jul 11, 2026  | 5 — Full evaluation | VQA-RAD / SLAKE benchmarks | <span class="pill pill--planned">Planned</span> |
-| 10 | Jul 12 – Jul 18, 2026 | 5 | Latency benchmarks, qualitative analysis | <span class="pill pill--planned">Planned</span> |
-| 11 | Jul 19 – Jul 25, 2026 | 6 — Write-up | Draft report, figures | <span class="pill pill--planned">Planned</span> |
+| [6](week-06/index.md)  | Jun 14 – Jun 20, 2026 | pivot | Gate axis **closed** as a clean negative result (rescue near-unpredictable, margin beats all gates); the real lever is the **strong leg’s compute mode** — 32B no-think *over-thinks* perception, yielding **ACC** (3-tier-from-2-models cascade) that matches always-32B-think at **−72% latency / −75% energy / ~½ FLOPs**, plus a free disagreement gate (ACC-v2). Literature-positioned (QNC, post-generation cascade). | <span class="pill pill--wip">In progress</span> |
+| 7  | Jun 21 – Jun 27, 2026 | 6 — Harden ACC | Mixed-set think-threshold calibration (honest ALL-6); stand up the AutoMix baseline | <span class="pill pill--planned">Planned</span> |
+| 8  | Jun 28 – Jul 4, 2026  | 6 | Runnable cascade baselines (Cascade Routing, RouteLLM); higher-tier draft around "structure + agreement gate" | <span class="pill pill--planned">Planned</span> |
+| 9  | Jul 5 – Jul 11, 2026  | 6 | Full ACC ablations + swept cost–quality (AIQ/nAUC) curves | <span class="pill pill--planned">Planned</span> |
+| 10 | Jul 12 – Jul 18, 2026 | 6 | Latency/energy benchmarks; qualitative escalation panels | <span class="pill pill--planned">Planned</span> |
+| 11 | Jul 19 – Jul 25, 2026 | 7 — Write-up | Draft report, figures | <span class="pill pill--planned">Planned</span> |
 | 12 | Jul 26 – Aug 1, 2026  | 7 — Final | Polished report, code release, demo | <span class="pill pill--planned">Planned</span> |
 
 ## How the weekly log is structured
